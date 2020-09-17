@@ -3,5 +3,5 @@
   - name: all_sorns
     random-route: true
     buildpacks:
-      - ruby-buildpack
+      - ruby_buildpack
     memory: 1G
