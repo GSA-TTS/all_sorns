@@ -1,6 +1,7 @@
 ---
-applications:
-- name: all_sorns
-  memory: 512M
-  instances: 1
-  random-route: true
+  applications:
+  - name: all_sorns
+    random-route: true
+    buildpacks:
+      - ruby-buildpack
+    memory: 1G

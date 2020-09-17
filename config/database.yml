@@ -4,3 +4,7 @@ default: &default
 development:
   <<: *default
   database: all_sorns_development
+
+production:
+  <<: *default
+  database: all_sorns_production
