@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Agency:</strong>
+  <%= @sorn.agency_id %>
+</p>
+
+<p>
+  <strong>System name:</strong>
+  <%= @sorn.system_name %>
+</p>
+
+<p>
+  <strong>Sorn:</strong>
+  <%= @sorn.sorn_number %>
+</p>
+
+<p>
+  <strong>Authority:</strong>
+  <%= @sorn.authority %>
+</p>
+
+<p>
+  <strong>Categories of record:</strong>
+  <%= @sorn.categories_of_record %>
+</p>
+
+<%= link_to 'Edit', edit_sorn_path(@sorn) %> |
+<%= link_to 'Back', sorns_path %>

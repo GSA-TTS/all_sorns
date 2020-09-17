@@ -1,0 +1,42 @@
+<%= form_with(model: sorn, local: true) do |form| %>
+  <% if sorn.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sorn.errors.count, "error") %> prohibited this sorn from being saved:</h2>
+
+      <ul>
+        <% sorn.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :agency_id %>
+    <%= form.text_field :agency_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :system_name %>
+    <%= form.text_field :system_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sorn_number %>
+    <%= form.text_field :sorn_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :authority %>
+    <%= form.text_field :authority %>
+  </div>
+
+  <div class="field">
+    <%= form.label :categories_of_record %>
+    <%= form.text_field :categories_of_record %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
