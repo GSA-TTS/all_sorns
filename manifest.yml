@@ -4,4 +4,4 @@
     random-route: true
     buildpacks:
       - ruby_buildpack
-    memory: 1G
+    memory: 512MB
