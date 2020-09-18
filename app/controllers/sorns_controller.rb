@@ -4,7 +4,16 @@ class SornsController < ApplicationController
   # GET /sorns
   # GET /sorns.json
   def index
-    @sorns = Sorn.all
+    if params[:search]
+      redirect_to sorns_path if params[:search] == ''
+      @sorns = Sorn.search_by_categories_of_record(params[:search])
+      @count = @sorns.count
+      @sorns = @sorns.page params[:page]
+    else
+      @sorns = Sorn.all
+      @count = @sorns.count
+      @sorns = @sorns.page params[:page]
+    end
   end
 
   # GET /sorns/1
@@ -69,6 +78,6 @@ class SornsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def sorn_params
-      params.require(:sorn).permit(:agency_id, :system_name, :sorn_number, :authority, :categories_of_record)
+      params.require(:sorn).permit(:agency_id, :system_name, :sorn_number, :authority, :categories_of_record, :search)
     end
 end

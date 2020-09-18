@@ -10,6 +10,8 @@ gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
+gem 'pg_search'
+gem 'kaminari'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
@@ -47,6 +49,7 @@ group :development do
 
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do

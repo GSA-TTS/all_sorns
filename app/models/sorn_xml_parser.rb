@@ -8,6 +8,7 @@ class SornXmlParser
   def parse_sorn
     {
       agency: get_agency,
+      action: get_action,
       system_name_and_number: get_system_name_and_number,
       authority: get_authority,
       categories_of_record: get_categories_of_record
@@ -18,41 +19,23 @@ class SornXmlParser
     @parser.for_tag('AGENCY').first.to_s
   end
 
-  def get_system_name_and_number
-    expected_header = "SYSTEM NAME AND NUMBER:"
-    name_and_number = get_text_after_header(expected_header)
-    unless name_and_number
-      expected_header = "System Name and Number:"
-      name_and_number = get_text_after_header(expected_header)
-    end
+  def get_action
+    @parser.for_tag('ACT').first['P']
+  end
 
-    return name_and_number
+  def get_system_name_and_number
+    expected_header = ["SYSTEM NAME AND NUMBER:", "SYSTEM NAME AND NUMBER", "SYSTEM NAME:"]
+    get_text_after_header(expected_header)
   end
 
   def get_authority
-    expected_header = "AUTHORITY FOR MAINTENANCE OF THE SYSTEM:"
-    authority = get_text_after_header(expected_header)
-    unless authority
-      expected_header = "AUTHORITY FOR THE MAINTENANCE OF THE SYSTEM:"
-      authority = get_text_after_header(expected_header)
-    end
-    unless authority
-      expected_header = "Authority for the System:"
-      authority = get_text_after_header(expected_header)
-    end
-
-    return authority
+    expected_header = ["AUTHORITY FOR MAINTENANCE OF THE SYSTEM:", "AUTHORITY FOR THE MAINTENANCE OF THE SYSTEM:", "Authority for the System:"]
+    get_text_after_header(expected_header)
   end
 
   def get_categories_of_record
-    expected_header = "CATEGORIES OF RECORDS IN THE SYSTEM:"
-    cor = get_text_after_header(expected_header)
-    unless cor
-      expected_header = "CATEGORIES OF RECORDS IN THE SYSTEM: "
-      cor = get_text_after_header(expected_header)
-    end
-
-    return cor
+    expected_header = ["CATEGORIES OF RECORDS IN THE SYSTEM:"]
+    get_text_after_header(expected_header)
   end
 
   private
@@ -73,7 +56,7 @@ class SornXmlParser
         node = node.flatten.join.squish!.to_s
       end
 
-      if node.downcase == expected_header.downcase
+      if expected_header.any? { |header| header.downcase.strip == node.downcase }
         start_saving_text = true
         next
       end

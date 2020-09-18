@@ -40,8 +40,9 @@ ActiveRecord::Schema.define(version: 2020_09_14_230142) do
     t.bigint "agency_id", null: false
     t.string "system_name_and_number"
     t.string "authority"
+    t.string "action"
     t.string "categories_of_record"
-    t.boolean "a108"
+    t.string "html_url"
     t.string "xml_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
