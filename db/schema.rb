@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_230142) do
+ActiveRecord::Schema.define(version: 2020_09_21_223917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_230142) do
     t.string "xml_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "history"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
   end
 

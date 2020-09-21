@@ -2,7 +2,7 @@ class FindSornsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    conditions = {term: 'Privacy Act of 1974' }#, agencies: 'defense-department'}
+    conditions = {term: 'Privacy Act of 1974', agencies: 'defense-department'}
     fields = ['title', 'full_text_xml_url', 'html_url'] #, 'raw_text_url', 'agency_names', 'dates']
     search_options = {
       conditions: conditions,

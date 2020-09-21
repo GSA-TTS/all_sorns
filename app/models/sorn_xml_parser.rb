@@ -11,7 +11,8 @@ class SornXmlParser
       action: get_action,
       system_name_and_number: get_system_name_and_number,
       authority: get_authority,
-      categories_of_record: get_categories_of_record
+      categories_of_record: get_categories_of_record,
+      history: get_history
     }
   end
 
@@ -24,7 +25,7 @@ class SornXmlParser
   end
 
   def get_system_name_and_number
-    expected_header = ["SYSTEM NAME AND NUMBER:", "SYSTEM NAME AND NUMBER", "SYSTEM NAME:"]
+    expected_header = ["SYSTEM NAME AND NUMBER:", "SYSTEM NAME AND NUMBER", "SYSTEM NAME:", "SYSTEM NAMES AND NUMBERS:"]
     get_text_after_header(expected_header)
   end
 
@@ -38,6 +39,11 @@ class SornXmlParser
     get_text_after_header(expected_header)
   end
 
+  def get_history
+    expected_header = ["HISTORY:", "HISTORY"]
+    get_text_after_header(expected_header)
+  end
+
   private
 
   def get_text_after_header(expected_header)
@@ -46,7 +52,9 @@ class SornXmlParser
     @parser.within('PRIACT').each do |node|
       if start_saving_text
         if node.name == 'HD' # stop at the next section header
-          return saved_text.join.squish!
+          if node.exclude? 'HISTORY' # History is last section, no HD after it
+            return saved_text.join.squish!
+          end
         end
 
         saved_text = saved_text << node
@@ -61,6 +69,9 @@ class SornXmlParser
         next
       end
     end
+
+    # If we didn't return any saved text, do it here. Useful for HISTORY section.
+    return saved_text.join.squish!
   end
 
 

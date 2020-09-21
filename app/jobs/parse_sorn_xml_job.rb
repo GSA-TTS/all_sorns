@@ -5,6 +5,8 @@ class ParseSornXmlJob < ApplicationJob
     sleep 1
     puts xml_url
     response = HTTParty.get(xml_url, format: :plain)
+    return nil unless response.success?
+    
     xml = response.parsed_response
     sorn_parser = SornXmlParser.new(xml)
     parsed_sorn = sorn_parser.parse_sorn
