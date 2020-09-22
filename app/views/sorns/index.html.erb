@@ -34,7 +34,6 @@
         <td><%= highlight(sorn.system_name_and_number, params[:search]) %></td>
         <td><%= highlight(sorn.authority, params[:search]) %></td>
         <td><%= highlight(sorn.categories_of_record, params[:search]) %></td>
-        <td><%= highlight(sorn.history, params[:search]) %></td>
         <td><a href="<%= sorn.html_url %>">link</a></td>
         <td><a href="<%= sorn.xml_url %>"">link</a></td>
         <td><%= link_to 'Show', sorn %></td>
