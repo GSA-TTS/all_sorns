@@ -6,7 +6,7 @@ class SornsController < ApplicationController
   def index
     if params[:search]
       redirect_to sorns_path if params[:search] == ''
-      @sorns = Sorn.search_by_categories_of_record(params[:search])
+      @sorns = Sorn.search_by_all(params[:search])
       @count = @sorns.count
       @sorns = @sorns.page params[:page]
     else
