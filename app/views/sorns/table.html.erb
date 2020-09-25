@@ -1,15 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @agency.name %>
-</p>
+<h1>Sorns</h1>
+
+<%= form_tag('/table', method: "get") do %>
+  <%= label_tag(:search, "Search for:") %>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= submit_tag("Search") %>
+<% end %>
 
 <table>
   <thead>
     <tr>Count: <%= @count %></tr>
     <%= paginate @sorns %>
     <tr>
+      <th>Agency Name</th>
       <th>System Name and Number</th>
       <th>Action</th>
       <th>Authority</th>
@@ -23,6 +27,7 @@
   <tbody>
     <% @sorns.each do |sorn| %>
       <tr>
+        <td><%= sorn.agency.name %></td>
         <td><%= sorn.system_name_and_number %></td>
         <td><%= sorn.action %></td>
         <td><%= sorn.authority %></td>
@@ -35,5 +40,9 @@
   </tbody>
 </table>
 
-<%= link_to 'Edit', edit_agency_path(@agency) %> |
-<%= link_to 'Back', agencies_path %>
+    <%= paginate @sorns %>
+
+
+<br>
+
+<%= link_to 'New Sorn', new_sorn_path %>

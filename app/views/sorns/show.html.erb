@@ -1,44 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Agency:</strong>
-  <%= link_to @sorn.agency.name, @sorn.agency %>
-</p>
-
-<p>
-  <strong>Action:</strong>
-  <%= @sorn.action %>
-</p>
-
-<p>
-  <strong>History:</strong>
-  <%= @sorn.history %>
-</p>
-
-<p>
-  <strong>System name and number:</strong>
-  <%= @sorn.system_name_and_number %>
-</p>
-
-<p>
-  <strong>Authority:</strong>
-  <%= @sorn.authority %>
-</p>
-
-<p>
-  <strong>Categories of record:</strong>
-  <%= @sorn.categories_of_record %>
-</p>
-
-<p>
-  <strong>Html Url:</strong>
-  <%= link_to @sorn.html_url, @sorn.html_url %>
-</p>
-
-<p>
-  <strong>Xml Url:</strong>
-  <%= link_to @sorn.xml_url, @sorn.xml_url %>
-</p>
+  <% @sorn.attributes.keys.each do |key| %>
+    <p>
+      <strong><%= key.capitalize %>: </strong>
+      <%= @sorn.attributes[key] %>
+    </p>
+  <% end %>
 
 <%= link_to 'Edit', edit_sorn_path(@sorn) %> |
 <%= link_to 'Back', sorns_path %>

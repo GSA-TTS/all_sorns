@@ -1,0 +1,107 @@
+<div class="explainer">
+  <div class="grid-container">
+    <div class="grid-row grid-gap">
+      <div class="tablet:grid-col-7">
+        <p class="explainer__text">WHATEVER</p>
+      </div>
+      <div class="tablet:grid-col-5">
+        <p class="explainer__text text-right">OKAY</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="grid-container">
+    <div class="grid-row grid-gap">
+      <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
+        <div class="grid-row margin-top-2 margin-right-0">
+          <div class="grid-col-12">
+            <%= form_tag('/cards', method: "get", class: "usa-search") do %>
+              <input class="usa-input" id="general-search" type="search" name="search">
+              <button id="general-search-button" class="usa-button" type="submit">
+                <span class="usa-search__submit-text">Search</span>
+              </button>
+            <% end %>
+          </div>
+        </div>
+        <div class="grid-row margin-top-2 margin-right-0 results-meta">
+          <div class="grid-col-6 display-inline results-meta__filters">
+            <span class="results-meta__label ">Agency: </span>
+            <ul id="active-filters" class="margin-top-05 margin-bottom-05 padding-0">
+            </ul>
+          </div>
+
+
+          <div class="grid-col-6 margin-bottom-0 text-right results-meta__count">
+             <div id="search-result-counter" class="font-body-xs">
+              Showing <span id="result-count" class="text-bold"><%= @count %></span> of <span id="total-count" class="text-bold"><%= @count %></span> <span id="search-term"></span>
+            </div>
+          </div>
+        </div>
+        <div id="cards">
+          <div class="list">
+            <% @sorns.each do |sorn| %>
+              <div class="card card--sorn padding-2 margin-top-2 margin-right-0">
+                <div class="grid-row margin-bottom-105">
+                  <h2 class="system card__h2 card__h2--sorn">
+                    <%= JSON.parse(sorn.system_name_and_number).first if sorn.system_name_and_number %>
+                  </h2>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Agency:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= highlight(sorn.agency.name, params[:search]) %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Action:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= highlight(sorn.action, params[:search]) %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Authority:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= highlight(JSON.parse(sorn.authority).flatten.join, params[:search]) if sorn.authority %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Categories of&nbsp;Record:</span>
+                  </div>
+
+                  <div class="tablet:grid-col-10">
+                    <ul class="pii">
+                      <% sorn.split_categories.try(:each) do |category| %>
+                        <li><%= highlight(category, params[:search]) %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">History:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= highlight(sorn.history, params[:search]) %></span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

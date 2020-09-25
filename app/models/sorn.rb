@@ -13,4 +13,13 @@ class Sorn < ApplicationRecord
       agency: :name
     }
   # validates :system_name_and_number, uniqueness: true
+
+
+  def split_categories
+    if self.categories_of_record
+      JSON.parse(self.categories_of_record).map do |categories|
+        categories.split ';'
+      end.flatten.reject(&:empty?)
+    end
+  end
 end

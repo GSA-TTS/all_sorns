@@ -5,15 +5,23 @@ class SornsController < ApplicationController
   # GET /sorns.json
   def index
     if params[:search]
-      redirect_to sorns_path if params[:search] == ''
-      @sorns = Sorn.search_by_all(params[:search]).includes(:agency)
+      redirect_to request.path if params[:search] == ''
+      @sorns = Sorn.search_by_all(params[:search]).order(:system_name_and_number).includes(:agency)
       @count = @sorns.count
       @sorns = @sorns.page params[:page]
     else
-      @sorns = Sorn.all.includes(:agency)
+      @sorns = Sorn.all.order(:system_name_and_number).includes(:agency)
       @count = @sorns.count
       @sorns = @sorns.page params[:page]
     end
+  end
+
+  def table
+    index
+  end
+
+  def cards
+    index
   end
 
   # GET /sorns/1

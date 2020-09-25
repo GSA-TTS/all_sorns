@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_21_223917) do
+ActiveRecord::Schema.define(version: 2020_09_25_213051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -47,6 +47,27 @@ ActiveRecord::Schema.define(version: 2020_09_21_223917) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "history"
+    t.string "purpose"
+    t.string "routine_uses"
+    t.string "retention"
+    t.string "exemptions"
+    t.string "summary"
+    t.string "dates"
+    t.string "addresses"
+    t.string "further_info"
+    t.string "supplementary_info"
+    t.string "security"
+    t.string "location"
+    t.string "manager"
+    t.string "categories_of_individuals"
+    t.string "source"
+    t.string "storage"
+    t.string "retrieval"
+    t.string "safeguards"
+    t.string "access"
+    t.string "contesting"
+    t.string "notification"
+    t.string "headers"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
   end
 

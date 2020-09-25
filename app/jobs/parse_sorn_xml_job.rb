@@ -1,25 +1,22 @@
 class ParseSornXmlJob < ApplicationJob
   queue_as :default
 
-  def perform(xml_url, html_url)
+  def perform(xml_url)
     sleep 1
     puts xml_url
     response = HTTParty.get(xml_url, format: :plain)
     return nil unless response.success?
-    
+
     xml = response.parsed_response
     sorn_parser = SornXmlParser.new(xml)
     parsed_sorn = sorn_parser.parse_sorn
+
     parsed_sorn[:xml_url] = xml_url
-    parsed_sorn[:html_url] = html_url
-    agency_name = parsed_sorn[:agency]
-    agency = Agency.find_or_create_by(name: agency_name)
+    agency = Agency.find_or_create_by(name: parsed_sorn[:agency])
     parsed_sorn[:agency_id] = agency.id
-    puts parsed_sorn
     parsed_sorn.delete :agency
+
     sorn = Sorn.create(parsed_sorn)
-    if sorn
-      puts "Sorn #{sorn.id} created"
-    end
+    puts "Sorn #{sorn.id} created" if sorn
   end
 end

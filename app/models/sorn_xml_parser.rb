@@ -2,92 +2,171 @@ class SornXmlParser
   # Uses an XML streamer. Each method re-streams the file. Fast enough and uses no memory.
 
   def initialize(xml)
-    @parser = Saxerator.parser(xml) {|config| config.ignore_namespaces!}
+    @parser = Saxerator.parser(xml)# {|config| config.ignore_namespaces!}
+    @sections = get_sections
   end
 
   def parse_sorn
     {
       agency: get_agency,
       action: get_action,
+      summary: get_summary,
+      dates: get_dates,
+      addresses: get_addresses,
+      further_info: get_further_information,
+      supplementary_info: get_supplementary_information,
       system_name_and_number: get_system_name_and_number,
+      security: get_security,
+      location: get_location,
+      manager: get_manager,
       authority: get_authority,
+      purpose: get_purpose,
+      categories_of_individuals: get_individuals,
       categories_of_record: get_categories_of_record,
-      history: get_history
+      source: get_source,
+      routine_uses: get_routine_uses,
+      storage: get_storage,
+      retrieval: get_retrieval,
+      retention: get_retention,
+      safeguards: get_safeguards,
+      access: get_access,
+      contesting: get_contesting,
+      notification: get_notification,
+      exemptions: get_exemptions,
+      history: get_history,
+      headers: @sections.keys
     }
   end
 
   def get_agency
-    @parser.for_tag('AGENCY').first.to_s
+    @parser.for_tag('AGENCY').first.try(:to_s)
   end
 
   def get_action
-    @parser.for_tag('ACT').first['P']
+    @parser.for_tag('ACT').first.try(:fetch, 'P')
+  end
+
+  def get_summary
+    @parser.for_tag('SUM').first.try(:fetch, 'P')
+  end
+
+  def get_dates
+    @parser.for_tag('DATES').first.try(:fetch, 'P')
+  end
+
+  def get_addresses
+    @parser.for_tag('ADD').first.try(:fetch, 'P')
+  end
+
+  def get_further_information
+    @parser.for_tag('FURINF').first.try(:fetch, 'P')
+  end
+
+  def get_supplementary_information
+    @parser.for_tag('SUPLINF').first.try(:fetch, 'P')
   end
 
   def get_system_name_and_number
-    expected_header = ["SYSTEM NAME AND NUMBER:", "SYSTEM NAME AND NUMBER", "SYSTEM NAME:", "SYSTEM NAMES AND NUMBERS:"]
-    get_text_after_header(expected_header)
+    find_section('SYSTEM NAME AND NUMBER')
+  end
+
+  def get_security
+    find_section('SECURITY')
+  end
+
+  def get_location
+    find_section('LOCATION')
+  end
+
+  def get_manager
+    find_section('MANAGER')
   end
 
   def get_authority
-    expected_header = ["AUTHORITY FOR MAINTENANCE OF THE SYSTEM:", "AUTHORITY FOR THE MAINTENANCE OF THE SYSTEM:", "Authority for the System:"]
-    get_text_after_header(expected_header)
+    find_section('AUTHORITY FOR MAINTENANCE OF THE SYSTEM')
+  end
+
+  def get_purpose
+    find_section('PURPOSE')
+  end
+
+  def get_individuals
+    find_section('INDIVIDUALS')
   end
 
   def get_categories_of_record
-    expected_header = ["CATEGORIES OF RECORDS IN THE SYSTEM:"]
-    get_text_after_header(expected_header)
+    find_section('CATEGORIES OF RECORDS')
+  end
+
+  def get_source
+    find_section('SOURCE')
+  end
+
+  def get_routine_uses
+    find_section('ROUTINE')
+  end
+
+  def get_storage
+    find_section('STORAGE')
+  end
+
+  def get_retrieval
+    find_section('RETRIEVAL') #Retrievability
+  end
+
+  def get_retention
+    find_section('RETENTION')
+  end
+
+  def get_safeguards
+    find_section('SAFEGUARDS')
+  end
+
+  def get_access
+    find_section('ACCESS')
+  end
+
+  def get_contesting
+    find_section('CONTESTING')
+  end
+
+  def get_notification
+    find_section('NOTIFICATION')
+  end
+
+  def get_exemptions
+    find_section('EXEMPTIONS')
   end
 
   def get_history
-    expected_header = ["HISTORY:", "HISTORY"]
-    get_text_after_header(expected_header)
+    find_section('HISTORY')
   end
 
   private
 
-  def get_text_after_header(expected_header)
-    start_saving_text = false
-    saved_text = []
+  def get_sections
+    sections = {}
+    current_node = nil
     @parser.within('PRIACT').each do |node|
-      if start_saving_text
-        if node.name == 'HD' # stop at the next section header
-          if node.exclude? 'HISTORY' # History is last section, no HD after it
-            return saved_text.join.squish!
-          end
+      if node.name == 'HD'
+        if node.class == Saxerator::Builder::ArrayElement
+          node.delete({})
+          node = node.first
         end
-
-        saved_text = saved_text << node
-      end
-
-      if node.class != Saxerator::Builder::StringElement
-        node = node.flatten.join.squish!.to_s
-      end
-
-      if expected_header.any? { |header| header.downcase.strip == node.downcase }
-        start_saving_text = true
-        next
+        current_node = node
+        sections[current_node] = []
+      else
+        sections[current_node] << node
       end
     end
 
-    # If we didn't return any saved text, do it here. Useful for HISTORY section.
-    return saved_text.join.squish!
+    sections
   end
 
-
-  # def get_sorn_number
-  #   expected_header = "SYSTEM NAME AND NUMBER:"
-  #   name_and_number = get_text_after_header(expected_header)
-  #   number = name_and_number.match(/(?<number>\w+\/\w+-\d+)/)[1]
-  # end
-
-  # def get_system_name
-  #   expected_header = "SYSTEM NAME AND NUMBER:"
-  #   name_and_number = get_text_after_header(expected_header)
-  #   number = name_and_number.match(/(?<number>\w+\/\w+-\d+)/)[1]
-  #   name = name_and_number.sub(number,'') # remove number
-  #   name = name.sub(/^[\W]+/, '') # remove starting punctuation
-  #   name = name.sub(/[\W]+$/, '') # remove ending punctuation
-  # end
-
+  def find_section(header)
+    matched_header = @sections.keys.select do |key|
+      key.upcase.include? header
+    end.first
+    @sections[matched_header]
+  end
 end
