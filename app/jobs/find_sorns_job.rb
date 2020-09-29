@@ -9,7 +9,7 @@ class FindSornsJob < ApplicationJob
 
     conditions = { term: 'Privacy Act of 1974; System of Records' }
     # 'general-services-administration', 'justice-department', 'defense-department']
-    fields = ['title', 'full_text_xml_url' ]# , 'html_url'] #, 'raw_text_url', 'agency_names', 'dates']
+    fields = ['title', 'full_text_xml_url', 'html_url']#, 'raw_text_url', 'agency_names', 'dates']
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
     search_options = {
       conditions: conditions,
@@ -28,7 +28,7 @@ class FindSornsJob < ApplicationJob
     result_set.results.each do |result|
 
       if a_sorn_title?(result.title)
-        ParseSornXmlJob.perform_later(result.full_text_xml_url)
+        ParseSornXmlJob.perform_later(result.full_text_xml_url, result.html_url)
       end
 
       # Keep making more requests until there are no more.

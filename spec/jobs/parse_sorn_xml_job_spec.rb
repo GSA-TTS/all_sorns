@@ -6,7 +6,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
 
     it "Enqueues a job" do
       expect {
-        ParseSornXmlJob.perform_later('xml url')
+        ParseSornXmlJob.perform_later('xml url', 'html url')
       }.to have_enqueued_job
     end
 
@@ -22,7 +22,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
       expect(Agency).to receive(:find_or_create_by).with(name: "Fake Agency").and_call_original
       expect(Sorn).to receive(:create).with(hash_including(system_name_and_number: "Fake SORN", xml_url: "xml url"))
 
-      ParseSornXmlJob.perform_now('xml url')
+      ParseSornXmlJob.perform_now('xml url', 'html url')
     end
   end
 end
