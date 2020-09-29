@@ -4,50 +4,55 @@ RSpec.describe FindSornsJob, type: :job do
   describe "#perform_later" do
     ActiveJob::Base.queue_adapter = :test
 
-     it "Enqueues a job" do
-      expect {
-        FindSornsJob.perform_later
-      }.to have_enqueued_job
+    context "enqueuing for later" do
+      it "Enqueues a job" do
+        expect {
+          FindSornsJob.perform_later
+        }.to have_enqueued_job
+      end
     end
 
-    it "Makes a federal register api call" do
-      result_set = double(FederalRegister::ResultSet, results: [], total_pages: 1)
-      allow(FederalRegister::Document).to receive(:search).and_return result_set
+    context "while performing" do
+      let(:title) { "Privacy Act of 1974; System of Records" }
+      let(:pages) { 1 }
 
-      FindSornsJob.perform_now
-
-      expect(FederalRegister::Document).to have_received(:search)
-    end
-
-    context "with SORN results" do
-      it "Calls ParseSornXML job with the xml url." do
-        mock_results = [OpenStruct.new(title: "Privacy Act of 1974", full_text_xml_url: "expected url")]
-        result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: 1)
+      before do
+        mock_results = [OpenStruct.new(title: title, full_text_xml_url: "expected url")]
+        result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
         allow(FederalRegister::Document).to receive(:search).and_return result_set
-
-        expect(ParseSornXmlJob).to receive(:perform_later).with("expected url")
+        allow(ParseSornXmlJob).to receive(:perform_later)
 
         FindSornsJob.perform_now
       end
 
-      context "with an unwanted SORN title" do
-        it "Doesn't call ParseSornMxlJob" do
-          mock_results = [OpenStruct.new(title: "Privacy Act of 1974; Matching Program")]
-          result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: 1)
-          allow(FederalRegister::Document).to receive(:search).and_return result_set
+      it "Makes a federal register api call" do
+        expect(FederalRegister::Document).to have_received(:search)
+      end
 
-          expect(ParseSornXmlJob).not_to receive(:perform_later)
+      it "Calls ParseSornXML job with the xml url." do
+        expect(ParseSornXmlJob).to have_received(:perform_later).with("expected url")
+      end
 
-          FindSornsJob.perform_now
+      context "with unwanted SORN titles" do
+        excluded_titles = [
+          "Privacy Act of 1974; Matching",
+          "Privacy Act of 1974; rulemaking sorn",
+          "Privacy Act of 1974; Implementation SORN"
+        ]
+
+        excluded_titles.each do |excluded_title|
+          let(:title) { excluded_title }
+
+          it "Doesn't call ParseSornMxlJob" do
+            expect(ParseSornXmlJob).not_to have_received(:perform_later)
+          end
         end
       end
 
       context "with more than one page" do
-        it "Calles ParseSornXmlJob" do
-          mock_results = [OpenStruct.new(title: "Privacy Act of 1974")]
-          result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: 2)
-          allow(FederalRegister::Document).to receive(:search).and_return result_set
+        let(:pages) { 2 }
 
+        it "Calles ParseSornXmlJob for each page" do
           expect(ParseSornXmlJob).to receive(:perform_later).twice
 
           FindSornsJob.perform_now

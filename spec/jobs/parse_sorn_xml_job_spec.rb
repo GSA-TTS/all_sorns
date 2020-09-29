@@ -13,7 +13,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
     before { allow($stdout).to receive(:write) } # silent puts
 
     it "Parses an xml file and creates a SORN" do
-      parsed_response = file_fixture("sorn.xml").read
+      parsed_response = "<sorn>HELLO</sorn>" #file_fixture("sorn.xml").read
       mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
       mock_parser = OpenStruct.new(parse_sorn: { agency: "Fake Agency", system_name_and_number: "Fake SORN" })
       allow(HTTParty).to receive(:get).and_return mock_response
