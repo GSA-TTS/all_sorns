@@ -16,7 +16,7 @@
       <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
         <div class="grid-row margin-top-2 margin-right-0">
           <div class="grid-col-12">
-            <%= form_tag('/cards', method: "get", class: "usa-search") do %>
+            <%= form_tag('/', method: "get", class: "usa-search") do %>
               <input class="usa-input" id="general-search" type="search" name="search">
               <button id="general-search-button" class="usa-button" type="submit">
                 <span class="usa-search__submit-text">Search</span>
@@ -36,6 +36,7 @@
              <div id="search-result-counter" class="font-body-xs">
               Showing <span id="result-count" class="text-bold"><%= @count %></span> of <span id="total-count" class="text-bold"><%= @count %></span> <span id="search-term"></span>
             </div>
+            <%= paginate @sorns %>
           </div>
         </div>
         <div id="cards">
@@ -80,13 +81,15 @@
                     <span class="card__label">Categories of&nbsp;Record:</span>
                   </div>
 
-                  <div class="tablet:grid-col-10">
-                    <ul class="pii">
-                      <% sorn.split_categories.try(:each) do |category| %>
-                        <li><%= highlight(category, params[:search]) %></li>
-                      <% end %>
-                    </ul>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= highlight(sorn.categories_of_record, params[:search]) if sorn.categories_of_record %></span>
                   </div>
+                    <%
+=begin%>
+ <span><%= highlight(JSON.parse(sorn.categories_of_record).flatten.join, params[:search]) if sorn.categories_of_record %></span>
+<%
+=end%>
+
                 </div>
 
                 <div class="grid-row margin-bottom-105">
@@ -95,6 +98,17 @@
                   </div>
                   <div class="authority tablet:grid-col-10">
                     <span><%= highlight(sorn.history, params[:search]) %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Source:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= link_to 'html', sorn.html_url %></span>
+                    <span><%= link_to 'xml', sorn.xml_url %></span>
                   </div>
                 </div>
               </div>

@@ -280,6 +280,11 @@
  //   width: 100%;
  // }
 
+ table {
+  display: block;
+  overflow-x: scroll;
+ }
+
  table.dataTable tbody td {
    vertical-align: top !important;
  }

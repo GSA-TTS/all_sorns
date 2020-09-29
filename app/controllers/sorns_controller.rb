@@ -20,10 +20,6 @@ class SornsController < ApplicationController
     index
   end
 
-  def cards
-    index
-  end
-
   # GET /sorns/1
   # GET /sorns/1.json
   def show

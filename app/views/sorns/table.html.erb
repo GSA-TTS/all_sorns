@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Sorns</h1>
 
 <%= form_tag('/table', method: "get") do %>
@@ -8,41 +6,28 @@
   <%= submit_tag("Search") %>
 <% end %>
 
-<table>
+<table class="dataTable usa-table">
   <thead>
     <tr>Count: <%= @count %></tr>
     <%= paginate @sorns %>
     <tr>
-      <th>Agency Name</th>
-      <th>System Name and Number</th>
-      <th>Action</th>
-      <th>Authority</th>
-      <th>Categories of Record</th>
-      <th>History</th>
-      <th>Xml Url</th>
-      <th>Show</th>
+      <% @sorns.first.attributes.keys.each do |key| %>
+        <th scope="col"><%= key %></th>
+      <% end %>
+      <th scope="col">Show</th>
     </tr>
   </thead>
 
   <tbody>
     <% @sorns.each do |sorn| %>
       <tr>
-        <td><%= sorn.agency.name %></td>
-        <td><%= sorn.system_name_and_number %></td>
-        <td><%= sorn.action %></td>
-        <td><%= sorn.authority %></td>
-        <td><%= highlight(sorn.categories_of_record, params[:search]) %></td>
-        <td><%= sorn.history %></td>
-        <td><%= link_to 'link', sorn.xml_url %></td>
+        <% sorn.attributes.values.each do |value| %>
+          <td><%= value %></td>
+        <% end %>
         <td><%= link_to 'Show', sorn %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-    <%= paginate @sorns %>
-
-
-<br>
-
-<%= link_to 'New Sorn', new_sorn_path %>
+<%= paginate @sorns %>
