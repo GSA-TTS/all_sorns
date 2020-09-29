@@ -1,6 +1,10 @@
 default: &default
   adapter: postgresql
 
+test:
+  <<: *default
+  database: all_sorns_test
+
 development:
   <<: *default
   database: all_sorns_development
