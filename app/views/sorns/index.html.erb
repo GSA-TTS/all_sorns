@@ -42,10 +42,10 @@
         <div id="cards">
           <div class="list">
             <% @sorns.each do |sorn| %>
-              <div class="card card--sorn padding-2 margin-top-2 margin-right-0">
+              <div class="card card--sorn padding-2 margin-top-2 margin-right-0 usa-accordion" aria-multiselectable="true">
                 <div class="grid-row margin-bottom-105">
                   <h2 class="system card__h2 card__h2--sorn">
-                    <%= sorn.system_name %>
+                    <%= highlight(sorn.system_name, params[:search]) %>
                   </h2>
                 </div>
 
@@ -67,12 +67,16 @@
                   </div>
                 </div>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Action:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.action %></span>
+                <%
+=begin%>
+ <h4 class>
+                  <button class="usa-accordion__button"
+                    aria-expanded="false"
+                    aria-controls="a1">
+                    purpose:
+                  </button>
+                  <div id="a1" class="usa-accordion__content usa-prose">
+                    <%= sorn.purpose %>
                   </div>
                 </div>
 
@@ -121,196 +125,261 @@
                     <span><%= sorn.supplementary_info %></span>
                   </div>
                 </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">security:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.security %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">location:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.location %></span>
-                  </div>
-                </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">manager:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.manager %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Authority:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.authority %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">purpose:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.purpose %></span>
-                  </div>
-                </div>
-
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Categories of&nbsp;Individuals:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.categories_of_individuals %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Categories of&nbsp;Record:</span>
-                  </div>
-
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.categories_of_record %></span>
-                  </div>
-                    <%
-=begin%>
- <span><%= highlight(JSON.parse(sorn.categories_of_record).flatten.join, params[:search]) if sorn.categories_of_record %></span>
 <%
 =end%>
 
-                </div>
+                <% if sorn.security %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="security">
+                      security:
+                    </button>
+                  </h4>
+                    <div id="security" class="usa-accordion__content usa-prose">
+                      <%= sorn.security %>
+                    </div>
+                <% end %>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Source:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.source %></span>
-                  </div>
-                </div>
+                <% if sorn.location %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="location">
+                      location:
+                    </button>
+                  </h4>
+                    <div id="location" class="usa-accordion__content usa-prose">
+                      <%= sorn.location %>
+                    </div>
+                <% end %>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Routine Uses:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.routine_uses %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">storage:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.storage %></span>
-                  </div>
-                </div>
-
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">retrieval:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.retrieval %></span>
-                  </div>
-                </div>
-
+                <% if sorn.manager %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="manager">
+                      manager:
+                    </button>
+                  </h4>
+                    <div id="manager" class="usa-accordion__content usa-prose">
+                      <%= sorn.manager %>
+                    </div>
+                <% end %>
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">retention:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.retention %></span>
-                  </div>
-                </div>
+                <% if sorn.authority %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="authority">
+                      authority:
+                    </button>
+                  </h4>
+                    <div id="authority" class="usa-accordion__content usa-prose">
+                      <%= sorn.authority %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.purpose %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="purpose">
+                      purpose:
+                    </button>
+                  </h4>
+                    <div id="purpose" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.purpose, params[:search]) %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.categories_of_individuals %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="categories_of_individuals">
+                      categories_of_individuals:
+                    </button>
+                  </h4>
+                    <div id="categories_of_individuals" class="usa-accordion__content usa-prose">
+                      <%= sorn.categories_of_individuals %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.categories_of_record %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="categories_of_record">
+                      categories_of_record:
+                    </button>
+                  </h4>
+                    <div id="categories_of_record" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.categories_of_record, params[:search]) %>
+                    </div>
+                <% end %>
+
+                <% if sorn.source %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="source">
+                      source:
+                    </button>
+                  </h4>
+                    <div id="source" class="usa-accordion__content usa-prose">
+                      <%= sorn.source %>
+                    </div>
+                <% end %>
+
+                <% if sorn.routine_uses %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="routine_uses">
+                      routine_uses:
+                    </button>
+                  </h4>
+                    <div id="routine_uses" class="usa-accordion__content usa-prose">
+                      <%= sorn.routine_uses %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.storage %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="storage">
+                      storage:
+                    </button>
+                  </h4>
+                    <div id="storage" class="usa-accordion__content usa-prose">
+                      <%= sorn.storage %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.retrieval %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="retrieval">
+                      retrieval:
+                    </button>
+                  </h4>
+                    <div id="retrieval" class="usa-accordion__content usa-prose">
+                      <%= sorn.retrieval %>
+                    </div>
+                <% end %>
+
+                <% if sorn.retention %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="retention">
+                      retention:
+                    </button>
+                  </h4>
+                    <div id="retention" class="usa-accordion__content usa-prose">
+                      <%= sorn.retention %>
+                    </div>
+                <% end %>
 
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">safeguards:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.safeguards %></span>
-                  </div>
-                </div>
+                <% if sorn.safeguards %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="safeguards">
+                      safeguards:
+                    </button>
+                  </h4>
+                    <div id="safeguards" class="usa-accordion__content usa-prose">
+                      <%= sorn.safeguards %>
+                    </div>
+                <% end %>
 
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">access:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.access %></span>
-                  </div>
-                </div>
+                <% if sorn.access %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="access">
+                      access:
+                    </button>
+                  </h4>
+                    <div id="access" class="usa-accordion__content usa-prose">
+                      <%= sorn.access %>
+                    </div>
+                <% end %>
 
 
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">contesting:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.contesting %></span>
-                  </div>
-                </div>
+                <% if sorn.contesting %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="contesting">
+                      contesting:
+                    </button>
+                  </h4>
+                    <div id="contesting" class="usa-accordion__content usa-prose">
+                      <%= sorn.contesting %>
+                    </div>
+                <% end %>
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">notification:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.notification %></span>
-                  </div>
-                </div>
+                <% if sorn.notification %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="notification">
+                      notification:
+                    </button>
+                  </h4>
+                    <div id="notification" class="usa-accordion__content usa-prose">
+                      <%= sorn.notification %>
+                    </div>
+                <% end %>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">exemptions:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.exemptions %></span>
-                  </div>
-                </div>
+                <% if sorn.exemptions %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="exemptions">
+                      exemptions:
+                    </button>
+                  </h4>
+                    <div id="exemptions" class="usa-accordion__content usa-prose">
+                      <%= sorn.exemptions %>
+                    </div>
+                <% end %>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">history:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.history %></span>
-                  </div>
-                </div>
+                <% if sorn.history %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="history">
+                      history:
+                    </button>
+                  </h4>
+                    <div id="history" class="usa-accordion__content usa-prose">
+                      <%= sorn.history %>
+                    </div>
+                <% end %>
 
 
-                <div class="grid-row margin-bottom-105">
+                <%
+=begin%>
+ <div class="grid-row margin-bottom-105">
                   <div class="tablet:grid-col-2">
                     <span class="card__label">Links:</span>
                   </div>
@@ -319,6 +388,8 @@
                     <span><%= link_to 'xml', sorn.xml_url %></span>
                   </div>
                 </div>
+<%
+=end%>
               </div>
             <% end %>
           </div>

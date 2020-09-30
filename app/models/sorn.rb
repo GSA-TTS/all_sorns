@@ -3,8 +3,10 @@ class Sorn < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_by_all,
     against: [
-      :system_name_and_number,
+      :system_name,
+      :system_number,
       :authority,
+      :purpose,
       :action,
       :categories_of_record,
       :history
