@@ -26,7 +26,7 @@
         </div>
         <div class="grid-row margin-top-2 margin-right-0 results-meta">
           <div class="grid-col-6 display-inline results-meta__filters">
-            <span class="results-meta__label ">Agency: </span>
+            <span class="results-meta__label ">Something: </span>
             <ul id="active-filters" class="margin-top-05 margin-bottom-05 padding-0">
             </ul>
           </div>
@@ -94,17 +94,119 @@
 
                 <div class="grid-row margin-bottom-105">
                   <div class="tablet:grid-col-2">
-                    <span class="card__label">History:</span>
+                    <span class="card__label">Source:</span>
                   </div>
                   <div class="authority tablet:grid-col-10">
-                    <span><%= highlight(sorn.history, params[:search]) %></span>
+                    <span><%= sorn.source %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Routine Uses:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.routine_uses %></span>
                   </div>
                 </div>
 
 
                 <div class="grid-row margin-bottom-105">
                   <div class="tablet:grid-col-2">
-                    <span class="card__label">Source:</span>
+                    <span class="card__label">storage:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.storage %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">retrieval:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.retrieval %></span>
+                  </div>
+                </div>
+
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">retention:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.retention %></span>
+                  </div>
+                </div>
+
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">safeguards:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.safeguards %></span>
+                  </div>
+                </div>
+
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">access:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.access %></span>
+                  </div>
+                </div>
+
+
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">contesting:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.contesting %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">notification:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.notification %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">exemptions:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.exemptions %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">history:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.history %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Links:</span>
                   </div>
                   <div class="authority tablet:grid-col-10">
                     <span><%= link_to 'html', sorn.html_url %></span>
