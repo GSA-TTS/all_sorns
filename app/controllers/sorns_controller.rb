@@ -6,11 +6,11 @@ class SornsController < ApplicationController
   def index
     if params[:search]
       redirect_to request.path if params[:search] == ''
-      @sorns = Sorn.search_by_all(params[:search]).order(:system_name_and_number).includes(:agency)
+      @sorns = Sorn.search_by_all(params[:search]).order(:system_number).includes(:agency)
       @count = @sorns.count
       @sorns = @sorns.page params[:page]
     else
-      @sorns = Sorn.all.order(:system_name_and_number).includes(:agency)
+      @sorns = Sorn.all.order(:system_number).includes(:agency)
       @count = @sorns.count
       @sorns = @sorns.page params[:page]
     end

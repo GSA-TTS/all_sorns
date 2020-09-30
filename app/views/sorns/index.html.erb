@@ -45,8 +45,17 @@
               <div class="card card--sorn padding-2 margin-top-2 margin-right-0">
                 <div class="grid-row margin-bottom-105">
                   <h2 class="system card__h2 card__h2--sorn">
-                    <%= JSON.parse(sorn.system_name_and_number).first if sorn.system_name_and_number %>
+                    <%= sorn.system_name %>
                   </h2>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Number:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.system_number %></span>
+                  </div>
                 </div>
 
                 <div class="grid-row margin-bottom-105">
@@ -54,7 +63,7 @@
                     <span class="card__label">Agency:</span>
                   </div>
                   <div class="authority tablet:grid-col-10">
-                    <span><%= highlight(sorn.agency.name, params[:search]) %></span>
+                    <span><%= sorn.agency.name %></span>
                   </div>
                 </div>
 
@@ -63,18 +72,115 @@
                     <span class="card__label">Action:</span>
                   </div>
                   <div class="authority tablet:grid-col-10">
-                    <span><%= highlight(sorn.action, params[:search]) %></span>
+                    <span><%= sorn.action %></span>
                   </div>
                 </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Summary:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.summary %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Dates:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.dates %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Addresses:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.addresses %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Further Information:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.further_info %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Supplementary Information:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.supplementary_info %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">security:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.security %></span>
+                  </div>
+                </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">location:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.location %></span>
+                  </div>
+                </div>
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">manager:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.manager %></span>
+                  </div>
+                </div>
+
 
                 <div class="grid-row margin-bottom-105">
                   <div class="tablet:grid-col-2">
                     <span class="card__label">Authority:</span>
                   </div>
                   <div class="authority tablet:grid-col-10">
-                    <span><%= highlight(JSON.parse(sorn.authority).flatten.join, params[:search]) if sorn.authority %></span>
+                    <span><%= sorn.authority %></span>
                   </div>
                 </div>
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">purpose:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.purpose %></span>
+                  </div>
+                </div>
+
+
+
+                <div class="grid-row margin-bottom-105">
+                  <div class="tablet:grid-col-2">
+                    <span class="card__label">Categories of&nbsp;Individuals:</span>
+                  </div>
+                  <div class="authority tablet:grid-col-10">
+                    <span><%= sorn.categories_of_individuals %></span>
+                  </div>
+                </div>
+
 
                 <div class="grid-row margin-bottom-105">
                   <div class="tablet:grid-col-2">
@@ -82,7 +188,7 @@
                   </div>
 
                   <div class="authority tablet:grid-col-10">
-                    <span><%= highlight(sorn.categories_of_record, params[:search]) if sorn.categories_of_record %></span>
+                    <span><%= sorn.categories_of_record %></span>
                   </div>
                     <%
 =begin%>

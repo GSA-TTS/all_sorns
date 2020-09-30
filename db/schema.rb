@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_25_213051) do
+ActiveRecord::Schema.define(version: 2020_09_30_173010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2020_09_25_213051) do
 
   create_table "sorns", force: :cascade do |t|
     t.bigint "agency_id", null: false
-    t.string "system_name_and_number"
+    t.string "system_name"
     t.string "authority"
     t.string "action"
     t.string "categories_of_record"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_09_25_213051) do
     t.string "contesting"
     t.string "notification"
     t.string "headers"
+    t.string "system_number"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
   end
 
