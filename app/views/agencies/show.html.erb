@@ -23,7 +23,8 @@
   <tbody>
     <% @sorns.each do |sorn| %>
       <tr>
-        <td><%= sorn.system_name_and_number %></td>
+        <td><%= sorn.system_name %></td>
+        <td><%= sorn.system_number %></td>
         <td><%= sorn.action %></td>
         <td><%= sorn.authority %></td>
         <td><%= highlight(sorn.categories_of_record, params[:search]) %></td>

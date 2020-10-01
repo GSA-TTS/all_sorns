@@ -13,10 +13,11 @@ class ParseSornXmlJob < ApplicationJob
 
     parsed_sorn[:xml_url] = xml_url
     parsed_sorn[:html_url] = html_url
-    agency = Agency.find_or_create_by(name: parsed_sorn[:agency])
+    agency = Agency.find_or_create_by(name: parsed_sorn[:agency], data_source: :fedreg)
     parsed_sorn[:agency_id] = agency.id
     parsed_sorn.delete :agency
 
+    parsed_sorn[:data_source] = :fedreg
     sorn = Sorn.create(parsed_sorn)
     puts "Sorn #{sorn.id} created" if sorn
   end

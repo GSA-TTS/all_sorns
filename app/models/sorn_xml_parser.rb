@@ -15,7 +15,8 @@ class SornXmlParser
       addresses: get_addresses,
       further_info: get_further_information,
       supplementary_info: get_supplementary_information,
-      system_name_and_number: get_system_name_and_number,
+      system_name: get_system_name,
+      system_number: get_system_number,
       security: get_security,
       location: get_location,
       manager: get_manager,
@@ -66,8 +67,12 @@ class SornXmlParser
     @parser.for_tag('SUPLINF').first.try(:fetch, 'P')
   end
 
-  def get_system_name_and_number
+  def get_system_name
     find_section('SYSTEM NAME AND NUMBER')
+  end
+
+  def get_system_number
+    find_section('NUMBER')
   end
 
   def get_security
@@ -156,7 +161,7 @@ class SornXmlParser
         current_node = node
         sections[current_node] = []
       else
-        sections[current_node] << node
+        sections[current_node] << node if current_node
       end
     end
 

@@ -15,12 +15,12 @@ RSpec.describe ParseSornXmlJob, type: :job do
     it "Parses an xml file and creates a SORN" do
       parsed_response = "<sorn>HELLO</sorn>" #file_fixture("sorn.xml").read
       mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
-      mock_parser = OpenStruct.new(parse_sorn: { agency: "Fake Agency", system_name_and_number: "Fake SORN" })
+      mock_parser = OpenStruct.new(parse_sorn: { agency: "Fake Agency", system_name: "Fake SORN" })
       allow(HTTParty).to receive(:get).and_return mock_response
 
       expect(SornXmlParser).to receive(:new).with(parsed_response).and_return mock_parser
-      expect(Agency).to receive(:find_or_create_by).with(name: "Fake Agency").and_call_original
-      expect(Sorn).to receive(:create).with(hash_including(system_name_and_number: "Fake SORN", xml_url: "xml url"))
+      expect(Agency).to receive(:find_or_create_by).with(name: "Fake Agency", data_source: :fedreg).and_call_original
+      expect(Sorn).to receive(:create).with(hash_including(system_name: "Fake SORN", xml_url: "xml url"))
 
       ParseSornXmlJob.perform_now('xml url', 'html url')
     end

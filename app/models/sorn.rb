@@ -14,7 +14,6 @@ class Sorn < ApplicationRecord
     associated_against: {
       agency: :name
     }
-  # validates :system_name_and_number, uniqueness: true
 
 
   def split_categories

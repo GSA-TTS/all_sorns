@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/', to: 'sorns#index'
+  get '/', to: 'pages#index'
   get '/table', to: 'sorns#table'
   get '/cards', to: 'sorns#index'
   resources :sorns

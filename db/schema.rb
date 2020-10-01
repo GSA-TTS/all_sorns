@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_30_173010) do
+ActiveRecord::Schema.define(version: 2020_10_01_222141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_09_30_173010) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "data_source"
   end
 
   create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(version: 2020_09_30_173010) do
     t.string "notification"
     t.string "headers"
     t.string "system_number"
+    t.string "data_source"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
   end
 

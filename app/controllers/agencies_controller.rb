@@ -10,7 +10,7 @@ class AgenciesController < ApplicationController
   # GET /agencies/1
   # GET /agencies/1.json
   def show
-    @sorns = Sorn.where(agency: @agency).order(:system_name_and_number).includes(:agency)
+    @sorns = Sorn.where(agency: @agency).order(:system_name).includes(:agency)
     @count = @sorns.count
     @sorns = @sorns.page params[:page]
   end
