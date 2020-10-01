@@ -1,15 +1,11 @@
 <h1>Sorns</h1>
 
-<%= form_tag('/table', method: "get") do %>
-  <%= label_tag(:search, "Search for:") %>
-  <%= text_field_tag(:search, params[:search]) %>
-  <%= submit_tag("Search") %>
-<% end %>
-
-<table class="dataTable usa-table">
+<table id="table-everything" class="dataTable usa-table">
   <thead>
-    <tr>Count: <%= @count %></tr>
-    <%= paginate @sorns %>
+    <tr>
+      <strong>Count: <%= @count %></strong>
+      <%= paginate @sorns %>
+    </tr>
     <tr>
       <% @sorns.first.attributes.keys.each do |key| %>
         <th scope="col"><%= key %></th>
@@ -29,5 +25,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= paginate @sorns %>

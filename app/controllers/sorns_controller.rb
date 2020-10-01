@@ -16,7 +16,19 @@ class SornsController < ApplicationController
     end
   end
 
-  def table
+  def table_everything
+    index
+  end
+
+  def table_important
+    index
+  end
+
+  def cards_everything
+    index
+  end
+
+  def cards_important
     index
   end
 

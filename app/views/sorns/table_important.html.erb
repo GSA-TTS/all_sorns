@@ -1,0 +1,37 @@
+<h1>Sorns</h1>
+
+<%= form_tag('/table-important', method: "get") do %>
+  <%= label_tag(:search, "Search for:") %>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<table id="table-important" class="dataTable usa-table ">
+  <thead>
+    <tr>
+      <strong>Count: <%= @count %></strong>
+      <%= paginate @sorns %>
+    </tr>
+    <tr>
+      <th>Agency</th>
+      <th>Action</th>
+      <th>System Name and Number</th>
+      <th>Authority</th>
+      <th>Categories of Record</th>
+      <th scope="col">Show</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sorns.each do |sorn| %>
+      <tr>
+        <td><%= highlight(sorn.agency.name, params[:search]) %></td>
+        <td><%= highlight(sorn.action, params[:search]) %></td>
+        <td><%= highlight(sorn.system_name, params[:search]) %></td>
+        <td><%= highlight(sorn.authority, params[:search]) %></td>
+        <td><%= highlight(sorn.categories_of_record, params[:search]) %></td>
+        <td><%= link_to 'Show', sorn %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

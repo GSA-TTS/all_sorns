@@ -16,7 +16,7 @@
       <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
         <div class="grid-row margin-top-2 margin-right-0">
           <div class="grid-col-12">
-            <%= form_tag('/', method: "get", class: "usa-search") do %>
+            <%= form_tag('/cards-everything', method: "get", class: "usa-search") do %>
               <input class="usa-input" id="general-search" type="search" name="search">
               <button id="general-search-button" class="usa-button" type="submit">
                 <span class="usa-search__submit-text">Search</span>
@@ -49,84 +49,99 @@
                   </h2>
                 </div>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Number:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.system_number %></span>
-                  </div>
-                </div>
+                <% if sorn.agency.name %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="agency.name-<%= sorn.id %>">
+                      agency.name:
+                    </button>
+                  </h4>
+                    <div id="agency.name-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.agency.name, params[:search]) %>
+                    </div>
+                <% end %>
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Agency:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.agency.name %></span>
-                  </div>
-                </div>
-
-                <%
-=begin%>
- <h4 class>
-                  <button class="usa-accordion__button"
-                    aria-expanded="false"
-                    aria-controls="a1">
-                    purpose:
-                  </button>
-                  <div id="a1" class="usa-accordion__content usa-prose">
-                    <%= sorn.purpose %>
-                  </div>
-                </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Summary:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.summary %></span>
-                  </div>
-                </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Dates:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.dates %></span>
-                  </div>
-                </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Addresses:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.addresses %></span>
-                  </div>
-                </div>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Further Information:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.further_info %></span>
-                  </div>
-                </div>
+                <% if sorn.action %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="action-<%= sorn.id %>">
+                      action:
+                    </button>
+                  </h4>
+                    <div id="action-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.action, params[:search]) %>
+                    </div>
+                <% end %>
 
 
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Supplementary Information:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= sorn.supplementary_info %></span>
-                  </div>
-                </div>
-<%
-=end%>
+                <% if sorn.summary %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="summary-<%= sorn.id %>">
+                      summary:
+                    </button>
+                  </h4>
+                    <div id="summary-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.summary, params[:search]) %>
+                    </div>
+                <% end %>
+
+                <% if sorn.dates %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="dates-<%= sorn.id %>">
+                      dates:
+                    </button>
+                  </h4>
+                    <div id="dates-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.dates, params[:search]) %>
+                    </div>
+                <% end %>
+
+                <% if sorn.addresses %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="addresses-<%= sorn.id %>">
+                      addresses:
+                    </button>
+                  </h4>
+                    <div id="addresses-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.addresses, params[:search]) %>
+                    </div>
+                <% end %>
+
+                <% if sorn.further_info %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="further_info-<%= sorn.id %>">
+                      further_info:
+                    </button>
+                  </h4>
+                    <div id="further_info-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.further_info, params[:search]) %>
+                    </div>
+                <% end %>
+
+
+                <% if sorn.supplementary_info %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="supplementary_info-<%= sorn.id %>">
+                      supplementary_info:
+                    </button>
+                  </h4>
+                    <div id="supplementary_info-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.supplementary_info, params[:search]) %>
+                    </div>
+                <% end %>
+
 
                 <% if sorn.security %>
                   <h4 class="usa-accordion__heading">
@@ -137,7 +152,7 @@
                     </button>
                   </h4>
                     <div id="security-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.security %>
+                      <%= highlight(sorn.security, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -150,7 +165,7 @@
                     </button>
                   </h4>
                     <div id="location-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.location %>
+                      <%= highlight(sorn.location, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -163,7 +178,7 @@
                     </button>
                   </h4>
                     <div id="manager-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.manager %>
+                      <%= highlight(sorn.manager, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -177,7 +192,7 @@
                     </button>
                   </h4>
                     <div id="authority-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.authority %>
+                      <%= highlight(sorn.authority, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -185,7 +200,7 @@
                 <% if sorn.purpose %>
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
-                      aria-expanded="true"
+                      aria-expanded="false"
                       aria-controls="purpose-<%= sorn.id %>">
                       purpose:
                     </button>
@@ -205,7 +220,7 @@
                     </button>
                   </h4>
                     <div id="categories_of_individuals-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.categories_of_individuals %>
+                      <%= highlight(sorn.categories_of_individuals, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -232,7 +247,7 @@
                     </button>
                   </h4>
                     <div id="source-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <% sorn.source %>
+                      <%= highlight(sorn.source, params[:search]) %>
                     </div>
                 <% end %>
 
@@ -245,7 +260,7 @@
                     </button>
                   </h4>
                     <div id="routine_uses-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= sorn.routine_uses %>
+                      <%= highlight(sorn.routine_uses, params[:search]) %>
                     </div>
                 <% end %>
 
