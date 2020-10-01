@@ -132,11 +132,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="security">
+                      aria-controls="security-<%= sorn.id %>">
                       security:
                     </button>
                   </h4>
-                    <div id="security" class="usa-accordion__content usa-prose">
+                    <div id="security-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.security %>
                     </div>
                 <% end %>
@@ -145,11 +145,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="location">
+                      aria-controls="location-<%= sorn.id %>">
                       location:
                     </button>
                   </h4>
-                    <div id="location" class="usa-accordion__content usa-prose">
+                    <div id="location-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.location %>
                     </div>
                 <% end %>
@@ -158,11 +158,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="manager">
+                      aria-controls="manager-<%= sorn.id %>">
                       manager:
                     </button>
                   </h4>
-                    <div id="manager" class="usa-accordion__content usa-prose">
+                    <div id="manager-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.manager %>
                     </div>
                 <% end %>
@@ -172,11 +172,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="authority">
+                      aria-controls="authority-<%= sorn.id %>">
                       authority:
                     </button>
                   </h4>
-                    <div id="authority" class="usa-accordion__content usa-prose">
+                    <div id="authority-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.authority %>
                     </div>
                 <% end %>
@@ -186,11 +186,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="true"
-                      aria-controls="purpose">
+                      aria-controls="purpose-<%= sorn.id %>">
                       purpose:
                     </button>
                   </h4>
-                    <div id="purpose" class="usa-accordion__content usa-prose">
+                    <div id="purpose-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= highlight(sorn.purpose, params[:search]) %>
                     </div>
                 <% end %>
@@ -200,11 +200,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="categories_of_individuals">
+                      aria-controls="categories_of_individuals-<%= sorn.id %>">
                       categories_of_individuals:
                     </button>
                   </h4>
-                    <div id="categories_of_individuals" class="usa-accordion__content usa-prose">
+                    <div id="categories_of_individuals-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.categories_of_individuals %>
                     </div>
                 <% end %>
@@ -214,11 +214,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="true"
-                      aria-controls="categories_of_record">
+                      aria-controls="categories_of_record-<%= sorn.id %>">
                       categories_of_record:
                     </button>
                   </h4>
-                    <div id="categories_of_record" class="usa-accordion__content usa-prose">
+                    <div id="categories_of_record-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= highlight(sorn.categories_of_record, params[:search]) %>
                     </div>
                 <% end %>
@@ -227,12 +227,12 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="source">
+                      aria-controls="source-<%= sorn.id %>">
                       source:
                     </button>
                   </h4>
-                    <div id="source" class="usa-accordion__content usa-prose">
-                      <%= sorn.source %>
+                    <div id="source-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <% sorn.source %>
                     </div>
                 <% end %>
 
@@ -240,11 +240,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="routine_uses">
+                      aria-controls="routine_uses-<%= sorn.id %>">
                       routine_uses:
                     </button>
                   </h4>
-                    <div id="routine_uses" class="usa-accordion__content usa-prose">
+                    <div id="routine_uses-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.routine_uses %>
                     </div>
                 <% end %>
@@ -254,11 +254,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="storage">
+                      aria-controls="storage-<%= sorn.id %>">
                       storage:
                     </button>
                   </h4>
-                    <div id="storage" class="usa-accordion__content usa-prose">
+                    <div id="storage-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.storage %>
                     </div>
                 <% end %>
@@ -268,11 +268,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="retrieval">
+                      aria-controls="retrieval-<%= sorn.id %>">
                       retrieval:
                     </button>
                   </h4>
-                    <div id="retrieval" class="usa-accordion__content usa-prose">
+                    <div id="retrieval-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.retrieval %>
                     </div>
                 <% end %>
@@ -281,11 +281,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="retention">
+                      aria-controls="retention-<%= sorn.id %>">
                       retention:
                     </button>
                   </h4>
-                    <div id="retention" class="usa-accordion__content usa-prose">
+                    <div id="retention-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.retention %>
                     </div>
                 <% end %>
@@ -296,11 +296,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="safeguards">
+                      aria-controls="safeguards-<%= sorn.id %>">
                       safeguards:
                     </button>
                   </h4>
-                    <div id="safeguards" class="usa-accordion__content usa-prose">
+                    <div id="safeguards-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.safeguards %>
                     </div>
                 <% end %>
@@ -311,11 +311,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="access">
+                      aria-controls="access-<%= sorn.id %>">
                       access:
                     </button>
                   </h4>
-                    <div id="access" class="usa-accordion__content usa-prose">
+                    <div id="access-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.access %>
                     </div>
                 <% end %>
@@ -327,11 +327,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="contesting">
+                      aria-controls="contesting-<%= sorn.id %>">
                       contesting:
                     </button>
                   </h4>
-                    <div id="contesting" class="usa-accordion__content usa-prose">
+                    <div id="contesting-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.contesting %>
                     </div>
                 <% end %>
@@ -341,11 +341,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="notification">
+                      aria-controls="notification-<%= sorn.id %>">
                       notification:
                     </button>
                   </h4>
-                    <div id="notification" class="usa-accordion__content usa-prose">
+                    <div id="notification-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.notification %>
                     </div>
                 <% end %>
@@ -354,11 +354,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="exemptions">
+                      aria-controls="exemptions-<%= sorn.id %>">
                       exemptions:
                     </button>
                   </h4>
-                    <div id="exemptions" class="usa-accordion__content usa-prose">
+                    <div id="exemptions-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.exemptions %>
                     </div>
                 <% end %>
@@ -367,11 +367,11 @@
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="false"
-                      aria-controls="history">
+                      aria-controls="history-<%= sorn.id %>">
                       history:
                     </button>
                   </h4>
-                    <div id="history" class="usa-accordion__content usa-prose">
+                    <div id="history-<%= sorn.id %>" class="usa-accordion__content usa-prose">
                       <%= sorn.history %>
                     </div>
                 <% end %>
