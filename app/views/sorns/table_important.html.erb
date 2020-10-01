@@ -18,6 +18,7 @@
       <th>System Name and Number</th>
       <th>Authority</th>
       <th>Categories of Record</th>
+      <th>History</th>
       <th scope="col">Show</th>
     </tr>
   </thead>
@@ -30,6 +31,7 @@
         <td><%= highlight(sorn.system_name, params[:search]) %></td>
         <td><%= highlight(sorn.authority, params[:search]) %></td>
         <td><%= highlight(sorn.categories_of_record, params[:search]) %></td>
+        <td><%= highlight(sorn.history, params[:search]) %></td>
         <td><%= link_to 'Show', sorn %></td>
       </tr>
     <% end %>

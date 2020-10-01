@@ -1,6 +1,8 @@
-class BulkSornParser
-  def self.work
-    parsed_response = HTTParty.get('https://www.govinfo.gov/bulkdata/PAI/2019/PAI-2019-GSA.xml').parsed_response
+class BulkSornParserJob < ApplicationJob
+  queue_as :default
+
+  def perform(*args)
+    parsed_response = HTTParty.get(args[0][:url]).parsed_response
     agency = Agency.find_or_create_by(name: parsed_response["pai"]["agency"]["name"])
     sorns = parsed_response["pai"]["agency"]["section"]
     sorns.each do |sorn|
@@ -51,7 +53,8 @@ class BulkSornParser
           contesting: subsections["contestingRecordProcedures"],
           notification: subsections["notificationProcedure"],
           exemptions: subsections["exemptionsClaimed"],
-          history: subsections["history"]
+          history: subsections["history"],
+          data_source: :bulk
         )
       else
         system_name = sorn["subsection"]["__content__"]

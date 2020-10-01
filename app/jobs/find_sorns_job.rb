@@ -7,7 +7,7 @@ class FindSornsJob < ApplicationJob
     # In the results we still filter on those with a title that includes 'Privacy Act of 1974'.
 
 
-    conditions = { term: 'Privacy Act of 1974; System of Records' }
+    conditions = { term: 'Privacy Act of 1974; System of Records', agencies: ['justice-department', 'defense-department'] }
     # 'general-services-administration', 'justice-department', 'defense-department']
     fields = ['title', 'full_text_xml_url', 'html_url']#, 'raw_text_url', 'agency_names', 'dates']
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
@@ -16,7 +16,7 @@ class FindSornsJob < ApplicationJob
       type: 'NOTICE',
       fields: fields,
       order: 'newest', #oldest
-      per_page: 1000,
+      per_page: 200,
       page: 1
     }
 
@@ -32,12 +32,12 @@ class FindSornsJob < ApplicationJob
       end
 
       # Keep making more requests until there are no more.
-      if result_set.results.last == result
-        search_options[:page] = search_options[:page] + 1
-        if search_options[:page] <= result_set.total_pages
-          search_fed_reg(search_options)
-        end
-      end
+      # if result_set.results.last == result
+      #   search_options[:page] = search_options[:page] + 1
+      #   if search_options[:page] <= result_set.total_pages
+      #     search_fed_reg(search_options)
+      #   end
+      # end
     end
   end
 

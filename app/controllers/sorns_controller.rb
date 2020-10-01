@@ -3,34 +3,50 @@ class SornsController < ApplicationController
 
   # GET /sorns
   # GET /sorns.json
-  def index
+  def index(source)
     if params[:search]
       redirect_to request.path if params[:search] == ''
-      @sorns = Sorn.search_by_all(params[:search]).order(:system_number).includes(:agency)
-      @count = @sorns.count
-      @sorns = @sorns.page params[:page]
+      @sorns = Sorn.where(data_source: source).search_by_all(params[:search]).order(:system_number).includes(:agency)
+      @count = @sorns.where(data_source: source).count
+      @sorns = @sorns.where(data_source: source).page params[:page]
     else
-      @sorns = Sorn.all.order(:system_number).includes(:agency)
-      @count = @sorns.count
-      @sorns = @sorns.page params[:page]
+      @sorns = Sorn.where(data_source: source).order(:system_number).includes(:agency)
+      @count = @sorns.where(data_source: source).count
+      @sorns = @sorns.where(data_source: source).page params[:page]
     end
   end
 
   def table_everything
-    index
+    index(:fedreg)
   end
 
   def table_important
-    index
+    index(:fedreg)
   end
 
   def cards_everything
-    index
+    index(:fedreg)
   end
 
   def cards_important
-    index
+    index(:fedreg)
   end
+
+def bulk_table_everything
+  index(:bulk)
+end
+
+def bulk_table_important
+  index(:bulk)
+end
+
+def bulk_cards_everything
+  index(:bulk)
+end
+
+def bulk_cards_important
+  index(:bulk)
+end
 
   # GET /sorns/1
   # GET /sorns/1.json

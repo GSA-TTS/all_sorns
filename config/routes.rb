@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   get '/table-important', to: 'sorns#table_important'
   get '/cards-everything', to: 'sorns#cards_everything'
   get '/cards-important', to: 'sorns#cards_important'
+
+  get '/bulk/table-everything', to: 'sorns#bulk_table_everything'
+  get '/bulk/table-important', to: 'sorns#bulk_table_important'
+  get '/bulk/cards-everything', to: 'sorns#bulk_cards_everything'
+  get '/bulk/cards-important', to: 'sorns#bulk_cards_important'
   resources :sorns
   resources :agencies
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
