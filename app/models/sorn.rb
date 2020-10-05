@@ -15,6 +15,9 @@ class Sorn < ApplicationRecord
       agency: :name
     }
 
+  def linked
+    Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first
+  end
 
   def split_categories
     if self.categories_of_record

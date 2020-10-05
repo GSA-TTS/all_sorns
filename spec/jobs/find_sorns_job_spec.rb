@@ -17,7 +17,7 @@ RSpec.describe FindSornsJob, type: :job do
       let(:pages) { 1 }
 
       before do
-        mock_results = [OpenStruct.new(title: title, full_text_xml_url: "expected url", html_url: "html url")]
+        mock_results = [OpenStruct.new(title: title, full_text_xml_url: "expected url", html_url: "html url", citation: "citation")]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
         allow(FederalRegister::Document).to receive(:search).and_return result_set
         allow(ParseSornXmlJob).to receive(:perform_later)
@@ -30,7 +30,7 @@ RSpec.describe FindSornsJob, type: :job do
       end
 
       it "Calls ParseSornXML job with the xml url." do
-        expect(ParseSornXmlJob).to have_received(:perform_later).with("expected url", "html url")
+        expect(ParseSornXmlJob).to have_received(:perform_later).with({xml_url: "expected url", html_url: "html url", citation: "citation"})
       end
 
       context "with unwanted SORN titles" do

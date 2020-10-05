@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_222141) do
+ActiveRecord::Schema.define(version: 2020_10_02_165508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_222141) do
     t.string "headers"
     t.string "system_number"
     t.string "data_source"
+    t.string "citation"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
   end
 

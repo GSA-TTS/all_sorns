@@ -7,9 +7,9 @@ class FindSornsJob < ApplicationJob
     # In the results we still filter on those with a title that includes 'Privacy Act of 1974'.
 
 
-    conditions = { term: 'Privacy Act of 1974; System of Records', agencies: ['justice-department', 'defense-department'] }
+    conditions = { term: 'Privacy Act of 1974; System of Records', agencies: ['general-services-administration'] }
     # 'general-services-administration', 'justice-department', 'defense-department']
-    fields = ['title', 'full_text_xml_url', 'html_url']#, 'raw_text_url', 'agency_names', 'dates']
+    fields = ['title', 'full_text_xml_url', 'html_url', 'citation']#, 'raw_text_url', 'agency_names', 'dates']
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
     search_options = {
       conditions: conditions,
@@ -28,16 +28,21 @@ class FindSornsJob < ApplicationJob
     result_set.results.each do |result|
 
       if a_sorn_title?(result.title)
-        ParseSornXmlJob.perform_later(result.full_text_xml_url, result.html_url)
+        params = {
+          xml_url: result.full_text_xml_url,
+          html_url: result.html_url,
+          citation: result.citation
+        }
+        ParseSornXmlJob.perform_later(params)
       end
 
       # Keep making more requests until there are no more.
-      # if result_set.results.last == result
-      #   search_options[:page] = search_options[:page] + 1
-      #   if search_options[:page] <= result_set.total_pages
-      #     search_fed_reg(search_options)
-      #   end
-      # end
+      if result_set.results.last == result
+        search_options[:page] = search_options[:page] + 1
+        if search_options[:page] <= result_set.total_pages
+          search_fed_reg(search_options)
+        end
+      end
     end
   end
 
