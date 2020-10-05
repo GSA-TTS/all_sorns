@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/table-important', to: 'sorns#table_important'
   get '/cards-everything', to: 'sorns#cards_everything'
   get '/cards-important', to: 'sorns#cards_important'
+  get '/systems', to: 'sorns#systems'
 
   get '/bulk/table-everything', to: 'sorns#bulk_table_everything'
   get '/bulk/table-important', to: 'sorns#bulk_table_important'

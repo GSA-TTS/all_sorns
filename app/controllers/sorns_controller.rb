@@ -32,21 +32,25 @@ class SornsController < ApplicationController
     index(:fedreg)
   end
 
-def bulk_table_everything
-  index(:bulk)
-end
+  def systems
+    index(:fedreg)
+  end
 
-def bulk_table_important
-  index(:bulk)
-end
+  def bulk_table_everything
+    index(:bulk)
+  end
 
-def bulk_cards_everything
-  index(:bulk)
-end
+  def bulk_table_important
+    index(:bulk)
+  end
 
-def bulk_cards_important
-  index(:bulk)
-end
+  def bulk_cards_everything
+    index(:bulk)
+  end
+
+  def bulk_cards_important
+    index(:bulk)
+  end
 
   # GET /sorns/1
   # GET /sorns/1.json
