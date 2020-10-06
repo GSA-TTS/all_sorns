@@ -7,7 +7,7 @@ class FindSornsJob < ApplicationJob
     # In the results we still filter on those with a title that includes 'Privacy Act of 1974'.
 
 
-    conditions = { term: 'Privacy Act of 1974; System of Records', agencies: ['general-services-administration'] }
+    conditions = { term: 'Privacy Act of 1974; System of Records' }#, agencies: ['general-services-administration'] }
     # 'general-services-administration', 'justice-department', 'defense-department']
     fields = ['title', 'full_text_xml_url', 'html_url', 'citation']#, 'raw_text_url', 'agency_names', 'dates']
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
@@ -24,6 +24,7 @@ class FindSornsJob < ApplicationJob
   end
 
   def search_fed_reg(search_options)
+    puts 'Asking for SORNs'
     result_set = FederalRegister::Document.search(search_options)
     result_set.results.each do |result|
 

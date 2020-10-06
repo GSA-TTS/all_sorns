@@ -8,7 +8,13 @@ class ParseSornXmlJob < ApplicationJob
     return nil unless response.success?
 
     xml = response.parsed_response
-    sorn_parser = SornXmlParser.new(xml)
+    begin
+      puts 'Parsing SORN'
+      sorn_parser = SornXmlParser.new(xml)
+    rescue => e
+      puts 'ERROR: ' + e.to_s
+    end
+
     parsed_sorn = sorn_parser.parse_sorn
 
     parsed_sorn[:xml_url] = result[:xml_url]

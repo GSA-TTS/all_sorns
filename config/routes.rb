@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   get '/bulk/table-important', to: 'sorns#bulk_table_important'
   get '/bulk/cards-everything', to: 'sorns#bulk_cards_everything'
   get '/bulk/cards-important', to: 'sorns#bulk_cards_important'
+
+  get '/csv', to: 'sorns#csv'
+
   resources :sorns
   resources :agencies
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

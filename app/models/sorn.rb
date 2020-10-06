@@ -15,6 +15,17 @@ class Sorn < ApplicationRecord
       agency: :name
     }
 
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      csv << ['agency_name', 'system_name', 'authority', 'categories_of_record', 'xml_url']
+
+      all.each do |sorn|
+        csv << [sorn.agency.name, sorn.system_name, sorn.authority, sorn.categories_of_record, sorn.xml_url]
+      end
+    end
+  end
+
+
   def linked
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first
   end

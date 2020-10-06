@@ -1,6 +1,14 @@
 class SornsController < ApplicationController
   before_action :set_sorn, only: [:show, :edit, :update, :destroy]
 
+  def csv
+    @sorns = Sorn.where(data_source: :fedreg).includes(:agency)
+
+    respond_to do |format|
+      format.csv { send_data @sorns.to_csv, filename: "sorns.csv" }
+    end
+  end
+
   # GET /sorns
   # GET /sorns.json
   def index(source)
