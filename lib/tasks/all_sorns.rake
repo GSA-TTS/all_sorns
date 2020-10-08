@@ -12,3 +12,20 @@ namespace :bulk do
     BulkSornParserJob.perform_later(url: 'https://www.govinfo.gov/bulkdata/PAI/2019/PAI-2019-JUSTICE.xml')
   end
 end
+
+namespace :repair do
+  desc "Find missing names"
+  task find_names: :environment do
+    sorns_with_missing_names = Sorn.where(system_name: nil).pluck(:id, :xml_url)
+    sorns_with_missing_names.each do |id, url|
+      sleep 1
+      response = HTTParty.get(url, format: :plain)
+      return nil unless response.success?
+      xml = response.parsed_response
+      sorn_parser = SornXmlParser.new(xml)
+      parsed_sorn = sorn_parser.parse_sorn
+      sorn = Sorn.find(id)
+      sorn.update(system_name: parsed_sorn[:system_name])
+    end
+  end
+end

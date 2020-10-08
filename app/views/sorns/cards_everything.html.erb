@@ -75,6 +75,19 @@
                     </div>
                 <% end %>
 
+                <% if sorn.citation %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="false"
+                      aria-controls="citation-<%= sorn.id %>">
+                      citation:
+                    </button>
+                  </h4>
+                    <div id="citation-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.citation, params[:search]) %>
+                    </div>
+                <% end %>
+
 
                 <% if sorn.summary %>
                   <h4 class="usa-accordion__heading">

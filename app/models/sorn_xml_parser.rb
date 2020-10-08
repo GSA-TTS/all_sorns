@@ -68,7 +68,7 @@ class SornXmlParser
   end
 
   def get_system_name
-    find_section('SYSTEM NAME AND NUMBER')
+    find_section('SYSTEM NAME')
   end
 
   def get_system_number
@@ -170,7 +170,11 @@ class SornXmlParser
 
   def find_section(header)
     matched_header = @sections.keys.select do |key|
-      key.upcase.include? header
+      begin
+        key.upcase.include? header
+      rescue => e
+        binding.pry
+      end
     end.first
     @sections[matched_header]
   end
