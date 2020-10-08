@@ -17,7 +17,7 @@
         <div class="grid-row margin-top-2 margin-right-0">
           <div class="grid-col-12">
             <%= form_tag('/cards-important', method: "get", class: "usa-search") do %>
-              <input class="usa-input" id="general-search" type="search" name="search">
+              <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
               <button id="general-search-button" class="usa-button" type="submit">
                 <span class="usa-search__submit-text">Search</span>
               </button>

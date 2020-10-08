@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_02_165508) do
+ActiveRecord::Schema.define(version: 2020_10_08_224246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2020_10_02_165508) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "data_source"
+    t.index ["name"], name: "index_agencies_on_name"
   end
 
   create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -72,7 +73,11 @@ ActiveRecord::Schema.define(version: 2020_10_02_165508) do
     t.string "system_number"
     t.string "data_source"
     t.string "citation"
+    t.index ["action"], name: "index_sorns_on_action"
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
+    t.index ["history"], name: "index_sorns_on_history"
+    t.index ["system_name"], name: "index_sorns_on_system_name"
+    t.index ["system_number"], name: "index_sorns_on_system_number"
   end
 
   add_foreign_key "sorns", "agencies"

@@ -27,7 +27,7 @@ class Sorn < ApplicationRecord
 
 
   def linked
-    Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first
+    Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
   end
 
   def split_categories
