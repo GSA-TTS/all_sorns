@@ -46,21 +46,19 @@ class Sorn < ApplicationRecord
     }
   }
 
-  pg_search_scope :search_by_all,
-    against: FIELDS,
-    associated_against: {
-      agency: :name
-    }
-
-  def self.to_csv
-    CSV.generate(headers: true) do |csv|
-      csv << ['agency_name', 'system_name', 'authority', 'categories_of_record', 'xml_url']
-
+  # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
+  def self.to_csv(columns = column_names, options = {})
+    CSV.generate(options) do |csv|
+      csv.add_row columns
       all.each do |sorn|
-        csv << [sorn.agency.name, sorn.system_name, sorn.authority, sorn.categories_of_record, sorn.xml_url]
+
+        values = sorn.attributes.slice(*columns).values
+        values += [sorn.agency.name]
+        csv.add_row values
       end
     end
   end
+
 
 
   def linked

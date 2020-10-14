@@ -5,12 +5,16 @@ class SornsController < ApplicationController
     if params[:search]
       @selected_fields = params[:fields]
       field_syms = params[:fields].map { |field| field.to_sym }
-      @sorns = Sorn.dynamic_search(field_syms, params[:search])
+      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).order(id: :asc).page params[:page]
     else
-      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).includes(:agency)
+      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).includes(:agency).page params[:page]
     end
-    @count = @sorns.count
-    @sorns = @sorns.page params[:page]
+
+    # respond_to do |format|
+    #   format.html
+    #   format.json { render json: @sorns.to_json }
+    #   format.csv { send_data @sorns.to_csv(params[:fields]), filename: "sorns.csv" }
+    # end
   end
 
   def csv
@@ -22,7 +26,6 @@ class SornsController < ApplicationController
   end
 
   # GET /sorns
-  # GET /sorns.json
   def index(source)
     if params[:search]
       redirect_to request.path if params[:search] == ''

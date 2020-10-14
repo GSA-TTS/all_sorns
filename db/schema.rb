@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 2020_10_08_224246) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "data_source"
-    t.index ["name"], name: "index_agencies_on_name"
   end
 
   create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -73,11 +72,33 @@ ActiveRecord::Schema.define(version: 2020_10_08_224246) do
     t.string "system_number"
     t.string "data_source"
     t.string "citation"
-    t.index ["action"], name: "index_sorns_on_action"
+    t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (authority)::text)", name: "authority_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (categories_of_individuals)::text)", name: "categories_of_individuals_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (categories_of_record)::text)", name: "categories_of_record_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (contesting)::text)", name: "contesting_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (dates)::text)", name: "dates_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (exemptions)::text)", name: "exemptions_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (further_info)::text)", name: "further_info_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (history)::text)", name: "history_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (location)::text)", name: "location_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (manager)::text)", name: "manager_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (notification)::text)", name: "notification_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (purpose)::text)", name: "purpose_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (retention)::text)", name: "retention_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (retrieval)::text)", name: "retrieval_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (routine_uses)::text)", name: "routine_uses_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (safeguards)::text)", name: "safeguards_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (security)::text)", name: "security_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (source)::text)", name: "source_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (storage)::text)", name: "storage_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (summary)::text)", name: "summary_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (supplementary_info)::text)", name: "supplementary_info_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
-    t.index ["history"], name: "index_sorns_on_history"
-    t.index ["system_name"], name: "index_sorns_on_system_name"
-    t.index ["system_number"], name: "index_sorns_on_system_number"
   end
 
   add_foreign_key "sorns", "agencies"

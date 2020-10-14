@@ -41,7 +41,7 @@
                 </div>
               </fieldset>
             <% end %>
-            <div class="grid-row">
+            <div class="grid-row float-right ">
             <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
             <%= javascript_pack_tag 'checkboxes' %>
 
@@ -51,20 +51,23 @@
           </div>
         </div>
         <div class="grid-row margin-top-2 margin-right-0 results-meta">
-          <div class="grid-col-6 display-inline results-meta__filters">
-            <span class="results-meta__label ">Something: </span>
-            <ul id="active-filters" class="margin-top-05 margin-bottom-05 padding-0">
-            </ul>
+          <div class="grid-col-6 display-inline">
+            <%
+=begin%>
+ <button class="usa-button" href="<%= request.fullpath %>">CSV</button>
+<%
+=end%>
           </div>
 
 
           <div class="grid-col-6 margin-bottom-0 text-right results-meta__count">
              <div id="search-result-counter" class="font-body-xs">
-              Showing <span id="result-count" class="text-bold"><%= @count %></span> of <span id="total-count" class="text-bold"><%= @count %></span> <span id="search-term"></span>
+              <%= page_entries_info @sorns %>
+              <%= paginate @sorns %>
             </div>
-            <%= paginate @sorns %>
           </div>
         </div>
+
         <div id="cards">
           <div class="list">
 
