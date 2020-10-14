@@ -1,15 +1,47 @@
 class Sorn < ApplicationRecord
   belongs_to :agency
   include PgSearch::Model
+
+  pg_search_scope :dynamic_search, lambda { |field, query|
+    {
+      against: field,
+      query: query
+    }
+  }
+
   pg_search_scope :search_by_all,
     against: [
       :system_name,
-      :system_number,
       :authority,
-      :purpose,
       :action,
       :categories_of_record,
-      :history
+      :html_url,
+      :xml_url,
+      :history,
+      :purpose,
+      :routine_uses,
+      :retention,
+      :exemptions,
+      :summary,
+      :dates,
+      :addresses,
+      :further_info,
+      :supplementary_info,
+      :security,
+      :location,
+      :manager,
+      :categories_of_individuals,
+      :source,
+      :storage,
+      :retrieval,
+      :safeguards,
+      :access,
+      :contesting,
+      :notification,
+      :headers,
+      :system_number,
+      :data_source,
+      :citation
     ],
     associated_against: {
       agency: :name

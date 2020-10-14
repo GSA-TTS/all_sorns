@@ -1,6 +1,17 @@
 class SornsController < ApplicationController
   before_action :set_sorn, only: [:show, :edit, :update, :destroy]
 
+  def search
+    if params[:search]
+      fields = params[:fields].map { |field| field.to_sym }
+      @sorns = Sorn.dynamic_search(fields, params[:search])
+    else
+      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).includes(:agency)
+    end
+    @count = @sorns.count
+    @sorns = @sorns.page params[:page]
+  end
+
   def csv
     @sorns = Sorn.where(data_source: :fedreg).includes(:agency)
 
@@ -15,13 +26,11 @@ class SornsController < ApplicationController
     if params[:search]
       redirect_to request.path if params[:search] == ''
       @sorns = Sorn.where(data_source: source).search_by_all(params[:search]).order(id: :asc).includes(:agency)
-      @count = @sorns.where(data_source: source).count
-      @sorns = @sorns.where(data_source: source).page params[:page]
     else
       @sorns = Sorn.where(data_source: source).order(id: :asc).includes(:agency)
-      @count = @sorns.where(data_source: source).count
-      @sorns = @sorns.where(data_source: source).page params[:page]
     end
+    @count = @sorns.count
+    @sorns = @sorns.page params[:page]
   end
 
   def table_everything
