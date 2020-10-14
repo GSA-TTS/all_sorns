@@ -2,6 +2,43 @@ class Sorn < ApplicationRecord
   belongs_to :agency
   include PgSearch::Model
 
+  FIELDS = [
+    :action,
+    :summary,
+    :dates,
+    :addresses,
+    :further_info,
+    :supplementary_info,
+    :system_name,
+    :system_number,
+    :security,
+    :location,
+    :manager,
+    :authority,
+    :purpose,
+    :categories_of_individuals,
+    :categories_of_record,
+    :source,
+    :routine_uses,
+    :storage,
+    :retrieval,
+    :retention,
+    :safeguards,
+    :access,
+    :contesting,
+    :notification,
+    :exemptions,
+    :history
+  ]
+
+  METADATA = [
+    :html_url,
+    :xml_url,
+    :headers,
+    :data_source,
+    :citation
+  ]
+
   pg_search_scope :dynamic_search, lambda { |field, query|
     {
       against: field,
@@ -10,39 +47,7 @@ class Sorn < ApplicationRecord
   }
 
   pg_search_scope :search_by_all,
-    against: [
-      :system_name,
-      :authority,
-      :action,
-      :categories_of_record,
-      :html_url,
-      :xml_url,
-      :history,
-      :purpose,
-      :routine_uses,
-      :retention,
-      :exemptions,
-      :summary,
-      :dates,
-      :addresses,
-      :further_info,
-      :supplementary_info,
-      :security,
-      :location,
-      :manager,
-      :categories_of_individuals,
-      :source,
-      :storage,
-      :retrieval,
-      :safeguards,
-      :access,
-      :contesting,
-      :notification,
-      :headers,
-      :system_number,
-      :data_source,
-      :citation
-    ],
+    against: FIELDS,
     associated_against: {
       agency: :name
     }

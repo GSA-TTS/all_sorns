@@ -3,8 +3,9 @@ class SornsController < ApplicationController
 
   def search
     if params[:search]
-      fields = params[:fields].map { |field| field.to_sym }
-      @sorns = Sorn.dynamic_search(fields, params[:search])
+      @selected_fields = params[:fields]
+      field_syms = params[:fields].map { |field| field.to_sym }
+      @sorns = Sorn.dynamic_search(field_syms, params[:search])
     else
       @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).includes(:agency)
     end

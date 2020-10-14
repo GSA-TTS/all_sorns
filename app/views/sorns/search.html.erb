@@ -18,7 +18,7 @@
           <div class="grid-col-12">
             <%= form_tag('/search', method: "get") do %>
               <fieldset class="usa-search">
-                <input class="usa-input" id="general-search" type="search" name="search"></input>
+                <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
                 <button id="general-search-button" class="usa-button" type="submit">
                   <span class="usa-search__submit-text">Search</span>
                 </button>
@@ -27,7 +27,7 @@
               <fieldset id="fields" class="usa-fieldset">
                 <legend class="usa-legend">Fields</legend>
                 <div class="grid-row">
-                  <% @sorns.first.attributes.keys.each_with_index do |field, index| %>
+                  <% Sorn::FIELDS.each_with_index do |field, index| %>
                     <div class="usa-checkbox grid-col-3">
                       <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>" checked>
                       <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
@@ -42,6 +42,7 @@
               </fieldset>
             <% end %>
             <div class="grid-row">
+            <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
             <%= javascript_pack_tag 'checkboxes' %>
 
             <button id="select-all" class="usa-button usa-button--accent-warm">Select All</button>
@@ -76,20 +77,11 @@
                 </div>
 
                 <% if sorn.agency.name %>
-                  <h4 class="usa-accordion__heading">
-                    <button class="usa-accordion__button"
-                      aria-expanded="true"
-                      aria-controls="agency.name-<%= sorn.id %>">
-                      agency.name:
-                    </button>
-                  </h4>
-                    <div id="agency.name-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= highlight(sorn.agency.name, params[:search]) %>
-                    </div>
+                  <h4><%= highlight(sorn.agency.name, params[:search]) %></h4>
                 <% end %>
 
                 <% if sorn.action %>
-                  <% if params[:fields] && params[:fields].include?("action") %>
+                  <% if @selected_fields && @selected_fields.include?("action") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -104,7 +96,7 @@
                 <% end %>
 
                 <% if sorn.citation %>
-                  <% if params[:fields] && params[:fields].include?("citation") %>
+                  <% if @selected_fields && @selected_fields.include?("citation") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -121,7 +113,7 @@
 
 
                 <% if sorn.summary %>
-                  <% if params[:fields] && params[:fields].include?("summary") %>
+                  <% if @selected_fields && @selected_fields.include?("summary") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -136,7 +128,7 @@
                 <% end %>
 
                 <% if sorn.dates %>
-                  <% if params[:fields] && params[:fields].include?("dates") %>
+                  <% if @selected_fields && @selected_fields.include?("dates") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -151,7 +143,7 @@
                 <% end %>
 
                 <% if sorn.addresses %>
-                  <% if params[:fields] && params[:fields].include?("addresses") %>
+                  <% if @selected_fields && @selected_fields.include?("addresses") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -166,7 +158,7 @@
                 <% end %>
 
                 <% if sorn.further_info %>
-                  <% if params[:fields] && params[:fields].include?("further_info") %>
+                  <% if @selected_fields && @selected_fields.include?("further_info") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -182,7 +174,7 @@
 
 
                 <% if sorn.supplementary_info %>
-                  <% if params[:fields] && params[:fields].include?("supplementary_info") %>
+                  <% if @selected_fields && @selected_fields.include?("supplementary_info") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -198,7 +190,7 @@
 
 
                 <% if sorn.security %>
-                  <% if params[:fields] && params[:fields].include?("security") %>
+                  <% if @selected_fields && @selected_fields.include?("security") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -213,7 +205,7 @@
                 <% end %>
 
                 <% if sorn.location %>
-                  <% if params[:fields] && params[:fields].include?("location") %>
+                  <% if @selected_fields && @selected_fields.include?("location") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -228,7 +220,7 @@
                 <% end %>
 
                 <% if sorn.manager %>
-                  <% if params[:fields] && params[:fields].include?("manager") %>
+                  <% if @selected_fields && @selected_fields.include?("manager") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -244,7 +236,7 @@
 
 
                 <% if sorn.authority %>
-                  <% if params[:fields] && params[:fields].include?("authority") %>
+                  <% if @selected_fields && @selected_fields.include?("authority") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -260,7 +252,7 @@
 
 
                 <% if sorn.purpose %>
-                  <% if params[:fields] && params[:fields].include?("purpose") %>
+                  <% if @selected_fields && @selected_fields.include?("purpose") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -276,7 +268,7 @@
 
 
                 <% if sorn.categories_of_individuals %>
-                  <% if params[:fields] && params[:fields].include?("categories_of_individuals") %>
+                  <% if @selected_fields && @selected_fields.include?("categories_of_individuals") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -292,7 +284,7 @@
 
 
                 <% if sorn.categories_of_record %>
-                  <% if params[:fields] && params[:fields].include?("categories_of_record") %>
+                  <% if @selected_fields && @selected_fields.include?("categories_of_record") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -307,7 +299,7 @@
                 <% end %>
 
                 <% if sorn.source %>
-                  <% if params[:fields] && params[:fields].include?("source") %>
+                  <% if @selected_fields && @selected_fields.include?("source") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -322,7 +314,7 @@
                 <% end %>
 
                 <% if sorn.routine_uses %>
-                  <% if params[:fields] && params[:fields].include?("routine_uses") %>
+                  <% if @selected_fields && @selected_fields.include?("routine_uses") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -338,7 +330,7 @@
 
 
                 <% if sorn.storage %>
-                  <% if params[:fields] && params[:fields].include?("storage") %>
+                  <% if @selected_fields && @selected_fields.include?("storage") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -354,7 +346,7 @@
 
 
                 <% if sorn.retrieval %>
-                  <% if params[:fields] && params[:fields].include?("retrieval") %>
+                  <% if @selected_fields && @selected_fields.include?("retrieval") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -369,7 +361,7 @@
                 <% end %>
 
                 <% if sorn.retention %>
-                  <% if params[:fields] && params[:fields].include?("retention") %>
+                  <% if @selected_fields && @selected_fields.include?("retention") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -386,7 +378,7 @@
 
 
                 <% if sorn.safeguards %>
-                  <% if params[:fields] && params[:fields].include?("safeguards") %>
+                  <% if @selected_fields && @selected_fields.include?("safeguards") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -403,7 +395,7 @@
 
 
                 <% if sorn.access %>
-                  <% if params[:fields] && params[:fields].include?("access") %>
+                  <% if @selected_fields && @selected_fields.include?("access") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -421,7 +413,7 @@
 
 
                 <% if sorn.contesting %>
-                  <% if params[:fields] && params[:fields].include?("contesting") %>
+                  <% if @selected_fields && @selected_fields.include?("contesting") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -437,7 +429,7 @@
 
 
                 <% if sorn.notification %>
-                  <% if params[:fields] && params[:fields].include?("notification") %>
+                  <% if @selected_fields && @selected_fields.include?("notification") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -452,7 +444,7 @@
                 <% end %>
 
                 <% if sorn.exemptions %>
-                  <% if params[:fields] && params[:fields].include?("exemptions") %>
+                  <% if @selected_fields && @selected_fields.include?("exemptions") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
@@ -467,7 +459,7 @@
                 <% end %>
 
                 <% if sorn.history %>
-                  <% if params[:fields] && params[:fields].include?("history") %>
+                  <% if @selected_fields && @selected_fields.include?("history") %>
                     <h4 class="usa-accordion__heading">
                       <button class="usa-accordion__button"
                         aria-expanded="true"
