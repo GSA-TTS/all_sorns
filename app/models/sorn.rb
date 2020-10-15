@@ -1,6 +1,7 @@
 class Sorn < ApplicationRecord
-  belongs_to :agency
   include PgSearch::Model
+  belongs_to :agency
+  validates :citation, uniqueness: true
 
   FIELDS = [
     :action,

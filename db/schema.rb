@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_08_224246) do
+ActiveRecord::Schema.define(version: 2020_10_14_234853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 2020_10_08_224246) do
     t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
     t.index ["agency_id"], name: "index_sorns_on_agency_id"
+    t.index ["citation"], name: "index_sorns_on_citation"
   end
 
   add_foreign_key "sorns", "agencies"

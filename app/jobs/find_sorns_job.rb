@@ -26,24 +26,24 @@ class FindSornsJob < ApplicationJob
   def search_fed_reg(search_options)
     puts 'Asking for SORNs'
     result_set = FederalRegister::Document.search(search_options)
+
     result_set.results.each do |result|
 
-      if a_sorn_title?(result.title)
-        params = {
-          xml_url: result.full_text_xml_url,
-          html_url: result.html_url,
-          citation: result.citation
-        }
-        ParseSornXmlJob.perform_later(params)
-      end
+      next unless a_sorn_title?(result.title)
+      next if Sorn.find_by(citation: result.citation)
 
-      # Keep making more requests until there are no more.
-      if result_set.results.last == result
-        search_options[:page] = search_options[:page] + 1
-        if search_options[:page] <= result_set.total_pages
-          search_fed_reg(search_options)
-        end
-      end
+      params = {
+        xml_url: result.full_text_xml_url,
+        html_url: result.html_url,
+        citation: result.citation
+      }
+      ParseSornXmlJob.perform_later(params)
+    end
+
+    # Keep making more requests until there are no more.
+    search_options[:page] = search_options[:page] + 1
+    if search_options[:page] <= result_set.total_pages
+      search_fed_reg(search_options)
     end
   end
 

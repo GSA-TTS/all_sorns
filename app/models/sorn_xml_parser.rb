@@ -171,9 +171,12 @@ class SornXmlParser
   def find_section(header)
     matched_header = @sections.keys.select do |key|
       begin
+        if key.class == Saxerator::Builder::HashElement
+          key = key.flatten.join(" ")
+        end
         key.upcase.include? header
       rescue => e
-        binding.pry
+        puts 'ERROR: ' + e.to_s
       end
     end.first
     @sections[matched_header]
