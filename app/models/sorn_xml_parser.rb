@@ -40,31 +40,45 @@ class SornXmlParser
   end
 
   def get_agency
-    @parser.for_tag('AGENCY').first.try(:to_s)
+    find_tag('AGENCY')
   end
 
   def get_action
-    @parser.for_tag('ACT').first.try(:fetch, 'P')
+    find_tag('ACT')
   end
 
   def get_summary
-    @parser.for_tag('SUM').first.try(:fetch, 'P')
+    find_tag('SUM')
   end
 
   def get_dates
-    @parser.for_tag('DATES').first.try(:fetch, 'P')
+    find_tag('DATES')
   end
 
   def get_addresses
-    @parser.for_tag('ADD').first.try(:fetch, 'P')
+    find_tag('ADD')
   end
 
   def get_further_information
-    @parser.for_tag('FURINF').first.try(:fetch, 'P')
+    find_tag('FURINF')
   end
 
   def get_supplementary_information
-    @parser.for_tag('SUPLINF').first.try(:fetch, 'P')
+    # custom to get everything but priact and sig
+    # an example of why paragraphs only won't work
+    # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
+    content = []
+    @parser.within('SUPLINF').each do |node|
+      if node.name != 'PRIACT' && node.name != 'SIG'
+        # skip section title
+        if node.name == 'HD' && node.include?('SUPPLEMENTARY')
+          next
+        else
+          content << node
+        end
+      end
+    end
+    content
   end
 
   def get_system_name
@@ -148,6 +162,17 @@ class SornXmlParser
   end
 
   private
+
+  def find_tag(tag)
+    # Return the whole element if its a string or array
+    # Most of the AGENCY tags are single strings
+    # Rarely another tag will be complicated and have more than paragraphs, these show up as arrays.
+    # Just return the whole array as a string
+    element = @parser.for_tag(tag).first
+
+    # Most commonly, it is a hash with paragraphs
+    element.fetch('P', nil) if element.class == Saxerator::Builder::HashElement
+  end
 
   def get_sections
     sections = {}
