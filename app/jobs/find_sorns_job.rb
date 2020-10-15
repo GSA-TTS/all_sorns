@@ -30,7 +30,7 @@ class FindSornsJob < ApplicationJob
     result_set.results.each do |result|
 
       next unless a_sorn_title?(result.title)
-      next if Sorn.find_by(citation: result.citation)
+      # next if Sorn.find_by(citation: result.citation)
 
       params = {
         xml_url: result.full_text_xml_url,

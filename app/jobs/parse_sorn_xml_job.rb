@@ -25,25 +25,26 @@ class ParseSornXmlJob < ApplicationJob
     parsed_sorn.delete :agency
     parsed_sorn[:data_source] = :fedreg
 
-    sorn = Sorn.create(parsed_sorn)
-    puts "Sorn #{sorn.id} created" if sorn.id?
-  end
+    # sorn = Sorn.create(parsed_sorn)
+    # puts "Sorn #{sorn.id} created" if sorn.id?
 
     # Update or create
-  #   existing_sorn = Sorn.find_by(citation: parsed_sorn[:citation])
-  #   if existing_sorn
-  #     existing_sorn.assign_attributes(parsed_sorn)
-  #     if existing_sorn.changed?
-  #       existing_sorn.save
-  #       puts "Existing Sorn updated. #{existing_sorn.id}"
-  #     end
-  #   else
-  #     new_sorn = Sorn.create(parsed_sorn)
-  #     if new_sorn
-  #       puts "Sorn #{new_sorn.id} created"
-  #     else
-  #       puts "No new Sorn created for some reason. #{parsed_sorn[:xml_url]}"
-  #     end
-  #   end
-  # end
+    existing_sorn = Sorn.find_by(citation: parsed_sorn[:citation])
+    if existing_sorn
+      existing_sorn.assign_attributes(parsed_sorn)
+      if existing_sorn.changed?
+        existing_sorn.save
+        puts "Existing Sorn updated. #{existing_sorn.id}"
+      else
+        puts "Nothing changed."
+      end
+    else
+      new_sorn = Sorn.create(parsed_sorn)
+      if new_sorn
+        puts "Sorn #{new_sorn.id} created"
+      else
+        puts "No new Sorn created for some reason. #{parsed_sorn[:xml_url]}"
+      end
+    end
+  end
 end
