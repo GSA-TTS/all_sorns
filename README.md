@@ -1,24 +1,20 @@
-# README
+# 10x - Privacy Dashboard - Phase 4
+## All of the SORNs 🎵
 
- This README would normally document whatever steps are necessary to get the
-application up and running.
+### What
+Prototype - [https://allsorns-exhausted-quoll-ku.app.cloud.gov/](https://allsorns-exhausted-quoll-ku.app.cloud.gov/)
 
-Things you may want to cover:
+This repository is for prototyping a service to make all of the federal government's [System Of Record Notices](https://www.gsa.gov/reference/gsa-privacy-program/systems-of-records-privacy-act) more usable for government privacy officer's and the public.
 
-* Ruby version
+### Why
+!Put the slide deck here!
 
-* System dependencies
+To read more about how we got here, see our [Phase 3 work](https://github.com/18F/privacy-tools/blob/master/README.md) and our [Privacy Dashboard built for GSA](https://cg-9341b8ea-025c-4fe2-aa6c-850edbebc499.app.cloud.gov/site/18f/privacy-dashboard/).
 
-* Configuration
+### How
+This is a Rails app, running on Cloud.gov. It gets SORNs from the Federal Register. It reads those SORNs and separates every section into their own database column.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Who
+- [ondrae](https://github.com/ondrae)
+- [peterrowland](https://github.com/peterrowland)
+- [igorkorenfeld](https://github.com/igorkorenfeld)
