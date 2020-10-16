@@ -80,6 +80,11 @@ GEM
     debug_inspector (0.0.3)
     diff-lcs (1.4.4)
     erubi (1.9.0)
+    factory_bot (6.1.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.1.0)
+      factory_bot (~> 6.1.0)
+      railties (>= 5.0.0)
     federal_register (0.7.6)
       httparty (>= 0.14.0)
     ffi (1.13.1)
@@ -268,6 +273,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  factory_bot_rails
   federal_register (~> 0.7.6)
   good_job
   httparty
