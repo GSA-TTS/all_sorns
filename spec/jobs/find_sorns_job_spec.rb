@@ -15,9 +15,17 @@ RSpec.describe FindSornsJob, type: :job do
     context "while performing" do
       let(:title) { "Privacy Act of 1974; System of Records" }
       let(:pages) { 1 }
+      let(:type) { "Notice" }
 
       before do
-        mock_results = [OpenStruct.new(title: title, full_text_xml_url: "expected url", html_url: "html url", citation: "citation")]
+        mock_result = OpenStruct.new(
+          title: title,
+          full_text_xml_url: "expected url",
+          html_url: "html url",
+          citation: "citation",
+          type: type
+        )
+        mock_results = [mock_result]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
         allow(FederalRegister::Document).to receive(:search).and_return result_set
         allow(ParseSornXmlJob).to receive(:perform_later)
@@ -30,7 +38,16 @@ RSpec.describe FindSornsJob, type: :job do
       end
 
       it "Calls ParseSornXML job with the xml url." do
-        expect(ParseSornXmlJob).to have_received(:perform_later).with({xml_url: "expected url", html_url: "html url", citation: "citation"})
+        expect(ParseSornXmlJob).to have_received(:perform_later)
+          .with(xml_url: "expected url", html_url: "html url", citation: "citation")
+      end
+
+      context "with a an non-notice sorn" do
+        let(:type) { "Proposed Rule" }
+
+        it "Doesn't call ParseSornMxlJob" do
+          expect(ParseSornXmlJob).not_to have_received(:perform_later)
+        end
       end
 
       context "with unwanted SORN titles" do
