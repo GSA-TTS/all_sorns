@@ -10,18 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_14_234853) do
+ActiveRecord::Schema.define(version: 2020_10_16_220441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "agencies", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "data_source"
-  end
 
   create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
@@ -38,7 +31,6 @@ ActiveRecord::Schema.define(version: 2020_10_14_234853) do
   end
 
   create_table "sorns", force: :cascade do |t|
-    t.bigint "agency_id", null: false
     t.string "system_name"
     t.string "authority"
     t.string "action"
@@ -72,6 +64,8 @@ ActiveRecord::Schema.define(version: 2020_10_14_234853) do
     t.string "system_number"
     t.string "data_source"
     t.string "citation"
+    t.string "agency_names"
+    t.xml "xml"
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
@@ -98,9 +92,7 @@ ActiveRecord::Schema.define(version: 2020_10_14_234853) do
     t.index "to_tsvector('english'::regconfig, (supplementary_info)::text)", name: "supplementary_info_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
-    t.index ["agency_id"], name: "index_sorns_on_agency_id"
     t.index ["citation"], name: "index_sorns_on_citation"
   end
 
-  add_foreign_key "sorns", "agencies"
 end
