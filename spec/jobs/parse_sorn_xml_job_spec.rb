@@ -12,7 +12,10 @@ RSpec.describe ParseSornXmlJob, type: :job do
   end
 
   context "when the job runs" do
-    let(:sorn) { create(:sorn) }
+    let(:sorn) do
+      xml = file_fixture("sorn.xml").read
+      create(:sorn, xml: xml)
+    end
 
     it "calls get_xml and parse_xml" do
       allow(Sorn).to receive(:find).and_return sorn
