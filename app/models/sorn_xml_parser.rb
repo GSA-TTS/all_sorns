@@ -2,13 +2,13 @@ class SornXmlParser
   # Uses an XML streamer. Each method re-streams the file. Fast enough and uses no memory.
 
   def initialize(xml)
-    @parser = Saxerator.parser(xml)# {|config| config.ignore_namespaces!}
+    @parser = Saxerator.parser(xml) # {|config| config.ignore_namespaces!}
     @sections = get_sections
   end
 
-  def parse_sorn
+  def parse_xml
     {
-      agency: get_agency,
+
       action: get_action,
       summary: get_summary,
       dates: get_dates,
@@ -164,14 +164,17 @@ class SornXmlParser
   private
 
   def find_tag(tag)
-    # Return the whole element if its a string or array
-    # Most of the AGENCY tags are single strings
-    # Rarely another tag will be complicated and have more than paragraphs, these show up as arrays.
-    # Just return the whole array as a string
     element = @parser.for_tag(tag).first
 
+    # Return the whole element if its a string
+    return element if element.class == Saxerator::Builder::StringElement
+
     # Most commonly, it is a hash with paragraphs
-    element.fetch('P', nil) if element.class == Saxerator::Builder::HashElement
+    return element.fetch('P', nil) if element.class == Saxerator::Builder::HashElement
+
+    # Rarely another tag will be complicated and have more than paragraphs, these show up as arrays.
+    # Just return the whole array as a string
+    return element if element.class == Saxerator::Builder::ArrayElement
   end
 
   def get_sections

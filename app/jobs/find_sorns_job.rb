@@ -9,7 +9,7 @@ class FindSornsJob < ApplicationJob
 
     conditions = { term: 'Privacy Act of 1974; System of Records' }#, agencies: ['general-services-administration'] }
     # 'general-services-administration', 'justice-department', 'defense-department']
-    fields = ['title', 'full_text_xml_url', 'html_url', 'citation', 'type']#, 'raw_text_url', 'agency_names', 'dates']
+    fields = ['title', 'full_text_xml_url', 'html_url', 'citation', 'type', 'agency_names']#, 'raw_text_url', , 'dates']
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
     # we may want to start using the http api instead.
 
@@ -32,14 +32,24 @@ class FindSornsJob < ApplicationJob
     result_set.results.each do |result|
       next unless result.type == 'Notice'
       next unless a_sorn_title?(result.title)
-      # next if Sorn.find_by(citation: result.citation)
+
+      sorn = Sorn.find_by(citation: result.citation)
 
       params = {
         xml_url: result.full_text_xml_url,
         html_url: result.html_url,
-        citation: result.citation
+        citation: result.citation,
+        agency_names: result.agency_names
       }
-      ParseSornXmlJob.perform_later(params)
+
+      if not sorn
+        sorn = Sorn.create!(params)
+        puts "Created #{sorn.citation}"
+       else
+        sorn.update(**params)
+      end
+
+      ParseSornXmlJob.perform_later(sorn.id)
     end
 
     # Keep making more requests until there are no more.

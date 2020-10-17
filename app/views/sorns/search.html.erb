@@ -79,8 +79,8 @@
                   </h2>
                 </div>
 
-                <% if sorn.agency.name %>
-                  <h4><%= highlight(sorn.agency.name, params[:search]) %></h4>
+                <% if sorn.agency_names %>
+                  <h4><%= highlight(sorn.agency_names, params[:search]) %></h4>
                 <% end %>
 
                 <% if sorn.action %>

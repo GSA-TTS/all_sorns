@@ -23,7 +23,8 @@ RSpec.describe FindSornsJob, type: :job do
           full_text_xml_url: "expected url",
           html_url: "html url",
           citation: "citation",
-          type: type
+          type: type,
+          agency_names: ['My Favorite Agency']
         )
         mock_results = [mock_result]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
@@ -33,13 +34,18 @@ RSpec.describe FindSornsJob, type: :job do
         FindSornsJob.perform_now
       end
 
+      it "Creates a Sorn for each result" do
+        Sorn.destroy_all
+        expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
+      end
+
       it "Makes a federal register api call" do
         expect(FederalRegister::Document).to have_received(:search)
       end
 
       it "Calls ParseSornXML job with the xml url." do
         expect(ParseSornXmlJob).to have_received(:perform_later)
-          .with(xml_url: "expected url", html_url: "html url", citation: "citation")
+          .with(Sorn.last.id)
       end
 
       context "with a an non-notice sorn" do

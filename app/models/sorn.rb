@@ -3,6 +3,7 @@ class Sorn < ApplicationRecord
   validates :citation, uniqueness: true
 
   FIELDS = [
+    :agency_names,
     :action,
     :summary,
     :dates,
@@ -46,6 +47,18 @@ class Sorn < ApplicationRecord
     }
   }
 
+  def get_xml
+    response = HTTParty.get(self.xml_url, format: :plain)
+    return nil unless response.success?
+    self.update(xml: response.parsed_response)
+  end
+
+  def parse_xml
+    parsed_sorn = SornXmlParser.new(self.xml).parse_xml
+    self.update(**parsed_sorn)
+  end
+
+
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
   def self.to_csv(columns = column_names, options = {})
     CSV.generate(options) do |csv|
@@ -53,23 +66,13 @@ class Sorn < ApplicationRecord
       all.each do |sorn|
 
         values = sorn.attributes.slice(*columns).values
-        values += [sorn.agency.name]
+        values += [sorn.agency_names]
         csv.add_row values
       end
     end
   end
 
-
-
   def linked
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
-  end
-
-  def split_categories
-    if self.categories_of_record
-      JSON.parse(self.categories_of_record).map do |categories|
-        categories.split ';'
-      end.flatten.reject(&:empty?)
-    end
   end
 end

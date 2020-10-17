@@ -50,16 +50,16 @@
                   </h2>
                 </div>
 
-                <% if sorn.agency.name %>
+                <% if sorn.agency_names %>
                   <h4 class="usa-accordion__heading">
                     <button class="usa-accordion__button"
                       aria-expanded="true"
-                      aria-controls="agency.name-<%= sorn.id %>">
-                      agency.name:
+                      aria-controls="agency_names-<%= sorn.id %>">
+                      agency_names:
                     </button>
                   </h4>
-                    <div id="agency.name-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                      <%= highlight(sorn.agency.name, params[:search]) %>
+                    <div id="agency_names-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                      <%= highlight(sorn.agency_names, params[:search]) %>
                     </div>
                 <% end %>
 

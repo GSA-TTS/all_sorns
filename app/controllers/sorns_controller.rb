@@ -7,7 +7,7 @@ class SornsController < ApplicationController
       field_syms = params[:fields].map { |field| field.to_sym }
       @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).order(id: :asc).page params[:page]
     else
-      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).includes(:agency).page params[:page]
+      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).page params[:page]
     end
 
     # respond_to do |format|
@@ -18,7 +18,7 @@ class SornsController < ApplicationController
   end
 
   def csv
-    @sorns = Sorn.where(data_source: :fedreg).includes(:agency)
+    @sorns = Sorn.where(data_source: :fedreg)
 
     respond_to do |format|
       format.csv { send_data @sorns.to_csv, filename: "sorns.csv" }
@@ -29,9 +29,9 @@ class SornsController < ApplicationController
   def index(source)
     if params[:search]
       redirect_to request.path if params[:search] == ''
-      @sorns = Sorn.where(data_source: source).search_by_all(params[:search]).order(id: :asc).includes(:agency)
+      @sorns = Sorn.where(data_source: source).dynamic_search(Sorn::FIELDS, params[:search]).order(id: :asc)
     else
-      @sorns = Sorn.where(data_source: source).order(id: :asc).includes(:agency)
+      @sorns = Sorn.where(data_source: source).order(id: :asc)
     end
     @count = @sorns.count
     @sorns = @sorns.page params[:page]

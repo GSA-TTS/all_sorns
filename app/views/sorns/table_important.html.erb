@@ -26,7 +26,7 @@
   <tbody>
     <% @sorns.each do |sorn| %>
       <tr>
-        <td><%= highlight(sorn.agency.name, params[:search]) %></td>
+        <td><%= highlight(sorn.agency_names, params[:search]) %></td>
         <td><%= highlight(sorn.action, params[:search]) %></td>
         <td><%= highlight(sorn.system_name, params[:search]) %></td>
         <td><%= highlight(sorn.authority, params[:search]) %></td>
