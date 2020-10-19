@@ -29,7 +29,7 @@
                 <div class="grid-row">
                   <% Sorn::FIELDS.each_with_index do |field, index| %>
                     <div class="usa-checkbox grid-col-3">
-                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>" <%= Sorn.checked_by_default(field) %>>
+                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>" <%= checked_by_default(field) %>>
                       <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
                     </div>
 
