@@ -58,7 +58,6 @@ class Sorn < ApplicationRecord
     self.update(**parsed_sorn)
   end
 
-
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
   def self.to_csv(columns = column_names, options = {})
     CSV.generate(options) do |csv|
