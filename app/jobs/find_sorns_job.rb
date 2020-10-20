@@ -39,7 +39,8 @@ class FindSornsJob < ApplicationJob
         xml_url: result.full_text_xml_url,
         html_url: result.html_url,
         citation: result.citation,
-        agency_names: result.agency_names
+        agency_names: result.agency_names,
+        data_source: :fedreg
       }
 
       if not sorn
