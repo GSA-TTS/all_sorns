@@ -3,7 +3,7 @@ class AnalyticsController < ApplicationController
 
         @total_sorns = Sorn.count
 
-        @agency_sorn_counts = Sorn.group(:agency_names).count
+        @agency_sorn_counts = Sorn.group(:agency_names).count.sort_by{ |name, count| count }.reverse
 
     end
 end
