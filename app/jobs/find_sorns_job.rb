@@ -31,7 +31,7 @@ class FindSornsJob < ApplicationJob
 
     result_set.results.each do |result|
       next unless result.type == 'Notice'
-      next unless a_sorn_title?(result.title)
+      next unless result.title.include?('Privacy Act of 1974')
 
       sorn = Sorn.find_by(citation: result.citation)
 
@@ -62,11 +62,11 @@ class FindSornsJob < ApplicationJob
 
   private
 
-  def a_sorn_title?(title)
-    includes_privacy_act = title.include?('Privacy Act of 1974')
-    excludes_unwanted_titles = ['matching', 'rulemaking', 'implementation'].all? do |excluded_title|
-      title.downcase.exclude? excluded_title
-    end
-    includes_privacy_act && excludes_unwanted_titles
-  end
+  # def a_sorn_title?(title)
+  #   includes_privacy_act = title.include?('Privacy Act of 1974')
+  #   excludes_unwanted_titles = ['matching', 'rulemaking', 'implementation'].all? do |excluded_title|
+  #     title.downcase.exclude? excluded_title
+  #   end
+  #   includes_privacy_act && excludes_unwanted_titles
+  # end
 end

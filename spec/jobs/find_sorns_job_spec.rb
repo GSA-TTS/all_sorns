@@ -80,23 +80,23 @@ RSpec.describe FindSornsJob, type: :job do
         end
       end
 
-      context "with unwanted SORN titles" do
-        excluded_titles = [
-          "Privacy Act of 1974; Matching",
-          "Privacy Act of 1974; rulemaking sorn",
-          "Privacy Act of 1974; Implementation SORN"
-        ]
+      # context "with unwanted SORN titles" do
+      #   excluded_titles = [
+      #     "Privacy Act of 1974; Matching",
+      #     "Privacy Act of 1974; rulemaking sorn",
+      #     "Privacy Act of 1974; Implementation SORN"
+      #   ]
 
-        excluded_titles.each do |excluded_title|
-          let(:title) { excluded_title }
+      #   excluded_titles.each do |excluded_title|
+      #     let(:title) { excluded_title }
 
-          it "Doesn't call ParseSornMxlJob" do
-            FindSornsJob.perform_now
+      #     it "Doesn't call ParseSornMxlJob" do
+      #       FindSornsJob.perform_now
 
-            expect(ParseSornXmlJob).not_to have_received(:perform_later)
-          end
-        end
-      end
+      #       expect(ParseSornXmlJob).not_to have_received(:perform_later)
+      #     end
+      #   end
+      # end
 
       context "with more than one page" do
         let(:pages) { 2 }
