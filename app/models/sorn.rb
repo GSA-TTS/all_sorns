@@ -41,16 +41,17 @@ class Sorn < ApplicationRecord
     :citation,
     :api_action,
     :api_dates,
-    :title
+    :title,
+    :publication_date
   ]
 
   DEFAULT_FIELDS = [
-    :agency_names,
-    :action,
-    :system_name,
-    :summary,
-    :html_url,
-    :publication_date
+    'agency_names',
+    'action',
+    'system_name',
+    'summary',
+    'html_url',
+    'publication_date'
   ]
 
   pg_search_scope :dynamic_search, lambda { |field, query|

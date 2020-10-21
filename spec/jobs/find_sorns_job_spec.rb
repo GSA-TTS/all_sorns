@@ -59,7 +59,7 @@ RSpec.describe FindSornsJob, type: :job do
           expect(sorn.pdf_url).to eq 'pdf url'
           expect(sorn.agency_names).to eq "[\"My Favorite Agency\"]"
           expect(sorn.data_source).to eq 'fedreg'
-          expect(sorn.publication_date).to eq Date.parse("2000-01-13")
+          expect(sorn.publication_date).to eq "2000-01-13"
         end
       end
 

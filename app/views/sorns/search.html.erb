@@ -27,9 +27,10 @@
               <fieldset id="fields" class="usa-fieldset">
                 <legend class="usa-legend">Fields</legend>
                 <div id="sorn-fields" class="grid-row">
-                  <% Sorn::FIELDS.each_with_index do |field, index| %>
+                  <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+                  <% checkboxes.each_with_index do |field, index| %>
                     <div class="usa-checkbox grid-col-3">
-                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>" <%= checked_by_default(field) %>>
+                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
                       <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
                     </div>
 
@@ -52,14 +53,7 @@
         </div>
         <div class="grid-row margin-top-2 margin-right-0 results-meta">
           <div class="grid-col-6 display-inline">
-            <%
-=begin%>
- <button class="usa-button" href="<%= request.fullpath %>">CSV</button>
-<%
-=end%>
           </div>
-
-
           <div class="grid-col-6 margin-bottom-0 text-right results-meta__count">
              <div id="search-result-counter" class="font-body-xs">
               <%= page_entries_info @sorns %>
@@ -73,420 +67,27 @@
 
             <% @sorns.each do |sorn| %>
               <div class="card card--sorn padding-2 margin-top-2 margin-right-0 usa-accordion" aria-multiselectable="true">
-                <div class="grid-row margin-bottom-105">
-                  <h2 class="system card__h2 card__h2--sorn">
-                    <%= highlight(sorn.system_name, params[:search]) %>
-                  </h2>
-                </div>
 
-                <% if sorn.agency_names %>
-                  <h4><%= highlight(sorn.agency_names, params[:search]) %></h4>
-                <% end %>
-
-                <% if sorn.action %>
-                  <% if @selected_fields && @selected_fields.include?("action") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="action-<%= sorn.id %>">
-                        action:
-                      </button>
-                    </h4>
-                      <div id="action-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.action, params[:search]) %>
+                <% if @selected_fields %>
+                  <% @selected_fields.each do |selected_field| %>
+                    <% if show_field?(selected_field) %>
+                      <h4 class="usa-accordion__heading">
+                        <button class="usa-accordion__button"
+                          aria-expanded="true"
+                          aria-controls="<%= selected_field %>-<%= sorn.id %>">
+                          <%= selected_field %>:
+                        </button>
+                      </h4>
+                      <div id="<%= selected_field %>-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                        <%= highlight(sorn.send(selected_field), params[:search]) %>
                       </div>
+                    <% end %>
                   <% end %>
                 <% end %>
 
-                <% if sorn.citation %>
-                  <% if @selected_fields && @selected_fields.include?("citation") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="citation-<%= sorn.id %>">
-                        citation:
-                      </button>
-                    </h4>
-                      <div id="citation-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.citation, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-
-                <% if sorn.summary %>
-                  <% if @selected_fields && @selected_fields.include?("summary") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="summary-<%= sorn.id %>">
-                        summary:
-                      </button>
-                    </h4>
-                      <div id="summary-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.summary, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.dates %>
-                  <% if @selected_fields && @selected_fields.include?("dates") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="dates-<%= sorn.id %>">
-                        dates:
-                      </button>
-                    </h4>
-                      <div id="dates-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.dates, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.addresses %>
-                  <% if @selected_fields && @selected_fields.include?("addresses") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="addresses-<%= sorn.id %>">
-                        addresses:
-                      </button>
-                    </h4>
-                      <div id="addresses-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.addresses, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.further_info %>
-                  <% if @selected_fields && @selected_fields.include?("further_info") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="further_info-<%= sorn.id %>">
-                        further_info:
-                      </button>
-                    </h4>
-                      <div id="further_info-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.further_info, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.supplementary_info %>
-                  <% if @selected_fields && @selected_fields.include?("supplementary_info") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="supplementary_info-<%= sorn.id %>">
-                        supplementary_info:
-                      </button>
-                    </h4>
-                      <div id="supplementary_info-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.supplementary_info, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.security %>
-                  <% if @selected_fields && @selected_fields.include?("security") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="security-<%= sorn.id %>">
-                        security:
-                      </button>
-                    </h4>
-                      <div id="security-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.security, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.location %>
-                  <% if @selected_fields && @selected_fields.include?("location") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="location-<%= sorn.id %>">
-                        location:
-                      </button>
-                    </h4>
-                      <div id="location-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.location, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.manager %>
-                  <% if @selected_fields && @selected_fields.include?("manager") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="manager-<%= sorn.id %>">
-                        manager:
-                      </button>
-                    </h4>
-                      <div id="manager-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.manager, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.authority %>
-                  <% if @selected_fields && @selected_fields.include?("authority") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="authority-<%= sorn.id %>">
-                        authority:
-                      </button>
-                    </h4>
-                      <div id="authority-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.authority, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.purpose %>
-                  <% if @selected_fields && @selected_fields.include?("purpose") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="purpose-<%= sorn.id %>">
-                        purpose:
-                      </button>
-                    </h4>
-                      <div id="purpose-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.purpose, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.categories_of_individuals %>
-                  <% if @selected_fields && @selected_fields.include?("categories_of_individuals") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="categories_of_individuals-<%= sorn.id %>">
-                        categories_of_individuals:
-                      </button>
-                    </h4>
-                      <div id="categories_of_individuals-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.categories_of_individuals, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.categories_of_record %>
-                  <% if @selected_fields && @selected_fields.include?("categories_of_record") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="categories_of_record-<%= sorn.id %>">
-                        categories_of_record:
-                      </button>
-                    </h4>
-                      <div id="categories_of_record-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.categories_of_record, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.source %>
-                  <% if @selected_fields && @selected_fields.include?("source") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="source-<%= sorn.id %>">
-                        source:
-                      </button>
-                    </h4>
-                      <div id="source-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.source, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.routine_uses %>
-                  <% if @selected_fields && @selected_fields.include?("routine_uses") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="routine_uses-<%= sorn.id %>">
-                        routine_uses:
-                      </button>
-                    </h4>
-                      <div id="routine_uses-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= highlight(sorn.routine_uses, params[:search]) %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.storage %>
-                  <% if @selected_fields && @selected_fields.include?("storage") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="storage-<%= sorn.id %>">
-                        storage:
-                      </button>
-                    </h4>
-                      <div id="storage-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.storage %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.retrieval %>
-                  <% if @selected_fields && @selected_fields.include?("retrieval") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="retrieval-<%= sorn.id %>">
-                        retrieval:
-                      </button>
-                    </h4>
-                      <div id="retrieval-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.retrieval %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.retention %>
-                  <% if @selected_fields && @selected_fields.include?("retention") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="retention-<%= sorn.id %>">
-                        retention:
-                      </button>
-                    </h4>
-                      <div id="retention-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.retention %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-
-                <% if sorn.safeguards %>
-                  <% if @selected_fields && @selected_fields.include?("safeguards") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="safeguards-<%= sorn.id %>">
-                        safeguards:
-                      </button>
-                    </h4>
-                      <div id="safeguards-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.safeguards %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-
-                <% if sorn.access %>
-                  <% if @selected_fields && @selected_fields.include?("access") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="access-<%= sorn.id %>">
-                        access:
-                      </button>
-                    </h4>
-                      <div id="access-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.access %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-
-
-                <% if sorn.contesting %>
-                  <% if @selected_fields && @selected_fields.include?("contesting") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="contesting-<%= sorn.id %>">
-                        contesting:
-                      </button>
-                    </h4>
-                      <div id="contesting-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.contesting %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-
-                <% if sorn.notification %>
-                  <% if @selected_fields && @selected_fields.include?("notification") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="notification-<%= sorn.id %>">
-                        notification:
-                      </button>
-                    </h4>
-                      <div id="notification-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.notification %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.exemptions %>
-                  <% if @selected_fields && @selected_fields.include?("exemptions") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="exemptions-<%= sorn.id %>">
-                        exemptions:
-                      </button>
-                    </h4>
-                      <div id="exemptions-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.exemptions %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <% if sorn.history %>
-                  <% if @selected_fields && @selected_fields.include?("history") %>
-                    <h4 class="usa-accordion__heading">
-                      <button class="usa-accordion__button"
-                        aria-expanded="true"
-                        aria-controls="history-<%= sorn.id %>">
-                        history:
-                      </button>
-                    </h4>
-                      <div id="history-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                        <%= sorn.history %>
-                      </div>
-                  <% end %>
-                <% end %>
-
-                <div class="grid-row margin-bottom-105">
-                  <div class="tablet:grid-col-2">
-                    <span class="card__label">Links:</span>
-                  </div>
-                  <div class="authority tablet:grid-col-10">
-                    <span><%= link_to 'html', sorn.html_url %></span>
-                    <span><%= link_to 'xml', sorn.xml_url %></span>
-                  </div>
-                </div>
               </div>
             <% end %>
+
           </div>
         </div>
       </main>
