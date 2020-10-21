@@ -5,9 +5,9 @@ class SornsController < ApplicationController
     if params[:search]
       @selected_fields = params[:fields]
       field_syms = params[:fields].map { |field| field.to_sym }
-      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).order(id: :asc).page params[:page]
+      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).page params[:page]
     else
-      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).page params[:page]
+      @sorns = Sorn.where(data_source: :fedreg).page params[:page]
     end
 
     # respond_to do |format|

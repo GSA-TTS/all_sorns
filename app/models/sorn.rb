@@ -2,6 +2,8 @@ class Sorn < ApplicationRecord
   include PgSearch::Model
   validates :citation, uniqueness: true
 
+  default_scope { order(publication_date: :desc) }
+
   FIELDS = [
     :agency_names,
     :action,
@@ -35,9 +37,20 @@ class Sorn < ApplicationRecord
   METADATA = [
     :html_url,
     :xml_url,
-    :headers,
-    :data_source,
-    :citation
+    :pdf_url,
+    :citation,
+    :api_action,
+    :api_dates,
+    :title
+  ]
+
+  DEFAULT_FIELDS = [
+    :agency_names,
+    :action,
+    :system_name,
+    :summary,
+    :html_url,
+    :publication_date
   ]
 
   pg_search_scope :dynamic_search, lambda { |field, query|
