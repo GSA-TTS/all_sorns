@@ -37,6 +37,11 @@ bundle exec rails db:setup
 bundle exec rails server
 ```
 
+## Populate SORNS from the Federal register
+Run
+```
+bundle exec rails federal_register:find_sorns
+```
 
 ### Who
 - [ondrae](https://github.com/ondrae)
