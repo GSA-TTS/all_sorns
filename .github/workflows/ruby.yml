@@ -52,9 +52,10 @@ jobs:
           ${{ runner.os }}-gems-
     - name: Install dependencies
       run:  |
+        yarn install --check-files
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
     - name: Run migrate db
-      run: bundle exec db:setup
+      run: bundle exec rails db:setup
     - name: Run tests
       run: bundle exec rspec 
