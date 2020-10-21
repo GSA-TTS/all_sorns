@@ -22,7 +22,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: all_sorns_development        
+          POSTGRES_DB: all_sorns_development       
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         ports:
