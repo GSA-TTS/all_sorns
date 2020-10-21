@@ -32,6 +32,8 @@ if ! type "$bundler" > /dev/null; then
 fi
 bundle install
 yarn install --check-files
+
+bundle exec rails db:setup
 bundle exec rails server
 ```
 
