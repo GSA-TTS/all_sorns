@@ -20,11 +20,15 @@ RSpec.describe FindSornsJob, type: :job do
       before do
         mock_result = OpenStruct.new(
           title: title,
+          action: "api action",
+          dates: "api dates",
+          pdf_url: "pdf url",
           full_text_xml_url: "expected url",
           html_url: "html url",
           citation: "citation",
           type: type,
-          agency_names: ['My Favorite Agency']
+          agency_names: ['My Favorite Agency'],
+          publication_date: "2000-01-13"
         )
         mock_results = [mock_result]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
@@ -47,11 +51,15 @@ RSpec.describe FindSornsJob, type: :job do
           FindSornsJob.perform_now
 
           sorn = Sorn.last
+          expect(sorn.api_action).to eq 'api action'
+          expect(sorn.api_dates).to eq 'api dates'
           expect(sorn.citation).to eq 'citation'
           expect(sorn.xml_url).to eq 'expected url'
           expect(sorn.html_url).to eq 'html url'
+          expect(sorn.pdf_url).to eq 'pdf url'
           expect(sorn.agency_names).to eq "[\"My Favorite Agency\"]"
           expect(sorn.data_source).to eq 'fedreg'
+          expect(sorn.publication_date).to eq Date.parse("2000-01-13")
         end
       end
 

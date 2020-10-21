@@ -9,7 +9,10 @@ class FindSornsJob < ApplicationJob
 
     conditions = { term: 'Privacy Act of 1974; System of Records' }#, agencies: ['general-services-administration'] }
     # 'general-services-administration', 'justice-department', 'defense-department']
-    fields = ['title', 'full_text_xml_url', 'html_url', 'citation', 'type', 'agency_names']#, 'raw_text_url', , 'dates']
+    fields = ["action", "agencies", "agency_names", "citation",
+      "dates", "full_text_xml_url", "html_url", "pdf_url",
+      "publication_date", "raw_text_url", "title", "type"]
+
     # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
     # we may want to start using the http api instead.
 
@@ -36,10 +39,16 @@ class FindSornsJob < ApplicationJob
       sorn = Sorn.find_by(citation: result.citation)
 
       params = {
+        api_action: result.action,
+        api_dates: result.dates,
         xml_url: result.full_text_xml_url,
         html_url: result.html_url,
+        pdf_url: result.pdf_url,
+        text_url: result.raw_text_url,
+        publication_date: result.publication_date,
         citation: result.citation,
         agency_names: result.agency_names,
+        title: result.title,
         data_source: :fedreg
       }
 
