@@ -75,7 +75,7 @@ jobs:
           RAILS_ENV: test
         run: rspec
   deploy:
-    name: Deploy
+    name: Deploy to cloud.gov
     runs-on: ubuntu-latest
     steps:
       - name: Install cf cli
