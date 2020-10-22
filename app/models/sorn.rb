@@ -39,8 +39,6 @@ class Sorn < ApplicationRecord
     :xml_url,
     :pdf_url,
     :citation,
-    :api_action,
-    :api_dates,
     :title,
     :publication_date
   ]
