@@ -39,8 +39,8 @@ class FindSornsJob < ApplicationJob
       sorn = Sorn.find_by(citation: result.citation)
 
       params = {
-        api_action: result.action,
-        api_dates: result.dates,
+        action: result.action,
+        dates: result.dates,
         xml_url: result.full_text_xml_url,
         html_url: result.html_url,
         pdf_url: result.pdf_url,

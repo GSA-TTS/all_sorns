@@ -18,19 +18,17 @@ RSpec.describe Sorn, type: :model do
   describe ".parse_xml" do
     let(:sorn) do
       xml = file_fixture("sorn.xml").read
-      create(:sorn, action: nil, xml: xml)
+      create(:sorn, security: nil, xml: xml)
     end
 
     it "successfully updates the sorn" do
-      expect { sorn.parse_xml }.to change { sorn.action }.from(nil).to("Notice of a new system of records.")
+      expect { sorn.parse_xml }.to change { sorn.security }.from(nil).to("[\"Unclassified.\"]")
     end
 
     it "parses as expected" do
       sorn.parse_xml
 
-      expect(sorn.action).to eq "Notice of a new system of records."
       expect(sorn.summary).to start_with "[\"\\nGSA is publishing this system"
-      expect(sorn.dates).to start_with "The System of Records Notice (SORN) is applicable on October 8, 2019"
       expect(sorn.addresses).to start_with "[\"Submit comments identified by “Notice-ID-2019-01,"
       expect(sorn.further_info).to start_with "[\"\\nCall or email GSA's Chief Privacy Officer: tel"
       expect(sorn.supplementary_info).to start_with "[\"The e-Rulemaking Program has been managed by the "
