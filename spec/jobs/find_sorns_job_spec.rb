@@ -51,8 +51,8 @@ RSpec.describe FindSornsJob, type: :job do
           FindSornsJob.perform_now
 
           sorn = Sorn.last
-          expect(sorn.api_action).to eq 'api action'
-          expect(sorn.api_dates).to eq 'api dates'
+          expect(sorn.action).to eq 'api action'
+          expect(sorn.dates).to eq 'api dates'
           expect(sorn.citation).to eq 'citation'
           expect(sorn.xml_url).to eq 'expected url'
           expect(sorn.html_url).to eq 'html url'
