@@ -88,9 +88,9 @@ jobs:
           sudo apt-get install cf-cli
           cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
           cf install-plugin blue-green-deploy -r CF-Community -f
-     - name:
-       env:
-          TEST: hello worlds
-       run: |
+      - name: Install cf cli
+        env:
+          TEST: "hello worlds"
+        run: |
             ./.cloud-gov/deploy.sh 
 
