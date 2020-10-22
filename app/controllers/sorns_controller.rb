@@ -23,7 +23,9 @@ class SornsController < ApplicationController
     @sorns = @sorns.page(params[:page]) if request.format == :html
 
     respond_to do |format|
-      format.csv { send_data @sorns.to_csv, filename: "sorns.csv" }
+      format.html
+      # format.json { render json: @sorns.to_json }
+      format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
     end
   end
 

@@ -15,6 +15,10 @@ RSpec.describe "Search", type: :request do
         expect(response.body).to include sorn.send(default_field)
       end
     end
+
+    it "csv link matches" do
+      expect(response.body).to include '<a href="/search.csv?search=">'
+    end
   end
 
 
@@ -31,6 +35,10 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "HTML URL"
       expect(response.body).to include "2000-01-13"
     end
+
+    it "csv link matches" do
+      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
+    end
   end
 
   context "search with different columns" do
@@ -41,6 +49,10 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include '<mark>citation</mark>'
       expect(response.body).to_not include "FAKE SYSTEM NAME"
     end
+
+    it "csv link matches" do
+      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
+    end
   end
 
   context "blank search, with different columns" do
@@ -50,6 +62,10 @@ RSpec.describe "Search", type: :request do
     it "returns everything, with only selected columns" do
       expect(response.body).to include 'citation'
       expect(response.body).to_not include "FAKE SYSTEM NAME"
+    end
+
+    it "csv link matches" do
+      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
     end
   end
 end

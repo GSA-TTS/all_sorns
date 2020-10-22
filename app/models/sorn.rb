@@ -79,7 +79,6 @@ class Sorn < ApplicationRecord
       all.each do |sorn|
 
         values = sorn.attributes.slice(*columns).values
-        values += [sorn.agency_names]
         csv.add_row values
       end
     end
