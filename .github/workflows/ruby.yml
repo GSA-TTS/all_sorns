@@ -14,10 +14,9 @@ on:
     branches: [ main ]
 
 jobs:
-  verify:
-    name: Build & Test
+  build_and_test:
+    name: Build and test
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:11
@@ -75,7 +74,7 @@ jobs:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
         run: rspec
-    verify:
+  deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
