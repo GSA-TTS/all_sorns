@@ -88,7 +88,7 @@ jobs:
           sudo apt-get install cf-cli
           cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
           cf install-plugin blue-green-deploy -r CF-Community -f
-      - name: Install cf cli
+      - name: Run deployment script
         env:
           TEST: "hello worlds"
         run: |
