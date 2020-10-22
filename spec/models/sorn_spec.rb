@@ -18,7 +18,7 @@ RSpec.describe Sorn, type: :model do
   describe ".parse_xml" do
     let(:sorn) do
       xml = file_fixture("sorn.xml").read
-      create(:sorn, xml: xml)
+      create(:sorn, action: nil, xml: xml)
     end
 
     it "successfully updates the sorn" do

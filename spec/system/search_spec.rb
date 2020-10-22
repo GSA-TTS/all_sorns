@@ -9,12 +9,10 @@ RSpec.describe "/search", type: :system do
   it "default checkboxes are as expected" do
     visit "/search"
 
-    expect(find("#search-agency_names")).to be_checked
-    expect(find("#search-action")).to be_checked
-    expect(find("#search-system_name")).to be_checked
-    expect(find("#search-authority")).to be_checked
-    expect(find("#search-categories_of_record")).to be_checked
+    Sorn::DEFAULT_FIELDS.each do |default_field|
+      expect(find("#search-#{default_field}")).to be_checked
+    end
 
-    expect(find("#search-summary")).not_to be_checked
+    expect(find("#search-routine_uses")).not_to be_checked
   end
 end

@@ -2,6 +2,8 @@ class Sorn < ApplicationRecord
   include PgSearch::Model
   validates :citation, uniqueness: true
 
+  default_scope { order(publication_date: :desc) }
+
   FIELDS = [
     :agency_names,
     :action,
@@ -35,9 +37,21 @@ class Sorn < ApplicationRecord
   METADATA = [
     :html_url,
     :xml_url,
-    :headers,
-    :data_source,
-    :citation
+    :pdf_url,
+    :citation,
+    :api_action,
+    :api_dates,
+    :title,
+    :publication_date
+  ]
+
+  DEFAULT_FIELDS = [
+    'agency_names',
+    'action',
+    'system_name',
+    'summary',
+    'html_url',
+    'publication_date'
   ]
 
   pg_search_scope :dynamic_search, lambda { |field, query|
@@ -65,7 +79,6 @@ class Sorn < ApplicationRecord
       all.each do |sorn|
 
         values = sorn.attributes.slice(*columns).values
-        values += [sorn.agency_names]
         csv.add_row values
       end
     end

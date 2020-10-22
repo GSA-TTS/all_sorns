@@ -2,26 +2,30 @@ class SornsController < ApplicationController
   before_action :set_sorn, only: [:show, :edit, :update, :destroy]
 
   def search
-    if params[:search]
+    @selected_fields = Sorn::DEFAULT_FIELDS
+
+    if params[:search].present? && params[:fields].present?
       @selected_fields = params[:fields]
       field_syms = params[:fields].map { |field| field.to_sym }
-      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).order(id: :asc).page params[:page]
+      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search])
+
+    elsif params[:search].present? && params[:fields].blank?
+      @selected_fields = []
+      @sorns = Sorn.none
+
+    elsif params[:search].blank? && params[:fields].present?
+      @selected_fields = params[:fields]
+      @sorns = Sorn.where(data_source: :fedreg)
     else
-      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).page params[:page]
+      @sorns = Sorn.where(data_source: :fedreg)
     end
 
-    # respond_to do |format|
-    #   format.html
-    #   format.json { render json: @sorns.to_json }
-    #   format.csv { send_data @sorns.to_csv(params[:fields]), filename: "sorns.csv" }
-    # end
-  end
-
-  def csv
-    @sorns = Sorn.where(data_source: :fedreg)
+    @sorns = @sorns.page(params[:page]) if request.format == :html
 
     respond_to do |format|
-      format.csv { send_data @sorns.to_csv, filename: "sorns.csv" }
+      format.html
+      # format.json { render json: @sorns.to_json }
+      format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
     end
   end
 
