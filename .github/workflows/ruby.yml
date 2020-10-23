@@ -107,6 +107,5 @@ jobs:
       - name: Run deployment script
         env:
           TEST: "hello worlds"
-        run: |
-            sh ./deploy.sh 
+        run: pwd 
 
