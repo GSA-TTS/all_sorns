@@ -64,8 +64,7 @@
         </div>
         <div class="grid-row margin-top-2 margin-right-0 results-meta">
           <div class="grid-col-6 display-block">
-              <%= link_to "Download this search as a CSV", search_path(search: params[:search], fields: params[:fields], format: :csv).html_safe %>
-
+              <%= link_to "Download this search as a CSV", search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe %>
           </div>
           <div class="grid-col-6 margin-bottom-0 text-right results-meta__count">
              <div id="search-result-counter" class="font-body-xs">
@@ -81,23 +80,20 @@
             <% @sorns.each do |sorn| %>
               <div class="card card--sorn padding-2 margin-top-2 margin-right-0 usa-accordion" aria-multiselectable="true">
 
-                <%
-=begin%>
- <h4 class="usa-accordion__heading">
-                  <button class="usa-accordion__button"
-                    aria-expanded="true"
-                    aria-controls="agencies-<%= sorn.id %>">
-                    agencies:
-                  </button>
-                </h4>
-                <div id="agencies-<%= sorn.id %>" class="usa-accordion__content usa-prose">
-                  <% sorn.agencies.each do |agency| %>
-                    <%= highlight(agency.name, params[:search]) %>
-                  <% end %>
-                </div>
-<%
-=end%>
-
+                <% if params[:agency] %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="agencies-<%= sorn.id %>">
+                      agencies:
+                    </button>
+                  </h4>
+                  <div id="agencies-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                    <% sorn.agencies.each do |agency| %>
+                      <%= highlight(agency.name, params[:search]) %>
+                    <% end %>
+                  </div>
+                <% end %>
 
                 <% if @selected_fields %>
                   <% @selected_fields.each do |selected_field| %>
