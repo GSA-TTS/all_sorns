@@ -67,7 +67,6 @@ jobs:
           sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
       - name: install ruby dependencies
         run: |
-          gem install bundler
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
       - name: install javascript dependencies
