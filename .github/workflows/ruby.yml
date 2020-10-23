@@ -109,5 +109,5 @@ jobs:
         env:
           TEST: "hello worlds"
         run: |
-            ./deploy.sh 
+            deploy.sh 
 
