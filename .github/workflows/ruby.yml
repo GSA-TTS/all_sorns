@@ -109,5 +109,5 @@ jobs:
         env:
           TEST: "hello worlds"
         run: |
-            ../.cloud-gov/deploy.sh 
+            .cloud-gov/deploy.sh 
 
