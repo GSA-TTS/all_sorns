@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe FindSornsJob, type: :job do
-  before { allow($stdout).to receive(:write) } # silent puts
+  # before { allow($stdout).to receive(:write) } # silent puts
 
   describe "#perform_later" do
     ActiveJob::Base.queue_adapter = :test
@@ -15,13 +15,12 @@ RSpec.describe FindSornsJob, type: :job do
     end
 
     context "while performing" do
-      let(:title) { "Privacy Act of 1974; System of Records" }
-      let(:pages) { 1 }
       let(:type) { "Notice" }
+      let(:pages) { 1 }
 
       before do
         mock_result = OpenStruct.new(
-          title: title,
+          title: "Privacy Act of 1974; System of Records",
           action: "api action",
           dates: "api dates",
           pdf_url: "pdf url",
@@ -29,8 +28,22 @@ RSpec.describe FindSornsJob, type: :job do
           html_url: "html url",
           citation: "citation",
           type: type,
-          agency_names: ['My Favorite Agency'],
-          publication_date: "2000-01-13"
+          publication_date: "2000-01-13",
+          agencies: [
+            OpenStruct.new(
+              "raw_name": "FAKE PARENT AGENCY",
+              "name": "Fake Parent Agency",
+              "id": 1,
+              "parent_id": nil
+            ),
+            OpenStruct.new(
+              "raw_name": "FAKE CHILD AGENCY",
+              "name": "Fake Child Agency",
+              "id": 2,
+              "parent_id": 1
+            )
+          ],
+          agency_names: ["Fake Parent Agency", "Fake Child Agency"]
         )
         mock_results = [mock_result]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
@@ -49,6 +62,10 @@ RSpec.describe FindSornsJob, type: :job do
           expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
         end
 
+        it "Creates agencies for each result" do
+          expect{ FindSornsJob.perform_now }.to change{ Agency.count }.by 2
+        end
+
         it "has the expected attributes" do
           FindSornsJob.perform_now
 
@@ -59,16 +76,15 @@ RSpec.describe FindSornsJob, type: :job do
           expect(sorn.xml_url).to eq 'expected url'
           expect(sorn.html_url).to eq 'html url'
           expect(sorn.pdf_url).to eq 'pdf url'
-          expect(sorn.agency_names).to eq "[\"My Favorite Agency\"]"
           expect(sorn.data_source).to eq 'fedreg'
           expect(sorn.publication_date).to eq "2000-01-13"
         end
       end
 
-      describe "with existing SORN" do
-        it "updates existing SORN" do
-          sorn = create(:sorn)
+      context "with existing SORN" do
+        let!(:sorn) { create :sorn }
 
+        it "updates existing SORN" do
           expect{ FindSornsJob.perform_now; sorn.reload }.to change{ sorn.xml_url }.from('xml_url').to('expected url')
         end
       end
@@ -76,8 +92,7 @@ RSpec.describe FindSornsJob, type: :job do
       it "Calls ParseSornXML job with the xml url." do
         FindSornsJob.perform_now
 
-        expect(ParseSornXmlJob).to have_received(:perform_later)
-          .with(Sorn.last.id)
+        expect(ParseSornXmlJob).to have_received(:perform_later).with(Sorn.last.id)
       end
 
       context "with a an non-notice sorn" do
@@ -89,24 +104,6 @@ RSpec.describe FindSornsJob, type: :job do
           expect(ParseSornXmlJob).not_to have_received(:perform_later)
         end
       end
-
-      # context "with unwanted SORN titles" do
-      #   excluded_titles = [
-      #     "Privacy Act of 1974; Matching",
-      #     "Privacy Act of 1974; rulemaking sorn",
-      #     "Privacy Act of 1974; Implementation SORN"
-      #   ]
-
-      #   excluded_titles.each do |excluded_title|
-      #     let(:title) { excluded_title }
-
-      #     it "Doesn't call ParseSornMxlJob" do
-      #       FindSornsJob.perform_now
-
-      #       expect(ParseSornXmlJob).not_to have_received(:perform_later)
-      #     end
-      #   end
-      # end
 
       context "with more than one page" do
         let(:pages) { 2 }
