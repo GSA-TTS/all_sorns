@@ -10,10 +10,12 @@ RSpec.describe "Search", type: :request do
     let(:fields) { nil }
 
     it "returns eveything with the default columns" do
-      # default fields
-      Sorn::DEFAULT_FIELDS.each do |default_field|
-        expect(response.body).to include sorn.send(default_field)
-      end
+      expect(response.body).to include sorn.agencies.first.name
+      expect(response.body).to include sorn.action
+      expect(response.body).to include sorn.system_name
+      expect(response.body).to include sorn.summary
+      expect(response.body).to include sorn.html_url
+      expect(response.body).to include sorn.publication_date
     end
 
     it "csv link matches" do

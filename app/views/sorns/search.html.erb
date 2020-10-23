@@ -24,6 +24,14 @@
                 </button>
               </fieldset>
 
+              <label class="usa-label" for="options">Select Agency</label>
+              <select class="usa-select" name="agency" id="agency-select">
+                <option value>- Select -</option>
+                <% Agency.all.each do |agency| %>
+                  <option value="<%= agency.name %>" <%= "selected" if agency.name == params[:agency] %>><%= agency.name %></option>
+                  <% end %>
+              </select>
+
               <fieldset id="fields" class="usa-fieldset">
                 <legend class="usa-legend">Fields</legend>
                 <div id="sorn-fields" class="grid-row">
@@ -73,6 +81,24 @@
             <% @sorns.each do |sorn| %>
               <div class="card card--sorn padding-2 margin-top-2 margin-right-0 usa-accordion" aria-multiselectable="true">
 
+                <%
+=begin%>
+ <h4 class="usa-accordion__heading">
+                  <button class="usa-accordion__button"
+                    aria-expanded="true"
+                    aria-controls="agencies-<%= sorn.id %>">
+                    agencies:
+                  </button>
+                </h4>
+                <div id="agencies-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                  <% sorn.agencies.each do |agency| %>
+                    <%= highlight(agency.name, params[:search]) %>
+                  <% end %>
+                </div>
+<%
+=end%>
+
+
                 <% if @selected_fields %>
                   <% @selected_fields.each do |selected_field| %>
                     <% if show_field?(selected_field) %>
@@ -92,7 +118,6 @@
 
               </div>
             <% end %>
-
           </div>
         </div>
       </main>

@@ -10,11 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_220018) do
+ActiveRecord::Schema.define(version: 2020_10_22_234350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "agencies", force: :cascade do |t|
+    t.string "name"
+    t.integer "api_id"
+    t.integer "parent_api_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["api_id"], name: "index_agencies_on_api_id"
+    t.index ["parent_api_id"], name: "index_agencies_on_parent_api_id"
+  end
+
+  create_table "agencies_sorns", force: :cascade do |t|
+    t.bigint "agency_id"
+    t.bigint "sorn_id"
+    t.index ["agency_id"], name: "index_agencies_sorns_on_agency_id"
+    t.index ["sorn_id"], name: "index_agencies_sorns_on_sorn_id"
+  end
 
   create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"

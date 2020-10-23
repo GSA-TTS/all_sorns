@@ -29,6 +29,7 @@ class FindSornsJob < ApplicationJob
   end
 
   def search_fed_reg(search_options)
+
     puts 'Asking for SORNs'
     result_set = FederalRegister::Document.search(search_options)
 
@@ -47,15 +48,28 @@ class FindSornsJob < ApplicationJob
         text_url: result.raw_text_url,
         publication_date: result.publication_date,
         citation: result.citation,
-        agency_names: result.agency_names,
         title: result.title,
+        agency_names: result.agency_names,
         data_source: :fedreg
       }
 
       if not sorn
         sorn = Sorn.create!(params)
-        puts "Created #{sorn.citation}"
-       else
+        # Create agencies
+        result.agencies.each do |api_agency|
+          agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+          sorn.agencies << agency
+        end
+          puts "Created #{sorn.citation}"
+      else
+        # Only need to update agencies once
+        # can remove this block after everyone on our team has updated.
+        if sorn.agencies.empty?
+          result.agencies.each do |api_agency|
+            agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+            sorn.agencies << agency
+          end
+        end
         sorn.update(**params)
       end
 
@@ -70,12 +84,4 @@ class FindSornsJob < ApplicationJob
   end
 
   private
-
-  # def a_sorn_title?(title)
-  #   includes_privacy_act = title.include?('Privacy Act of 1974')
-  #   excludes_unwanted_titles = ['matching', 'rulemaking', 'implementation'].all? do |excluded_title|
-  #     title.downcase.exclude? excluded_title
-  #   end
-  #   includes_privacy_act && excludes_unwanted_titles
-  # end
 end
