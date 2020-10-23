@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe FindSornsJob, type: :job do
-  before { allow($stdout).to receive(:write) } # silent puts
+  # before { allow($stdout).to receive(:write) } # silent puts
 
   describe "#perform_later" do
     ActiveJob::Base.queue_adapter = :test
@@ -29,8 +29,21 @@ RSpec.describe FindSornsJob, type: :job do
           html_url: "html url",
           citation: "citation",
           type: type,
-          agency_names: ['My Favorite Agency'],
-          publication_date: "2000-01-13"
+          publication_date: "2000-01-13",
+          agencies: [
+            {
+              "raw_name": "FAKE PARENT AGENCY",
+              "name": "Fake Parent Agency",
+              "id": 1,
+              "parent_id": nil
+            },
+            {
+              "raw_name": "FAKE CHILD AGENCY",
+              "name": "Fake Child Agency",
+              "id": 2,
+              "parent_id": 1
+            }
+          ]
         )
         mock_results = [mock_result]
         result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
@@ -49,6 +62,10 @@ RSpec.describe FindSornsJob, type: :job do
           expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
         end
 
+        it "Creates agencies for each result" do
+          expect{ FindSornsJob.perform_now }.to change{ Agency.count }.by 2
+        end
+
         it "has the expected attributes" do
           FindSornsJob.perform_now
 
@@ -59,7 +76,6 @@ RSpec.describe FindSornsJob, type: :job do
           expect(sorn.xml_url).to eq 'expected url'
           expect(sorn.html_url).to eq 'html url'
           expect(sorn.pdf_url).to eq 'pdf url'
-          expect(sorn.agency_names).to eq "[\"My Favorite Agency\"]"
           expect(sorn.data_source).to eq 'fedreg'
           expect(sorn.publication_date).to eq "2000-01-13"
         end

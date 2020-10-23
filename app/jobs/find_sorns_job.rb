@@ -47,15 +47,34 @@ class FindSornsJob < ApplicationJob
         text_url: result.raw_text_url,
         publication_date: result.publication_date,
         citation: result.citation,
-        agency_names: result.agency_names,
         title: result.title,
         data_source: :fedreg
       }
 
+
+
       if not sorn
         sorn = Sorn.create!(params)
+        # Create agencies
+        result.agencies.each do |agency|
+          agency = Agency.find_or_create_by(name: agency[:name], api_id: agency[:id], parent_api_id: agency[:parent_id])
+          agency.sorns << sorn
+          sorn.agencies << agency
+        end
+
+
+
         puts "Created #{sorn.citation}"
        else
+        # Only need to update agencies once
+        # can remove this block after agencies are updated.
+        if sorn.agencies.nil?
+          result.agencies.each do |agency|
+            agency = Agency.find_or_create_by(name: agency[:name], api_id: agency[:id], parent_api_id: agency[:parent_id])
+            agency.sorns << sorn
+            sorn.agencies << agency
+          end
+        end
         sorn.update(**params)
       end
 
