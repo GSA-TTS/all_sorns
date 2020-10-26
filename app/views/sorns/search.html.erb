@@ -8,23 +8,26 @@
   <div class="grid-container">
     <div class="grid-row grid-gap">
       
-      <div class="usa-layout-docs__sidenav grid-col-4" id="sidebar">
+      <div class="usa-layout-docs__sidenav grid-col-4">
+
         <div class="border border-gray-70" id="sidebar">
+          
+        <div class="preview usa-prose site-prose">
           <fieldset id="fields" class="usa-fieldset">
-          <legend class="usa-legend">Fields</legend>
-          <div id="sorn-fields" class="grid-row">
+          <legend class="usa-legend">Search Filters</legend>
+          <div id="sorn-fields" class="">
             <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
             <% checkboxes.each do |field, index| %>
-              <div class="usa-checkbox grid-col-3">
+              <div class="usa-checkbox">
                 <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
                 <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
               </div>
-
             <% end %>
           </div>
-        </fieldset>
-      
+          </fieldset>
+        
         </div>  
+      </div>
       </div>
        
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
