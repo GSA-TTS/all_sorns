@@ -10,7 +10,20 @@
       
       <div class="usa-layout-docs__sidenav grid-col-4" id="sidebar">
         <div class="border border-gray-70" id="sidebar">
-          <p>Fake words</p>
+          <fieldset id="fields" class="usa-fieldset">
+          <legend class="usa-legend">Fields</legend>
+          <div id="sorn-fields" class="grid-row">
+            <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+            <% checkboxes.each do |field, index| %>
+              <div class="usa-checkbox grid-col-3">
+                <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
+                <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
+              </div>
+
+            <% end %>
+          </div>
+        </fieldset>
+      
         </div>  
       </div>
        
@@ -34,25 +47,6 @@
                   <% end %>
               </select>
 
-              <fieldset id="fields" class="usa-fieldset">
-                <legend class="usa-legend">Fields</legend>
-                <div id="sorn-fields" class="grid-row">
-                  <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
-                  <% checkboxes.each_with_index do |field, index| %>
-                    <div class="usa-checkbox grid-col-3">
-                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-                      <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
-                    </div>
-
-                    <% if (index+1) % 4 == 0 %>
-                      </div>
-                      <div class="grid-row">
-                    <% end %>
-                  <% end %>
-                </div>
-              </fieldset>
-            <% end %>
-
             <div class="grid-row">
               <div class="grid-col-12 text-right float-right">
                 <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
@@ -62,6 +56,7 @@
                 <button id="deselect-all" class="usa-button usa-button--accent-warm">Deselect All</button>
               </div>
             </div>
+            <% end %>
           </div>
         </div>
         <div class="grid-row margin-top-2 margin-right-0 results-meta">
