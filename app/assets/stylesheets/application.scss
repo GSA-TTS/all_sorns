@@ -26,6 +26,8 @@
  $gray-5:       #F0F0F0;
  $gray-3:       #F6F6F6;
  $gray-2:       #F9F9F9;
+ $header_gray:  #D0D0D0;
+
 
  $red-60:       #AF3639;
  $gold-40:      #AD8B65;
@@ -71,7 +73,9 @@
  // Explainer section
  .explainer {
    border-bottom: $gray-cool-10 2px solid;
-   background-color: $blue-10;
+   background-color: $header_gray;
+   height: 60px;
+   margin-bottom: 32px;
  }
 
  .explainer__text {

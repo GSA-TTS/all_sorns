@@ -1,21 +1,23 @@
 <div class="explainer">
   <div class="grid-container">
     <div class="grid-row grid-gap">
-      <div class="tablet:grid-col-7">
-        <p class="explainer__text">WHATEVER</p>
-      </div>
-      <div class="tablet:grid-col-5">
-        <p class="explainer__text text-right">OKAY</p>
-      </div>
     </div>
   </div>
 </div>
 
   <div class="grid-container">
     <div class="grid-row grid-gap">
-      <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
+      
+      <div class="usa-layout-docs__sidenav grid-col-4" id="sidebar">
+        <div class="border border-gray-70" id="sidebar">
+          <p>Fake words</p>
+        </div>  
+      </div>
+       
+      <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+        
         <div class="grid-row margin-top-2 margin-right-0">
-          <div class="grid-col-12">
+          <div class="">
             <%= form_tag('/search', method: "get") do %>
               <fieldset class="usa-search">
                 <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
