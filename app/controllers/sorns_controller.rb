@@ -1,29 +1,50 @@
 class SornsController < ApplicationController
-  before_action :set_sorn, only: [:show, :edit, :update, :destroy]
-
   def search
-    if params[:search]
+    if no_params_on_page_load?
+      # return all sorns with default fields
+      @selected_fields = Sorn::DEFAULT_FIELDS
+      @sorns = Sorn.all.includes(:agencies)
+
+    elsif params[:fields].blank?
+      # Return nothing, with no default fields
+      @selected_fields = nil
+      @sorns = Sorn.none
+
+    elsif search_and_agency_blank?
+      #  return all sorns with just those fields
       @selected_fields = params[:fields]
-      field_syms = params[:fields].map { |field| field.to_sym }
-      @sorns = Sorn.where(data_source: :fedreg).dynamic_search(field_syms, params[:search]).order(id: :asc).page params[:page]
+      @sorns = Sorn.all.includes(:agencies)
+
+    elsif search_present_and_agency_blank?
+      #  return matching sorns with just those fields
+      @selected_fields = params[:fields]
+      field_syms = @selected_fields.map { |field| field.to_sym }
+      @sorns = Sorn.dynamic_search(field_syms, params[:search]).includes(:agencies)
+
+    elsif search_blank_and_agency_present?
+      # return agency sorns with just those fields
+      @selected_fields = params[:fields]
+      @sorns = Sorn.joins(:agencies).where(agencies: {name: params[:agency]})
+
+    elsif search_and_fields_and_agency_present?
+      # return matching, agency sorns with just those fields
+      @selected_fields = params[:fields]
+      field_syms = @selected_fields.map { |field| field.to_sym }
+      @sorns = Sorn.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: params[:agency]})
+
     else
-      @sorns = Sorn.where(data_source: :fedreg).order(id: :asc).page params[:page]
+      raise "WUT"
     end
 
-    # respond_to do |format|
-    #   format.html
-    #   format.json { render json: @sorns.to_json }
-    #   format.csv { send_data @sorns.to_csv(params[:fields]), filename: "sorns.csv" }
-    # end
-  end
-
-  def csv
-    @sorns = Sorn.where(data_source: :fedreg)
+    @sorns = @sorns.page(params[:page]) if request.format == :html
 
     respond_to do |format|
-      format.csv { send_data @sorns.to_csv, filename: "sorns.csv" }
+      format.html
+      # format.json { render json: @sorns.to_json }
+      format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
     end
   end
+
 
   # GET /sorns
   def index(source)
@@ -73,68 +94,25 @@ class SornsController < ApplicationController
     index(:bulk)
   end
 
-  # GET /sorns/1
-  # GET /sorns/1.json
-  def show
-  end
-
-  # GET /sorns/new
-  def new
-    @sorn = Sorn.new
-  end
-
-  # GET /sorns/1/edit
-  def edit
-  end
-
-  # POST /sorns
-  # POST /sorns.json
-  def create
-    @sorn = Sorn.new(sorn_params)
-
-    respond_to do |format|
-      if @sorn.save
-        format.html { redirect_to @sorn, notice: 'Sorn was successfully created.' }
-        format.json { render :show, status: :created, location: @sorn }
-      else
-        format.html { render :new }
-        format.json { render json: @sorn.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /sorns/1
-  # PATCH/PUT /sorns/1.json
-  def update
-    respond_to do |format|
-      if @sorn.update(sorn_params)
-        format.html { redirect_to @sorn, notice: 'Sorn was successfully updated.' }
-        format.json { render :show, status: :ok, location: @sorn }
-      else
-        format.html { render :edit }
-        format.json { render json: @sorn.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /sorns/1
-  # DELETE /sorns/1.json
-  def destroy
-    @sorn.destroy
-    respond_to do |format|
-      format.html { redirect_to sorns_url, notice: 'Sorn was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_sorn
-      @sorn = Sorn.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def sorn_params
-      params.require(:sorn).permit(:agency_id, :system_name, :sorn_number, :authority, :categories_of_record, :search)
-    end
+  def no_params_on_page_load?
+    params[:search].blank? && params[:fields].blank? && params[:agency].blank?
+  end
+
+  def search_and_agency_blank?
+    params[:search].blank? && params[:agency].blank?
+  end
+
+  def search_present_and_agency_blank?
+    params[:search].present? && params[:agency].blank?
+  end
+
+  def search_blank_and_agency_present?
+    params[:search].blank? && params[:agency].present?
+  end
+
+  def search_and_fields_and_agency_present?
+    params[:search].present? && params[:fields].present? && params[:agency].present?
+  end
 end
