@@ -66,8 +66,60 @@
 
 
  #main-content {
-   border-top: 0;
-   background-color: $gray-3;
+ }
+
+ #search-form {
+   width: 100%;
+ }
+
+ .usa-search {
+   border: 0;
+   padding: 0;
+   margin-bottom: 32px;
+ }
+
+ .usa-card__container {
+   border-radius: 0rem;
+   border: 1px solid rgba(0, 0, 0, 0.5);
+ }
+
+ .usa-card__header {
+  padding: 16px;
+  min-height: 112px;
+
+  background: #F0F0F0;
+ }
+
+ .system-number {
+  // margin-left: 16px;
+  // margin-top: 16px;
+
+  font-family: family('Public sans');
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height */
+
+  text-transform: uppercase;
+
+  color: #000000;
+
+  margin-bottom: 8px;
+  display: block;
+ }
+
+ .system-name {
+  font-family: Public Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  /* or 140% */
+
+
+  color: #0232AC;
  }
 
  // Explainer section
@@ -145,10 +197,7 @@
  }
 
  .card {
-   // outline-color: $blue-90;
-   // outline-style: solid;
-   // outline-width: 1px;
-   background-color: white;
+   margin-top: 32px;
  }
 
  .card--sorn {
