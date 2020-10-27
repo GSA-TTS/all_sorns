@@ -107,6 +107,11 @@ jobs:
           cf install-plugin blue-green-deploy -r CF-Community -f
       - name: Run deployment script
         env:
-          CGHOSTNAME: $GITHUB_REF
-        run: ./.cloud-gov/deploy.sh 
+          CF_USERNAME: {{ secrets.CF_USERNAME }}
+          CF_PASSWORD: {{ secrets.CF_PASSWORD }}
+          CF_ORG: {{ secrets.CF_ORG }}
+          CF_SPACE: {{ secrets.CF_SPACE }}
+        run: |
+        echo "$GITHUB_REF" >> $CGHOSTNAME
+          ./.cloud-gov/deploy.sh 
 
