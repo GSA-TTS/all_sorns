@@ -14,8 +14,11 @@
 
         <div class="preview usa-prose site-prose">
           <fieldset id="fields" class="usa-fieldset">
-          <legend class="usa-legend h3">Search Filters</legend>
-          <legend class="usa-legend">Fields to Search</legend>
+          <legend class="usa-legend">
+            <h3 class="font-body-lg text-bold">Search Filters</h3>
+            <h4 class="font-body-md text-bold">Fields to Search</h4>
+          </legend>
+          
           <div id="sorn-fields" class="">
             <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
             <% checkboxes.each do |field, index| %>
