@@ -14,7 +14,7 @@
 
         <div class="preview usa-prose site-prose">
           <fieldset id="fields" class="usa-fieldset">
-          <legend class="usa-legend">Search Filters</legend>
+          <legend class="usa-legend h3">Search Filters</legend>
           <legend class="usa-legend">Fields to Search</legend>
           <div id="sorn-fields" class="">
             <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
@@ -27,7 +27,7 @@
           </div>
           </fieldset>
 
-        <div class="usa-accordion">
+        <div class="usa-accordion aria-multiselectable="true">
           <h2 class="usa-accordion__heading">
             <button class="usa-accordion__button"
               aria-expanded="false"
@@ -38,13 +38,13 @@
           <div id="a1" class="usa-accordion__content usa-prose">
             <p>List of agencies</p>
           </div>
-          <h2 class="usa-accordion__heading">
+          <div class="usa-accordion__heading">
             <button class="usa-accordion__button"
               aria-expanded="false"
               aria-controls="a2">
               Publication Date Range
             </button>
-          </h2>
+          </div>
           <div id="a2" class="usa-accordion__content usa-prose">
             <p>Date Selector</p>
           </div>
