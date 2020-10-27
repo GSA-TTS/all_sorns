@@ -7,7 +7,7 @@
 # This is the hostname for the route set for the
 CGHOSTNAME="${CGHOSTNAME:-all-sorns}"
 
-echo CGHOSTNAME
+echo "$CGHOSTNAME"
 
 
 cf api https://api.fr.cloud.gov
