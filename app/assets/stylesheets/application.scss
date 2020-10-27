@@ -64,6 +64,15 @@
    background-color: color('blue-30v');
  }
 
+ .usa-accordion__button{
+  background-color: #FFFFFF;
+  border-top: 1px solid #C4C4C4;
+ }
+
+/* Need to override accordion margins to match design */
+ .usa-accordion__heading:not(:first-child), .usa-prose .usa-accordion__heading:not(:first-child) {
+  margin-top: 0rem;
+}
 
  #main-content {
  }
