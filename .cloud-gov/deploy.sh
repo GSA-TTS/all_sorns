@@ -37,8 +37,9 @@ if [ "$1" = "setup" ] ; then  echo
         cf create-service aws-rds small-psql "All Sorns DB"
             echo sleeping until db is awake
             for i in 1 2 3 ; do
-            sleep 60
-            echo $i minutes...
+				sleep 60
+				echo $i minutes...
+			done
 	fi
 
 	# set up app
