@@ -93,9 +93,27 @@
    margin-bottom: 32px;
  }
 
- .usa-card__container {
-   border-radius: 0rem;
-   border: 1px solid rgba(0, 0, 0, 0.5);
+ .usa-card {
+   min-width: 100%;
+  }
+
+.usa-card__container {
+    border-radius: 0rem;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    font-size: size('Publc sans', 16)
+ }
+
+ .usa-card__container button {
+  background-color: #0232AC;
+  border-radius: 0;
+ }
+
+ .usa-card__body {
+  padding: 16px;
+ }
+
+ .usa-card__body .grid-row:first-of-type {
+   padding-bottom: 16px;
  }
 
  .usa-card__header {
@@ -135,6 +153,19 @@
 
 
   color: #0232AC;
+ }
+
+ .sorn-attribute-header {
+  font-weight: bold;
+ }
+
+ .agency-separator {
+   padding: 0 0.5rem;
+   font-weight: bold;
+ }
+
+ .usa-card__footer {
+  padding: 16px;
  }
 
  // Explainer section

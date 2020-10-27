@@ -70,21 +70,43 @@
         <% end %>
 
         <ul id='cards' class="usa-card-group">
-        <% @sorns.each do |sorn| %>
-          <li class="usa-card">
-            <div class="usa-card__container">
-              <header class="usa-card__header">
-              <span class="system-number">System Number</span>
-                <h2 class="system-name usa-card__heading"><%= sorn.system_name %></h2>
-              </header>
-              <div class="usa-card__body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum tenetur quo cupiditate, eaque qui officia recusandae. Excepturi nobis dolores molestias! Quas quisquam a officia eos.</p>
+          <% @sorns.each do |sorn| %>
+            <li class="usa-card">
+              <div class="usa-card__container">
+                <header class="usa-card__header">
+                  <span class="system-number">System Number</span>
+                  <h2 class="system-name usa-card__heading"><%= sorn.system_name %></h2>
+                </header>
+                <div class="usa-card__body">
+                  <div class="grid-row">
+                    <div class="grid-col-12">
+                      <span class="sorn-attribute-header">Agency:</span>
+                      <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
+                    </div>
+                  </div>
+                  <div class="grid-row">
+                    <div class="grid-col-6">
+                      <span class="sorn-attribute-header">Publication Date:</span>
+                      <%= sorn.publication_date %>
+                    </div>
+                    <div class="grid-col-6">
+                      <span class="sorn-attribute-header">Citation:</span>
+                      <%= sorn.citation %>
+                    </div>
+                  </div>
+                </div>
+                <div class="usa-card__footer">
+                  <div class="grid-row">
+                    <div class="grid-col-6">
+                      <a target="_blank" href="<%= sorn.html_url %>">Source Document</a>
+                    </div>
+                    <div class="grid-col-6 text-right">
+                      <button class="usa-button" href="/">View all details</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="usa-card__footer">
-
-              </div>
-            </div>
-          </li>
+            </li>
           <% end %>
         </ul>
 
