@@ -80,15 +80,9 @@
                 </header>
                 <div class="usa-card__body">
                   <div class="grid-row">
-                    <div class="grid-col-6">
+                    <div class="grid-col-12">
                       <span class="sorn-attribute-header">Agency:</span>
-                      <%= sorn.agencies.first.name %>
-                    </div>
-                    <div class="grid-col-6">
-                      <% if sorn.agencies.second %>
-                        <span class="sorn-attribute-header">Agency:</span>
-                        <%= sorn.agencies.second.name %>
-                      <% end %>
+                      <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
                     </div>
                   </div>
                   <div class="grid-row">

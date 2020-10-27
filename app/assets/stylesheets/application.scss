@@ -89,11 +89,12 @@
 
  .usa-card {
    min-width: 100%;
- }
+  }
 
- .usa-card__container {
-   border-radius: 0rem;
-   border: 1px solid rgba(0, 0, 0, 0.5);
+.usa-card__container {
+    border-radius: 0rem;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    font-size: size('Publc sans', 16)
  }
 
  .usa-card__container button {
@@ -105,14 +106,13 @@
   padding: 16px;
  }
 
- .usa-card__body .grid-row {
-   margin-bottom: 16px;
+ .usa-card__body .grid-row:first-of-type {
+   padding-bottom: 16px;
  }
 
  .usa-card__header {
   padding: 16px;
   min-height: 112px;
-  margin-bottom: 16px;
 
   background: #F0F0F0;
  }
@@ -151,7 +151,11 @@
 
  .sorn-attribute-header {
   font-weight: bold;
-  font-size: 16px;
+ }
+
+ .agency-separator {
+   padding: 0 0.5rem;
+   font-weight: bold;
  }
 
  .usa-card__footer {
