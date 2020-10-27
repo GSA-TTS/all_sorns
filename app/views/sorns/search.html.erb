@@ -15,8 +15,8 @@
         <div class="preview usa-prose site-prose" >
           <fieldset id="fields" class="usa-fieldset margin-105">
           <legend class="usa-legend">
-            <div class="font-body-lg text-bold">Search Filters</div>
-            <div class="font-body-md text-bold">Fields to Search</div>
+            <div id="search-filters">Search filters</div>
+            <div id="fields-to-search">Fields to search</div>
           </legend>
           
           <div id="sorn-fields" class="">
@@ -24,7 +24,7 @@
             <% checkboxes.each do |field, index| %>
               <div class="usa-checkbox">
                 <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-                <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
+                <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
               </div>
             <% end %>
           </div>
@@ -44,7 +44,7 @@
             <button class="usa-accordion__button"
               aria-expanded="false"
               aria-controls="a2">
-              Publication Date Range
+              Publication date range
             </button>
           </div>
           <div id="a2" class="usa-accordion__content usa-prose">

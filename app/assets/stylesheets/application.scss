@@ -45,11 +45,27 @@
    font-size: font-size('heading', '2xl');
  }
 
+ // use with mixin utility when available
+ #search-filters{
+  font-size: 20px;
+  margin-bottom: 19px;
+  font-weight:bold;
+ }
+
+ #fields-to-search{
+  font-size: 16px;
+  font-weight:bold;
+ }
+
+ #sorn-fields input[type='checkbox']{
+   border-radius: 0 !important; 
+ }
+
  .usa-nav__secondary {
    color: white;
  }
 
-  .usa-nav__primary > .usa-nav__primary-item > a {
+ .usa-nav__primary > .usa-nav__primary-item > a {
    color: white;
    &:hover {
      color: color('blue-30v');
@@ -313,9 +329,8 @@
    color: $blue-90;
  }
 
- .usa-checkbox__input:checked + .usa-checkbox__label::before {
-   background-color: $blue-90;
-   box-shadow: 0 0 0 2px $blue-90;
+ .usa-checkbox__label::before {
+   border-radius: 2px;
  }
 
  .usa-search {
