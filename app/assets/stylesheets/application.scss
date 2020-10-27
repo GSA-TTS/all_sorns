@@ -78,14 +78,32 @@
    margin-bottom: 32px;
  }
 
+ .usa-card {
+   min-width: 100%;
+ }
+
  .usa-card__container {
    border-radius: 0rem;
    border: 1px solid rgba(0, 0, 0, 0.5);
  }
 
+ .usa-card__container button {
+  background-color: #0232AC;
+  border-radius: 0;
+ }
+
+ .usa-card__body {
+  padding: 16px;
+ }
+
+ .usa-card__body .grid-row {
+   margin-bottom: 16px;
+ }
+
  .usa-card__header {
   padding: 16px;
   min-height: 112px;
+  margin-bottom: 16px;
 
   background: #F0F0F0;
  }
@@ -120,6 +138,15 @@
 
 
   color: #0232AC;
+ }
+
+ .sorn-attribute-header {
+  font-weight: bold;
+  font-size: 16px;
+ }
+
+ .usa-card__footer {
+  padding: 16px;
  }
 
  // Explainer section
