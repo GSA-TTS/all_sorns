@@ -45,6 +45,10 @@ class SornsController < ApplicationController
     end
   end
 
+  def search_old
+    search
+  end
+
 
   # GET /sorns
   def index(source)
