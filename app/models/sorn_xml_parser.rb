@@ -8,10 +8,7 @@ class SornXmlParser
 
   def parse_xml
     {
-
-      action: get_action,
       summary: get_summary,
-      dates: get_dates,
       addresses: get_addresses,
       further_info: get_further_information,
       supplementary_info: get_supplementary_information,
@@ -43,16 +40,8 @@ class SornXmlParser
     find_tag('AGENCY')
   end
 
-  def get_action
-    find_tag('ACT')
-  end
-
   def get_summary
     find_tag('SUM')
-  end
-
-  def get_dates
-    find_tag('DATES')
   end
 
   def get_addresses

@@ -1,6 +1,10 @@
 class Sorn < ApplicationRecord
+  has_and_belongs_to_many :agencies
+
   include PgSearch::Model
   validates :citation, uniqueness: true
+
+  default_scope { order(publication_date: :desc) }
 
   FIELDS = [
     :agency_names,
@@ -35,9 +39,19 @@ class Sorn < ApplicationRecord
   METADATA = [
     :html_url,
     :xml_url,
-    :headers,
-    :data_source,
-    :citation
+    :pdf_url,
+    :citation,
+    :title,
+    :publication_date
+  ]
+
+  DEFAULT_FIELDS = [
+    'agency_names',
+    'action',
+    'system_name',
+    'summary',
+    'html_url',
+    'publication_date'
   ]
 
   pg_search_scope :dynamic_search, lambda { |field, query|
@@ -60,12 +74,11 @@ class Sorn < ApplicationRecord
 
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
   def self.to_csv(columns = column_names, options = {})
-    CSV.generate(options) do |csv|
+    CSV.generate(**options) do |csv|
       csv.add_row columns
       all.each do |sorn|
 
         values = sorn.attributes.slice(*columns).values
-        values += [sorn.agency_names]
         csv.add_row values
       end
     end
