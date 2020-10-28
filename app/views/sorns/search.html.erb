@@ -6,73 +6,70 @@
 </div>
 
   <div class="grid-container">
-    <div class="grid-row grid-gap">
+    <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
 
       <div class="usa-layout-docs__sidenav grid-col-4">
-
         <div class="border border-gray-70" id="sidebar">
+          <div class="preview usa-prose site-prose" >
+            <fieldset id="fields" class="usa-fieldset margin-105">
+              <legend class="usa-legend">
+                <div id="search-filters">Search filters</div>
+                <div id="fields-to-search">Fields to search</div>
+              </legend>
 
-        <div class="preview usa-prose site-prose" >
-          <fieldset id="fields" class="usa-fieldset margin-105">
-          <legend class="usa-legend">
-            <div id="search-filters">Search filters</div>
-            <div id="fields-to-search">Fields to search</div>
-          </legend>
-          
-          <div id="sorn-fields" class="">
-            <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
-            <% checkboxes.each do |field, index| %>
-              <div class="usa-checkbox">
-                <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-                <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
+              <div id="sorn-fields" class="">
+                <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+                <% checkboxes.each do |field, index| %>
+                  <div class="usa-checkbox">
+                    <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
+                    <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
+                  </div>
+                <% end %>
+                <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
+                <%= javascript_pack_tag 'checkboxes' %>
               </div>
-            <% end %>
-          </div>
-          </fieldset>
-        <div class="usa-accordion aria-multiselectable="true">
-          <h2 class="usa-accordion__heading">
-            <button class="usa-accordion__button"
-              aria-expanded="false"
-              aria-controls="a1">
-              Agencies
-            </button>
-          </h2>
-          <div id="a1" class="usa-accordion__content usa-prose">
-            <% Agency.all.each do |agency| %> 
-              <div class="usa-checkbox">
-                <input class="usa-checkbox__input" id="search-<%= agency.name %>" type="checkbox" name="agencies[]" value="<%= agency.name %>">
-                <label class="usa-checkbox__label" for="search-<%= agency.name %>"><%= agency.name %></label>              
+            </fieldset>
+            <div class="usa-accordion aria-multiselectable="true">
+              <h2 class="usa-accordion__heading">
+                <button class="usa-accordion__button"
+                  aria-expanded="false"
+                  aria-controls="a1">
+                  Agencies
+                </button>
+              </h2>
+              <div id="a1" class="usa-accordion__content usa-prose">
+                <label class="usa-label" for="agency">Select an agency</label>
+                <div class="usa-combo-box" data-default-value="<%= params[:agency] %>">
+                  <select class="usa-select" name="agency" id="agency-select">
+                    <option value>Select an agency</option>
+                    <% Agency.all.each do |agency| %>
+                      <option value="<%= agency.name %>"><%= agency.name %></option>
+                    <% end %>
+                  </select>
+                </div>
               </div>
-              <% end %>
+              <div class="usa-accordion__heading">
+                <button class="usa-accordion__button"
+                  aria-expanded="false"
+                  aria-controls="a2">
+                  Publication date range
+                </button>
+              </div>
+              <div id="a2" class="usa-accordion__content usa-prose">
+                <p>Date Selector</p>
+              </div>
+            </div>
           </div>
-          <div class="usa-accordion__heading">
-            <button class="usa-accordion__button"
-              aria-expanded="false"
-              aria-controls="a2">
-              Publication date range
-            </button>
-          </div>
-          <div id="a2" class="usa-accordion__content usa-prose">
-            <p>Date Selector</p>
-          </div>
-
-
         </div>
-
-        </div>
-      </div>
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-
-        <%= form_tag('/search', method: "get", id: "search-form") do %>
-          <fieldset class="usa-search usa-search--big">
-            <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-            <button id="general-search-button" class="usa-button" type="submit">
-              <span class="usa-search__submit-text">Search</span>
-            </button>
-          </fieldset>
-        <% end %>
+        <fieldset class="usa-search usa-search--big">
+          <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+          <button id="general-search-button" class="usa-button" type="submit">
+            <span class="usa-search__submit-text">Search</span>
+          </button>
+        </fieldset>
 
         <ul id='cards' class="usa-card-group">
           <% @sorns.each do |sorn| %>
@@ -114,8 +111,7 @@
             </li>
           <% end %>
         </ul>
-
       </main>
-    </div>
+    <% end %>
   </div>
 </div>
