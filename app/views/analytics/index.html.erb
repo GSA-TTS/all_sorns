@@ -1,7 +1,9 @@
 <p>Total SORNs:<%= @total_sorns %></p>
 
 <table>
+    <tr><th>Agency</th><th>SORN count</th></tr>
 <% @agency_sorn_counts.each do |agency, count| %>
+    
     <tr><td><%= agency %></td><td><%= count %></p></td></tr>
     
 <% end %>
