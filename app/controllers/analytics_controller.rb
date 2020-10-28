@@ -13,7 +13,9 @@ class AnalyticsController < ApplicationController
         #How many records don't have titles?
         #How many records are missing ___ field?
 
-        #which SORNs don't have XML links?post
+        #which SORNs don't have XML links?
+        #select count(*) from sorns where xml_url is null
+        @no_xml_url = Sorn.where(xml_url: nil).count
 
     end
 end
