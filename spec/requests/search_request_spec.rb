@@ -36,8 +36,12 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    xit "shows agencies field" do
-      expect(response.body).to include "FAKE AGENCIES"
+    it "agencies accordian is open" do
+      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="true" aria-controls="a1">Agencies</button>'
+    end
+
+    it "default agency set" do
+      expect(response.body).to include 'data-default-value="FAKE AGENCIES"'
     end
   end
 
@@ -51,8 +55,12 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    xit "shows agencies field" do
-      expect(response.body).to_not include "FAKE AGENCIES"
+    it "agencies accordian is closed" do
+      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="false" aria-controls="a1">Agencies</button>'
+    end
+
+    it "no default agency selected" do
+      expect(response.body).to include ' data-default-value '
     end
   end
 
