@@ -146,7 +146,7 @@
   padding: 16px;
  }
 
- .usa-card__body .grid-row:first-of-type {
+ .usa-card__body .grid-row {
    padding-bottom: 16px;
  }
 
@@ -196,6 +196,21 @@
  .agency-separator {
    padding: 0 0.5rem;
    font-weight: bold;
+ }
+
+ .found-in {
+  width: 100%;
+ }
+
+ .found-section-title {
+   font-size: 14px;
+   width: 100%;
+ }
+
+ .found-section-snippet {
+  font-size: 16px;
+  width: 100%;
+
  }
 
  .usa-card__footer {

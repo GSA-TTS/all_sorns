@@ -1,3 +1,5 @@
+include ActionView::Helpers::TextHelper
+
 class Sorn < ApplicationRecord
   has_and_belongs_to_many :agencies
 
@@ -70,6 +72,16 @@ class Sorn < ApplicationRecord
   def parse_xml
     parsed_sorn = SornXmlParser.new(self.xml).parse_xml
     self.update(**parsed_sorn)
+  end
+
+  def section_snippets(selected_fields, search_term)
+    output = {}
+    self.attributes.slice(*selected_fields).each do |key, value|
+      if value =~ /#{search_term}/i
+        output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
+      end
+    end
+    output
   end
 
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/

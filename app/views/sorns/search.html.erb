@@ -67,6 +67,8 @@
           </button>
         </fieldset>
 
+        <%= page_entries_info @sorns, entry_name: 'SORNs' %> <%= "for " + params[:search] if params[:search]%>
+
         <ul id='cards' class="usa-card-group">
           <% @sorns.each do |sorn| %>
             <li class="usa-card">
@@ -92,6 +94,20 @@
                       <%= sorn.citation %>
                     </div>
                   </div>
+
+                  <% if params[:search].present? %>
+                    <hr />
+
+                    <div class="grid-row">
+                      <h4 class='found-in'>FOUND IN</h4>
+                      <% sorn.section_snippets(@selected_fields, params[:search]).each do |section, snippet| %>
+                        <div class="grid-row">
+                          <div class='sorn-attribute-header'><%= section.humanize %></div>
+                          <div class='found-section-snippet'><%= snippet %></div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
                 </div>
                 <div class="usa-card__footer">
                   <div class="grid-row">

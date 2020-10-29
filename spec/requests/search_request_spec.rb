@@ -22,8 +22,8 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include sorn.html_url
     end
 
-    xit "csv link matches" do
-      expect(response.body).to include '<a href="/search.csv?search=">'
+    it "no search result summaries" do
+      expect(response.body).not_to include 'FOUND IN'
     end
   end
 
@@ -43,6 +43,12 @@ RSpec.describe "Search", type: :request do
     it "default agency set" do
       expect(response.body).to include 'data-default-value="FAKE AGENCIES"'
     end
+
+    it "with search result summaries" do
+      expect(response.body).to include 'FOUND IN'
+      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
+    end
   end
 
   context "search without agency select" do
@@ -60,7 +66,13 @@ RSpec.describe "Search", type: :request do
     end
 
     it "no default agency selected" do
-      expect(response.body).to include ' data-default-value '
+      expect(response.body).to include 'data-default-value=""'
+    end
+
+    it "with search result summaries" do
+      expect(response.body).to include 'FOUND IN'
+      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
     end
   end
 
@@ -81,8 +93,16 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "2000-01-13"
     end
 
-    xit "csv link matches" do
-      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
+    it "with search result summaries" do
+      expect(response.body).to include 'FOUND IN'
+      expect(response.body).to include "<div class='sorn-attribute-header'>Agency names</div>"
+      expect(response.body).to include "<div class='found-section-snippet'>[\"<mark>FAKE</mark> AGENCY NAMES\"]</div>"
+      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
+      expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SUMMARY</div>"
+      expect(response.body).to include "<div class='sorn-attribute-header'>System name</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SYSTEM NAME</div>"
     end
   end
 
@@ -95,13 +115,10 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    xit "returns matching, with only selected columns" do
-      expect(response.body).to include '<mark>citation</mark>'
-      expect(response.body).to_not include "FAKE SYSTEM NAME"
-    end
-
-    xit "csv link matches" do
-      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
+    it "with search result summaries" do
+      expect(response.body).to include 'FOUND IN'
+      expect(response.body).to include "<div class='sorn-attribute-header'>Citation</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>citation</mark></div>"
     end
   end
 
@@ -112,15 +129,6 @@ RSpec.describe "Search", type: :request do
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
-    end
-
-    xit "returns everything, with only selected columns" do
-      expect(response.body).to include 'citation'
-      expect(response.body).to_not include "FAKE SYSTEM NAME"
-    end
-
-    xit "csv link matches" do
-      expect(response.body).to include "<a href=\"/search.csv?#{fields}&search=#{search}\">"
     end
   end
 end
