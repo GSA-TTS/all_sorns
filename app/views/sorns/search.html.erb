@@ -67,7 +67,9 @@
           </button>
         </fieldset>
 
-        <%= page_entries_info @sorns, entry_name: 'SORNs' %> <%= "for " + params[:search] if params[:search]%>
+        <div id="count">
+          <%= page_entries_info @sorns, entry_name: '' %> <%= "for " + params[:search] if params[:search].present? %>
+        </div>
 
         <ul id='cards' class="usa-card-group">
           <% @sorns.each do |sorn| %>
@@ -82,6 +84,12 @@
                     <div class="grid-col-12">
                       <span class="sorn-attribute-header">Agency:</span>
                       <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
+                    </div>
+                  </div>
+                  <div class="grid-row">
+                    <div class="grid-col-12">
+                      <span class="sorn-attribute-header">Action:</span>
+                      <%= sorn.action %>
                     </div>
                   </div>
                   <div class="grid-row">

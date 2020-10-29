@@ -17,6 +17,7 @@ RSpec.describe "Search", type: :request do
     it "returns eveything with the default columns" do
       expect(response.body).to include sorn.system_name
       expect(response.body).to include sorn.agencies.first.name
+      expect(response.body).to include sorn.action
       expect(response.body).to include sorn.publication_date
       expect(response.body).to include sorn.citation
       expect(response.body).to include sorn.html_url
