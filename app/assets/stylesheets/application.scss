@@ -71,7 +71,12 @@
  }
 
  #sorn-fields input[type='checkbox']{
-   border-radius: 0 !important; 
+   border-radius: 0 !important;
+   position: relative !important;
+ }
+
+ .usa-checkbox {
+   height: 32px;
  }
 
  .usa-nav__secondary {
