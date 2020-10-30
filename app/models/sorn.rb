@@ -6,7 +6,7 @@ class Sorn < ApplicationRecord
   include PgSearch::Model
   validates :citation, uniqueness: true
 
-  default_scope { order(publication_date: :desc) }
+  default_scope { where.not('action ILIKE ?', '%matching%').order(publication_date: :desc) }
 
   FIELDS = [
     :agency_names,
