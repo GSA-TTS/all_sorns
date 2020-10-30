@@ -84,6 +84,14 @@ class Sorn < ApplicationRecord
     output
   end
 
+  def mentioned_sorns
+    @all_mentioned_citations ||= self.xml.scan(/\d+\s+FR\s+\d+/)
+    @mentioned_sorn = @all_mentioned_citations.map do |citation|
+      sorn = Sorn.find_by(citation: citation)
+      sorn.citation if sorn
+    end
+  end
+
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
   def self.to_csv(columns = column_names, options = {})
     CSV.generate(**options) do |csv|
