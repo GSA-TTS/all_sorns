@@ -38,7 +38,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "agencies accordian is open" do
-      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="true" aria-controls="a1">Agencies</button>'
+      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="true" aria-controls="a1" type="button">Agencies</button>'
     end
 
     it "default agency set" do
@@ -63,7 +63,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "agencies accordian is closed" do
-      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="false" aria-controls="a1">Agencies</button>'
+      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="false" aria-controls="a1" type="button">Agencies</button>'
     end
 
     it "no default agency selected" do
