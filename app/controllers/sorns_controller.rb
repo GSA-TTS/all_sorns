@@ -3,7 +3,7 @@ class SornsController < ApplicationController
     if no_params_on_page_load?
       # return all sorns with default fields
       @selected_fields = Sorn::DEFAULT_FIELDS
-      @sorns = Sorn.all.includes(:agencies)
+      @sorns = Sorn.where.not(publication_date: nil).includes(:agencies)
 
     elsif params[:fields].blank?
       # Return nothing, with no default fields
@@ -43,6 +43,10 @@ class SornsController < ApplicationController
       # format.json { render json: @sorns.to_json }
       format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
     end
+  end
+
+  def search_old
+    search
   end
 
 
