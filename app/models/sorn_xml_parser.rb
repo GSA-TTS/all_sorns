@@ -75,8 +75,26 @@ class SornXmlParser
   end
 
   def get_system_number
-    find_section('NUMBER')
+    number = find_section('NUMBER')
+    if number.length > 0
+      number
+    else
+      find_from_system_name 
+    end
   end
+    
+  def find_from_system_name
+    system_name = find_section('SYSTEM NAME')
+    regex = Regex.new('(-|.)?\d+—?\d+') 
+    if system_name.match(regex)
+      if ! system_name.match(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/) #date and CR
+        system_name[/(\w+\/)?\w+(-|.)?\d+(-\d)?/]
+      else
+        nil
+      end
+    else
+      nil
+    end
 
   def get_security
     find_section('SECURITY')
