@@ -3,7 +3,7 @@ class SornsController < ApplicationController
     if no_params_on_page_load?
       # return all sorns with default fields
       @selected_fields = Sorn::DEFAULT_FIELDS
-      @sorns = Sorn.where.not(publication_date: nil)
+      @sorns = Sorn.where.not(publication_date: nil).includes(:agencies)
 
     elsif params[:fields].blank?
       # Return nothing, with no default fields
