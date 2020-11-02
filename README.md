@@ -1,4 +1,7 @@
 # 10x - Privacy Dashboard - Phase 4
+
+[![Known Vulnerabilities](https://snyk.io/test/github/18F/all_sorns/badge.svg)](https://snyk.io/test/github/18F/all_sorns)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c24db1125b3c714fbf9d/maintainability)](https://codeclimate.com/github/18F/all_sorns/maintainability)
 ## All of the SORNs 🎵
 
 ### What
