@@ -1,7 +1,6 @@
 ---
   applications:
   - name: all_sorns
-    random-route: true
     buildpacks:
       - ruby_buildpack
     memory: 512MB

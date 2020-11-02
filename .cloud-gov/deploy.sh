@@ -47,7 +47,7 @@ if [ "$1" = "setup" ] ; then  echo
 		echo all_sorns app already set up
 	else
 		cf create-app all_sorns
-		cf apply-manifest -f manifest.yml
+		cf apply-manifest -f .cloud-gov/manifest.yml
 	fi
 fi
 
@@ -55,9 +55,9 @@ fi
 if [ "$1" = "rolling" ] ; then
 	# Do a zero downtime deploy.  This requires enough memory for
 	# two apps to exist in the org/space at one time.
-	cf push all_sorns --no-route -f manifest.yml --strategy rolling || exit 1
+	cf push all_sorns --no-route -f .cloud-gov/manifest.yml --strategy rolling || exit 1
 else
-	cf push all_sorns -f manifest.yml --no-route
+	cf push all_sorns -f .cloud-gov/manifest.yml --no-route
 fi
 cf map-route all_sorns app.cloud.gov --hostname "$CGHOSTNAME"
 
