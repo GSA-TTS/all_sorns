@@ -31,10 +31,10 @@ if [ "$1" = "setup" ] ; then  echo
 	  echo "to get the CF_USERNAME and CF_PASSWORD, execute 'cf service-key all-sorns-keys deployer'"
 	fi
 
-	if service_exists "All Sorns DB" ; then
-	  echo All Sorns DB already created
+	if service_exists "all-sorns-db" ; then
+	  echo all-sorns-db DB already created
 	else
-        cf create-service aws-rds small-psql "All Sorns DB"
+        cf create-service aws-rds small-psql all-sorns-db
             echo sleeping until db is awake
             for i in 1 2 3 ; do
 				sleep 60
