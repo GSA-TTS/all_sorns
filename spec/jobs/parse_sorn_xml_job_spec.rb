@@ -19,12 +19,28 @@ RSpec.describe ParseSornXmlJob, type: :job do
       create(:sorn, xml: xml)
     end
 
-    it "calls get_xml and parse_xml" do
+    before do
       allow(Sorn).to receive(:find).and_return sorn
-      expect(sorn).to receive(:get_xml)
-      expect(sorn).to receive(:parse_xml)
+      allow(sorn).to receive(:get_xml)
+      allow(sorn).to receive(:parse_xml)
+    end
 
+    it "calls get_xml and parse_xml" do
       ParseSornXmlJob.perform_now(sorn.id)
+
+      expect(sorn).to have_received(:get_xml)
+      expect(sorn).to have_received(:parse_xml)
+    end
+
+    context "bug - with computer matching action" do
+      let(:sorn) do
+        xml = file_fixture("sorn.xml").read
+        create(:sorn, xml: xml, action: "computer matching")
+      end
+
+      it "succeeds" do
+        expect { ParseSornXmlJob.perform_now(sorn.id) }.to_not raise_error
+      end
     end
   end
 end

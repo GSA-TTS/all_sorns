@@ -1,9 +1,10 @@
 class SornsController < ApplicationController
   def search
+    @sorns = Sorn.no_computer_matching.includes(:agencies)
+
     if no_params_on_page_load?
       # return all sorns with default fields
       @selected_fields = Sorn::DEFAULT_FIELDS
-      @sorns = Sorn.where.not(publication_date: nil).includes(:agencies)
 
     elsif params[:fields].blank?
       # Return nothing, with no default fields
@@ -13,24 +14,23 @@ class SornsController < ApplicationController
     elsif search_and_agency_blank?
       #  return all sorns with just those fields
       @selected_fields = params[:fields]
-      @sorns = Sorn.all.includes(:agencies)
 
     elsif search_present_and_agency_blank?
       #  return matching sorns with just those fields
       @selected_fields = params[:fields]
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = Sorn.dynamic_search(field_syms, params[:search]).includes(:agencies)
+      @sorns = @sorns.dynamic_search(field_syms, params[:search])
 
     elsif search_blank_and_agency_present?
       # return agency sorns with just those fields
       @selected_fields = params[:fields]
-      @sorns = Sorn.joins(:agencies).where(agencies: {name: params[:agency]})
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agency]})
 
     elsif search_and_fields_and_agency_present?
       # return matching, agency sorns with just those fields
       @selected_fields = params[:fields]
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = Sorn.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: params[:agency]})
+      @sorns = @sorns.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: params[:agency]})
 
     else
       raise "WUT"
