@@ -17,10 +17,11 @@ RSpec.describe FindSornsJob, type: :job do
     context "while performing" do
       let(:type) { "Notice" }
       let(:pages) { 1 }
+      let(:title) { "Privacy Act of 1974; System of Records" }
 
       before do
         mock_result = OpenStruct.new(
-          title: "Privacy Act of 1974; System of Records",
+          title: title,
           action: "api action",
           dates: "api dates",
           pdf_url: "pdf url",
@@ -112,6 +113,30 @@ RSpec.describe FindSornsJob, type: :job do
           FindSornsJob.perform_now
 
           expect(ParseSornXmlJob).to have_received(:perform_later).twice
+        end
+      end
+
+      context "Privacy Act" do
+        let(:title) { "Privacy Act" }
+
+        it "creates a sorn" do
+          expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
+        end
+      end
+
+      context "Systems of Record" do
+        let(:title) { "Systems of Record" }
+
+        it "creates a sorn" do
+          expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
+        end
+      end
+
+      context "Computer matching" do
+        let(:title) { "Computer matching" }
+
+        it "creates a sorn" do
+          expect{ FindSornsJob.perform_now }.to change{ Sorn.count }.by 1
         end
       end
     end
