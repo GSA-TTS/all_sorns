@@ -75,9 +75,9 @@ class FederalRegisterApi
     # We researched all Federal Register search result titles
     # https://docs.google.com/document/d/15gwih9P6ebazWCS2ekxQ5Id1rDWbktg1mFdXtHIPZ44/edit#
     # If a title includes one of these three, then we consider it a SORN.
-    title.include?('Privacy Act') ||
-      title.match?(/[Ss]ystem[\ssOof]*[Rr]ecord/) ||
-        title.include?('Computer match')
+    title.match?(/privacy act/i) ||
+      title.match?(/system[\ssof]*record/i) ||
+        title.match?(/computer match/i)
   end
 
   def self.sorn_params(result)

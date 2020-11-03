@@ -105,7 +105,7 @@ RSpec.describe FederalRegisterApi, type: :model do
     end
 
     context "Privacy Act" do
-      let(:title) { "Privacy Act" }
+      let(:title) { "Privacy act" }
 
       it "creates a sorn" do
         expect{ described_class.find_sorns }.to change{ Sorn.count }.by 1
@@ -113,7 +113,7 @@ RSpec.describe FederalRegisterApi, type: :model do
     end
 
     context "Systems of Record" do
-      let(:title) { "Systems of Record" }
+      let(:title) { "systems OF Records" }
 
       it "creates a sorn" do
         expect{ described_class.find_sorns }.to change{ Sorn.count }.by 1
@@ -121,7 +121,7 @@ RSpec.describe FederalRegisterApi, type: :model do
     end
 
     context "Computer matching" do
-      let(:title) { "Computer matching" }
+      let(:title) { "Computer Matching" }
 
       it "creates a sorn" do
         expect{ described_class.find_sorns }.to change{ Sorn.count }.by 1
