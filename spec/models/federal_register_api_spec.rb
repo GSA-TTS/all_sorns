@@ -142,5 +142,14 @@ RSpec.describe FederalRegisterApi, type: :model do
       url = "https://www.federalregister.gov/documents/2003/06/24/03-15911/privacy-act-notice"
       expect{ described_class.add_sorn_by_url(url) }.to change{ Sorn.count }.by 1
     end
+
+    context "even without the exepected titles" do
+      let(:title) { "No title availalble" }
+
+      it "creates a new sorn" do
+        url = "https://www.federalregister.gov/documents/2007/05/29/07-2638/no-title-available"
+        expect{ described_class.add_sorn_by_url(url) }.to change{ Sorn.count }.by 1
+      end
+    end
   end
 end

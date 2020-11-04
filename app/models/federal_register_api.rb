@@ -31,7 +31,7 @@ class FederalRegisterApi
     result_set = FederalRegister::Document.search(search_options)
 
     result_set.results.each do |result|
-      handle_result(result)
+      handle_result(result) if result.type == 'Notice' && a_sorn_title?(result.title)
     end
 
     # Keep making more requests until there are no more.
@@ -42,28 +42,27 @@ class FederalRegisterApi
   end
 
   def self.handle_result(result)
-    if result.type == 'Notice' && a_sorn_title?(result.title)
-      sorn = Sorn.find_by(citation: result.citation)
+    sorn = Sorn.find_by(citation: result.citation)
 
-      params = sorn_params(result)
+    params = sorn_params(result)
 
-      if sorn
-        sorn.update(**params)
-      else
-        sorn = Sorn.create(params)
+    if sorn
+      sorn.update(**params)
+    else
+      sorn = Sorn.create(params)
 
-        # Create agencies
-        result.agencies.each do |api_agency|
-          agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-          sorn.agencies << agency
-        end
+      # Create agencies
+      result.agencies.each do |api_agency|
+        agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+        sorn.agencies << agency
       end
-
-      ParseSornXmlJob.perform_later(sorn.id)
     end
+
+    ParseSornXmlJob.perform_later(sorn.id)
   end
 
   def self.add_sorn_by_url(fed_reg_url)
+    # Be careful to only add SORNs
     document_number =  URI(fed_reg_url).path.split("/")[5]
     result = FederalRegister::Document.find(document_number)
     handle_result(result)
