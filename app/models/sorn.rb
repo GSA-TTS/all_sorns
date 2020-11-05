@@ -37,7 +37,8 @@ class Sorn < ApplicationRecord
     :contesting,
     :notification,
     :exemptions,
-    :history
+    :history,
+    :action_type,
   ]
 
   METADATA = [
@@ -75,6 +76,26 @@ class Sorn < ApplicationRecord
     parsed_sorn = SornXmlParser.new(self.xml).parse_xml
     self.update(**parsed_sorn)
   end
+
+
+  def get_action_type(action)
+    case action
+    when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
+        "Renewal"
+    when /match*/i
+        "Computer Matching Agreement"
+    when /modif*/i, /alter*/i, /new blanket routine use/i, /amend*/i, /revis*/i, /change/i, /updat*/i, /new routine use/i
+        "Modification"
+    when /rescind*/i, /delet*/i, /resciss*/i, /retir*/i, /withdraw*/i
+        "Rescindment"
+    when /exempt*/i
+        "Exemption"
+    when /new/i, "Notice of system of records.", "Notice of Privacy Act system of records.", /add/i, "Notice of Privacy Act System of Records.", "Notice of systems of records.", /propos*/i, "Notice of Systems of Records.", /public*/i
+        'New'
+    else
+        "Unknown or Other"
+    end
+end
 
   def section_snippets(selected_fields, search_term)
     output = {}

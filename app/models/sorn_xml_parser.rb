@@ -151,30 +151,6 @@ class SornXmlParser
     find_section('HISTORY')
   end
 
-  def get_action_type(action, label, count)
-    if label.nil?
-        puts "label missing at #{count}"
-    else
-        case action
-        when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
-            "Renewal"
-        when /match*/i
-            "Computer Matching Agreement"
-        when /modif*/i, /alter*/i, /new blanket routine use/i, /amend*/i, /revis*/i, /change/i, /updat*/i, /new routine use/i
-            "Modification"
-        when /rescind*/i, /delet*/i, /resciss*/i, /retir*/i, /withdraw*/i
-            "Rescindment"
-        when /exempt*/i
-            "Exemption"
-        when /new/i, "Notice of system of records.", "Notice of Privacy Act system of records.", /add/i, "Notice of Privacy Act System of Records.", "Notice of systems of records.", /propos*/i, "Notice of Systems of Records.", /public*/i
-            'New'
-        else
-            "Unknown or Other"
-        end
-    end
-end
-
-
   private
 
   def find_tag(tag)
