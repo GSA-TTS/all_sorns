@@ -14,14 +14,15 @@ RSpec.describe ParseSornXmlJob, type: :job do
   end
 
   context "when the job runs" do
-    let(:sorn) do
-      xml = file_fixture("sorn.xml").read
-      create(:sorn, xml: xml)
+    let(:sorn) { create :sorn }
+    let(:xml_response) do
+      OpenStruct.new(success?: true, parsed_response: file_fixture("sorn.xml").read)
     end
 
     before do
       allow(Sorn).to receive(:find).and_return sorn
-      allow(sorn).to receive(:get_xml)
+      allow(sorn).to receive(:get_xml).and_call_original
+      allow(HTTParty).to receive(:get).and_return xml_response
       allow(sorn).to receive(:parse_xml)
     end
 
@@ -30,6 +31,30 @@ RSpec.describe ParseSornXmlJob, type: :job do
 
       expect(sorn).to have_received(:get_xml)
       expect(sorn).to have_received(:parse_xml)
+    end
+
+    context "with no xml_url" do
+      let(:sorn) { create :sorn, xml_url: nil }
+
+      it "doesn't call .get_xml" do
+        ParseSornXmlJob.perform_now(sorn.id)
+
+        expect(sorn).not_to have_received(:get_xml)
+      end
+    end
+
+    context "with existing xml" do
+      let(:sorn) do
+        xml = file_fixture("sorn.xml").read
+        create(:sorn, xml: xml)
+      end
+
+      it "doesn't call .get_xml" do
+        ParseSornXmlJob.perform_now(sorn.id)
+
+        expect(sorn).not_to have_received(:get_xml)
+        expect(sorn).to have_received(:parse_xml)
+      end
     end
 
     context "bug - with computer matching action" do
