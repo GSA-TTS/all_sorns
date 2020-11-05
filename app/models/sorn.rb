@@ -66,14 +66,18 @@ class Sorn < ApplicationRecord
   }
 
   def get_xml
-    response = HTTParty.get(self.xml_url, format: :plain)
-    return nil unless response.success?
-    self.update(xml: response.parsed_response)
+    if xml_url.present? and xml.blank?
+      response = HTTParty.get(self.xml_url, format: :plain)
+      return nil unless response.success?
+      self.update(xml: response.parsed_response)
+    end
   end
 
   def parse_xml
-    parsed_sorn = SornXmlParser.new(self.xml).parse_xml
-    self.update(**parsed_sorn)
+    if xml.present?
+      parsed_sorn = SornXmlParser.new(self.xml).parse_xml
+      self.update(**parsed_sorn)
+    end
   end
 
   def section_snippets(selected_fields, search_term)

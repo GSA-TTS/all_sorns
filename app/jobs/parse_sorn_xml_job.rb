@@ -6,8 +6,8 @@ class ParseSornXmlJob < ApplicationJob
 
     sorn = Sorn.find(sorn_id)
     puts sorn.xml_url
-    sorn.get_xml if sorn.xml_url.present? and sorn.xml.blank?
-    sorn.parse_xml if sorn.xml.present?
+    sorn.get_xml
+    sorn.parse_xml
     puts "Updated #{sorn.id}"
   end
 end
