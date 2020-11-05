@@ -1,12 +1,12 @@
 class FederalRegisterClient
-  def initialize
+  def initialize(conditions: nil, fields: nil)
     # Makes queries to the Federal Register API to find SORNs.
     # Searching for 'Privacy Act of 1974; System of Records' of type 'Notice' is the best query we have found.
-    @conditions = { term: 'Privacy Act of 1974; System of Records' } #, agencies: ['general-services-administration']
+    @conditions = conditions || { term: 'Privacy Act of 1974; System of Records' } #, agencies: ['general-services-administration']
 
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
-    @fields = ["action", "agencies", "agency_names", "citation",
+    @fields = fields || ["action", "agencies", "agency_names", "citation",
       "dates", "full_text_xml_url", "html_url", "pdf_url",
       "publication_date", "raw_text_url", "title", "type"]
 
