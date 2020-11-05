@@ -1,47 +1,50 @@
-class FederalRegisterApi
-  def self.find_sorns
+class FederalRegisterClient
+  def initialize
     # Makes queries to the Federal Register API to find SORNs.
     # Searching for 'Privacy Act of 1974; System of Records' of type 'Notice' is the best query we have found.
-    # In the results we still filter on those with a title that includes 'Privacy Act of 1974'.
+    @conditions = { term: 'Privacy Act of 1974; System of Records' } #, agencies: ['general-services-administration']
 
-    conditions = { term: 'Privacy Act of 1974; System of Records' }#, agencies: ['general-services-administration'] }
-    # 'general-services-administration', 'justice-department', 'defense-department']
-    fields = ["action", "agencies", "agency_names", "citation",
+    # Find all available fields at
+    # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
+    @fields = ["action", "agencies", "agency_names", "citation",
       "dates", "full_text_xml_url", "html_url", "pdf_url",
       "publication_date", "raw_text_url", "title", "type"]
 
-    # unfortunately the ruby gem doesn't have the year filter implemented, only specific dates.
-    # we may want to start using the http api instead.
+    @page = 1
 
-    search_options = {
-      conditions: conditions,
+    @search_options = {
+      conditions: @conditions,
       type: 'NOTICE', # doesn't seem to work
-      fields: fields,
+      fields: @fields,
       order: 'newest', #oldest
       per_page: 200,
-      page: 1
+      page: @page
     }
-
-    search_fed_reg(search_options)
   end
 
-  def self.search_fed_reg(search_options)
-
+  def find_sorns
     puts 'Asking for SORNs'
-    result_set = FederalRegister::Document.search(search_options)
+    result_set = FederalRegister::Document.search(@search_options)
 
     result_set.results.each do |result|
+      # type and title check happen here, instead of in handle_result
+      # so that add_sorn_by_url can be used to add sorns without the expected types and titles
       handle_result(result) if result.type == 'Notice' && a_sorn_title?(result.title)
     end
 
     # Keep making more requests until there are no more.
-    search_options[:page] = search_options[:page] + 1
-    if search_options[:page] <= result_set.total_pages
-      search_fed_reg(search_options)
-    end
+    @search_options[:page] += 1
+    find_sorns if @search_options[:page] <= result_set.total_pages
   end
 
-  def self.handle_result(result)
+  def add_sorn_by_url(fed_reg_url)
+    # Be careful to only add SORNs, doesn't check for usual titles, on purpose
+    document_number =  URI(fed_reg_url).path.split("/")[5]
+    result = FederalRegister::Document.find(document_number, fields: @fields)
+    handle_result(result)
+  end
+
+  def handle_result(result)
     sorn = Sorn.find_by(citation: result.citation)
 
     params = sorn_params(result)
@@ -61,25 +64,17 @@ class FederalRegisterApi
     ParseSornXmlJob.perform_later(sorn.id)
   end
 
-  def self.add_sorn_by_url(fed_reg_url)
-    # Be careful to only add SORNs
-    document_number =  URI(fed_reg_url).path.split("/")[5]
-    result = FederalRegister::Document.find(document_number)
-    handle_result(result)
-  end
-
   private
 
-  def self.a_sorn_title?(title)
+  def a_sorn_title?(title)
     # We researched all Federal Register search result titles
     # https://docs.google.com/document/d/15gwih9P6ebazWCS2ekxQ5Id1rDWbktg1mFdXtHIPZ44/edit#
     # If a title includes one of these three, then we consider it a SORN.
-    title.match?(/privacy act/i) ||
-      title.match?(/system[\ssof]*record/i) ||
-        title.match?(/computer match/i)
+    patterns = ['privacy act', 'system[\ssof]*record', 'computer match']
+    patterns.any? { |pattern| title.match?(/#{pattern}/i) }
   end
 
-  def self.sorn_params(result)
+  def sorn_params(result)
     {
       action: result.action,
       dates: result.dates,

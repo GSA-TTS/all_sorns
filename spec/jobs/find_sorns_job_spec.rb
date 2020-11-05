@@ -15,8 +15,11 @@ RSpec.describe FindSornsJob, type: :job do
     end
 
     context "while performing" do
-      it "calls FederalRegisterApi.find_sorns" do
-        expect(FederalRegisterApi).to receive(:find_sorns)
+      it "calls .find_sorns" do
+        mock_client = double(FederalRegisterClient)
+        expect(FederalRegisterClient).to receive(:new).and_return mock_client
+        expect(mock_client).to receive(:find_sorns)
+
         FindSornsJob.perform_now
       end
     end
