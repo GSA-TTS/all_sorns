@@ -5,12 +5,12 @@
 ## All of the SORNs 🎵
 
 ### What
-Prototype - [https://allsorns-exhausted-quoll-ku.app.cloud.gov/](https://allsorns-exhausted-quoll-ku.app.cloud.gov/)
+[Prototype](https://all-sorns.app.cloud.gov/search)
 
 This repository is for prototyping a service to make all of the federal government's [System Of Record Notices](https://www.gsa.gov/reference/gsa-privacy-program/systems-of-records-privacy-act) more usable for government privacy officer's and the public.
 
 ### Why
-!Put the slide deck here!
+We are building a dashboard for searching and exploring Privacy Act System of Records Notices (SORNs). This service will give privacy offices and their staff a better way to find SORNs using targeted search, and provides the public with an interface to explore and understand government privacy practices.
 
 To read more about how we got here, see our [Phase 3 work](https://github.com/18F/privacy-tools/blob/master/README.md) and our [Privacy Dashboard built for GSA](https://cg-9341b8ea-025c-4fe2-aa6c-850edbebc499.app.cloud.gov/site/18f/privacy-dashboard/).
 
