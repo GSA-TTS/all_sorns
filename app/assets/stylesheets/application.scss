@@ -108,9 +108,6 @@
   margin-top: 0rem;
 }
 
- #main-content {
- }
-
  #sorn-fields {
    overflow-y: scroll;
    height: 312px;
@@ -121,6 +118,25 @@
   overflow-y: scroll;
   height: 312px;
  }
+
+ #csv-download {
+   margin-top: 16px;
+ }
+
+ #csv-download img {
+  vertical-align: middle;
+  padding-right: 8px;
+ }
+
+ #csv-download a {
+  vertical-align: middle;
+  text-decoration: none;
+ }
+
+ #csv-download .csv-download-link-text {
+  text-decoration: underline;
+ }
+
 
  #search-form {
    width: 100%;
