@@ -54,18 +54,14 @@
               <div id="a2" class="usa-accordion__content usa-prose">
                 <p>Date Selector</p>
               </div>
-              <div class="usa-accordion__heading">
-                <button class="usa-accordion__button"
-                  aria-expanded="false"
-                  aria-controls="a3" type="button">
-                  Download data
-                </button>
-              </div>
-              <div id="a3" class="usa-accordion__content usa-prose">
-                <%= link_to "Download this search as a CSV", search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe %>
-              </div>
             </div>
           </div>
+        </div>
+        <div id="csv-download">
+          <%= link_to search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe do %>
+            <%= image_tag "Download_Icon.svg"%>
+            <span class="csv-download-link-text">Download results as a CSV file</span>
+          <% end %>
         </div>
       </div>
 
