@@ -14,12 +14,10 @@ RSpec.describe ParseSornXmlJob, type: :job do
   end
 
   context "when the job runs" do
-    let(:sorn) do
-      xml = file_fixture("sorn.xml").read
-      create(:sorn, xml: xml)
-    end
+    let(:sorn) { create :sorn }
 
     before do
+      allow_any_instance_of(Object).to receive(:sleep)
       allow(Sorn).to receive(:find).and_return sorn
       allow(sorn).to receive(:get_xml)
       allow(sorn).to receive(:parse_xml)
