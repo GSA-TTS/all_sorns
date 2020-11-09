@@ -2,16 +2,29 @@ require 'rails_helper'
 
 RSpec.describe Sorn, type: :model do
   let(:sorn) { create(:sorn) }
+  let(:parsed_response) { file_fixture("sorn.xml").read }
+
+  before do
+    mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
+    allow(HTTParty).to receive(:get).and_return mock_response
+    allow(sorn).to receive(:update).and_call_original
+  end
 
   describe ".get_xml" do
     it "request the xml" do
-      parsed_response = file_fixture("sorn.xml").read
-      mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
-      allow(HTTParty).to receive(:get).and_return mock_response
-
       sorn.get_xml
 
       expect(sorn.xml).to eq parsed_response
+    end
+
+    context "with no xml_url" do
+      let(:sorn) { create :sorn, xml_url: nil }
+
+      it "doesn't call make any http requests" do
+        sorn.get_xml
+
+        expect(HTTParty).not_to have_received(:get)
+      end
     end
   end
 
@@ -52,6 +65,16 @@ RSpec.describe Sorn, type: :model do
       expect(sorn.notification).to start_with "[\"If partner agency users wish to receive notice about their account records,"
       expect(sorn.exemptions).to eq "[\"None.\"]"
       expect(sorn.history).to eq "[\"N/A.\"]"
+    end
+
+    context "with no xml" do
+      let(:sorn) { create :sorn, xml: nil }
+
+      it "doesn't parse the xml" do
+        sorn.parse_xml
+
+        expect(sorn).not_to have_received(:update)
+      end
     end
   end
 end

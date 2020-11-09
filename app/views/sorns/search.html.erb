@@ -57,6 +57,12 @@
             </div>
           </div>
         </div>
+        <div id="csv-download">
+          <%= link_to search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe do %>
+            <%= image_tag "Download_Icon.svg"%>
+            <span class="csv-download-link-text">Download results as a CSV file</span>
+          <% end %>
+        </div>
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
