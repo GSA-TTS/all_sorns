@@ -78,8 +78,6 @@ class Sorn < ApplicationRecord
   end
 
   def get_action_type
-    # return unless self.action.present?
-
     action_type = case self.action
     when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
       "Renewal"
