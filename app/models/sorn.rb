@@ -95,8 +95,7 @@ class Sorn < ApplicationRecord
   end
 
   def get_mentioned_sorns
-    return unless self.mentioned.empty?
-    return unless self.xml.present?
+    return unless self.xml
 
     all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
     all_citations.each do |citation| # find which of those are sorns

@@ -95,12 +95,12 @@ RSpec.describe Sorn, type: :model do
     end
 
     context "with existing mentioned array" do
-      let(:sorn) { create :sorn, mentioned: ["some fake string"], xml: file_fixture("sorn.xml").read }
+      let(:sorn) { create :sorn, mentioned: ["an existing sorn id"], xml: file_fixture("sorn.xml").read }
 
-      it "doesn't run again" do
+      it "adds to the array" do
         sorn.get_mentioned_sorns
 
-        expect(sorn.mentioned).to eq ["some fake string"]
+        expect(sorn.mentioned).to eq ["an existing sorn id", "1234"]
       end
     end
 
