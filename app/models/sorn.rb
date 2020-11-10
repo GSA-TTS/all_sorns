@@ -90,32 +90,29 @@ class Sorn < ApplicationRecord
     output
   end
 
+  def mentioned_sorns
+    Sorn.where(id: mentioned) # loads all sorns mentioned
+  end
+
   def get_mentioned_sorns
-    if self.mentioned.empty? and self.xml.present?
-      all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
-      mentioned_sorns = all_citations.filter_map do |citation| # find which of those are sorns
-        mentioned_sorn = Sorn.find_by(citation: citation)
-        mentioned_sorn.mentioned.push(sorn.id) # add parent sorn to the children
-        mentioned_sorn.update
-      end
-      self.mentioned.push(*mentioned_sorns.pluck(:id)) # add children sorn to parent
-      self.update
+    return unless self.mentioned.empty?
+    return unless self.xml.present?
+
+    all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
+    all_citations.each do |citation| # find which of those are sorns
+      child_sorn = Sorn.find_by(citation: citation)
+      next unless child_sorn
+
+      child_sorn.mentioned.push(self.id) # add parent sorn to the children
+      child_sorn.save
+      self.mentioned.push(child_sorn.id) # add children sorn to parent
     end
+    self.save
   end
 
   def self.get_all_mentioned_sorns
     Sorn.in_batches.each_record(&:get_mentioned_sorns)
   end
-
-
-
-  # def mentioned_sorns
-  #   @all_mentioned_citations ||= self.xml.scan(/\d+\s+FR\s+\d+/)
-  #   @all_mentioned_citations.filter_map do |citation|
-  #     sorn = Sorn.find_by(citation: citation)
-  #     sorn if sorn
-  #   end.sort_by(&:publication_date).reverse
-  # end
 
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
   def self.to_csv(columns = column_names, options = {})
