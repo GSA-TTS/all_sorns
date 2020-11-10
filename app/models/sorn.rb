@@ -77,7 +77,11 @@ class Sorn < ApplicationRecord
     self.update(**parsed_sorn)
   end
 
-
+  def update_action_type
+      action_type = self.get_action_type(self.action)
+      self.update(action_type: action_type)
+  end
+  
   def get_action_type(action)
     case action
     when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
