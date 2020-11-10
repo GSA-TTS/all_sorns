@@ -111,7 +111,13 @@
                         <span class="sorn-attribute-header">Other SORNs mentioned:</span>
                         <ul>
                         <% sorn.mentioned_sorns.each do |metioned_sorn| %>
-                          <li><a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation"><%= metioned_sorn.citation %></a>, <%= metioned_sorn.action %>, <%= metioned_sorn.publication_date %></li>
+                          <li>
+                            <a href="/search?search=<%= metioned_sorn.system_name %>&fields[]=system_name"><%= metioned_sorn.system_name %></a>
+                            <br/>
+                            <%= metioned_sorn.action %>,
+                            <%= metioned_sorn.publication_date %>,
+                            <a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation"><%= metioned_sorn.citation %></a>
+                          </li>
                         <% end %>
                         </ul>
                       </div>
