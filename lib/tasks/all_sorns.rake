@@ -5,6 +5,13 @@ namespace :federal_register do
   end
 end
 
+namespace :all_sorns do
+  desc "Find new SORNs on the Federal Register API"
+  task get_all_mentioned_sorns: :environment do
+    Sorn.get_all_mentioned_sorns
+  end
+end
+
 namespace :bulk do
   desc "Find new SORNs on the Federal Register API"
   task find_sorns: :environment do
