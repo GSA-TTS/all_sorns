@@ -21,6 +21,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
       allow(Sorn).to receive(:find).and_return sorn
       allow(sorn).to receive(:get_xml)
       allow(sorn).to receive(:parse_xml)
+      allow(sorn).to receive(:get_mentioned_sorns)
     end
 
     it "calls get_xml and parse_xml" do
@@ -28,6 +29,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
 
       expect(sorn).to have_received(:get_xml)
       expect(sorn).to have_received(:parse_xml)
+      expect(sorn).to have_received(:get_mentioned_sorns)
     end
 
     context "bug - with computer matching action" do

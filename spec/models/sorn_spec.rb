@@ -64,7 +64,7 @@ RSpec.describe Sorn, type: :model do
       expect(sorn.contesting).to start_with "[\"If partner agency users have questions"
       expect(sorn.notification).to start_with "[\"If partner agency users wish to receive notice about their account records,"
       expect(sorn.exemptions).to eq "[\"None.\"]"
-      expect(sorn.history).to eq "[\"N/A.\"]"
+      expect(sorn.history).to eq "[\"FAKE CITATIONS FOR A SORN 01 FR 1234\", \"FAKE CITATIONS FOR NOT A SORN 02 FR 9876\"]"
     end
 
     context "with no xml" do
@@ -74,6 +74,43 @@ RSpec.describe Sorn, type: :model do
         sorn.parse_xml
 
         expect(sorn).not_to have_received(:update)
+      end
+    end
+  end
+
+  describe ".get_mentioned_sorns" do
+    let(:sorn) { create :sorn, xml: file_fixture("sorn.xml").read }
+    let!(:mentioned_sorn) { Sorn.create!(id: 1234, citation: "01 FR 1234") }
+
+    it "finds FR citations in the xml that are SORNs" do
+      sorn.get_mentioned_sorns
+
+      expect(sorn.mentioned).to eq [mentioned_sorn.id.to_s]
+    end
+
+    it "also adds the parent id to the child mentions" do
+      sorn.get_mentioned_sorns
+
+      expect(mentioned_sorn.reload.mentioned).to eq [sorn.id.to_s]
+    end
+
+    context "with existing mentioned array" do
+      let(:sorn) { create :sorn, mentioned: ["some fake string"], xml: file_fixture("sorn.xml").read }
+
+      it "doesn't run again" do
+        sorn.get_mentioned_sorns
+
+        expect(sorn.mentioned).to eq ["some fake string"]
+      end
+    end
+
+    context "with out an xml file" do
+      let(:sorn) { create :sorn, xml: nil }
+
+      it "doesn't run" do
+        sorn.get_mentioned_sorns
+
+        expect(sorn.mentioned).to eq []
       end
     end
   end
