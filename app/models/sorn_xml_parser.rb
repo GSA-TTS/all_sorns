@@ -32,8 +32,7 @@ class SornXmlParser
       notification: get_notification,
       exemptions: get_exemptions,
       history: get_history,
-      headers: @sections.keys,
-      action_type: get_action_type,
+      headers: @sections.keys
     }
   end
 

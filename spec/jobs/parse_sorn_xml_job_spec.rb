@@ -21,13 +21,15 @@ RSpec.describe ParseSornXmlJob, type: :job do
 
     before do
       allow(Sorn).to receive(:find).and_return sorn
+      allow(sorn).to receive(:get_action_type)
       allow(sorn).to receive(:get_xml)
       allow(sorn).to receive(:parse_xml)
     end
 
-    it "calls get_xml and parse_xml" do
+    it "calls methods to get more data" do
       ParseSornXmlJob.perform_now(sorn.id)
 
+      expect(sorn).to have_received(:get_action_type)
       expect(sorn).to have_received(:get_xml)
       expect(sorn).to have_received(:parse_xml)
     end
