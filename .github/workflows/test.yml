@@ -90,30 +90,4 @@ jobs:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
         run: rspec
-  deploy:
-    name: Deploy to cloud.gov
-    needs: build_and_test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install cf cli
-        run: |
-          sudo apt-get update
-          sudo apt-get install wget gnupg2 apt-transport-https
-          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-          sudo apt-get update
-          sudo apt-get install cf-cli
-          cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
-          cf install-plugin blue-green-deploy -r CF-Community -f
-      - name: Deploy to cloud.gov
-        env:
-          CF_USERNAME: ${{ secrets.CF_USERNAME }}
-          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
-          CF_ORG: ${{ secrets.CF_ORG }}
-          CF_SPACE: ${{ secrets.CF_SPACE }}
-          CF_CGHOSTNAME: test
-        run: |
-          ./.cloud-gov/deploy.sh 
 
