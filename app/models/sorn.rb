@@ -37,8 +37,7 @@ class Sorn < ApplicationRecord
     :contesting,
     :notification,
     :exemptions,
-    :history,
-    :action_type,
+    :history
   ]
 
   METADATA = [
@@ -47,7 +46,8 @@ class Sorn < ApplicationRecord
     :pdf_url,
     :citation,
     :title,
-    :publication_date
+    :publication_date,
+    :action_type
   ]
 
   DEFAULT_FIELDS = [
@@ -77,25 +77,28 @@ class Sorn < ApplicationRecord
     self.update(**parsed_sorn)
   end
 
+  def get_action_type
+    # return unless self.action.present?
 
-  def get_action_type(action)
-    case action
+    action_type = case self.action
     when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
-        "Renewal"
+      "Renewal"
     when /match*/i
-        "Computer Matching Agreement"
+      "Computer Matching Agreement"
     when /modif*/i, /alter*/i, /new blanket routine use/i, /amend*/i, /revis*/i, /change/i, /updat*/i, /new routine use/i
-        "Modification"
+      "Modification"
     when /rescind*/i, /delet*/i, /resciss*/i, /retir*/i, /withdraw*/i
-        "Rescindment"
+      "Rescindment"
     when /exempt*/i
-        "Exemption"
+      "Exemption"
     when /new/i, "Notice of system of records.", "Notice of Privacy Act system of records.", /add/i, "Notice of Privacy Act System of Records.", "Notice of systems of records.", /propos*/i, "Notice of Systems of Records.", /public*/i
-        'New'
+      'New'
     else
-        "Unknown or Other"
+      "Unknown or Other"
     end
-end
+
+    self.update(action_type: action_type)
+  end
 
   def section_snippets(selected_fields, search_term)
     output = {}

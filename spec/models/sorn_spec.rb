@@ -54,4 +54,88 @@ RSpec.describe Sorn, type: :model do
       expect(sorn.history).to eq "[\"N/A.\"]"
     end
   end
+
+  describe ".get_action_type" do
+    let(:sorn) { create :sorn, action: action }
+
+    context "New" do
+      actions = ["new something", "Notice of system of records.",
+                 "Notice of Privacy Act system of records.", "Adding a system",
+                 "Notice of Privacy Act System of Records.", "Notice of systems of records.",
+                 "Proposed system", "Notice of Systems of Records.", "Public ..."]
+
+      expected_action_type = 'New'
+
+      actions.each do |action|
+        let(:action) { action }
+
+        it "has the expected action_type" do
+          sorn.get_action_type
+
+          expect(sorn.reload.action_type).to eq expected_action_type
+        end
+      end
+    end
+
+    context "Modification" do
+      actions = ["Modified system","Altered system", "new blanket routine use",
+                 "Amendment to", "Revised", "Changes made to syste",
+                 "Updated System of Records", "New routine use"]
+
+      expected_action_type = 'Modification'
+
+      actions.each do |action|
+        let(:action) { action }
+
+        it "has the expected action_type" do
+          sorn.get_action_type
+
+          expect(sorn.reload.action_type).to eq expected_action_type
+        end
+      end
+    end
+
+    context "Rescindment" do
+      actions = ["Rescindment of a", "Deleting a system", "rescission of system",
+                 "retiring a system", "Withdrawing a"]
+
+      expected_action_type = 'Rescindment'
+
+      actions.each do |action|
+        let(:action) { action }
+
+        it "has the expected action_type" do
+          sorn.get_action_type
+
+          expect(sorn.reload.action_type).to eq expected_action_type
+        end
+      end
+    end
+
+    context "Renewal" do
+      actions = ["Recertification of", "Renewal of", "re-establishment of", "Republication of a"]
+
+      expected_action_type = 'Renewal'
+
+      actions.each do |action|
+        let(:action) { action }
+
+        it "has the expected action_type" do
+          sorn.get_action_type
+
+          expect(sorn.reload.action_type).to eq expected_action_type
+        end
+      end
+    end
+
+    context "Unknown or Other" do
+      let(:action) { nil }
+
+      it "doesn't raise an error" do
+        sorn.get_action_type
+
+        expect(sorn.reload.action_type).to eq "Unknown or Other"
+      end
+    end
+  end
 end
