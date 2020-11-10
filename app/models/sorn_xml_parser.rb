@@ -95,6 +95,7 @@ class SornXmlParser
     else
       nil
     end
+  end
 
   def get_security
     find_section('SECURITY')
