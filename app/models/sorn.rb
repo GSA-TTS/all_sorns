@@ -98,11 +98,11 @@ class Sorn < ApplicationRecord
     return unless self.xml
 
     all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
-    mentioned_sorns = all_citations.filter_map do |citation| # find which of those are sorns
-      child_sorn = Sorn.find_by(citation: citation)
+    child_sorns = all_citations.filter_map do |citation| # find which of those are sorns
+      Sorn.find_by(citation: citation)
     end
 
-    mentioned_sorns.each do |child_sorn|
+    child_sorns.each do |child_sorn|
       add_parent_sorn_to_child_mentions(child_sorn)
       add_child_sorn_to_parent_mentions(child_sorn)
     end
