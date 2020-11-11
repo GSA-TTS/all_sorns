@@ -98,15 +98,14 @@ class Sorn < ApplicationRecord
     return unless self.xml
 
     all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
-    all_citations.each do |citation| # find which of those are sorns
+    mentioned_sorns = all_citations.filter_map do |citation| # find which of those are sorns
       child_sorn = Sorn.find_by(citation: citation)
-      next unless child_sorn
-
-      child_sorn.mentioned.push(self.id) # add parent sorn to the children
-      child_sorn.save
-      self.mentioned.push(child_sorn.id) # add children sorn to parent
     end
-    self.save
+
+    mentioned_sorns.each do |child_sorn|
+      add_parent_sorn_to_child_mentions(child_sorn)
+      add_child_sorn_to_parent_mentions(child_sorn)
+    end
   end
 
   def self.get_all_mentioned_sorns
@@ -127,5 +126,21 @@ class Sorn < ApplicationRecord
 
   def linked
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
+  end
+
+  private
+
+  def add_parent_sorn_to_child_mentions(child_sorn)
+    return if child_sorn.mentioned.include? self.id.to_s
+
+    child_sorn.mentioned.push(self.id)
+    child_sorn.save
+  end
+
+  def add_child_sorn_to_parent_mentions(child_sorn)
+    return if self.mentioned.include? child_sorn.id.to_s
+
+    self.mentioned.push(child_sorn.id)
+    self.save
   end
 end

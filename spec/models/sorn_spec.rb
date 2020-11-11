@@ -102,6 +102,13 @@ RSpec.describe Sorn, type: :model do
 
         expect(sorn.mentioned).to eq ["an existing sorn id", "1234"]
       end
+
+      it "doesn't duplicate ids though" do
+        sorn.get_mentioned_sorns
+        sorn.get_mentioned_sorns
+
+        expect(sorn.mentioned).to eq ["an existing sorn id", "1234"]
+      end
     end
 
     context "with out an xml file" do
