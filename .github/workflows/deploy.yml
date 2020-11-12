@@ -12,7 +12,6 @@ jobs:
     name: Deploy to cloud.gov
     needs: build_and_test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v1
       - name: Install cf cli
