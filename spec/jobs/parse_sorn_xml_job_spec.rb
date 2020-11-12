@@ -17,7 +17,6 @@ RSpec.describe ParseSornXmlJob, type: :job do
     let(:sorn) { create :sorn }
 
     before do
-      allow_any_instance_of(Object).to receive(:sleep)
       allow(Sorn).to receive(:find).and_return sorn
       allow(sorn).to receive(:get_xml)
       allow(sorn).to receive(:parse_xml)

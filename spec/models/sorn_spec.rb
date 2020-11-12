@@ -6,6 +6,7 @@ RSpec.describe Sorn, type: :model do
 
   before do
     mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
+    allow_any_instance_of(Object).to receive(:sleep)
     allow(HTTParty).to receive(:get).and_return mock_response
     allow(sorn).to receive(:update).and_call_original
   end

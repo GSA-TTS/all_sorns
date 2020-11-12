@@ -67,6 +67,8 @@ class Sorn < ApplicationRecord
 
   def get_xml
     if xml_url.present? and xml.blank?
+      sleep 1
+
       response = HTTParty.get(self.xml_url, format: :plain)
       return nil unless response.success?
       self.update(xml: response.parsed_response)
