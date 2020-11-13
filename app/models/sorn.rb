@@ -101,7 +101,7 @@ class Sorn < ApplicationRecord
     end
   end
 
-  def self.get_all_mentioned_sorns
+  def self.update_all_mentioned_sorns
     Sorn.in_batches.each_record(&:update_mentioned_sorns)
   end
 
@@ -124,7 +124,7 @@ class Sorn < ApplicationRecord
   private
 
   def mentioned_sorns_in_xml
-    return unless self.xml
+    return [] unless self.xml
 
     all_citations = self.xml.scan(/\d+\s+FR\s+\d+/) # get all FR citations
     all_citations.filter_map do |citation| # find which of those are sorns

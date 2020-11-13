@@ -7,8 +7,8 @@ end
 
 namespace :all_sorns do
   desc "Find new SORNs on the Federal Register API"
-  task get_all_mentioned_sorns: :environment do
-    Sorn.get_all_mentioned_sorns
+  task update_all_mentioned_sorns: :environment do
+    Sorn.update_all_mentioned_sorns
   end
 end
 

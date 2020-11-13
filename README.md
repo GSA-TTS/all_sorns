@@ -23,10 +23,10 @@ This is a Rails app, running on Cloud.gov. It gets SORNs from the Federal Regist
 Ensure that you have postgres running
 ```
 brew install postgresql
-brew services start postgresql 
+brew services start postgresql
 ```
 
-Use your ruby version manager to switch to the ruby version found in .ruby-version. 
+Use your ruby version manager to switch to the ruby version found in .ruby-version.
 
 Then install the dependencies (and check for bundler)
 ```
@@ -48,7 +48,7 @@ bundle exec rails federal_register:find_sorns
 
 After the very first run is complete, to populate the mentioned SORNs, run
 ```
-bundle exec rails all_sorns:get_all_mentioned_sorns
+bundle exec rails all_sorns:update_all_mentioned_sorns
 ```
 
 ### Who
