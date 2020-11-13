@@ -79,20 +79,18 @@ RSpec.describe Sorn, type: :model do
     end
   end
 
-  describe ".get_mentioned_sorns" do
+  describe ".update_mentioned_sorns" do
     let(:sorn) { create :sorn, xml: file_fixture("sorn.xml").read }
     let!(:child_sorn) { Sorn.create(citation: "01 FR 1234") }
 
-    it "finds FR citations in the xml that are SORNs" do
-      sorn.get_mentioned_sorns
+    before { sorn.update_mentioned_sorns }
 
+    it "finds FR citations in the xml that are SORNs" do
       expect(sorn.mentioned).to eq [child_sorn]
     end
 
     it "also adds the parent id to the child mentions" do
-      sorn.get_mentioned_sorns
-
-      expect(child_sorn.reload.mentioned_in).to eq sorn
+      expect(child_sorn.reload.mentioned).to eq [sorn]
     end
 
     context "with existing mentioned array" do
@@ -100,14 +98,13 @@ RSpec.describe Sorn, type: :model do
       let(:sorn) { create :sorn, mentioned: [existing_child_sorn], xml: file_fixture("sorn.xml").read }
 
       it "adds to the array" do
-        sorn.get_mentioned_sorns
-
         expect(sorn.mentioned).to eq [existing_child_sorn, child_sorn]
       end
 
       it "doesn't duplicate mentions though" do
-        sorn.get_mentioned_sorns
-        sorn.get_mentioned_sorns
+        sorn.update_mentioned_sorns
+        sorn.update_mentioned_sorns
+        sorn.update_mentioned_sorns
 
         expect(sorn.mentioned).to eq [existing_child_sorn, child_sorn]
       end
@@ -117,7 +114,7 @@ RSpec.describe Sorn, type: :model do
       let(:sorn) { create :sorn, xml: nil }
 
       it "doesn't run" do
-        sorn.get_mentioned_sorns
+        sorn.update_mentioned_sorns
 
         expect(sorn.mentioned).to eq []
       end

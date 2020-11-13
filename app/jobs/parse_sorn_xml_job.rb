@@ -6,7 +6,7 @@ class ParseSornXmlJob < ApplicationJob
     puts sorn.xml_url
     sorn.get_xml
     sorn.parse_xml
-    sorn.get_mentioned_sorns
+    sorn.update_mentioned_sorns
     puts "Updated #{sorn.id}"
   end
 end

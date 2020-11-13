@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
+  create_table "mentions", id: false, force: :cascade do |t|
+    t.integer "sorn_id"
+    t.integer "mentioned_sorn_id"
+    t.index ["mentioned_sorn_id", "sorn_id"], name: "index_mentions_on_mentioned_sorn_id_and_sorn_id", unique: true
+    t.index ["sorn_id", "mentioned_sorn_id"], name: "index_mentions_on_sorn_id_and_mentioned_sorn_id", unique: true
+  end
+
   create_table "sorns", force: :cascade do |t|
     t.string "system_name"
     t.string "authority"
@@ -87,7 +94,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.string "text_url"
     t.string "publication_date"
     t.string "title"
-    t.bigint "mentioned_in_id"
+    t.string "mentioned", default: [], array: true
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
@@ -116,7 +123,6 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
     t.index ["citation"], name: "index_sorns_on_citation"
-    t.index ["mentioned_in_id"], name: "index_sorns_on_mentioned_in_id"
   end
 
 end
