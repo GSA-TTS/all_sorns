@@ -105,12 +105,12 @@
                     </div>
                   </div>
 
-                  <% if sorn.mentioned_sorns.present? %>
+                  <% if sorn.mentioned.present? %>
                     <div class="grid-row">
                       <div class="grid-col-12">
                         <span class="sorn-attribute-header">Other SORNs referenced:</span>
                         <ul>
-                        <% sorn.mentioned_sorns.each do |metioned_sorn| %>
+                        <% sorn.mentioned.each do |metioned_sorn| %>
                           <li>
                             <a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation"><%= metioned_sorn.citation %></a>:
                             <%= metioned_sorn.action %>,

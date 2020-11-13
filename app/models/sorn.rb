@@ -2,6 +2,8 @@ include ActionView::Helpers::TextHelper
 
 class Sorn < ApplicationRecord
   has_and_belongs_to_many :agencies
+  has_many :mentioned, class_name: "Sorn", foreign_key: "mentioned_in_id"
+  belongs_to :mentioned_in, class_name: "Sorn", optional: true
 
   include PgSearch::Model
   validates :citation, uniqueness: true
@@ -92,10 +94,6 @@ class Sorn < ApplicationRecord
     output
   end
 
-  def mentioned_sorns
-    Sorn.where(id: mentioned) # loads all sorns mentioned
-  end
-
   def get_mentioned_sorns
     return unless self.xml
 
@@ -105,8 +103,8 @@ class Sorn < ApplicationRecord
     end
 
     child_sorns.each do |child_sorn|
-      add_parent_sorn_to_child_mentions(child_sorn)
-      add_child_sorn_to_parent_mentions(child_sorn)
+      self.mentioned << child_sorn if self.mentioned.exclude? child_sorn # add history to sorn
+      child_sorn.mentioned_in = self # add the future to sorn!
     end
   end
 
@@ -128,21 +126,5 @@ class Sorn < ApplicationRecord
 
   def linked
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
-  end
-
-  private
-
-  def add_parent_sorn_to_child_mentions(child_sorn)
-    return if child_sorn.mentioned.include? self.id.to_s
-
-    child_sorn.mentioned.push(self.id)
-    child_sorn.save
-  end
-
-  def add_child_sorn_to_parent_mentions(child_sorn)
-    return if self.mentioned.include? child_sorn.id.to_s
-
-    self.mentioned.push(child_sorn.id)
-    self.save
   end
 end

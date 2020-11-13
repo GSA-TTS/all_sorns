@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_232203) do
+ActiveRecord::Schema.define(version: 2020_11_13_200542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2020_11_09_232203) do
     t.string "text_url"
     t.string "publication_date"
     t.string "title"
-    t.string "mentioned", default: [], array: true
+    t.bigint "mentioned_in_id"
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(version: 2020_11_09_232203) do
     t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
     t.index ["citation"], name: "index_sorns_on_citation"
+    t.index ["mentioned_in_id"], name: "index_sorns_on_mentioned_in_id"
   end
 
 end
