@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.string "text_url"
     t.string "publication_date"
     t.string "title"
-    t.string "mentioned", default: [], array: true
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
