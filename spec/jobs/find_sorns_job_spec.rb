@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe FindSornsJob, type: :job do
-  # before { allow($stdout).to receive(:write) } # silent puts
-
   describe "#perform_later" do
     ActiveJob::Base.queue_adapter = :test
 

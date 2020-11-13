@@ -35,6 +35,7 @@ RSpec.describe FederalRegisterClient, type: :model do
     )
     mock_results = [mock_result]
     result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
+    allow($stdout).to receive(:puts)
     allow(FederalRegister::Document).to receive(:search).and_return result_set
     allow(FederalRegister::Document).to receive(:find).and_return mock_result
     allow(ParseSornXmlJob).to receive(:perform_later)
