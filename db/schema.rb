@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_234350) do
+ActiveRecord::Schema.define(version: 2020_11_10_215925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_234350) do
     t.string "text_url"
     t.string "publication_date"
     t.string "title"
+    t.string "action_type"
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist

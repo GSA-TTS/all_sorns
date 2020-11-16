@@ -77,4 +77,96 @@ RSpec.describe Sorn, type: :model do
       end
     end
   end
+
+  describe ".get_action_type" do
+    context "Computer Matching Agreement" do
+      actions = ["Notice of a new matching program.",
+        "Notice of Computer Matching Program.",
+        "Notice of a Computer Matching Program Between HUD and DHS/FEMA.",
+        "Notice of a modified matching program."
+      ]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "Computer Matching Agreement"
+        end
+      end
+    end
+
+    context "New" do
+      actions = ["new something", "Notice of system of records.",
+        "Notice of Privacy Act system of records.", "Adding a system",
+        "Notice of Privacy Act System of Records.", "Notice of systems of records.",
+        "Proposed system", "Notice of Systems of Records.", "Public ..."]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "New"
+        end
+      end
+    end
+
+    context "Modification" do
+      actions = ["Modified system","Altered system", "new blanket routine use",
+        "Amendment to", "Revised", "Changes made to syste",
+        "Updated System of Records", "New routine use"]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "Modification"
+        end
+      end
+    end
+
+    context "Exemption" do
+      actions = ["Notice to establish an exempt system of records."]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "Exemption"
+        end
+      end
+    end
+
+    context "Rescindment" do
+      actions = ["Rescindment of a", "Deleting a system", "rescission of system",
+                 "retiring a system", "Withdrawing a"]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "Rescindment"
+        end
+      end
+    end
+
+    context "Renewal" do
+      actions = ["Recertification of", "Renewal of", "re-establishment of", "Republication of a"]
+
+      it "return expected action_type" do
+        actions.each do |action|
+          sorn.update(action: action)
+          sorn.get_action_type
+          expect(sorn.action_type).to eq "Renewal"
+        end
+      end
+    end
+
+    context "Unknown or Other" do
+      it "doesn't raise an error" do
+        sorn.update(action: nil)
+        sorn.get_action_type
+        expect(sorn.action_type).to eq "Unknown or Other"
+      end
+    end
+  end
 end
