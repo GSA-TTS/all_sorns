@@ -90,7 +90,7 @@ RSpec.describe Sorn, type: :model do
     end
 
     it "also adds the parent id to the child mentions" do
-      expect(child_sorn.reload.mentioned).to eq [sorn]
+      expect(child_sorn.mentioned).to eq [sorn]
     end
 
     context "with existing mentioned array" do
