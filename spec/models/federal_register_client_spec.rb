@@ -38,7 +38,7 @@ RSpec.describe FederalRegisterClient, type: :model do
     allow($stdout).to receive(:puts)
     allow(FederalRegister::Document).to receive(:search).and_return result_set
     allow(FederalRegister::Document).to receive(:find).and_return mock_result
-    allow(ParseSornXmlJob).to receive(:perform_later)
+    allow(UpdateSornJob).to receive(:perform_later)
   end
 
   describe "#find_sorns" do
@@ -73,36 +73,36 @@ RSpec.describe FederalRegisterClient, type: :model do
     end
 
     context "with existing SORN" do
-      let!(:sorn) { create :sorn }
+      let!(:sorn) { create :sorn, xml_url: nil }
 
       it "updates existing SORN" do
-        expect{ client.find_sorns; sorn.reload }.to change{ sorn.xml_url }.from('xml_url').to('expected url')
+        expect{ client.find_sorns; sorn.reload }.to change{ sorn.xml_url }.from(nil).to('expected url')
       end
     end
 
-    it "Calls ParseSornXML job with the xml url." do
+    it "Calls UpdateSornJob job with the xml url." do
       client.find_sorns
 
-      expect(ParseSornXmlJob).to have_received(:perform_later).with(Sorn.last.id)
+      expect(UpdateSornJob).to have_received(:perform_later).with(Sorn.last.id)
     end
 
     context "with a an non-notice sorn" do
       let(:type) { "Proposed Rule" }
 
-      it "Doesn't call ParseSornMxlJob" do
+      it "Doesn't call UpdateSornJob" do
         client.find_sorns
 
-        expect(ParseSornXmlJob).not_to have_received(:perform_later)
+        expect(UpdateSornJob).not_to have_received(:perform_later)
       end
     end
 
     context "with more than one page" do
       let(:pages) { 2 }
 
-      it "Calles ParseSornXmlJob for each page" do
+      it "Calles UpdateSornJob for each page" do
         client.find_sorns
 
-        expect(ParseSornXmlJob).to have_received(:perform_later).twice
+        expect(UpdateSornJob).to have_received(:perform_later).twice
       end
     end
 

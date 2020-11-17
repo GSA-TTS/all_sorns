@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ParseSornXmlJob, type: :job do
+RSpec.describe UpdateSornJob, type: :job do
   before { allow($stdout).to receive(:write) } # silent puts
 
   describe "#perform_later" do
@@ -8,7 +8,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
 
     it "Enqueues a job" do
       expect {
-        ParseSornXmlJob.perform_later()
+        described_class.perform_later()
       }.to have_enqueued_job
     end
   end
@@ -25,7 +25,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
     end
 
     it "calls methods to get more data" do
-      ParseSornXmlJob.perform_now(sorn.id)
+      described_class.perform_now(sorn.id)
 
       expect(sorn).to have_received(:get_action_type)
       expect(sorn).to have_received(:get_xml)
@@ -40,7 +40,7 @@ RSpec.describe ParseSornXmlJob, type: :job do
       end
 
       it "succeeds" do
-        expect { ParseSornXmlJob.perform_now(sorn.id) }.to_not raise_error
+        expect { described_class.perform_now(sorn.id) }.to_not raise_error
       end
     end
   end
