@@ -71,7 +71,14 @@ class SornXmlParser
   end
 
   def get_system_name
-    find_section('SYSTEM NAME')
+    bracketed_name = find_section('SYSTEM NAME')
+    system_name = bracketed_name.join(', ')
+    system_name = system_name.sub ', {}', ''
+    system_name = system_name.sub '"]', ''
+    system_name = system_name.sub '["', ''
+    system_name = system_name.sub '"', ''
+    puts system_name
+    return system_name
   end
 
   def get_system_number
