@@ -6,6 +6,7 @@ RSpec.describe Sorn, type: :model do
 
   before do
     mock_response = OpenStruct.new(success?: true, parsed_response: parsed_response)
+    allow_any_instance_of(Object).to receive(:sleep)
     allow(HTTParty).to receive(:get).and_return mock_response
     allow(sorn).to receive(:update).and_call_original
   end
@@ -64,7 +65,7 @@ RSpec.describe Sorn, type: :model do
       expect(sorn.contesting).to start_with "[\"If partner agency users have questions"
       expect(sorn.notification).to start_with "[\"If partner agency users wish to receive notice about their account records,"
       expect(sorn.exemptions).to eq "[\"None.\"]"
-      expect(sorn.history).to eq "[\"N/A.\"]"
+      expect(sorn.history).to eq "[\"FAKE CITATIONS FOR A SORN 01 FR 1234\", \"FAKE CITATIONS FOR NOT A SORN 02 FR 9876\"]"
     end
 
     context "with no xml" do
@@ -74,6 +75,48 @@ RSpec.describe Sorn, type: :model do
         sorn.parse_xml
 
         expect(sorn).not_to have_received(:update)
+      end
+    end
+  end
+
+  describe ".update_mentioned_sorns" do
+    let(:sorn) { create :sorn, xml: file_fixture("sorn.xml").read }
+    let!(:child_sorn) { Sorn.create(citation: "01 FR 1234") }
+
+    before { sorn.update_mentioned_sorns }
+
+    it "finds FR citations in the xml that are SORNs" do
+      expect(sorn.mentioned).to eq [child_sorn]
+    end
+
+    it "also adds the parent id to the child mentions" do
+      expect(child_sorn.mentioned).to eq [sorn]
+    end
+
+    context "with existing mentioned array" do
+      let(:existing_child_sorn) { create :sorn, citation: "something else" }
+      let(:sorn) { create :sorn, mentioned: [existing_child_sorn], xml: file_fixture("sorn.xml").read }
+
+      it "adds to the array" do
+        expect(sorn.mentioned).to eq [existing_child_sorn, child_sorn]
+      end
+
+      it "doesn't duplicate mentions though" do
+        sorn.update_mentioned_sorns
+        sorn.update_mentioned_sorns
+        sorn.update_mentioned_sorns
+
+        expect(sorn.mentioned).to eq [existing_child_sorn, child_sorn]
+      end
+    end
+
+    context "with out an xml file" do
+      let(:sorn) { create :sorn, xml: nil }
+
+      it "doesn't run" do
+        sorn.update_mentioned_sorns
+
+        expect(sorn.mentioned).to eq []
       end
     end
   end

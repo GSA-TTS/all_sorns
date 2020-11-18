@@ -61,7 +61,7 @@ class FederalRegisterClient
       end
     end
 
-    ParseSornXmlJob.perform_later(sorn.id)
+    UpdateSornJob.perform_later(sorn.id)
   end
 
   private

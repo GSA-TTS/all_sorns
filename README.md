@@ -46,6 +46,11 @@ Run
 bundle exec rails federal_register:find_sorns
 ```
 
+After the very first run is complete, to populate the mentioned SORNs, run
+```
+bundle exec rails all_sorns:update_all_mentioned_sorns
+```
+
 ### Who
 - [ondrae](https://github.com/ondrae)
 - [peterrowland](https://github.com/peterrowland)
