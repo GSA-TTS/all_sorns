@@ -116,7 +116,7 @@
                         <ul>
                         <% sorn.mentioned.each do |metioned_sorn| %>
                           <li>
-                            <a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation"><%= metioned_sorn.citation %></a>:
+                            <a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation" class="mention-citation"><%= metioned_sorn.citation %></a>:
                             <%= metioned_sorn.action %>,
                             <%= metioned_sorn.publication_date %>
                           </li>

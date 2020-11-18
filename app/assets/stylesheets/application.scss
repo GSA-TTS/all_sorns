@@ -159,7 +159,7 @@
 .usa-card__container {
     border-radius: 0rem;
     border: 1px solid rgba(0, 0, 0, 0.5);
-    font-size: size('Publc sans', 16)
+    font-size: size('public-sans', 16)
  }
 
  .usa-card__container button {
@@ -170,6 +170,10 @@
 
  .usa-card__body {
   padding: 16px;
+
+  .mention-citation {
+    color: #0232AC;
+  }
  }
 
  .usa-card__body .grid-row {
@@ -202,7 +206,7 @@
  }
 
  .system-name {
-  font-family: "Public Sans";
+  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
@@ -479,7 +483,6 @@
 
  .pagination {
    display: inline-block;
-   float: right;
    margin-top: units(2);
  }
 
@@ -514,7 +517,7 @@
    }
  }
 
- li.disabled .page {;
+ li.disabled .page {
    color: color('gray-50');
    &:hover {
      cursor: not-allowed	;
