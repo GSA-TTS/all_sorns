@@ -77,6 +77,18 @@ RSpec.describe Sorn, type: :model do
         expect(sorn).not_to have_received(:update)
       end
     end
+
+    context "with unparseable system name" do
+      let(:sorn) do
+        xml = file_fixture("cma-sorn.xml").read
+        create(:sorn, xml: xml)
+      end
+
+      it "doesn't raise an error" do
+        expect{ sorn.parse_xml }.not_to raise_error
+      end
+
+    end
   end
 
   describe ".update_mentioned_sorns" do
