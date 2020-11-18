@@ -1,11 +1,4 @@
-<div class="explainer">
-  <div class="grid-container">
-    <div class="grid-row grid-gap">
-    </div>
-  </div>
-</div>
-
-  <div class="grid-container">
+  <div class="grid-container margin-top-4">
     <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
 
       <div class="usa-layout-docs__sidenav grid-col-4">
@@ -146,7 +139,7 @@
                       <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>">Source Document</a>
                     </div>
                     <div class="grid-col-6 text-right">
-                      <button class="usa-button" href="/">View all details</button>
+                      <%# <button class="usa-button" href="/">View all details</button> %>
                     </div>
                   </div>
                 </div>
