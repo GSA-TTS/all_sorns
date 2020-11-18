@@ -9,7 +9,7 @@
     <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
 
       <div class="usa-layout-docs__sidenav grid-col-4">
-        <div class="border border-gray-70" id="sidebar">
+        <div class="border border-gray-70 sidebar" id="sidebar">
           <div class="preview usa-prose site-prose" >
             <fieldset id="fields" class="usa-fieldset margin-105">
               <legend class="usa-legend">
@@ -143,7 +143,7 @@
                 <div class="usa-card__footer">
                   <div class="grid-row">
                     <div class="grid-col-6">
-                      <a target="_blank" href="<%= sorn.html_url %>">Source Document</a>
+                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>">Source Document</a>
                     </div>
                     <div class="grid-col-6 text-right">
                       <button class="usa-button" href="/">View all details</button>
