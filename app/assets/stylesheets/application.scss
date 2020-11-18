@@ -165,6 +165,7 @@
  .usa-card__container button {
   background-color: #0232AC;
   border-radius: 0;
+  font-weight: normal;
  }
 
  .usa-card__body {
@@ -183,8 +184,6 @@
  }
 
  .system-number {
-  // margin-left: 16px;
-  // margin-top: 16px;
 
   font-family: family('Public sans');
 
@@ -203,7 +202,7 @@
  }
 
  .system-name {
-  font-family: Public Sans;
+  font-family: "Public Sans";
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
@@ -256,13 +255,6 @@
    line-height: line-height('body', 4);
  }
 
- // .explainer__link{
- //   color: white;
- //   &:hover {
- //     color: color('blue-30v');
- //   }
- // }
-
  .explainer__contact a {
    color: white;
    border-bottom: 1px solid white;
@@ -288,6 +280,11 @@
    border-radius: units('05');
    color: $blue-90;
    display: inline;
+ }
+
+ .usa-link--external {
+   text-decoration: none;
+   color: #0232AC;
  }
 
  .red {
@@ -400,7 +397,7 @@
  }
 
  #general-search-button {
-   background-color: $blue-90;
+   background-color: $blue-50;
    &:hover {
      background-color: $blue-50;
    }
