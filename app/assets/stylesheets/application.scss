@@ -98,7 +98,7 @@
    background-color: color('blue-30v');
  }
 
- .usa-accordion__button{
+ .sidebar .usa-accordion__button{
   background-color: #FFFFFF;
   border-top: 1px solid #C4C4C4;
  }
@@ -159,16 +159,21 @@
 .usa-card__container {
     border-radius: 0rem;
     border: 1px solid rgba(0, 0, 0, 0.5);
-    font-size: size('Publc sans', 16)
+    font-size: size('public-sans', 16)
  }
 
  .usa-card__container button {
   background-color: #0232AC;
   border-radius: 0;
+  font-weight: normal;
  }
 
  .usa-card__body {
   padding: 16px;
+
+  .mention-citation {
+    color: #0232AC;
+  }
  }
 
  .usa-card__body .grid-row {
@@ -183,8 +188,6 @@
  }
 
  .system-number {
-  // margin-left: 16px;
-  // margin-top: 16px;
 
   font-family: family('Public sans');
 
@@ -203,7 +206,7 @@
  }
 
  .system-name {
-  font-family: Public Sans;
+  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
@@ -256,13 +259,6 @@
    line-height: line-height('body', 4);
  }
 
- // .explainer__link{
- //   color: white;
- //   &:hover {
- //     color: color('blue-30v');
- //   }
- // }
-
  .explainer__contact a {
    color: white;
    border-bottom: 1px solid white;
@@ -288,6 +284,11 @@
    border-radius: units('05');
    color: $blue-90;
    display: inline;
+ }
+
+ .usa-link--external {
+   text-decoration: none;
+   color: #0232AC;
  }
 
  .red {
@@ -400,7 +401,7 @@
  }
 
  #general-search-button {
-   background-color: $blue-90;
+   background-color: $blue-50;
    &:hover {
      background-color: $blue-50;
    }
@@ -447,11 +448,6 @@
  }
 
 
- // .grid-container {
- //   max-width: 100%;
- //   width: 100%;
- // }
-
  table {
   display: block;
   overflow-x: scroll;
@@ -487,7 +483,6 @@
 
  .pagination {
    display: inline-block;
-   float: right;
    margin-top: units(2);
  }
 
@@ -522,7 +517,7 @@
    }
  }
 
- li.disabled .page {;
+ li.disabled .page {
    color: color('gray-50');
    &:hover {
      cursor: not-allowed	;
