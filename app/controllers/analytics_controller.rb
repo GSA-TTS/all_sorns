@@ -1,8 +1,7 @@
 class AnalyticsController < ApplicationController
-    def index
-
-        @total_sorns = Sorn.count
-        @agency_sorn_counts = Sorn.group(:agency_names).count.sort_by{ |name, count| count }.reverse
-
-    end
+  def index
+    @total_sorns = Sorn.count
+    @sorn_types = Sorn.pluck(:action_type).tally
+    @agencies = Agency.all
+  end
 end
