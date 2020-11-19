@@ -1,2 +1,0 @@
-class AboutController < PagesController
-end
