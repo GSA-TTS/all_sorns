@@ -71,7 +71,16 @@ class SornXmlParser
   end
 
   def get_system_name
-    find_section('SYSTEM NAME')
+    bracketed_name = find_section('SYSTEM NAME')
+    if bracketed_name
+      system_name = bracketed_name.join(', ')
+      system_name = system_name.sub ', {}', ''
+      system_name = system_name.sub '"]', ''
+      system_name = system_name.sub '["', ''
+      system_name = system_name.sub '"', ''
+      puts system_name
+      return system_name
+    end
   end
 
   def get_system_number
@@ -79,13 +88,14 @@ class SornXmlParser
     if number.length > 0
       number
     else
-      find_from_system_name 
+      # find_from_system_name
+      return 5
     end
   end
   
   # Sorn.where("system_name ~* ?", '\d+', ).where('publication_date::DATE > ?', '2016-12-23').select(:system_name)
   def find_from_system_name
-    system_name = find_section('SYSTEM NAME')
+    system_name = get_system_name(find_section('SYSTEM NAME'))
     digit_regex = Regexp.new('\d')
     if system_name.match(digit_regex)
       # find potential capture groups
