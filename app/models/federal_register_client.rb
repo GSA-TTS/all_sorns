@@ -44,6 +44,8 @@ class FederalRegisterClient
     handle_result(result)
   end
 
+  private
+
   def handle_result(result)
     sorn = Sorn.find_by(citation: result.citation)
 
@@ -59,8 +61,6 @@ class FederalRegisterClient
 
     UpdateSornJob.perform_later(sorn.id)
   end
-
-  private
 
   def a_sorn_title?(title)
     # We researched all Federal Register search result titles
