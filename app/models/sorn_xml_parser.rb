@@ -86,15 +86,14 @@ class SornXmlParser
   # Sorn.where("system_name ~* ?", '\d+', ).where('publication_date::DATE > ?', '2016-12-23').select(:system_name)
   def find_from_system_name
     system_name = find_section('SYSTEM NAME')
-    digit_regex = Regex.new('(-|.)?\d+—?\d+')
-    has_digit_in_name? = system_name.match(digit_regex)
-    if has_digit_in_name?
+    digit_regex = Regexp.new('\d')
+    if system_name.match(digit_regex)
       # find potential capture groups
       mega_regex = Regexp.union(/(\w+\/)?\w+(-| |.)\d+/,/\((\d+\w+)\)/,/\w?\d+-\d+-\d+/)
       regex_captures = system_name.match(mega_regex)
-      cleaned_capture(regex_captures).join(', ')
-    else
-      nil
+      if regex_captures
+        cleaned_capture(regex_captures).join(', ')
+      end
     end
   end
 
