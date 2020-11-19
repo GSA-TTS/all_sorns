@@ -82,20 +82,27 @@ class SornXmlParser
       find_from_system_name 
     end
   end
-    
+  
+  # Sorn.where("system_name ~* ?", '\d+', ).where('publication_date::DATE > ?', '2016-12-23').select(:system_name)
   def find_from_system_name
     system_name = find_section('SYSTEM NAME')
-    regex = Regex.new('(-|.)?\d+—?\d+') 
-    if system_name.match(regex)
-      if ! system_name.match(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/) #date and CR
-        system_name[/(\w+\/)?\w+(-|.)?\d+(-\d)?/]
-      else
-        nil
-      end
+    digit_regex = Regex.new('(-|.)?\d+—?\d+')
+    has_digit_in_name? = system_name.match(digit_regex)
+    if has_digit_in_name?
+      # find potential capture groups
+      mega_regex = Regexp.union(/(\w+\/)?\w+(-| |.)\d+/,/\((\d+\w+)\)/,/\w?\d+-\d+-\d+/)
+      regex_captures = system_name.match(mega_regex)
+      cleaned_capture(regex_captures).join(', ')
     else
       nil
     end
   end
+
+  def cleaned_capture(capture_array)
+    no_cfr_array = capture_array.reject { |capture| capture[/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/]}
+    cleaned_array = no_cfr_array.reject { |capture| capture[/HSPD_12/]}
+  end
+
 
   def get_security
     find_section('SECURITY')
