@@ -1,6 +1,6 @@
 class SornsController < ApplicationController
   def search
-    @sorns = Sorn.no_computer_matching.includes(:agencies)
+    @sorns = Sorn.no_computer_matching.includes(:mentioned).preload(:agencies)
 
     if no_params_on_page_load?
       # return all sorns with default fields
