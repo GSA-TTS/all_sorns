@@ -73,43 +73,40 @@ class SornXmlParser
   def get_system_name
     bracketed_name = find_section('SYSTEM NAME')
     if bracketed_name
-      system_name = bracketed_name.join(', ')
-      system_name = system_name.sub ', {}', ''
-      system_name = system_name.sub '"]', ''
-      system_name = system_name.sub '["', ''
-      system_name = system_name.sub '"', ''
-      puts system_name
-      return system_name
+      @system_name = bracketed_name.join(', ')
+      @system_name = @system_name.sub ', {}', ''
+      @system_name = @system_name.sub '"]', ''
+      @system_name = @system_name.sub '["', ''
+      @system_name = @system_name.sub '"', ''
+      return @system_name
     end
   end
 
   def get_system_number
     number = find_section('NUMBER')
-    if number.length > 0
-      number
-    else
-      # find_from_system_name
-      return 5
+    puts number
+    if number and @system_name
+      parse_system_name_from_number
     end
   end
   
-  # Sorn.where("system_name ~* ?", '\d+', ).where('publication_date::DATE > ?', '2016-12-23').select(:system_name)
-  def find_from_system_name
-    system_name = get_system_name(find_section('SYSTEM NAME'))
+  def parse_system_name_from_number
     digit_regex = Regexp.new('\d')
-    if system_name.match(digit_regex)
+    if @system_name.match(digit_regex)
       # find potential capture groups
-      mega_regex = Regexp.union(/(\w+\/)?\w+(-| |.)\d+/,/\((\d+\w+)\)/,/\w?\d+-\d+-\d+/)
-      regex_captures = system_name.match(mega_regex)
-      if regex_captures
+      regex_captures = [@system_name.match(/(\w+\/)?\w+(-| |.)\d+/)[0]]
+      regex_captures.concat(@system_name.scan(/\((\d+\w+)\)/))
+      if regex_captures.length > 0
         cleaned_capture(regex_captures).join(', ')
       end
     end
   end
 
   def cleaned_capture(capture_array)
-    no_cfr_array = capture_array.reject { |capture| capture[/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/]}
-    cleaned_array = no_cfr_array.reject { |capture| capture[/HSPD_12/]}
+    capture_array.delete('-')
+    capture_array.delete('HSPD-12')
+    # no_cfr_array = capture_array.reject { |capture| capture.match(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/)}
+    capture_array.uniq
   end
 
 
