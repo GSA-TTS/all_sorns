@@ -84,12 +84,12 @@ class SornXmlParser
 
   def get_system_number
     number = find_section('NUMBER')
-    puts number
+    # puts number
     if number and @system_name
       parse_system_name_from_number
     end
   end
-  
+
   def parse_system_name_from_number
     digit_regex = Regexp.new('\d')
     if @system_name.match(digit_regex)
