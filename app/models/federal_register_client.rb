@@ -44,6 +44,8 @@ class FederalRegisterClient
     handle_result(result)
   end
 
+  private
+
   def handle_result(result)
     sorn = Sorn.find_by(citation: result.citation)
 
@@ -53,18 +55,12 @@ class FederalRegisterClient
       sorn.update(**params)
     else
       sorn = Sorn.create(params)
-
-      # Create agencies
-      result.agencies.each do |api_agency|
-        agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-        sorn.agencies << agency
-      end
     end
+
+    update_agencies(result, sorn)
 
     UpdateSornJob.perform_later(sorn.id)
   end
-
-  private
 
   def a_sorn_title?(title)
     # We researched all Federal Register search result titles
@@ -88,5 +84,20 @@ class FederalRegisterClient
       agency_names: result.agency_names,
       data_source: :fedreg
     }
+  end
+
+  def update_agencies(result, sorn)
+    # Create agencies
+    result.agencies.each do |api_agency|
+      if api_agency.raw_name == "Office of the Secretary"
+        # A popular component used by the DoD
+        # doesn't have the other metadata
+        agency = Agency.find_or_create_by(name: api_agency.raw_name, api_id: 9999, parent_api_id: 103)
+      else
+        agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+      end
+
+      sorn.agencies << agency if sorn.agencies.exclude? agency
+    end
   end
 end
