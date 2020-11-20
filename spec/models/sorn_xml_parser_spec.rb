@@ -18,36 +18,46 @@ RSpec.describe SornXmlParser, type: :model do
         system_name = ["National Docketing Management Information System (NDMIS)"]
         allow(parser).to receive(:find_section).and_return(system_name)
         parser.get_system_name
-        system_number = parser.get_system_number
-        expect(system_number).to eq nil
+        expect(parser.get_system_number).to eq nil
       end
 
       it "return has a . in it" do
         system_name = ["CFPB.009—Employee Administrative Records System."]
         allow(parser).to receive(:find_section).and_return(system_name)
         parser.get_system_name
-        system_number = parser.get_system_number
-        expect(system_number).to eq "CFPB.009"
+        expect(parser.get_system_number).to eq "CFPB.009"
+      end
+
+      it "return has a . in it" do
+        system_name = ["CFPB.009—Employee Administrative Records System."]
+        allow(parser).to receive(:find_section).and_return(system_name)
+        parser.get_system_name
+        expect(parser.get_system_number).to eq "CFPB.009"
       end
 
       it "uses the stock xml field return has two names in the systmem name in it" do
-        parser.get_system_name
-        system_number = parser.get_system_number
-        expect(system_number).to eq "GSA/OGP-1"
+        parser.get_system_name 
+        expect(parser.get_system_number).to eq "GSA/OGP-1"
       end
 
     end
 
     context "Has an excluded regex capture" do
 
-      xit "excludes the cfr and date reference" do
-        system_name = "Database of Reserve/Retired Judge Advocates and Legalmen (July 14, 1999, 64 FR 37944)."
-        expect(sorn.system_number).to eq nil
+      it "excludes the cfr and date reference" do
+        # no_cfr_syst_name = @system_number.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
+      # find potential capture groups
+        system_name = ["Database of Reserve/Retired Judge Advocates and Legalmen (July 14, 1999, 64 FR 37944)."]
+        allow(parser).to receive(:find_section).and_return(system_name)
+        parser.get_system_name
+        expect(parser.get_system_number).to eq nil
       end
 
-      xit "excludes the HSPD-12 references" do
-        system_name = "HSPD-12: Identity Management, Personnel Security, Physical and Logical Access Files."
-        expect(sorn.system_number).to eq nil
+      it "excludes the HSPD-12 references" do
+        system_name = ["HSPD-12: Identity Management, Personnel Security, Physical and Logical Access Files."]
+        allow(parser).to receive(:find_section).and_return(system_name)
+        parser.get_system_name
+        expect(parser.get_system_number).to eq nil
       end
     end
   end
