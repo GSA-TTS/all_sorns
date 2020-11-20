@@ -152,6 +152,19 @@
    padding-bottom: 8px;
  }
 
+ .pagination {
+   float: right;
+ }
+
+ .pagination span {
+  font-size: size('public-sans', 16);
+  padding-right: 8px;
+ }
+
+ .pagination a {
+  text-decoration: none;
+ }
+
  .usa-card {
    min-width: 100%;
   }
@@ -479,15 +492,6 @@
 
  .cell__source {
    width: 7%;
- }
-
- .pagination {
-   display: inline-block;
-   margin-top: units(2);
- }
-
- .pagination li {
-   display:inline-block;
  }
 
  a.page {
