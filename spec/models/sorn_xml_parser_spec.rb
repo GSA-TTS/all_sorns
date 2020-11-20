@@ -21,6 +21,20 @@ RSpec.describe SornXmlParser, type: :model do
         expect(parser.get_system_number).to eq nil
       end
 
+      it "returns a number only name" do
+        system_name = ["Family Advocacy Program Record.	2003-11-18"]
+        allow(parser).to receive(:find_section).and_return(system_name)
+        parser.get_system_name
+        expect(parser.get_system_number).to eq "2003-11-18"
+      end
+
+      it "returns a parenthetical name" do
+        system_name = ["Criminal Investigations (11VA51)."]
+        allow(parser).to receive(:find_section).and_return(system_name)
+        parser.get_system_name
+        expect(parser.get_system_number).to eq "11VA51"
+      end
+
       it "return has a . in it" do
         system_name = ["CFPB.009—Employee Administrative Records System."]
         allow(parser).to receive(:find_section).and_return(system_name)
@@ -45,7 +59,6 @@ RSpec.describe SornXmlParser, type: :model do
     context "Has an excluded regex capture" do
 
       it "excludes the cfr and date reference" do
-        # no_cfr_syst_name = @system_number.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
       # find potential capture groups
         system_name = ["Database of Reserve/Retired Judge Advocates and Legalmen (July 14, 1999, 64 FR 37944)."]
         allow(parser).to receive(:find_section).and_return(system_name)

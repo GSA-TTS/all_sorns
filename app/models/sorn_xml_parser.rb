@@ -93,7 +93,6 @@ class SornXmlParser
   def parse_system_name_from_number
     digit_regex = Regexp.new('\d')
     if @system_name.match(digit_regex)
-      # find potential capture groups
       precleaned = strip_known_patterns(@system_name)
       regex_captures = collect_regex_captures(precleaned)
       if regex_captures.length > 0
@@ -102,18 +101,18 @@ class SornXmlParser
     end
   end
 
-  def collect_regex_captures(precleaned_system_name)
-    regex_captures = []
-    generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+/)
-    if generic_match
-      regex_captures.append(generic_match[0])
-    end
-    regex_captures.concat(precleaned_system_name.scan(/\((\d+\w+)\)/))
-  end
-
   def strip_known_patterns(system_name)
     no_cfr_syst_name = system_name.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
     return no_cfr_syst_name.gsub(/HSPD-12/, '')
+  end
+
+  def collect_regex_captures(precleaned_system_name)
+    regex_captures = []
+    generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
+    if generic_match
+      regex_captures.append(generic_match[0])
+    end
+    regex_captures
   end
 
   def cleaned_capture(capture_array)
