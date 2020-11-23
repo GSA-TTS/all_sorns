@@ -102,12 +102,16 @@ class SornXmlParser
   end
 
   def strip_known_patterns(system_name)
+    # This regex will strip the common pattern of a "(Month DD, YYY, Federal register citation)""
     no_cfr_syst_name = system_name.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
+    # Remove references to the HSPD-12 PIV Card policy
     return no_cfr_syst_name.gsub(/HSPD-12/, '')
   end
 
   def collect_regex_captures(precleaned_system_name)
     regex_captures = []
+    # Looks for a variety of common system number reference patterns that are either 
+    # just numbers or a combination of number and agency abbreviation system numbers
     generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
     if generic_match
       regex_captures.append(generic_match[0])
