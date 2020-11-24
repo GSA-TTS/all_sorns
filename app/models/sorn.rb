@@ -57,6 +57,8 @@ class Sorn < ApplicationRecord
     'action',
     'system_name',
     'summary',
+    'categories_of_individuals',
+    'categories_of_record',
     'html_url',
     'publication_date'
   ]
