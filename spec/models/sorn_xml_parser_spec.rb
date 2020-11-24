@@ -1,9 +1,73 @@
 require 'rails_helper'
 
 RSpec.describe SornXmlParser, type: :model do
+  let(:xml) { file_fixture("sorn.xml").read }
   let(:parser) do
-    xml = file_fixture("sorn.xml").read
     SornXmlParser.new(xml)
+  end
+
+  describe ".find_tag" do
+    context "a complicated array summary, in sorn.xml" do
+      it "returns the cleaned up as a string" do
+        expect(parser.find_tag("SUM")).to eq "GSA is publishing this system of records notice (SORN) as the new managing partner of the e-Rulemaking Program, effective October 1, 2019. The e-Rulemaking Program includes the Federal Docket Management System (FDMS) and Regulations.gov. Regulations.gov allows the public to search, view, download, and comment on Federal agencies' rulemaking documents in one central location on-line. FDMS provides each participating Federal agency with the ability to electronically access and manage its own rulemaking dockets, or other dockets, including comments or supporting materials submitted by individuals or organizations. GSA is establishing the GSA/OGP-1, e-Rulemaking Program Administrative System to manage regulations.gov and partner agency access to the Federal Docket Management System (FDMS)."
+      end
+    end
+
+    context "another array" do
+      let(:xml) do
+        <<~HEREDOC
+          <SUM>
+            <HD SOURCE="HED">SUMMARY:</HD>
+            <P>
+              In accordance with the Privacy Act of 1974, the Department of Homeland Security (DHS) proposes to modify and reissue a current DHS system of records titled, “DHS/United States Coast Guard (USCG)-061 Maritime Awareness Global Network (MAGNET) System of Records.” The modified system of records is to be reissued and renamed as “DHS/USCG-061 Maritime Analytic Support System (MASS) System of Records.” This system of records allows the DHS/USCG to collect and maintain records in a centralized location that relate to the U.S. Coast Guard's missions that are found within the maritime domain. The information covered by this system of records is relevant to the eleven U.S. Coast Guard statutory missions (Port, Waterways, and Coastal Security (PWCS); Drug Interdiction; Aid to Maritime Navigation; Search and Rescue (SAR) Operations; Protection of Living Marine Resources; Ensuring Marine Safety, Defense Readiness; Migrant Interdiction; Marine Environmental Protection; Ice Operations; and Law Enforcement). DHS/USCG is updating this system of records notice to include and update additional data sources, system security and auditing protocols, routine uses, and user interfaces. Additionally, DHS/USCG is concurrently issuing a Notice of Proposed Rulemaking, and subsequent Final Rule, to exempt this system of records from certain provisions of the Privacy Act due to criminal, civil, and administrative enforcement requirements. Furthermore, this notice includes non-substantive changes to simplify the formatting and text of the previously published notice.
+              <PRTPAGE P="74743"/>
+            </P>
+            <P>This modified system will be included in DHS's inventory of record systems.</P>
+          </SUM>
+        HEREDOC
+      end
+
+      it "returns the cleaned content" do
+        expect(parser.find_tag("SUM")).to eq "In accordance with the Privacy Act of 1974, the Department of Homeland Security (DHS) proposes to modify and reissue a current DHS system of records titled, “DHS/United States Coast Guard (USCG)-061 Maritime Awareness Global Network (MAGNET) System of Records.” The modified system of records is to be reissued and renamed as “DHS/USCG-061 Maritime Analytic Support System (MASS) System of Records.” This system of records allows the DHS/USCG to collect and maintain records in a centralized location that relate to the U.S. Coast Guard's missions that are found within the maritime domain. The information covered by this system of records is relevant to the eleven U.S. Coast Guard statutory missions (Port, Waterways, and Coastal Security (PWCS); Drug Interdiction; Aid to Maritime Navigation; Search and Rescue (SAR) Operations; Protection of Living Marine Resources; Ensuring Marine Safety, Defense Readiness; Migrant Interdiction; Marine Environmental Protection; Ice Operations; and Law Enforcement). DHS/USCG is updating this system of records notice to include and update additional data sources, system security and auditing protocols, routine uses, and user interfaces. Additionally, DHS/USCG is concurrently issuing a Notice of Proposed Rulemaking, and subsequent Final Rule, to exempt this system of records from certain provisions of the Privacy Act due to criminal, civil, and administrative enforcement requirements. Furthermore, this notice includes non-substantive changes to simplify the formatting and text of the previously published notice.  This modified system will be included in DHS's inventory of record systems."
+      end
+    end
+
+    context "an even wilder array" do
+      let(:xml) do
+        <<~HEREDOC
+        <ADD>
+        <PRTPAGE P="75030"/>
+        <HD SOURCE="HED">ADDRESSES:</HD>
+        <P>You may submit comments identified by docket number [DOI-2020-0004] by any of the following methods:</P>
+        <P>
+        •
+        <E T="03">Federal eRulemaking Portal:</E>
+        <E T="03">http://www.regulations.gov.</E>
+        Follow the instructions for sending comments.
+        </P>
+        </ADD>
+        HEREDOC
+      end
+
+      it "returns the cleaned content" do
+        expect(parser.find_tag("ADD")).to eq "You may submit comments identified by docket number [DOI-2020-0004] by any of the following methods: • Federal eRulemaking Portal: http://www.regulations.gov. Follow the instructions for sending comments."
+      end
+    end
+
+    context "a single P summary" do
+      let(:xml) do
+        <<~HEREDOC
+        <SUM>
+          <HD SOURCE="HED">SUMMARY:</HD>
+          <P>In accordance with the requirements of the Privacy Act of 1974, as amended, the Department is publishing its modified Privacy Act systems of record.</P>
+        </SUM>
+        HEREDOC
+      end
+
+      it "returns the cleaned content" do
+        expect(parser.find_tag("SUM")).to eq "In accordance with the requirements of the Privacy Act of 1974, as amended, the Department is publishing its modified Privacy Act systems of record."
+      end
+    end
   end
 
   describe ".get_system_number" do

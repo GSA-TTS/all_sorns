@@ -110,7 +110,7 @@ class SornXmlParser
 
   def collect_regex_captures(precleaned_system_name)
     regex_captures = []
-    # Looks for a variety of common system number reference patterns that are either 
+    # Looks for a variety of common system number reference patterns that are either
     # just numbers or a combination of number and agency abbreviation system numbers
     generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
     if generic_match
@@ -200,20 +200,28 @@ class SornXmlParser
     find_section('HISTORY')
   end
 
-  private
-
   def find_tag(tag)
     element = @parser.for_tag(tag).first
+    cleanup_xml_element_to_string(element)
+  end
 
-    # Return the whole element if its a string
-    return element if element.class == Saxerator::Builder::StringElement
+  def cleanup_xml_element_to_string(element)
+    # The class is never a plain Array or Hash
 
-    # Most commonly, it is a hash with paragraphs
-    return element.fetch('P', nil) if element.class == Saxerator::Builder::HashElement
+    # Grab the paragraphs out of any hashes
+    element = cleanup_xml_element_to_string(element.fetch('P', nil)) if element.class == Saxerator::Builder::HashElement
 
-    # Rarely another tag will be complicated and have more than paragraphs, these show up as arrays.
-    # Just return the whole array as a string
-    return element if element.class == Saxerator::Builder::ArrayElement
+    # Arrays can be full of all the types
+    # turn all the inside elements into strings
+    # then join on spaces
+    if element.class == Saxerator::Builder::ArrayElement
+      element = element.map do |e|
+        cleanup_xml_element_to_string(e)
+      end.join(" ")
+    end
+
+    # Return a stripped string
+    element.strip if element.class.in? [Saxerator::Builder::StringElement, String]
   end
 
   def get_sections
