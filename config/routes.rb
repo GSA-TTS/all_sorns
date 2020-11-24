@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get '/csv', to: 'sorns#csv'
 
   get '/search', to: 'sorns#search'
+  get '/search-old', to: 'sorns#search_old'
 
   get '/analytics', to: 'analytics#index'
 

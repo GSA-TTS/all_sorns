@@ -1,12 +1,15 @@
 <p>Total SORNs: <%= @total_sorns %></p>
 <p>SORNs without XML_URLs: <%= @no_xml_url %></p>
 
-<table>
-    <tr><th>Agency</th><th>SORN count</th></tr>
-<% @agency_sorn_counts.each do |agency, count| %>
-    
-    <tr><td><%= agency %></td><td><%= count %></p></td></tr>
-    
-<% end %>
+  <div class="grid-row">
+    <h2>Agencies:</h2>
+    <ul>
+    <% @agencies.each do |agency| %>
+      <li><%= agency.name %>: <%= agency.sorns.count %></li>
+    <% end %>
+    </ul>
+  </div>
 
-</table>
+
+
+</div>

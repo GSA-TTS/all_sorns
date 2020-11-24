@@ -1,13 +1,14 @@
 class AnalyticsController < ApplicationController
-    def index
+  def index
+    @total_sorns = Sorn.count
+    @sorn_types = Sorn.pluck(:action_type).tally
+    @agencies = Agency.all
 
-        @total_sorns = Sorn.count
-        
-        #Per agency stats
-        #count of SORNs per agency
-        @agency_sorn_counts = Sorn.except(:order).group(:agency_names).count.sort_by{ |name, count| count }.reverse
+    #count of different types of SORNs - new,modified, rescinded, matching agreements, others
 
-        #count of different types of SORNs - new,modified, rescinded, matching agreements, others
+    #Data quality stats
+    #How many records don't have titles?
+    #How many records are missing ___ field?
 
         #Data quality stats
         #How many records don't have titles?

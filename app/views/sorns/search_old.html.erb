@@ -1,0 +1,122 @@
+<div class="explainer">
+  <div class="grid-container">
+    <div class="grid-row grid-gap">
+      <div class="tablet:grid-col-7">
+        <p class="explainer__text">WHATEVER</p>
+      </div>
+      <div class="tablet:grid-col-5">
+        <p class="explainer__text text-right">OKAY</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="grid-container">
+    <div class="grid-row grid-gap">
+      <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
+        <div class="grid-row margin-top-2 margin-right-0">
+          <div class="grid-col-12">
+            <%= form_tag('/search-old', method: "get") do %>
+              <fieldset class="usa-search">
+                <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+                <button id="general-search-button" class="usa-button" type="submit">
+                  <span class="usa-search__submit-text">Search</span>
+                </button>
+              </fieldset>
+
+              <label class="usa-label" for="options">Select Agency</label>
+              <select class="usa-select" name="agency" id="agency-select">
+                <option value>- Select -</option>
+                <% Agency.all.each do |agency| %>
+                  <option value="<%= agency.name %>" <%= "selected" if agency.name == params[:agency] %>><%= agency.name %></option>
+                  <% end %>
+              </select>
+
+              <fieldset id="fields" class="usa-fieldset">
+                <legend class="usa-legend">Fields</legend>
+                <div id="sorn-fields" class="grid-row">
+                  <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+                  <% checkboxes.each_with_index do |field, index| %>
+                    <div class="usa-checkbox grid-col-3">
+                      <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
+                      <label class="usa-checkbox__label" for="search-<%= field %>"><%= field %></label>
+                    </div>
+
+                    <% if (index+1) % 4 == 0 %>
+                      </div>
+                      <div class="grid-row">
+                    <% end %>
+                  <% end %>
+                </div>
+              </fieldset>
+            <% end %>
+
+            <div class="grid-row">
+              <div class="grid-col-12 text-right float-right">
+                <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
+                <%= javascript_pack_tag 'checkboxes' %>
+
+                <button id="select-all" class="usa-button usa-button--accent-warm">Select All</button>
+                <button id="deselect-all" class="usa-button usa-button--accent-warm">Deselect All</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid-row margin-top-2 margin-right-0 results-meta">
+          <div class="grid-col-6 display-block">
+              <%= link_to "Download this search as a CSV", search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe %>
+          </div>
+          <div class="grid-col-6 margin-bottom-0 text-right results-meta__count">
+             <div id="search-result-counter" class="font-body-xs">
+              <%= page_entries_info @sorns %>
+              <%= paginate @sorns %>
+            </div>
+          </div>
+        </div>
+
+        <div id="cards">
+          <div class="list">
+
+            <% @sorns.each do |sorn| %>
+              <div class="card card--sorn padding-2 margin-top-2 margin-right-0 usa-accordion" aria-multiselectable="true">
+
+                <% if params[:agency] %>
+                  <h4 class="usa-accordion__heading">
+                    <button class="usa-accordion__button"
+                      aria-expanded="true"
+                      aria-controls="agencies-<%= sorn.id %>">
+                      agencies:
+                    </button>
+                  </h4>
+                  <div id="agencies-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                    <% sorn.agencies.each do |agency| %>
+                      <%= highlight(agency.name, params[:search]) %>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% if @selected_fields %>
+                  <% @selected_fields.each do |selected_field| %>
+                    <% if show_field?(selected_field) %>
+                      <h4 class="usa-accordion__heading">
+                        <button class="usa-accordion__button"
+                          aria-expanded="true"
+                          aria-controls="<%= selected_field %>-<%= sorn.id %>">
+                          <%= selected_field %>:
+                        </button>
+                      </h4>
+                      <div id="<%= selected_field %>-<%= sorn.id %>" class="usa-accordion__content usa-prose">
+                        <%= highlight(sorn.send(selected_field), params[:search]) %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                <% end %>
+
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

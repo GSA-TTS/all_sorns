@@ -26,6 +26,8 @@
  $gray-5:       #F0F0F0;
  $gray-3:       #F6F6F6;
  $gray-2:       #F9F9F9;
+ $header_gray:  #D0D0D0;
+
 
  $red-60:       #AF3639;
  $gold-40:      #AD8B65;
@@ -56,11 +58,32 @@
    font-size: font-size('heading', '2xl');
  }
 
+ // use with mixin utility when available
+ #search-filters{
+  font-size: 20px;
+  margin-bottom: 19px;
+  font-weight:bold;
+ }
+
+ #fields-to-search{
+  font-size: 16px;
+  font-weight:bold;
+ }
+
+ #sorn-fields input[type='checkbox']{
+   border-radius: 0 !important;
+   position: relative !important;
+ }
+
+ .usa-checkbox {
+   height: 32px;
+ }
+
  .usa-nav__secondary {
    color: white;
  }
 
-  .usa-nav__primary > .usa-nav__primary-item > a {
+ .usa-nav__primary > .usa-nav__primary-item > a {
    color: white;
    &:hover {
      color: color('blue-30v');
@@ -75,16 +98,159 @@
    background-color: color('blue-30v');
  }
 
+ .sidebar .usa-accordion__button{
+  background-color: #FFFFFF;
+  border-top: 1px solid #C4C4C4;
+ }
 
- #main-content {
-   border-top: 0;
-   background-color: $gray-3;
+/* Need to override accordion margins to match design */
+ .usa-accordion__heading:not(:first-child), .usa-prose .usa-accordion__heading:not(:first-child) {
+  margin-top: 0rem;
+}
+
+ #sorn-fields {
+   overflow-y: scroll;
+   height: 312px;
+   border-bottom: 1px solid #C4C4C4;
+ }
+
+ #a1 {
+  overflow-y: scroll;
+  height: 312px;
+ }
+
+ #csv-download {
+   margin-top: 16px;
+ }
+
+ #csv-download img {
+  vertical-align: middle;
+  padding-right: 8px;
+ }
+
+ #csv-download a {
+  vertical-align: middle;
+  text-decoration: none;
+ }
+
+ #csv-download .csv-download-link-text {
+  text-decoration: underline;
+ }
+
+
+ #search-form {
+   width: 100%;
+ }
+
+ .usa-search {
+   border: 0;
+   padding: 0;
+   margin-bottom: 16px;
+ }
+
+ #count {
+   padding-bottom: 8px;
+ }
+
+ .usa-card {
+   min-width: 100%;
+  }
+
+.usa-card__container {
+    border-radius: 0rem;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    font-size: size('public-sans', 16)
+ }
+
+ .usa-card__container button {
+  background-color: #0232AC;
+  border-radius: 0;
+  font-weight: normal;
+ }
+
+ .usa-card__body {
+  padding: 16px;
+
+  .mention-citation {
+    color: #0232AC;
+  }
+ }
+
+ .usa-card__body .grid-row {
+   padding-bottom: 16px;
+ }
+
+ .usa-card__header {
+  padding: 16px;
+  min-height: 112px;
+
+  background: #F0F0F0;
+ }
+
+ .system-number {
+
+  font-family: family('Public sans');
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height */
+
+  text-transform: uppercase;
+
+  color: #000000;
+
+  margin-bottom: 8px;
+  display: block;
+ }
+
+ .system-name {
+  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  /* or 140% */
+
+
+  color: #0232AC;
+ }
+
+ .sorn-attribute-header {
+  font-weight: bold;
+ }
+
+ .agency-separator {
+   padding: 0 0.5rem;
+   font-weight: bold;
+ }
+
+ .found-in {
+  width: 100%;
+ }
+
+ .found-section-title {
+   font-size: 14px;
+   width: 100%;
+ }
+
+ .found-section-snippet {
+  font-size: 16px;
+  width: 100%;
+
+ }
+
+ .usa-card__footer {
+  padding: 16px;
  }
 
  // Explainer section
  .explainer {
    border-bottom: $gray-cool-10 2px solid;
-   background-color: $blue-10;
+   background-color: $header_gray;
+   height: 60px;
+   margin-bottom: 32px;
  }
 
  .explainer__text {
@@ -92,13 +258,6 @@
    font-size: size('sans','sm');
    line-height: line-height('body', 4);
  }
-
- // .explainer__link{
- //   color: white;
- //   &:hover {
- //     color: color('blue-30v');
- //   }
- // }
 
  .explainer__contact a {
    color: white;
@@ -125,6 +284,11 @@
    border-radius: units('05');
    color: $blue-90;
    display: inline;
+ }
+
+ .usa-link--external {
+   text-decoration: none;
+   color: #0232AC;
  }
 
  .red {
@@ -154,10 +318,7 @@
  }
 
  .card {
-   // outline-color: $blue-90;
-   // outline-style: solid;
-   // outline-width: 1px;
-   background-color: white;
+   margin-top: 32px;
  }
 
  .card--sorn {
@@ -227,9 +388,8 @@
    color: $blue-90;
  }
 
- .usa-checkbox__input:checked + .usa-checkbox__label::before {
-   background-color: $blue-90;
-   box-shadow: 0 0 0 2px $blue-90;
+ .usa-checkbox__label::before {
+   border-radius: 2px;
  }
 
  .usa-search {
@@ -241,7 +401,7 @@
  }
 
  #general-search-button {
-   background-color: $blue-90;
+   background-color: $blue-50;
    &:hover {
      background-color: $blue-50;
    }
@@ -288,11 +448,6 @@
  }
 
 
- // .grid-container {
- //   max-width: 100%;
- //   width: 100%;
- // }
-
  table {
   display: block;
   overflow-x: scroll;
@@ -328,7 +483,6 @@
 
  .pagination {
    display: inline-block;
-   float: right;
    margin-top: units(2);
  }
 
@@ -363,7 +517,7 @@
    }
  }
 
- li.disabled .page {;
+ li.disabled .page {
    color: color('gray-50');
    &:hover {
      cursor: not-allowed	;
