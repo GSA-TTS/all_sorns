@@ -1,47 +1,73 @@
 require 'rails_helper'
 
 RSpec.describe SornXmlParser, type: :model do
-  let(:sorn) do
+  let(:parser) do
     xml = file_fixture("sorn.xml").read
-    create(:sorn, xml: xml)
+    SornXmlParser.new(xml)
   end
 
-  xdescribe ".parse_xml" do
-    it "returns the expected hash" do
-      parsed_xml = SornXmlParser.new(sorn.xml).parse_xml
+  describe ".get_system_number" do
+    let(:system_name) { "GSA/OGP-1, e-Rulemaking Program Administrative System., OKAY ANOTHER THING" }
 
-      expect(parsed_xml[:action]).to eq "Notice of a new system of records."
+    before do
+      allow(parser).to receive(:find_section).and_return([system_name])
+      parser.get_system_name
+    end
 
-      expected_summary = ["GSA is publishing this system of records notice (SORN) as the new managing partner of the e-Rulemaking Program, effective October 1, 2019. The e-Rulemaking Program includes the Federal Docket Management System (FDMS) and","Regulations.gov. Regulations.gov",       "allows the public to search, view, download, and comment on Federal agencies\' rulemaking documents in one central location on-line. FDMS provides each participating Federal agency with the ability to electronically access and manage its own rulemaking dockets, or other dockets, including comments or supporting materials submitted by individuals or organizations. GSA is establishing the GSA/OGP-1, e-Rulemaking Program Administrative System to manage","regulations.gov","and partner agency access to the Federal Docket Management System (FDMS)."]
-      expect(parsed_xml[:summary]).to eq expected_summary
+    context "with a / in the number" do
+      it "returns the system number" do
+        expect(parser.get_system_number).to eq "GSA/OGP-1"
+      end
+    end
 
-      expect(parsed_xml[:system_name]).to "GSA/OGP-1, e-Rulemaking Program Administrative System."
+    context "with no number in the identifier" do
+      let(:system_name) { "National Docketing Management Information System (NDMIS)" }
 
-      # summary: get_summary,
-      # dates: get_dates,
-      # addresses: get_addresses,
-      # further_info: get_further_information,
-      # supplementary_info: get_supplementary_information,
-      # system_number: get_system_number,
-      # security: get_security,
-      # location: get_location,
-      # manager: get_manager,
-      # authority: get_authority,
-      # purpose: get_purpose,
-      # categories_of_individuals: get_individuals,
-      # categories_of_record: get_categories_of_record,
-      # source: get_source,
-      # routine_uses: get_routine_uses,
-      # storage: get_storage,
-      # retrieval: get_retrieval,
-      # retention: get_retention,
-      # safeguards: get_safeguards,
-      # access: get_access,
-      # contesting: get_contesting,
-      # notification: get_notification,
-      # exemptions: get_exemptions,
-      # history: get_history,
-      # headers: @sections.keys
+      it "returns nil" do
+        expect(parser.get_system_number).to eq nil
+      end
+    end
+
+    context "with a number only number" do
+      let(:system_name) { "Family Advocacy Program Record.	2003-11-18" }
+
+      it "returns the number" do
+        expect(parser.get_system_number).to eq "2003-11-18"
+      end
+    end
+
+    context "with a parenthetical number" do
+      let(:system_name) { "Criminal Investigations (11VA51)." }
+
+      it "returns the number" do
+        expect(parser.get_system_number).to eq "11VA51"
+      end
+    end
+
+    context "with a period in the identifier" do
+      let(:system_name) { "CFPB.009—Employee Administrative Records System." }
+
+      it "returns the number" do
+        expect(parser.get_system_number).to eq "CFPB.009"
+      end
+    end
+
+    context "Has an excluded regex capture" do
+      context "excludes the cfr and date references" do
+        let(:system_name) { "Database of Reserve/Retired Judge Advocates and Legalmen (July 14, 1999, 64 FR 37944)." }
+
+        it "returns nil" do
+          expect(parser.get_system_number).to eq nil
+        end
+      end
+
+      context "excludes the HSPD-12 references" do
+        let(:system_name) { "HSPD-12: Identity Management, Personnel Security, Physical and Logical Access Files." }
+
+        it "returns nil" do
+          expect(parser.get_system_number).to eq nil
+        end
+      end
     end
   end
 end
