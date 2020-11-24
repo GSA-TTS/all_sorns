@@ -67,7 +67,8 @@ class SornXmlParser
         end
       end
     end
-    content
+
+    cleanup_xml_element_to_string(content)
   end
 
   def get_system_name
@@ -205,24 +206,6 @@ class SornXmlParser
     cleanup_xml_element_to_string(element)
   end
 
-  def cleanup_xml_element_to_string(element)
-    # The class is never a plain Array or Hash
-
-    # Grab the paragraphs out of any hashes
-    element = cleanup_xml_element_to_string(element.fetch('P', nil)) if element.class == Saxerator::Builder::HashElement
-
-    # Arrays can be full of all the types
-    # turn all the inside elements into strings
-    # then join on spaces
-    if element.class == Saxerator::Builder::ArrayElement
-      element = element.map do |e|
-        cleanup_xml_element_to_string(e)
-      end.join(" ")
-    end
-
-    # Return a stripped string
-    element.strip if element.class.in? [Saxerator::Builder::StringElement, String]
-  end
 
   def get_sections
     sections = {}
@@ -255,5 +238,25 @@ class SornXmlParser
       end
     end.first
     @sections[matched_header]
+  end
+
+  private
+
+  def cleanup_xml_element_to_string(element)
+    # Grab the paragraphs out of any hashes
+    # The class is never a plain Hash
+    element = cleanup_xml_element_to_string(element.fetch('P', nil)) if element.class == Saxerator::Builder::HashElement
+
+    # Arrays can be full of all the types
+    # turn all the inside elements into strings
+    # then join on spaces
+    if element.class.in? [Array, Saxerator::Builder::ArrayElement]
+      element = element.map do |e|
+        cleanup_xml_element_to_string(e)
+      end.join(" ")
+    end
+
+    # Return a stripped string
+    element.strip if element.class.in? [String, Saxerator::Builder::StringElement]
   end
 end

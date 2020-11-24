@@ -70,6 +70,36 @@ RSpec.describe SornXmlParser, type: :model do
     end
   end
 
+  describe ".get_supplementary_information" do
+    it "returns clean string" do
+      expected_content = "The e-Rulemaking Program has been managed by the Environmental Protection Agency (EPA). However, based on direction from the Office of Management and Budget (OMB), GSA will be the managing partner of the Program, effective October 1, 2019. GSA is assuming the role of managing partner and is establishing this system of records to support GSA's management of regulations.gov and partner agency access to FDMS. This notice describes how GSA, as managing partner, manages partner agencies' users' credentials. This system of records does not include records pertaining to agency rulemakings ( e.g., comments received); partner agencies are responsible for any Privacy Act Notices relevant to their rulemaking materials."
+      expect(parser.get_supplementary_information).to eq expected_content
+    end
+
+    context "wild example" do
+      let(:xml) do
+        <<~HEREDOC
+        <SUPLINF>
+        <HD SOURCE="HED">SUPPLEMENTARY INFORMATION:</HD>
+        <HD SOURCE="HD1">I. Background</HD>
+        <P>
+        In accordance with the Privacy Act of 1974, 5 U.S.C. 552a, the Department of Homeland Security (DHS) United States Secret Service (USSS) proposes to modify and reissue a current DHS system of records titled, DHS/USSS 004 Protection Information System of Records. Information collected in this
+        <PRTPAGE P="64520"/>
+        system of records is used to assist USSS in protecting its designated protectees, events, and venues. In doing so, USSS maintains necessary information to implement protective measures and to make protective inquiries concerning individuals who may come into proximity of a protectee, access a protected facility or event, or who have been involved in incidents or events that relate to the protective functions of USSS. Further, USSS ensures this protective information is appropriately managed and accessible to authorized users while employing appropriate safeguards to ensure that information is properly protected in accordance to national security standards.
+        </P>
+        <P>DHS/USSS is updating this SORN to:</P>
+        <P>(1) Update the categories of individuals to include individuals who could be in proximity to protected persons or areas secured by USSS;</P>
+        </SUPLINF>
+        HEREDOC
+      end
+
+      it "returns clean string" do
+        expected_content = "I. Background In accordance with the Privacy Act of 1974, 5 U.S.C. 552a, the Department of Homeland Security (DHS) United States Secret Service (USSS) proposes to modify and reissue a current DHS system of records titled, DHS/USSS 004 Protection Information System of Records. Information collected in this  system of records is used to assist USSS in protecting its designated protectees, events, and venues. In doing so, USSS maintains necessary information to implement protective measures and to make protective inquiries concerning individuals who may come into proximity of a protectee, access a protected facility or event, or who have been involved in incidents or events that relate to the protective functions of USSS. Further, USSS ensures this protective information is appropriately managed and accessible to authorized users while employing appropriate safeguards to ensure that information is properly protected in accordance to national security standards. DHS/USSS is updating this SORN to: (1) Update the categories of individuals to include individuals who could be in proximity to protected persons or areas secured by USSS;"
+        expect(parser.get_supplementary_information).to eq expected_content
+      end
+    end
+  end
+
   describe ".get_system_number" do
     let(:system_name) { "GSA/OGP-1, e-Rulemaking Program Administrative System., OKAY ANOTHER THING" }
 
