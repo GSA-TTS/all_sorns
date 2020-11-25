@@ -12,6 +12,13 @@ namespace :all_sorns do
   end
 end
 
+namespace :all_sorns do
+  desc "Find new SORNs on the Federal Register API"
+  task parse_all_xml_again: :environment do
+    Sorn.parse_all_xml_again
+  end
+end
+
 namespace :bulk do
   desc "Find new SORNs on the Federal Register API"
   task find_sorns: :environment do
