@@ -120,11 +120,7 @@ class SornXmlParser
     end
 
     # Clean values from arrays to strings
-    sections.keys.each do |header|
-      sections[header] = sections[header].join " "
-    end
-
-    sections
+    sections.each{ |key, value| sections[key] = value.join(" ") }
   end
 
   def cleanup_xml_element_to_string(element)
