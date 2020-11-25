@@ -134,7 +134,7 @@ class SornXmlParser
   end
 
   def get_authority
-    find_section('AUTHORITY FOR MAINTENANCE OF THE SYSTEM')
+    find_section('AUTHORITY')
   end
 
   def get_purpose
