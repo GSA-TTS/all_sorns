@@ -1,15 +1,45 @@
-<p>Total SORNs: <%= @total_sorns %></p>
-<p>SORNs without XML_URLs: <%= @no_xml_url %></p>
-
   <div class="grid-row">
-    <h2>Agencies:</h2>
-    <ul>
+    
+    <table>
+    <tr><th>Agency</th>
+        <th>Total SORNs</th>
+        <th>A-108 Era SORNs</th>
+        <th>New</th>
+        <th>Modification</th>
+        <th>Rescindment</th>
+        <th>Renewal</th>
+        <th>Computer Matching Agreement</th>
+        <th>Unknown or Other</th>
+        <th></th>
+        </tr>
+    
     <% @agencies.each do |agency| %>
-      <li><%= agency.name %>: <%= agency.sorns.count %></li>
+      <tr>
+      <td><%= agency.name %></td>
+      <td><%= agency.sorns.count %></td>
+      <td><%= agency.sorns.where("publication_date::date > ?", "2016-12-23").count %></td>
+      <td><%= agency.sorns.where("action_type = 'New'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Modification'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Rescindment'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Renewal'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Computer Matching Agreement'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Unknown or Other'").count %></td>
+      </tr>
     <% end %>
-    </ul>
+      <tr><strong>
+      <td>Totals</td>
+      <td><%= Sorn.count %></td>
+      <td><%= Sorn.where("publication_date::date > ?", "2016-12-23").count %></td>
+      <td><%= Sorn.where("action_type = 'New'").count %></td>
+      <td><%= Sorn.where("action_type = 'Modification'").count %></td>
+      <td><%= Sorn.where("action_type = 'Rescindment'").count %></td>
+      <td><%= Sorn.where("action_type = 'Renewal'").count %></td>
+      <td><%= Sorn.where("action_type = 'Computer Matching Agreement'").count %></td>
+      <td><%= Sorn.where("action_type = 'Unknown or Other'").count %></td>
+      </strong></tr>
+    </table>
   </div>
 
-
+  <p>SORNs without XML_URLs: <%= @no_xml_url %></p>
 
 </div>
