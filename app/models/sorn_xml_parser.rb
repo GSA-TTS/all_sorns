@@ -37,21 +37,7 @@ class SornXmlParser
   end
 
   def get_supplementary_information
-    # custom to get everything but priact and sig
-    # an example of why paragraphs only won't work
-    # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
-    content = []
-    @parser.within('SUPLINF').each do |node|
-      if node.name != 'PRIACT' && node.name != 'SIG'
-        # skip section title
-        if node.name == 'HD' && node.include?('SUPPLEMENTARY')
-          next
-        else
-          content << node
-        end
-      end
-    end
-
+    content = @parser.within('SUPLINF').map{ |node| node unless unwanted_parts_of_suplinf(node) }
     cleanup_xml_element_to_string(content)
   end
 
@@ -164,5 +150,12 @@ class SornXmlParser
 
     # Return a stripped string
     element.strip if element.class.in? [String, Saxerator::Builder::StringElement]
+  end
+
+  def unwanted_parts_of_suplinf(node)
+    # custom to get everything but priact and sig
+    # an example of why paragraphs only won't work
+    # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
+    (node.name == 'HD' && node.include?('SUPPLEMENTARY')) || node.name == 'PRIACT' || node.name == 'SIG'
   end
 end
