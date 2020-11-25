@@ -8,48 +8,32 @@ class SornXmlParser
 
   def parse_xml
     {
-      summary: get_summary,
-      addresses: get_addresses,
-      further_info: get_further_information,
+      summary: find_tag('SUM'),
+      addresses: find_tag('ADD'),
+      further_info: find_tag('FURINF'),
       supplementary_info: get_supplementary_information,
       system_name: get_system_name,
       system_number: get_system_number,
-      security: get_security,
-      location: get_location,
-      manager: get_manager,
-      authority: get_authority,
-      purpose: get_purpose,
-      categories_of_individuals: get_individuals,
-      categories_of_record: get_categories_of_record,
-      source: get_source,
-      routine_uses: get_routine_uses,
-      storage: get_storage,
-      retrieval: get_retrieval,
-      retention: get_retention,
-      safeguards: get_safeguards,
-      access: get_access,
-      contesting: get_contesting,
-      notification: get_notification,
-      exemptions: get_exemptions,
-      history: get_history,
+      security: find_section('SECURITY'),
+      location: find_section('LOCATION'),
+      manager: find_section('MANAGER'),
+      authority: find_section('AUTHORITY'),
+      purpose: find_section('PURPOSE'),
+      categories_of_individuals: find_section('INDIVIDUALS'),
+      categories_of_record: find_section('CATEGORIES OF RECORDS'),
+      source: find_section('SOURCE'),
+      routine_uses: find_section('ROUTINE'),
+      storage: find_section('STORAGE'),
+      retrieval: find_section('RETRIEVAL'), #Retrievability
+      retention: find_section('RETENTION'),
+      safeguards: find_section('SAFEGUARDS'),
+      access: find_section('ACCESS'),
+      contesting: find_section('CONTESTING'),
+      notification: find_section('NOTIFICATION'),
+      exemptions: find_section('EXEMPTIONS'),
+      history: find_section('HISTORY'),
       headers: @sections.keys
     }
-  end
-
-  def get_agency
-    find_tag('AGENCY')
-  end
-
-  def get_summary
-    find_tag('SUM')
-  end
-
-  def get_addresses
-    find_tag('ADD')
-  end
-
-  def get_further_information
-    find_tag('FURINF')
   end
 
   def get_supplementary_information
@@ -120,85 +104,13 @@ class SornXmlParser
     end
   end
 
-
-  def get_security
-    find_section('SECURITY')
-  end
-
-  def get_location
-    find_section('LOCATION')
-  end
-
-  def get_manager
-    find_section('MANAGER')
-  end
-
-  def get_authority
-    find_section('AUTHORITY')
-  end
-
-  def get_purpose
-    find_section('PURPOSE')
-  end
-
-  def get_individuals
-    find_section('INDIVIDUALS')
-  end
-
-  def get_categories_of_record
-    find_section('CATEGORIES OF RECORDS')
-  end
-
-  def get_source
-    find_section('SOURCE')
-  end
-
-  def get_routine_uses
-    find_section('ROUTINE')
-  end
-
-  def get_storage
-    find_section('STORAGE')
-  end
-
-  def get_retrieval
-    find_section('RETRIEVAL') #Retrievability
-  end
-
-  def get_retention
-    find_section('RETENTION')
-  end
-
-  def get_safeguards
-    find_section('SAFEGUARDS')
-  end
-
-  def get_access
-    find_section('ACCESS')
-  end
-
-  def get_contesting
-    find_section('CONTESTING')
-  end
-
-  def get_notification
-    find_section('NOTIFICATION')
-  end
-
-  def get_exemptions
-    find_section('EXEMPTIONS')
-  end
-
-  def get_history
-    find_section('HISTORY')
-  end
-
   def find_tag(tag)
     element = @parser.for_tag(tag).first
     cleanup_xml_element_to_string(element)
   end
 
   def find_section(header)
+    # Get a named section of the PRIACT tag
     # header of 'NUMBER' will match the section with key 'System Name and Number'
     matched_header = @sections.keys.find{ |key| key.upcase.include? header }
     @sections[matched_header]
@@ -207,6 +119,7 @@ class SornXmlParser
   private
 
   def get_sections
+    # Gather the named sections of the PRIACT tag
     sections = {}
     header = nil
     @parser.within('PRIACT').each do |node|
