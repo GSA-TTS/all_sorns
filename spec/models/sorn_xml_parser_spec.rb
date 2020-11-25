@@ -100,11 +100,40 @@ RSpec.describe SornXmlParser, type: :model do
     end
   end
 
+  describe ".find_section" do
+    it "returns clean string" do
+      expect(parser.find_section("SECURITY")).to eq "Unclassified."
+    end
+  end
+
+  describe ".get_sections" do
+    it "gets all the sections of the PRIACT tag" do
+      expect(parser.send(:get_sections)).to include "SECURITY CLASSIFICATION:" => "Unclassified."
+    end
+
+    context "with a rare hash header" do
+      let(:xml) do
+        <<~HEREDOC
+        <PRIACT>
+        <HD SOURCE="HD2">
+          <E T="04">System manager and address:</E>
+        </HD>
+        <P>WHATEVER</P>
+        </PRIACT>
+        HEREDOC
+      end
+
+      it "still gets that section" do
+        expect(parser.send(:get_sections)).to include "System manager and address:" => "WHATEVER"
+      end
+    end
+  end
+
   describe ".get_system_number" do
     let(:system_name) { "GSA/OGP-1, e-Rulemaking Program Administrative System., OKAY ANOTHER THING" }
 
     before do
-      allow(parser).to receive(:find_section).and_return([system_name])
+      allow(parser).to receive(:find_section).and_return(system_name)
       parser.get_system_name
     end
 

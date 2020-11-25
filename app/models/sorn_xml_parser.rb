@@ -2,7 +2,7 @@ class SornXmlParser
   # Uses an XML streamer. Each method re-streams the file. Fast enough and uses no memory.
 
   def initialize(xml)
-    @parser = Saxerator.parser(xml) # {|config| config.ignore_namespaces!}
+    @parser = Saxerator.parser(xml)
     @sections = get_sections
   end
 
@@ -72,15 +72,7 @@ class SornXmlParser
   end
 
   def get_system_name
-    bracketed_name = find_section('SYSTEM NAME')
-    if bracketed_name
-      @system_name = bracketed_name.join(', ')
-      @system_name = @system_name.sub ', {}', ''
-      @system_name = @system_name.sub '"]', ''
-      @system_name = @system_name.sub '["', ''
-      @system_name = @system_name.sub '"', ''
-      return @system_name
-    end
+    @system_name = find_section('SYSTEM NAME')
   end
 
   def get_system_number
@@ -206,46 +198,47 @@ class SornXmlParser
     cleanup_xml_element_to_string(element)
   end
 
-
-  def get_sections
-    sections = {}
-    current_node = nil
-    @parser.within('PRIACT').each do |node|
-      if node.name == 'HD'
-        if node.class == Saxerator::Builder::ArrayElement
-          node.delete({})
-          node = node.first
-        end
-        current_node = node
-        sections[current_node] = []
-      else
-        sections[current_node] << node if current_node
-      end
-    end
-
-    sections
-  end
-
   def find_section(header)
-    matched_header = @sections.keys.select do |key|
-      begin
-        if key.class == Saxerator::Builder::HashElement
-          key = key.flatten.join(" ")
-        end
-        key.upcase.include? header
-      rescue => e
-        puts 'ERROR: ' + e.to_s
-      end
-    end.first
+    # header of 'NUMBER' will match the section with key 'System Name and Number'
+    matched_header = @sections.keys.find{ |key| key.upcase.include? header }
     @sections[matched_header]
   end
 
   private
 
+  def get_sections
+    sections = {}
+    header = nil
+    @parser.within('PRIACT').each do |node|
+      if node.name == 'HD'
+        header = cleanup_xml_element_to_string(node)
+        next if header.nil? # a very few empty hashes
+        sections[header] = []
+      else
+        # append clean strings, once we've found the first header
+        sections[header] << cleanup_xml_element_to_string(node) if header.present?
+      end
+    end
+
+    # Clean values from arrays to strings
+    sections.keys.each do |header|
+      sections[header] = sections[header].join " "
+    end
+
+    sections
+  end
+
   def cleanup_xml_element_to_string(element)
-    # Grab the paragraphs out of any hashes
     # The class is never a plain Hash
-    element = cleanup_xml_element_to_string(element.fetch('P', nil)) if element.class == Saxerator::Builder::HashElement
+    if element.class == Saxerator::Builder::HashElement
+      if element.fetch('P', nil).nil?
+        # A very few section headers have a hash with E
+        element = cleanup_xml_element_to_string(element.fetch('E', nil))
+      else
+        # Grab the paragraphs out of any hashes
+        element = cleanup_xml_element_to_string(element.fetch('P', nil))
+      end
+    end
 
     # Arrays can be full of all the types
     # turn all the inside elements into strings
