@@ -152,17 +152,27 @@
    padding-bottom: 8px;
  }
 
+ // Pagination
+
  .pagination {
    float: right;
  }
 
- .pagination span {
-  font-size: size('public-sans', 16);
-  padding-right: 8px;
+ .pagination .page, .prev {
+   display: inline-block;
+   margin-right: 12px;
+   line-height: 1.15; // Magic number
  }
 
- .pagination a {
-  text-decoration: none;
+ .page.current {
+   color: $blue-90;
+   border-bottom: 2px solid $blue-90;
+   font-weight: bold;
+ }
+
+ .page a, .prev a, .next a {
+   color: $blue-50;
+   text-decoration: none;
  }
 
  .usa-card {
