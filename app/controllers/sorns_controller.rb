@@ -24,13 +24,15 @@ class SornsController < ApplicationController
     elsif search_blank_and_agency_present?
       # return agency sorns with just those fields
       @selected_fields = params[:fields]
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agency]})
+      @selected_agencies = params[:agencies].map(&:parameterize)
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: [params[:agencies]]})
 
     elsif search_and_fields_and_agency_present?
       # return matching, agency sorns with just those fields
       @selected_fields = params[:fields]
+      @selected_agencies = params[:agencies].map(&:parameterize)
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: params[:agency]})
+      @sorns = @sorns.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: [params[:agencies]]})
 
     else
       raise "WUT"
@@ -101,22 +103,22 @@ class SornsController < ApplicationController
   private
 
   def no_params_on_page_load?
-    params[:search].blank? && params[:fields].blank? && params[:agency].blank?
+    params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
   end
 
   def search_and_agency_blank?
-    params[:search].blank? && params[:agency].blank?
+    params[:search].blank? && params[:agencies].blank?
   end
 
   def search_present_and_agency_blank?
-    params[:search].present? && params[:agency].blank?
+    params[:search].present? && params[:agencies].blank?
   end
 
   def search_blank_and_agency_present?
-    params[:search].blank? && params[:agency].present?
+    params[:search].blank? && params[:agencies].present?
   end
 
   def search_and_fields_and_agency_present?
-    params[:search].present? && params[:fields].present? && params[:agency].present?
+    params[:search].present? && params[:fields].present? && params[:agencies].present?
   end
 end
