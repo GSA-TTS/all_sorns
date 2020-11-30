@@ -156,6 +156,10 @@
               </div>
             </li>
           <% end %>
+
+          <div class="grid-offset-6 grid-col-6">
+              <%= paginate @sorns, window: 2, outer_window: 1 %>
+          </div>
         </ul>
       </main>
     <% end %>
