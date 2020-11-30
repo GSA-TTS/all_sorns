@@ -1,4 +1,13 @@
-  <div class="grid-container margin-top-4">
+<header id="search-header" class="margin-top-2">
+  <div class="grid-container">
+    <div class="grid-row grid-gap grid-col-10">
+      <h1 id="site-title">SORN <i>Dash</i></h1>
+      <p>This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
+    </div>
+  </div>
+</header>
+
+  <div class="grid-container margin-top-2">
     <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
 
       <div class="usa-layout-docs__sidenav grid-col-4">

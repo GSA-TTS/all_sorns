@@ -58,6 +58,15 @@
    font-size: font-size('heading', '2xl');
  }
 
+ #search-header {
+   margin-top: 0;
+   background-color: $gray-5;
+ }
+
+ #site-title {
+   margin-bottom: 0;
+ }
+
  // use with mixin utility when available
  #search-filters{
   font-size: 20px;
