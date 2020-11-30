@@ -76,7 +76,7 @@
             </div>
           </div>
           <div class="grid-col-6">
-              <%= paginate @sorns, window: 2, outer_window: 1 %>
+              <%= paginate @sorns %>
           </div>
         </div>
 
@@ -157,8 +157,8 @@
             </li>
           <% end %>
 
-          <div id="bottom-pagination" class="grid-offset-6 grid-col-6 margin-bottom-3">
-              <%= paginate @sorns, window: 2, outer_window: 1 %>
+          <div class="grid-offset-6 grid-col-6 margin-bottom-3">
+              <%= paginate @sorns %>
           </div>
         </ul>
       </main>
