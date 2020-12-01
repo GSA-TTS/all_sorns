@@ -127,6 +127,23 @@ RSpec.describe SornXmlParser, type: :model do
         expect(parser.send(:get_sections)).to include "System manager and address:" => "WHATEVER"
       end
     end
+
+    context "with a beginning P tag" do
+      let(:xml) do
+        <<~HEREDOC
+        <PRIACT>
+        <P>SKIP ME</P>
+        <HD SOURCE="HD2">System manager and address:</HD>
+        <P>WHATEVER</P>
+        </PRIACT>
+        HEREDOC
+      end
+
+      it "skips P tags until an HD is found" do
+        expect{ parser.send(:get_sections) }.to_not raise_error(NoMethodError, "undefined method `<<' for nil:NilClass")
+        expect(parser.send(:get_sections)).to include "System manager and address:" => "WHATEVER"
+      end
+    end
   end
 
   describe ".get_system_number" do
