@@ -68,18 +68,21 @@ class SornXmlParser
   def get_sections
     # Gather the named sections of the PRIACT tag
     sections = {}
-    header = nil
+    current_header = nil
     @parser.within('PRIACT').each do |node|
       if node.name == 'HD'
-        header = cleanup_xml_element_to_string(node)
-        next if header.nil? # a very few empty hashes
-        sections[header] = []
-      else
-        # append clean strings, once we've found the first header
-        sections[header] << cleanup_xml_element_to_string(node) if header.present?
+        current_header = cleanup_xml_element_to_string(node)
+        sections[current_header] = []
+      elsif current_header.nil?
+        next
+      elsif node.name == 'P'
+        # append cleaned strings
+        sections[current_header] << cleanup_xml_element_to_string(node)
       end
     end
 
+    # discard the rare nil keys
+    sections.except!(:nil)
     # Clean values from arrays to strings
     sections.each{ |key, value| sections[key] = value.join(" ") }
   end
