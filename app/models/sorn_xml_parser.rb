@@ -51,43 +51,6 @@ class SornXmlParser
     end
   end
 
-  def parse_system_name_from_number
-    digit_regex = Regexp.new('\d')
-    if @system_name.match(digit_regex)
-      precleaned = strip_known_patterns(@system_name)
-      regex_captures = collect_regex_captures(precleaned)
-      if regex_captures.length > 0
-        cleaned_capture(regex_captures)
-      end
-    end
-  end
-
-  def strip_known_patterns(system_name)
-    # This regex will strip the common pattern of a "(Month DD, YYY, Federal register citation)""
-    no_cfr_syst_name = system_name.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
-    # Remove references to the HSPD-12 PIV Card policy
-    return no_cfr_syst_name.gsub(/HSPD-12/, '')
-  end
-
-  def collect_regex_captures(precleaned_system_name)
-    regex_captures = []
-    # Looks for a variety of common system number reference patterns that are either
-    # just numbers or a combination of number and agency abbreviation system numbers
-    generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
-    if generic_match
-      regex_captures.append(generic_match[0])
-    end
-    regex_captures
-  end
-
-  def cleaned_capture(capture_array)
-    capture_array.delete('-')
-    capture_array.uniq
-    if capture_array.length > 0
-      capture_array.join(', ')
-    end
-  end
-
   def find_tag(tag)
     element = @parser.for_tag(tag).first
     cleanup_xml_element_to_string(element)
@@ -151,5 +114,43 @@ class SornXmlParser
     # an example of why paragraphs only won't work
     # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
     (node.name == 'HD' && node.include?('SUPPLEMENTARY')) || node.name == 'PRIACT' || node.name == 'SIG'
+  end
+
+
+  def parse_system_name_from_number
+    digit_regex = Regexp.new('\d')
+    if @system_name.match(digit_regex)
+      precleaned = strip_known_patterns(@system_name)
+      regex_captures = collect_regex_captures(precleaned)
+      if regex_captures.length > 0
+        cleaned_capture(regex_captures)
+      end
+    end
+  end
+
+  def strip_known_patterns(system_name)
+    # This regex will strip the common pattern of a "(Month DD, YYY, Federal register citation)""
+    no_cfr_syst_name = system_name.gsub(/\(\w+ \d\d\, \d{4}\, \d\d FR \d{4,6}\)/, '')
+    # Remove references to the HSPD-12 PIV Card policy
+    return no_cfr_syst_name.gsub(/HSPD-12/, '')
+  end
+
+  def collect_regex_captures(precleaned_system_name)
+    regex_captures = []
+    # Looks for a variety of common system number reference patterns that are either
+    # just numbers or a combination of number and agency abbreviation system numbers
+    generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
+    if generic_match
+      regex_captures.append(generic_match[0])
+    end
+    regex_captures
+  end
+
+  def cleaned_capture(capture_array)
+    capture_array.delete('-')
+    capture_array.uniq
+    if capture_array.length > 0
+      capture_array.join(', ')
+    end
   end
 end
