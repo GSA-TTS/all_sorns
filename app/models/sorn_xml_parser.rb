@@ -7,8 +7,7 @@ class SornXmlParser
   end
 
   def parse_xml
-    {
-      summary: find_tag('SUM'),
+    { summary: find_tag('SUM'),
       addresses: find_tag('ADD'),
       further_info: find_tag('FURINF'),
       supplementary_info: get_supplementary_information,
@@ -32,8 +31,7 @@ class SornXmlParser
       notification: find_section('NOTIFICATION'),
       exemptions: find_section('EXEMPTIONS'),
       history: find_section('HISTORY'),
-      headers: @sections.keys
-    }
+      headers: @sections.keys }
   end
 
   def get_supplementary_information
