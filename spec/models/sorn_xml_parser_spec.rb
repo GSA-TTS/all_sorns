@@ -102,13 +102,13 @@ RSpec.describe SornXmlParser, type: :model do
 
   describe ".find_section" do
     it "returns clean string" do
-      expect(parser.find_section("SECURITY")).to eq "Unclassified."
+      expect(parser.find_section("SECURITY")).to eq "<p>Unclassified.</p>"
     end
   end
 
   describe ".get_sections" do
     it "gets all the sections of the PRIACT tag" do
-      expect(parser.send(:get_sections)).to include "SECURITY CLASSIFICATION:" => "Unclassified."
+      expect(parser.send(:get_sections)).to include "SECURITY CLASSIFICATION:" => "<p>Unclassified.</p>"
     end
 
     context "with a rare hash header" do
@@ -124,7 +124,7 @@ RSpec.describe SornXmlParser, type: :model do
       end
 
       it "still gets that section" do
-        expect(parser.send(:get_sections)).to include "System manager and address:" => "WHATEVER"
+        expect(parser.send(:get_sections)).to include "System manager and address:" => "<p>WHATEVER</p>"
       end
     end
 
@@ -140,8 +140,8 @@ RSpec.describe SornXmlParser, type: :model do
       end
 
       it "skips P tags until an HD is found" do
-        expect{ parser.send(:get_sections) }.to_not raise_error(NoMethodError, "undefined method `<<' for nil:NilClass")
-        expect(parser.send(:get_sections)).to include "System manager and address:" => "WHATEVER"
+        expect { parser.send(:get_sections) }.to_not raise_error
+        expect(parser.send(:get_sections)).to include "System manager and address:" => "<p>WHATEVER</p>"
       end
     end
   end
