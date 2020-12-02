@@ -90,28 +90,28 @@ class SornXmlParser
   end
 
   def cleanup_xml_element_to_string(element)
-    # The class is never a plain Hash
-    if element.class == Saxerator::Builder::HashElement
-      if element.fetch('P', nil).nil?
-        # A very few section headers have a hash with E
-        element = cleanup_xml_element_to_string(element.fetch('E', nil))
-      else
-        # Grab the paragraphs out of any hashes
-        element = cleanup_xml_element_to_string(element.fetch('P', nil))
-      end
-    end
-
-    # Arrays can be full of all the types
-    # turn all the inside elements into strings
-    # then join on spaces
-    if element.class.in? [Array, Saxerator::Builder::ArrayElement]
-      element = element.map do |e|
-        cleanup_xml_element_to_string(e)
-      end.join(" ")
-    end
-
-    # Return a stripped string
+    # recursively convert hashes and array down to a string
+    element = xml_hash_to_string(element) if element.class == Saxerator::Builder::HashElement
+    element = xml_array_to_string(element) if element.class.in? [Array, Saxerator::Builder::ArrayElement]
     element.strip if element.class.in? [String, Saxerator::Builder::StringElement]
+  end
+
+  def xml_hash_to_string(element)
+    if element.fetch('P', nil).present?
+      # Grab the paragraphs out of any hashes
+      cleanup_xml_element_to_string(element.fetch('P', nil))
+    else
+      # A very few section headers have a hash with E
+      cleanup_xml_element_to_string(element.fetch('E', nil))
+    end
+  end
+
+  def xml_array_to_string(element)
+    # Arrays can contain hashes and arrays
+    # turn all the inside elements into strings then join on spaces
+    element.map do |e|
+      cleanup_xml_element_to_string(e)
+    end.join(" ")
   end
 
   def unwanted_parts_of_suplinf(node)
