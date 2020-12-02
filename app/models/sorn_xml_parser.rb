@@ -37,7 +37,7 @@ class SornXmlParser
   end
 
   def get_supplementary_information
-    content = @parser.within('SUPLINF').map{ |node| node unless unwanted_parts_of_suplinf(node) }
+    content = @parser.within('SUPLINF').filter_map { |node| node if wanted_parts_of_supplementary_information_tag(node) }
     cleanup_xml_element_to_string(content)
   end
 
@@ -78,6 +78,7 @@ class SornXmlParser
       elsif current_header.nil?
         next
       elsif node.name == 'P'
+        # Skipping a few rare FTNT, NOTE, and EXTRACT tags
         # append cleaned strings
         sections[current_header] << cleanup_xml_element_to_string(node)
       end
@@ -86,7 +87,10 @@ class SornXmlParser
     # discard the rare nil keys
     sections.except!(nil)
     # Join array into a large string of paragraphs.
-    sections.transform_values!{|values| values.map{|p| "<p>#{p}</p>" }.join(" ") }
+    sections.transform_values! do |values|
+      values = values.map{|content| "<p>#{content}</p>" } if values.length > 1
+      values.join(" ")
+    end
   end
 
   def cleanup_xml_element_to_string(element)
@@ -114,11 +118,11 @@ class SornXmlParser
     end.join(" ")
   end
 
-  def unwanted_parts_of_suplinf(node)
-    # custom to get everything but priact and sig
+  def wanted_parts_of_supplementary_information_tag(node)
+    # We want P tags and any HD tags that aren't SUPPLEMENTARY
     # an example of why paragraphs only won't work
     # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
-    (node.name == 'HD' && node.include?('SUPPLEMENTARY')) || node.name == 'PRIACT' || node.name == 'SIG'
+    node.name == 'P' || (node.name == 'HD' && node.exclude?('SUPPLEMENTARY'))
   end
 
 
