@@ -1,5 +1,3 @@
-include ActionView::Helpers::TextHelper
-
 class SornXmlParser
   # Uses an XML streamer. Each method re-streams the file. Fast enough and uses no memory.
 
@@ -42,11 +40,11 @@ class SornXmlParser
   end
 
   def get_system_name
-    @system_name = strip_tags(find_section('SYSTEM NAME'))
+    @system_name = find_section('SYSTEM NAME')
   end
 
   def get_system_number
-    number = strip_tags(find_section('NUMBER'))
+    number = find_section('NUMBER')
     # puts number
     if number and @system_name
       parse_system_name_from_number
@@ -88,7 +86,7 @@ class SornXmlParser
     sections.except!(nil)
     # Join array into a large string of paragraphs.
     sections.transform_values! do |values|
-      values = values.map{|content| "<p>#{content}</p>" } if values.length > 1
+      values = values.map{|paragraph| "<p>#{paragraph}</p>" } if values.length > 1
       values.join(" ")
     end
   end
