@@ -1,17 +1,20 @@
-  <div class="grid-row">
-    
-    <table>
-    <tr><th>Agency</th>
+  <div class="grid-container">
+  <div class="grid-row grid-gap">
+    <main class="usa-layout-docs__main desktop:grid-col-12 usa-prose usa-layout-docs" id="main-content">
+    <table class='usa-table'>
+    <thead>
+    <tr>
+        <th>Agency</th>
         <th>Total SORNs</th>
         <th>A-108 Era SORNs</th>
         <th>New</th>
         <th>Modification</th>
         <th>Rescindment</th>
         <th>Renewal</th>
-        <th>Computer Matching Agreement</th>
         <th>Unknown or Other</th>
-        <th></th>
-        </tr>
+        <th>Computer Matching Agreement</th>
+    </tr>
+    </thead>
     
     <% @agencies.each do |agency| %>
       <tr>
@@ -26,7 +29,7 @@
       <td><%= agency.sorns.where("action_type = 'Unknown or Other'").count %></td>
       </tr>
     <% end %>
-      <tr><strong>
+      <tr class="usa-bold">
       <td>Totals</td>
       <td><%= Sorn.count %></td>
       <td><%= Sorn.where("publication_date::date > ?", "2016-12-23").count %></td>
@@ -36,10 +39,16 @@
       <td><%= Sorn.where("action_type = 'Renewal'").count %></td>
       <td><%= Sorn.where("action_type = 'Computer Matching Agreement'").count %></td>
       <td><%= Sorn.where("action_type = 'Unknown or Other'").count %></td>
-      </strong></tr>
+      </tr>
     </table>
   </div>
 
-  <p>SORNs without XML_URLs: <%= @no_xml_url %></p>
+  <h2>Stats</h2>
+    <ul>
+        <li>SORNs without XML_URLs: <%= @no_xml_url %></li>
+        <li>SORNs with bulleted CORs: <%= Sorn.where("categories_of_record ~* ?", '•', ).count %>
+    </ul>
 
+  </main>
+</div>
 </div>
