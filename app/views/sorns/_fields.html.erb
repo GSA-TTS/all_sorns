@@ -1,7 +1,10 @@
 <fieldset id="fields" class="usa-fieldset margin-105">
-  <legend class="usa-legend">Select sections of SORN to search in</legend>
+  <legend class="usa-legend">
+    <div id="search-filters">Search filters</div>
+    <div id="fields-to-search">Fields to search</div>
+  </legend>
 
-  <div id="sorn-fields" class="">
+  <div id="sorn-fields">
     <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
     <% checkboxes.each do |field, index| %>
       <div class="usa-checkbox">
