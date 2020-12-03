@@ -6,11 +6,11 @@ RSpec.describe SornXmlParser, type: :model do
     SornXmlParser.new(xml)
   end
 
-  xdescribe ".find_tag" do
+  describe ".find_tag" do
     context "a complicated array summary, in sorn.xml" do
       it "returns the cleaned up as a string" do
         expect(parser.find_tag("SUM")).to start_with "<p>GSA is publishing this system of records notice (SORN)"
-        expect(parser.find_tag("SUM")).to end_with "access to the Federal Docket Management System (FDMS).</p>"
+        expect(parser.find_tag("SUM")).to end_with "<p>MOAR PARAGRAPHS</p>"
       end
     end
 
@@ -52,7 +52,8 @@ RSpec.describe SornXmlParser, type: :model do
       end
 
       it "returns the cleaned content" do
-        expect(parser.find_tag("ADD")).to eq "You may submit comments identified by docket number [DOI-2020-0004] by any of the following methods: • Federal eRulemaking Portal: http://www.regulations.gov. Follow the instructions for sending comments."
+        expect(parser.find_tag("ADD")).to start_with "<p>You may submit comments identified by docket number"
+        expect(parser.find_tag("ADD")).to end_with "Follow the instructions for sending comments.</p>"
       end
     end
 
@@ -66,7 +67,7 @@ RSpec.describe SornXmlParser, type: :model do
         HEREDOC
       end
 
-      it "returns the cleaned content" do
+      it "returns the cleaned content, without p tags" do
         expect(parser.find_tag("SUM")).to eq "In accordance with the requirements of the Privacy Act of 1974, as amended, the Department is publishing its modified Privacy Act systems of record."
       end
     end

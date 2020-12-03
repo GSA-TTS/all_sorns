@@ -38,8 +38,8 @@ RSpec.describe Sorn, type: :model do
     it "parses as expected" do
       sorn.parse_xml
 
-      expect(sorn.summary).to start_with "GSA is publishing this system"
-      expect(sorn.addresses).to start_with "Submit comments identified by “Notice-ID-2019-01,"
+      expect(sorn.summary).to start_with "<p>GSA is publishing this system"
+      expect(sorn.addresses).to start_with "<p>Submit comments identified by “Notice-ID-2019-01,"
       expect(sorn.further_info).to start_with "Call or email GSA's Chief Privacy Officer: tel"
       expect(sorn.supplementary_info).to start_with "The e-Rulemaking Program has been managed by the"
       expect(sorn.system_name).to eq "GSA/OGP-1, e-Rulemaking Program Administrative System."

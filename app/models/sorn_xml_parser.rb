@@ -52,8 +52,11 @@ class SornXmlParser
   end
 
   def find_tag(tag)
-    element = @parser.for_tag(tag).first
-    cleanup_xml_element_to_string(element)
+    content = @parser.within(tag).filter_map do |node|
+      cleanup_xml_element_to_string(node) if node.name == "P"
+    end
+    content = content.map{|paragraph| "<p>#{paragraph}</p>" } if content.length > 1
+    content.join(" ")
   end
 
   def find_section(header)
