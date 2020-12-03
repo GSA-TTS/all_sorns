@@ -35,8 +35,10 @@ class SornXmlParser
   end
 
   def get_supplementary_information
-    content = @parser.within('SUPLINF').filter_map { |node| node if wanted_parts_of_supplementary_information_tag(node) }
-    cleanup_xml_element_to_string(content)
+    content = @parser.within('SUPLINF').filter_map do |node|
+      cleanup_xml_element_to_string(node) if wanted_parts_of_supplementary_information_tag(node)
+    end
+    add_p_tags(content).join(" ")
   end
 
   def get_system_name
@@ -55,8 +57,7 @@ class SornXmlParser
     content = @parser.within(tag).filter_map do |node|
       cleanup_xml_element_to_string(node) if node.name == "P"
     end
-    content = content.map{|paragraph| "<p>#{paragraph}</p>" } if content.length > 1
-    content.join(" ")
+    add_p_tags(content).join(" ")
   end
 
   def find_section(header)
@@ -87,11 +88,8 @@ class SornXmlParser
 
     # discard the rare nil keys
     sections.except!(nil)
-    # Join array into a large string of paragraphs.
-    sections.transform_values! do |values|
-      values = values.map{|paragraph| "<p>#{paragraph}</p>" } if values.length > 1
-      values.join(" ")
-    end
+    # Change arrays of section content into paragraphs.
+    sections.transform_values! { |values| add_p_tags(values).join(" ") }
   end
 
   def cleanup_xml_element_to_string(element)
@@ -117,6 +115,14 @@ class SornXmlParser
     element.map do |e|
       cleanup_xml_element_to_string(e)
     end.join(" ")
+  end
+
+  def add_p_tags(content)
+    if content.length > 1
+      content.map{|paragraph| "<p>#{paragraph}</p>" }
+    else
+      content
+    end
   end
 
   def wanted_parts_of_supplementary_information_tag(node)

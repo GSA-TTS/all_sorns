@@ -73,7 +73,7 @@ RSpec.describe SornXmlParser, type: :model do
     end
   end
 
-  xdescribe ".get_supplementary_information" do
+  describe ".get_supplementary_information" do
     it "returns clean string" do
       expect(parser.get_supplementary_information).to start_with "<p>The e-Rulemaking Program has been managed by"
       expect(parser.get_supplementary_information).to end_with "Privacy Act Notices relevant to their rulemaking materials.</p>"
@@ -98,7 +98,7 @@ RSpec.describe SornXmlParser, type: :model do
 
       it "returns clean strings with just p tags" do
         expect(parser.get_supplementary_information).to start_with "<p>I. Background</p> <p>In accordance with the Privacy Act of 1974, 5 U.S.C. 552a"
-        expect(parser.get_supplementary_information).to end_with "<p>protected persons or areas secured by USSS;</p>"
+        expect(parser.get_supplementary_information).to end_with "protected persons or areas secured by USSS;</p>"
       end
     end
   end
