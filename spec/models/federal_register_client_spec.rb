@@ -25,10 +25,12 @@ RSpec.describe FederalRegisterClient, type: :model do
           "parent_id": nil
         ),
         OpenStruct.new(
-          "raw_name": "Office of the Secretary"
+          "raw_name": "FAKE CHILD AGENCY",
+          "name": "Fake Child Agency",
+          "id": 2,
+          "parent_id": 1
         )
-      ],
-      agency_names: ["Fake Parent Agency", "Fake Child Agency"]
+      ]
     )
     mock_results = [mock_result]
     result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
@@ -52,8 +54,7 @@ RSpec.describe FederalRegisterClient, type: :model do
 
       it "Creates agencies for each result" do
         expect{ client.find_sorns }.to change{ Agency.count }.by 2
-        expect(Sorn.last.agencies.first.name).to eq "Fake Parent Agency"
-        expect(Sorn.last.agencies.second.name).to eq "Office of the Secretary"
+        expect(Sorn.last.agencies.pluck(:name)).to match_array(["Fake Parent Agency", "Fake Child Agency"])
       end
 
       context "with existing agencies" do
@@ -61,7 +62,7 @@ RSpec.describe FederalRegisterClient, type: :model do
 
         before do
           sorn.agencies << Agency.create(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-          sorn.agencies << Agency.create(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+          sorn.agencies << Agency.create(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
         end
 
         it "Doesn't duplicate agencies" do

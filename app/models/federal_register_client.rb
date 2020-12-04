@@ -6,7 +6,7 @@ class FederalRegisterClient
 
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
-    @fields = fields || ["action", "agencies", "agency_names", "citation",
+    @fields = fields || ["action", "agencies", "citation",
       "dates", "full_text_xml_url", "html_url", "pdf_url",
       "publication_date", "raw_text_url", "title", "type"]
 
@@ -57,7 +57,7 @@ class FederalRegisterClient
       sorn = Sorn.create(params)
     end
 
-    update_agencies(result, sorn)
+    add_agencies(result, sorn)
 
     UpdateSornJob.perform_later(sorn.id)
   end
@@ -81,23 +81,16 @@ class FederalRegisterClient
       publication_date: result.publication_date,
       citation: result.citation,
       title: result.title,
-      agency_names: result.agency_names,
       data_source: :fedreg
     }
   end
 
-  def update_agencies(result, sorn)
-    # Create agencies
+  def add_agencies(result, sorn)
     result.agencies.each do |api_agency|
-      if api_agency.raw_name == "Office of the Secretary"
-        # A popular component used by the DoD
-        # doesn't have the other metadata
-        agency = Agency.find_or_create_by(name: api_agency.raw_name, api_id: 9999, parent_api_id: 103)
-      else
+      if api_agency.name.present?
         agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+        sorn.agencies << agency if sorn.agencies.exclude? agency
       end
-
-      sorn.agencies << agency if sorn.agencies.exclude? agency
     end
   end
 end
