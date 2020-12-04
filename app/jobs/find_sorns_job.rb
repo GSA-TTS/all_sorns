@@ -2,7 +2,6 @@ class FindSornsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    client = FederalRegisterClient.new
-    client.find_sorns
+    FederalRegisterClient.new.find_sorns
   end
 end
