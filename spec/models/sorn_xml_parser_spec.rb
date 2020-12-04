@@ -71,6 +71,7 @@ RSpec.describe SornXmlParser, type: :model do
         expect(parser.find_tag("SUM")).to eq "In accordance with the requirements of the Privacy Act of 1974, as amended, the Department is publishing its modified Privacy Act systems of record."
       end
     end
+
     context "supplementary information" do
       it "returns clean string" do
         expect(parser.find_tag("SUPLINF")).to start_with "<p>The e-Rulemaking Program has been managed by"
@@ -99,6 +100,12 @@ RSpec.describe SornXmlParser, type: :model do
           expect(parser.find_tag("SUPLINF")).to start_with "<p>In accordance with the Privacy Act of 1974, 5 U.S.C. 552a"
           expect(parser.find_tag("SUPLINF")).to end_with "protected persons or areas secured by USSS;</p>"
         end
+      end
+    end
+
+    context "without tag" do
+      it "returns nil" do
+        expect(parser.find_tag("FAKETAG")).to be_nil
       end
     end
   end
