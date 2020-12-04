@@ -71,34 +71,34 @@ RSpec.describe SornXmlParser, type: :model do
         expect(parser.find_tag("SUM")).to eq "In accordance with the requirements of the Privacy Act of 1974, as amended, the Department is publishing its modified Privacy Act systems of record."
       end
     end
-  end
-
-  describe ".get_supplementary_information" do
-    it "returns clean string" do
-      expect(parser.get_supplementary_information).to start_with "<p>The e-Rulemaking Program has been managed by"
-      expect(parser.get_supplementary_information).to end_with "Privacy Act Notices relevant to their rulemaking materials.</p>"
-    end
-
-    context "with hd and p tags" do
-      let(:xml) do
-        <<~HEREDOC
-        <SUPLINF>
-        <HD SOURCE="HED">SUPPLEMENTARY INFORMATION:</HD>
-        <HD SOURCE="HD1">I. Background</HD>
-        <P>
-        In accordance with the Privacy Act of 1974, 5 U.S.C. 552a, the Department of Homeland Security (DHS) United States Secret Service (USSS) proposes to modify and reissue a current DHS system of records titled, DHS/USSS 004 Protection Information System of Records. Information collected in this
-        <PRTPAGE P="64520"/>
-        system of records is used to assist USSS in protecting its designated protectees, events, and venues. In doing so, USSS maintains necessary information to implement protective measures and to make protective inquiries concerning individuals who may come into proximity of a protectee, access a protected facility or event, or who have been involved in incidents or events that relate to the protective functions of USSS. Further, USSS ensures this protective information is appropriately managed and accessible to authorized users while employing appropriate safeguards to ensure that information is properly protected in accordance to national security standards.
-        </P>
-        <P>DHS/USSS is updating this SORN to:</P>
-        <P>(1) Update the categories of individuals to include individuals who could be in proximity to protected persons or areas secured by USSS;</P>
-        </SUPLINF>
-        HEREDOC
+    context "supplementary information" do
+      it "returns clean string" do
+        expect(parser.find_tag("SUPLINF")).to start_with "<p>The e-Rulemaking Program has been managed by"
+        expect(parser.find_tag("SUPLINF")).to end_with "Privacy Act Notices relevant to their rulemaking materials.</p>"
       end
 
-      it "returns clean strings with just p tags" do
-        expect(parser.get_supplementary_information).to start_with "<p>I. Background</p> <p>In accordance with the Privacy Act of 1974, 5 U.S.C. 552a"
-        expect(parser.get_supplementary_information).to end_with "protected persons or areas secured by USSS;</p>"
+      context "with hd and p tags" do
+        let(:xml) do
+          <<~HEREDOC
+          <SUPLINF>
+          <HD SOURCE="HED">SUPPLEMENTARY INFORMATION:</HD>
+          <HD SOURCE="HD1">I. Background</HD>
+          <P>
+          In accordance with the Privacy Act of 1974, 5 U.S.C. 552a ...
+          <PRTPAGE P="64520"/>
+          system of records is used to assist USSS ...
+          </P>
+          <P>DHS/USSS is updating this SORN to:</P>
+          <P>... individuals who could be in proximity to protected persons or areas secured by USSS;</P>
+          <SIG>UNWANTED</SIG>
+          </SUPLINF>
+          HEREDOC
+        end
+
+        it "returns clean strings with just p tags" do
+          expect(parser.find_tag("SUPLINF")).to start_with "<p>In accordance with the Privacy Act of 1974, 5 U.S.C. 552a"
+          expect(parser.find_tag("SUPLINF")).to end_with "protected persons or areas secured by USSS;</p>"
+        end
       end
     end
   end

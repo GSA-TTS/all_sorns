@@ -9,7 +9,7 @@ class SornXmlParser
     { summary: find_tag('SUM'),
       addresses: find_tag('ADD'),
       further_info: find_tag('FURINF'),
-      supplementary_info: get_supplementary_information,
+      supplementary_info: find_tag('SUPLINF'),
       system_name: get_system_name,
       system_number: get_system_number,
       security: find_section('SECURITY'),
@@ -33,29 +33,25 @@ class SornXmlParser
       headers: @sections.keys }
   end
 
-  def get_supplementary_information
-    content = @parser.within('SUPLINF').filter_map do |node|
-      cleanup_xml_element_to_string(node) if wanted_parts_of_supplementary_information_tag(node)
-    end
-    add_p_tags(content).join(" ")
-  end
-
   def get_system_name
     @system_name = find_section('SYSTEM NAME')
   end
 
   def get_system_number
     number = find_section('NUMBER')
-    # puts number
     if number and @system_name
       parse_system_name_from_number
     end
   end
 
   def find_tag(tag)
-    content = @parser.within(tag).filter_map do |node|
-      cleanup_xml_element_to_string(node) if node.name == "P"
-    end
+    content = @parser.for_tag(tag).first.fetch("P")
+
+    # sometimes there is just one P in a tag
+    return cleanup_xml_element_to_string(content) if content.class == Saxerator::Builder::StringElement
+
+    # usually content is an array of P content
+    content = content.map { |node| cleanup_xml_element_to_string(node) }
     add_p_tags(content).join(" ")
   end
 
@@ -124,14 +120,6 @@ class SornXmlParser
       content
     end
   end
-
-  def wanted_parts_of_supplementary_information_tag(node)
-    # We want P tags and any HD tags that aren't SUPPLEMENTARY
-    # an example of why paragraphs only won't work
-    # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
-    node.name == 'P' || (node.name == 'HD' && node.exclude?('SUPPLEMENTARY'))
-  end
-
 
   def parse_system_name_from_number
     digit_regex = Regexp.new('\d')
