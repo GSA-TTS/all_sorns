@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UpdateSornJob, type: :job do
-  before { allow($stdout).to receive(:write) } # silent puts
+  before { allow($stdout).to receive(:puts) } # silent puts
 
   describe "#perform_later" do
     ActiveJob::Base.queue_adapter = :test

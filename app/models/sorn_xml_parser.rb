@@ -2,91 +2,122 @@ class SornXmlParser
   # Uses an XML streamer. Each method re-streams the file. Fast enough and uses no memory.
 
   def initialize(xml)
-    @parser = Saxerator.parser(xml) # {|config| config.ignore_namespaces!}
-    @sections = get_sections
+    @parser = Saxerator.parser(xml)
   end
 
   def parse_xml
-    {
-      summary: get_summary,
-      addresses: get_addresses,
-      further_info: get_further_information,
-      supplementary_info: get_supplementary_information,
+    { summary: find_tag('SUM'),
+      addresses: find_tag('ADD'),
+      further_info: find_tag('FURINF'),
+      supplementary_info: find_tag('SUPLINF'),
       system_name: get_system_name,
       system_number: get_system_number,
-      security: get_security,
-      location: get_location,
-      manager: get_manager,
-      authority: get_authority,
-      purpose: get_purpose,
-      categories_of_individuals: get_individuals,
-      categories_of_record: get_categories_of_record,
-      source: get_source,
-      routine_uses: get_routine_uses,
-      storage: get_storage,
-      retrieval: get_retrieval,
-      retention: get_retention,
-      safeguards: get_safeguards,
-      access: get_access,
-      contesting: get_contesting,
-      notification: get_notification,
-      exemptions: get_exemptions,
-      history: get_history,
-      headers: @sections.keys
-    }
-  end
-
-  def get_agency
-    find_tag('AGENCY')
-  end
-
-  def get_summary
-    find_tag('SUM')
-  end
-
-  def get_addresses
-    find_tag('ADD')
-  end
-
-  def get_further_information
-    find_tag('FURINF')
-  end
-
-  def get_supplementary_information
-    # custom to get everything but priact and sig
-    # an example of why paragraphs only won't work
-    # https://www.federalregister.gov/documents/full_text/xml/2020/10/13/2020-22534.xml
-    content = []
-    @parser.within('SUPLINF').each do |node|
-      if node.name != 'PRIACT' && node.name != 'SIG'
-        # skip section title
-        if node.name == 'HD' && node.include?('SUPPLEMENTARY')
-          next
-        else
-          content << node
-        end
-      end
-    end
-    content
+      security: find_section('SECURITY'),
+      location: find_section('LOCATION'),
+      manager: find_section('MANAGER'),
+      authority: find_section('AUTHORITY'),
+      purpose: find_section('PURPOSE'),
+      categories_of_individuals: find_section('INDIVIDUALS'),
+      categories_of_record: find_section('CATEGORIES OF RECORDS'),
+      source: find_section('SOURCE'),
+      routine_uses: find_section('ROUTINE'),
+      storage: find_section('STORAGE'),
+      retrieval: find_section('RETRIEVAL'), #Retrievability
+      retention: find_section('RETENTION'),
+      safeguards: find_section('SAFEGUARDS'),
+      access: find_section('ACCESS'),
+      contesting: find_section('CONTESTING'),
+      notification: find_section('NOTIFICATION'),
+      exemptions: find_section('EXEMPTIONS'),
+      history: find_section('HISTORY'),
+      headers: @sections.keys }
   end
 
   def get_system_name
-    bracketed_name = find_section('SYSTEM NAME')
-    if bracketed_name
-      @system_name = bracketed_name.join(', ')
-      @system_name = @system_name.sub ', {}', ''
-      @system_name = @system_name.sub '"]', ''
-      @system_name = @system_name.sub '["', ''
-      @system_name = @system_name.sub '"', ''
-      return @system_name
-    end
+    @system_name = find_section('SYSTEM NAME')
   end
 
   def get_system_number
     number = find_section('NUMBER')
-    # puts number
     if number and @system_name
       parse_system_name_from_number
+    end
+  end
+
+  def find_tag(tag)
+    content = @parser.for_tag(tag).first.fetch("P")
+
+    # sometimes there is just one P in a tag
+    return cleanup_xml_element_to_string(content) if content.class == Saxerator::Builder::StringElement
+
+    # usually content is an array of P content
+    content = content.map { |node| cleanup_xml_element_to_string(node) }
+    add_p_tags(content).join(" ")
+  end
+
+  def find_section(header)
+    # Get a named section of the PRIACT tag
+    # header of 'NUMBER' will match the section with key 'System Name and Number'
+    @sections ||= get_sections
+    matched_header = @sections.keys.find{ |key| key.upcase.include? header }
+    @sections[matched_header]
+  end
+
+  private
+
+  def get_sections
+    # Gather the named sections of the PRIACT tag
+    sections = {}
+    current_header = nil
+    @parser.within('PRIACT').each do |node|
+      if node.name == 'HD'
+        current_header = cleanup_xml_element_to_string(node)
+        sections[current_header] = []
+      elsif current_header.nil?
+        next
+      elsif node.name == 'P'
+        # Skipping a few rare FTNT, NOTE, and EXTRACT tags
+        # append cleaned strings
+        sections[current_header] << cleanup_xml_element_to_string(node)
+      end
+    end
+
+    # discard the rare nil keys
+    sections.except!(nil)
+    # Change arrays of section content into paragraphs.
+    sections.transform_values! { |values| add_p_tags(values).join(" ") }
+  end
+
+  def cleanup_xml_element_to_string(element)
+    # recursively convert hashes and array down to a string
+    element = xml_hash_to_string(element) if element.class == Saxerator::Builder::HashElement
+    element = xml_array_to_string(element) if element.class.in? [Array, Saxerator::Builder::ArrayElement]
+    element.strip if element.class.in? [String, Saxerator::Builder::StringElement]
+  end
+
+  def xml_hash_to_string(element)
+    if element.fetch('P', nil).present?
+      # Grab the paragraphs out of any hashes
+      cleanup_xml_element_to_string(element.fetch('P', nil))
+    else
+      # A very few section headers have a hash with E
+      cleanup_xml_element_to_string(element.fetch('E', nil))
+    end
+  end
+
+  def xml_array_to_string(element)
+    # Arrays can contain hashes and arrays
+    # turn all the inside elements into strings then join on spaces
+    element.map do |e|
+      cleanup_xml_element_to_string(e)
+    end.join(" ")
+  end
+
+  def add_p_tags(content)
+    if content.length > 1
+      content.map{|paragraph| "<p>#{paragraph}</p>" }
+    else
+      content
     end
   end
 
@@ -110,7 +141,7 @@ class SornXmlParser
 
   def collect_regex_captures(precleaned_system_name)
     regex_captures = []
-    # Looks for a variety of common system number reference patterns that are either 
+    # Looks for a variety of common system number reference patterns that are either
     # just numbers or a combination of number and agency abbreviation system numbers
     generic_match = precleaned_system_name.match(/(\w+\/)?\w+(-| |.)\d+(-\d+)?/)
     if generic_match
@@ -125,127 +156,5 @@ class SornXmlParser
     if capture_array.length > 0
       capture_array.join(', ')
     end
-  end
-
-
-  def get_security
-    find_section('SECURITY')
-  end
-
-  def get_location
-    find_section('LOCATION')
-  end
-
-  def get_manager
-    find_section('MANAGER')
-  end
-
-  def get_authority
-    find_section('AUTHORITY FOR MAINTENANCE OF THE SYSTEM')
-  end
-
-  def get_purpose
-    find_section('PURPOSE')
-  end
-
-  def get_individuals
-    find_section('INDIVIDUALS')
-  end
-
-  def get_categories_of_record
-    find_section('CATEGORIES OF RECORDS')
-  end
-
-  def get_source
-    find_section('SOURCE')
-  end
-
-  def get_routine_uses
-    find_section('ROUTINE')
-  end
-
-  def get_storage
-    find_section('STORAGE')
-  end
-
-  def get_retrieval
-    find_section('RETRIEVAL') #Retrievability
-  end
-
-  def get_retention
-    find_section('RETENTION')
-  end
-
-  def get_safeguards
-    find_section('SAFEGUARDS')
-  end
-
-  def get_access
-    find_section('ACCESS')
-  end
-
-  def get_contesting
-    find_section('CONTESTING')
-  end
-
-  def get_notification
-    find_section('NOTIFICATION')
-  end
-
-  def get_exemptions
-    find_section('EXEMPTIONS')
-  end
-
-  def get_history
-    find_section('HISTORY')
-  end
-
-  private
-
-  def find_tag(tag)
-    element = @parser.for_tag(tag).first
-
-    # Return the whole element if its a string
-    return element if element.class == Saxerator::Builder::StringElement
-
-    # Most commonly, it is a hash with paragraphs
-    return element.fetch('P', nil) if element.class == Saxerator::Builder::HashElement
-
-    # Rarely another tag will be complicated and have more than paragraphs, these show up as arrays.
-    # Just return the whole array as a string
-    return element if element.class == Saxerator::Builder::ArrayElement
-  end
-
-  def get_sections
-    sections = {}
-    current_node = nil
-    @parser.within('PRIACT').each do |node|
-      if node.name == 'HD'
-        if node.class == Saxerator::Builder::ArrayElement
-          node.delete({})
-          node = node.first
-        end
-        current_node = node
-        sections[current_node] = []
-      else
-        sections[current_node] << node if current_node
-      end
-    end
-
-    sections
-  end
-
-  def find_section(header)
-    matched_header = @sections.keys.select do |key|
-      begin
-        if key.class == Saxerator::Builder::HashElement
-          key = key.flatten.join(" ")
-        end
-        key.upcase.include? header
-      rescue => e
-        puts 'ERROR: ' + e.to_s
-      end
-    end.first
-    @sections[matched_header]
   end
 end

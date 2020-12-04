@@ -12,6 +12,13 @@ namespace :all_sorns do
   end
 end
 
+namespace :all_sorns do
+  desc "Find new SORNs on the Federal Register API"
+  task parse_all_xml_again: :environment do
+    Sorn.parse_all_xml_again
+  end
+end
+
 namespace :bulk do
   desc "Find new SORNs on the Federal Register API"
   task find_sorns: :environment do
@@ -34,5 +41,13 @@ namespace :repair do
       sorn = Sorn.find(id)
       sorn.update(system_name: parsed_sorn[:system_name])
     end
+  end
+end
+
+namespace :cf do
+  desc "Only run on the first application instance"
+  task :on_first_instance do
+    instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
+    exit(0) unless instance_index == 0
   end
 end
