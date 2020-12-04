@@ -3,7 +3,6 @@ class SornXmlParser
 
   def initialize(xml)
     @parser = Saxerator.parser(xml)
-    @sections = get_sections
   end
 
   def parse_xml
@@ -63,6 +62,7 @@ class SornXmlParser
   def find_section(header)
     # Get a named section of the PRIACT tag
     # header of 'NUMBER' will match the section with key 'System Name and Number'
+    @sections ||= get_sections
     matched_header = @sections.keys.find{ |key| key.upcase.include? header }
     @sections[matched_header]
   end
