@@ -45,14 +45,20 @@ class SornXmlParser
   end
 
   def find_tag(tag)
-    content = @parser.for_tag(tag).first.fetch("P")
+    tag_content = @parser.for_tag(tag).first
+    return nil unless tag_content.present?
+
+    paragraph_content = tag_content.fetch("P")
 
     # sometimes there is just one P in a tag
-    return cleanup_xml_element_to_string(content) if content.class == Saxerator::Builder::StringElement
+    # return it as a cleaned up string
+    return cleanup_xml_element_to_string(paragraph_content) if paragraph_content.class == Saxerator::Builder::StringElement
 
     # usually content is an array of P content
-    content = content.map { |node| cleanup_xml_element_to_string(node) }
-    add_p_tags(content).join(" ")
+    # clean the contents of the array
+    # add p tags if needed and return a single string
+    paragraph_content = paragraph_content.map { |node| cleanup_xml_element_to_string(node) }
+    add_p_tags(paragraph_content).join(" ")
   end
 
   def find_section(header)
