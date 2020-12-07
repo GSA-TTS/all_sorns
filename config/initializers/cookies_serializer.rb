@@ -3,3 +3,7 @@
 # Specify a serializer for the signed and encrypted cookie jars.
 # Valid options are :json, :marshal, and :hybrid.
 Rails.application.config.action_dispatch.cookies_serializer = :json
+
+Rails.action_dispatch.cookies_same_site_protection = ->(request) do
+    :strict unless request.user_agent == "TestAgent"
+  end
