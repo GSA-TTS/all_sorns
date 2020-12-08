@@ -25,16 +25,17 @@ class SornsController < ApplicationController
       # return agency sorns with just those fields
       @selected_fields = params[:fields]
       @selected_agencies = params[:agencies].map(&:parameterize)
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: [params[:agencies]]}).distinct
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
+      @sorns = @sorns.get_distinct
 
     elsif search_and_fields_and_agency_present?
       # return matching, agency sorns with just those fields
       @selected_fields = params[:fields]
       @selected_agencies = params[:agencies].map(&:parameterize)
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: [params[:agencies]]}).distinct
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
       @sorns = @sorns.dynamic_search(field_syms, params[:search])
-
+      @sorns = @sorns.get_distinct_with_dynamic_search
     else
       raise "WUT"
     end
