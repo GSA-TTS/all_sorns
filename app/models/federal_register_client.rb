@@ -72,7 +72,7 @@ class FederalRegisterClient
 
   def sorn_params(result)
     {
-      agency_names: result.agency_names.join(", "),
+      agency_names: result.agency_names.join('<span class="agency-separator">|</span>'),
       action: result.action,
       dates: result.dates,
       xml_url: result.full_text_xml_url,

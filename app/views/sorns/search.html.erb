@@ -84,7 +84,7 @@
                   <div class="grid-row">
                     <div class="grid-col-12">
                       <span class="sorn-attribute-header">Agency:</span>
-                      <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
+                      <%= sorn.agency_names.html_safe %>
                     </div>
                   </div>
                   <div class="grid-row">

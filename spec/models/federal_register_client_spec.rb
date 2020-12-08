@@ -77,7 +77,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         client.find_sorns
 
         sorn = Sorn.last
-        expect(sorn.agency_names).to eq "Fake Parent Agency, Fake Child Agency"
+        expect(sorn.agency_names).to eq 'Fake Parent Agency<span class="agency-separator">|</span>Fake Child Agency'
         expect(sorn.action).to eq 'api action'
         expect(sorn.dates).to eq 'api dates'
         expect(sorn.citation).to eq 'citation'
