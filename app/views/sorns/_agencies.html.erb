@@ -4,7 +4,7 @@
 <fieldset id="agencies" class="usa-fieldset">
   <legend class="usa-legend">Filter agencies</legend>
   <input class="usa-input agency-filter" />
-  <div class="list">
+  <div id="selected-agencies" class="list">
     <% Agency.all.each do |agency| %>
       <div class="usa-checkbox">
         <input class="usa-checkbox__input" id="agency-<%= agency.name&.parameterize %>" type="checkbox" name="agencies[]" value="<%= agency.name %>">
