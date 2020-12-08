@@ -1,7 +1,7 @@
 # This will guess the User class
 FactoryBot.define do
   factory :sorn do
-    agency_names { '["FAKE AGENCY NAMES"]' }
+    agency_names { 'Fake Parent Agency<span class="agency-separator">|</span>Fake Child Agency' }
     action { "FAKE ACTION" }
     summary { "FAKE SUMMARY" }
     system_name { "FAKE SYSTEM NAME" }
@@ -11,6 +11,6 @@ FactoryBot.define do
     xml_url { "xml_url" }
     xml { nil }
     data_source { 'fedreg' }
-    agencies { [ association(:agency) ] }
+    agencies { [ association(:agency),  association(:agency, name: "Fake Child Agency")] }
   end
 end
