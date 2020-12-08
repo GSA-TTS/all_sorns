@@ -72,7 +72,7 @@ class FederalRegisterClient
 
   def sorn_params(result)
     {
-      agency_names: result.agency_names,
+      agency_names: result.agency_names.join(", "),
       action: result.action,
       dates: result.dates,
       xml_url: result.full_text_xml_url,
