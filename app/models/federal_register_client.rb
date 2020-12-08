@@ -7,8 +7,8 @@ class FederalRegisterClient
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
     @fields = fields || ["action", "agencies", "agency_names", "citation",
-      "dates", "full_text_xml_url", "html_url", "pdf_url",
-      "publication_date", "raw_text_url", "title", "type"]
+                        "dates", "full_text_xml_url", "html_url", "pdf_url",
+                        "publication_date", "raw_text_url", "title", "type"]
 
     @page = 1
 
@@ -93,7 +93,7 @@ class FederalRegisterClient
         sorn.agencies << agency if sorn.agencies.exclude? agency
       end
       if api_agency.raw_name == "Office of the Secretary"
-        if result.agencies.pluck(:name).include?("Defense Department")
+        if result.agencies.select(&:name).any?{|a| a.name == "Defense Department" }
           # A popular component used by the DoD
           # doesn't have the other metadata
           agency = Agency.find_or_create_by(name: api_agency.raw_name, api_id: 9999, parent_api_id: 103)

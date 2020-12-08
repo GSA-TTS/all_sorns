@@ -32,7 +32,8 @@ class SornsController < ApplicationController
       @selected_fields = params[:fields]
       @selected_agencies = params[:agencies].map(&:parameterize)
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.dynamic_search(field_syms, params[:search]).joins(:agencies).where(agencies: {name: [params[:agencies]]})
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: [params[:agencies]]})
+      @sorns = @sorns.dynamic_search(field_syms, params[:search])
 
     else
       raise "WUT"
