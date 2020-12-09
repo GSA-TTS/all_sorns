@@ -32,5 +32,18 @@ RSpec.describe "/search", type: :system do
 
       expect(find("#agency-fake-parent-agency")).to be_checked
     end
+
+    it "keeps alphabetical order when filtering" do
+      visit "/search"
+
+      find("#agencies-button").click # open accordian
+      find_field("Fake Parent Agency").find(:xpath, "..").click # click on the parent div
+      find("#agencies").fill_in("agency-filter", with: 'child') # filter
+      find_field("Fake Child Agency").find(:xpath, "..").click # click child checkbox
+      find("#agencies").fill_in("agency-filter", with: 'child agency') # filter again
+
+      expect(find_all("#selected-agencies label")[0].text).to eq "Fake Child Agency"
+      expect(find_all("#selected-agencies label")[1].text).to eq "Fake Parent Agency"
+    end
   end
 end
