@@ -22,30 +22,25 @@ $( function () {
   agencyList = new List('agencies', options);
 
   // Keep selected agencies visible when checked
+  // keep alphabetical sort
   // Also ensures they are always included in the search request
   agencyList.on('searchComplete', function() {
-    showChecked();
-    sortChecked();
+    agencyList.sort('agency-name');
+    if (agencyList.searched == true) {
+      showChecked();
+    }
   })
 
   function showChecked () {
-    // make a list
-    agencyList.items.forEach(agency => {
+    agencyList.items.reverse().forEach(agency => {
       // agency.elm is the container <div class="usa-checkbox">
       // agency.elm.children[0] is the checkbox
       checkbox = agency.elm.children[0]
       if ( checkbox.checked ) {
         agency.show();
-        // $(agency.elm).prependTo("#selected-agencies");
+        $(agency.elm).prependTo("#selected-agencies");
       }
     })
   }
 
-  function sortChecked(){
-    checked = $("#agencies :checked")
-    console.log(checked)
-    checked.each(function(i, obj){
-      $(obj).parent().prependTo("#selected-agencies");
-    })
-  }
 })
