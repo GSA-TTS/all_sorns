@@ -88,18 +88,27 @@ class FederalRegisterClient
 
   def add_agencies(result, sorn)
     result.agencies.each do |api_agency|
-      if api_agency.name.present?
-        agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-        sorn.agencies << agency if sorn.agencies.exclude? agency
-      end
-      if api_agency.raw_name == "Office of the Secretary"
-        if result.agencies.select(&:name).any?{|a| a.name == "Defense Department" }
-          # A popular component used by the DoD
-          # doesn't have the other metadata
-          agency = Agency.find_or_create_by(name: api_agency.raw_name, api_id: 9999, parent_api_id: 103)
-          sorn.agencies << agency if sorn.agencies.exclude? agency
-        end
+      agency = build_agency(result, api_agency)
+      if agency.present?
+        sorn.agencies << agency if sorn.agencies.exclude?(agency)
       end
     end
+  end
+
+  private
+
+  def build_agency(result, api_agency)
+    agency = if api_agency.name.present?
+      Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+    else dod_office_of_the_secretary?(result, api_agency)
+      Agency.find_or_create_by(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+    end
+  end
+
+  def dod_office_of_the_secretary?(result, api_agency)
+    # A popular component used by the DoD
+    # doesn't have the other metadata
+    dod_sorn = result.agencies.select(&:name).any?{|a| a.name == "Defense Department" }
+    api_agency.raw_name == "Office of the Secretary" && dod_sorn
   end
 end
