@@ -3,7 +3,7 @@
 
 <fieldset id="agencies" class="usa-fieldset">
   <legend class="usa-legend">Filter agencies</legend>
-  <input class="usa-input agency-filter" />
+  <input id="agency-filter" class="usa-input agency-filter" />
   <div id="selected-agencies" class="list">
     <% Agency.all.each do |agency| %>
       <div class="usa-checkbox">

@@ -15,4 +15,22 @@ RSpec.describe "/search", type: :system do
 
     expect(find("#search-routine_uses")).not_to be_checked
   end
+
+  it "selected agencies are still checked after a search" do
+    visit "/search?agencies[]=Fake+Parent+Agency&fields[]=system_name"
+
+    expect(find("#agency-fake-parent-agency")).to be_checked
+  end
+
+  describe "agency filtering" do
+    it "agencies selected will stay visible when filtering" do
+      visit "/search"
+
+      find("#agencies-button").click # open accordian
+      find_field("Fake Parent Agency").find(:xpath, "..").click # click on the parent div
+      find("#agencies").fill_in("agency-filter", with: 'child')
+
+      expect(find("#agency-fake-parent-agency")).to be_checked
+    end
+  end
 end
