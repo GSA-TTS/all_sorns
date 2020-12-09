@@ -1,6 +1,18 @@
   <div class="grid-container">
   <div class="grid-row grid-gap">
     <main class="usa-layout-docs__main desktop:grid-col-12 usa-prose usa-layout-docs" id="main-content">
+    
+    <h2>Stats</h2>
+    <table class="usa-table usa-table--borderless">
+    <% @data_stats.each do |stat| %>    
+    <tr>
+        <th scope="col"><%= stat[0] %> </th> 
+        <td><strong><%= stat[1] %></strong></td>
+    </tr>
+    <% end %>
+    
+    </table>
+    
     <table class='usa-table'>
     <thead>
     <tr>
@@ -30,24 +42,18 @@
       </tr>
     <% end %>
       <tr class="usa-bold">
-      <td>Totals</td>
-      <td><%= Sorn.count %></td>
-      <td><%= Sorn.where("publication_date::date > ?", "2016-12-23").count %></td>
-      <td><%= Sorn.where("action_type = 'New'").count %></td>
-      <td><%= Sorn.where("action_type = 'Modification'").count %></td>
-      <td><%= Sorn.where("action_type = 'Rescindment'").count %></td>
-      <td><%= Sorn.where("action_type = 'Renewal'").count %></td>
-      <td><%= Sorn.where("action_type = 'Computer Matching Agreement'").count %></td>
-      <td><%= Sorn.where("action_type = 'Unknown or Other'").count %></td>
+      <td><strong>Totals</td>
+      <td><strong><%= Sorn.count %></td>
+      <td><strong><%= Sorn.where("publication_date::date > ?", "2016-12-23").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'New'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Modification'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Rescindment'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Renewal'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Computer Matching Agreement'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Unknown or Other'").count %></td>
       </tr>
     </table>
   </div>
-
-  <h2>Stats</h2>
-    <ul>
-        <li>SORNs without XML_URLs: <%= @no_xml_url %></li>
-        <li>SORNs with bulleted CORs: <%= Sorn.where("categories_of_record ~* ?", '•', ).count %>
-    </ul>
 
   </main>
 </div>
