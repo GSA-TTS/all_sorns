@@ -45,59 +45,6 @@ class SornsController < ApplicationController
     end
   end
 
-  def search_old
-    search
-  end
-
-
-  # GET /sorns
-  def index(source)
-    if params[:search]
-      redirect_to request.path if params[:search] == ''
-      @sorns = Sorn.where(data_source: source).dynamic_search(Sorn::FIELDS, params[:search]).order(id: :asc)
-    else
-      @sorns = Sorn.where(data_source: source).order(id: :asc)
-    end
-    @count = @sorns.count
-    @sorns = @sorns.page params[:page]
-  end
-
-  def table_everything
-    index(:fedreg)
-  end
-
-  def table_important
-    index(:fedreg)
-  end
-
-  def cards_everything
-    index(:fedreg)
-  end
-
-  def cards_important
-    index(:fedreg)
-  end
-
-  def systems
-    index(:fedreg)
-  end
-
-  def bulk_table_everything
-    index(:bulk)
-  end
-
-  def bulk_table_important
-    index(:bulk)
-  end
-
-  def bulk_cards_everything
-    index(:bulk)
-  end
-
-  def bulk_cards_important
-    index(:bulk)
-  end
-
   private
 
   def no_params_on_page_load?
