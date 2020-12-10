@@ -45,19 +45,6 @@ class SornsController < ApplicationController
     end
   end
 
-
-  # GET /sorns
-  def index(source)
-    if params[:search]
-      redirect_to request.path if params[:search] == ''
-      @sorns = Sorn.where(data_source: source).dynamic_search(Sorn::FIELDS, params[:search]).order(id: :asc)
-    else
-      @sorns = Sorn.where(data_source: source).order(id: :asc)
-    end
-    @count = @sorns.count
-    @sorns = @sorns.page params[:page]
-  end
-
   private
 
   def no_params_on_page_load?
