@@ -1,8 +1,14 @@
 class AnalyticsController < ApplicationController
-    def index
+  def index
+    @total_sorns = Sorn.count
+    @sorn_types = Sorn.pluck(:action_type).tally
+    @agencies = Agency.all
 
-        @total_sorns = Sorn.count
-        @agency_sorn_counts = Sorn.group(:agency_names).count.sort_by{ |name, count| count }.reverse
+    #Data quality stats
+    @data_stats = {}
+    @data_stats.merge!('No xml url': Sorn.where(xml_url: nil).count)
+    @data_stats.merge!('Sorns with list-able CORs': Sorn.where("categories_of_record ~* ?", '•', ).count)
+  
 
     end
 end
