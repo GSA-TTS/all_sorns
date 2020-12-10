@@ -34,13 +34,13 @@ $( function () {
   })
 
   function showChecked () {
-    agencyList.items.reverse().forEach(agency => {
+    agencyList.items.forEach(agency => {
       // agency.elm is the container <div class="usa-checkbox">
       // agency.elm.children[0] is the checkbox
       checkbox = agency.elm.children[0]
       if ( checkbox.checked ) {
         agency.show();
-        $(agency.elm).prependTo("#selected-agencies");
+        $(agency.elm).appendTo("#selected-agencies");
       }
     })
   }
