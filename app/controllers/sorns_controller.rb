@@ -45,10 +45,6 @@ class SornsController < ApplicationController
     end
   end
 
-  def search_old
-    search
-  end
-
 
   # GET /sorns
   def index(source)
@@ -60,42 +56,6 @@ class SornsController < ApplicationController
     end
     @count = @sorns.count
     @sorns = @sorns.page params[:page]
-  end
-
-  def table_everything
-    index(:fedreg)
-  end
-
-  def table_important
-    index(:fedreg)
-  end
-
-  def cards_everything
-    index(:fedreg)
-  end
-
-  def cards_important
-    index(:fedreg)
-  end
-
-  def systems
-    index(:fedreg)
-  end
-
-  def bulk_table_everything
-    index(:bulk)
-  end
-
-  def bulk_table_important
-    index(:bulk)
-  end
-
-  def bulk_cards_everything
-    index(:bulk)
-  end
-
-  def bulk_cards_important
-    index(:bulk)
   end
 
   private
