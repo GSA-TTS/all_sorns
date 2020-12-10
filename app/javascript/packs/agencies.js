@@ -1,5 +1,5 @@
-
 $( function () {
+  // Select all and deselect all buttons
   const checkboxes = $("#agencies input:checkbox")
   $("#agency-select-all").on('click', function(){
     checkboxes.prop("checked", true)
@@ -8,6 +8,7 @@ $( function () {
     checkboxes.prop("checked", false)
   })
 
+  // Load checked agencies from url
   const agencies = $("#agencies-for-js").data("agencies")
   if (agencies) {
     agencies.forEach(name => {
@@ -15,6 +16,7 @@ $( function () {
     });
   }
 
+  // List.js to make list of agencies filterable
   var options = {
     searchClass: 'agency-filter',
     valueNames: [ 'agency-name' ]
@@ -42,5 +44,4 @@ $( function () {
       }
     })
   }
-
 })
