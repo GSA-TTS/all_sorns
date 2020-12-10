@@ -1,9 +1,60 @@
-<p>Total SORNs:<%= @total_sorns %></p>
-
-<table>
-<% @agency_sorn_counts.each do |agency, count| %>
-    <tr><td><%= agency %></td><td><%= count %></p></td></tr>
+  <div class="grid-container">
+  <div class="grid-row grid-gap">
+    <main class="usa-layout-docs__main desktop:grid-col-13 usa-prose usa-layout-docs" id="main-content">
     
-<% end %>
+    <h2>Stats</h2>
+    <table class="usa-table usa-table--borderless">
+    <% @data_stats.each do |stat| %>    
+    <tr>
+        <th scope="col"><%= stat[0] %> </th> 
+        <td><strong><%= stat[1] %></strong></td>
+    </tr>
+    <% end %>
+    
+    </table>
+    
+    <table class='usa-table'>
+    <thead>
+    <tr>
+        <th>Agency</th>
+        <th>Total SORNs</th>
+        <th>A-108 Era SORNs</th>
+        <th>New</th>
+        <th>Modification</th>
+        <th>Rescind</th>
+        <th>Renewal</th>
+        <th>Unknown or Other</th>
+        <th>Computer Matching Agreement</th>
+    </tr>
+    </thead>
+    
+    <% @agencies.each do |agency| %>
+      <tr>
+      <td><%= agency.name %></td>
+      <td><%= agency.sorns.count %></td>
+      <td><%= agency.sorns.where("publication_date::date > ?", "2016-12-23").count %></td>
+      <td><%= agency.sorns.where("action_type = 'New'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Modification'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Rescindment'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Renewal'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Computer Matching Agreement'").count %></td>
+      <td><%= agency.sorns.where("action_type = 'Unknown or Other'").count %></td>
+      </tr>
+    <% end %>
+      <tr class="usa-bold">
+      <td><strong>Totals</td>
+      <td><strong><%= Sorn.count %></td>
+      <td><strong><%= Sorn.where("publication_date::date > ?", "2016-12-23").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'New'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Modification'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Rescindment'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Renewal'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Computer Matching Agreement'").count %></td>
+      <td><strong><%= Sorn.where("action_type = 'Unknown or Other'").count %></td>
+      </tr>
+    </table>
+  </div>
 
-</table>
+  </main>
+</div>
+</div>
