@@ -4,4 +4,4 @@
 # Valid options are :json, :marshal, and :hybrid.
 Rails.application.config.action_dispatch.cookies_serializer = :json
 
-Rails.action_dispatch.cookies_same_site_protection = :strict
+Rails.application.config.action_dispatch.cookies_same_site_protection = :strict
