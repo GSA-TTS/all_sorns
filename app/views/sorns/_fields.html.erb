@@ -8,11 +8,10 @@
     <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
     <% checkboxes.each do |field, index| %>
       <div class="usa-checkbox">
-        <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-        <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
+        <input class="usa-checkbox__input" id="fields-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
+        <label class="usa-checkbox__label" for="fields-<%= field %>"><%= field.to_s.humanize %></label>
       </div>
     <% end %>
     <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
-    <%= javascript_pack_tag 'checkboxes' %>
   </div>
 </fieldset>
