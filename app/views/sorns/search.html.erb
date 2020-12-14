@@ -18,19 +18,19 @@
 
             <div class="usa-accordion">
               <h2 class="usa-accordion__heading">
-                <button id="agencies-button" class="usa-accordion__button" aria-controls="a2" type="button" >Agencies</button>
+                <button id="agencies-button" class="usa-accordion__button" aria-controls="agency-accordion" type="button" >Agencies</button>
               </h2>
-              <div id="a2" class="usa-accordion__content usa-prose">
+              <div id="agency-accordion" class="usa-accordion__content usa-prose">
                 <%= render partial: "agencies" %>
               </div>
               <div class="usa-accordion__heading">
                 <button class="usa-accordion__button"
                   aria-expanded="false"
-                  aria-controls="a3" type="button">
+                  aria-controls="date-accoridon" type="button">
                   Publication date range
                 </button>
               </div>
-              <div id="a3" class="usa-accordion__content usa-prose">
+              <div id="date-accoridon" class="usa-accordion__content usa-prose">
                 <p>Date Selector</p>
               </div>
             </div>
