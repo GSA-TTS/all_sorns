@@ -37,12 +37,8 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    xit "agencies accordian is open" do
-      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="true" aria-controls="a1" type="button">Agencies</button>'
-    end
-
-    xit "default agency set" do
-      expect(response.body).to include 'data-default-value="FAKE AGENCIES"'
+    it "default agency set" do
+      expect(response.body).to include 'data-agencies="[&quot;fake-parent-agency&quot;]"'
     end
 
     it "with search result summaries" do
@@ -75,12 +71,8 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    xit "agencies accordian is closed" do
-      expect(response.body).to include '<button class="usa-accordion__button" aria-expanded="false" aria-controls="a1" type="button">Agencies</button>'
-    end
-
-    xit "no default agency selected" do
-      expect(response.body).to include 'data-default-value=""'
+    it "no default agency selected" do
+      expect(response.body).to include 'data-agencies=""'
     end
 
     it "with search result summaries" do
