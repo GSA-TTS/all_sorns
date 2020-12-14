@@ -5,6 +5,11 @@ $( function () {
   // Set checked agencies from url
   checkboxesFromUrl("agencies")
 
+  // Add .agency-separator to agency pipe separator
+  $(".agency-names").html(function(_, html){
+    return html.replace("|","<span class='agency-separator'>|</span>")
+  });
+
   // Select all and deselect all buttons
   const agencyCheckboxes = $("#agencies input:checkbox")
   $("#agency-select-all").on('click', function(){

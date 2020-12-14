@@ -21,4 +21,10 @@ RSpec.describe "/search", type: :system do
 
     expect(find("#agencies-fake-parent-agency")).to be_checked
   end
+
+  it "applies the wanted class to the agency pipe separator" do
+    visit "/search"
+
+    expect(page).to have_css '.agency-separator'
+  end
 end

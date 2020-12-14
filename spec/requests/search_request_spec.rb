@@ -110,7 +110,7 @@ RSpec.describe "Search", type: :request do
     it "with search result summaries" do
       expect(response.body).to include 'FOUND IN'
       expect(response.body).to include "<div class='sorn-attribute-header'>Agency names</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>Fake</mark> Parent Agency<span class=\"agency-separator\">|</span><mark>Fake</mark> Child Agency</div>"
+      expect(response.body).to include "<div class='found-section-snippet'><mark>Fake</mark> Parent Agency | <mark>Fake</mark> Child Agency</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
       expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"
