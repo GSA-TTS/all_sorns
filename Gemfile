@@ -59,3 +59,5 @@ group :test do
   gem 'webdrivers'
   gem 'launchy'
 end
+
+gem "whenever", "~> 1.0"
