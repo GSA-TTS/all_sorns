@@ -186,6 +186,12 @@
  }
 
 
+ .search-area h2{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+ }
+
  #search-form {
    width: 100%;
  }
@@ -208,7 +214,7 @@
 
  .pagination .page, .prev {
    display: inline-block;
-   margin-right: 12px;
+   margin-right: 11px;
    line-height: 1.15; // Magic number
  }
 
@@ -222,6 +228,11 @@
    color: $blue-50;
    text-decoration: none;
  }
+
+
+
+
+ // Cards
 
  .usa-card {
    min-width: 100%;
