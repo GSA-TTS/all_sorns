@@ -11,10 +11,11 @@
       <button class="usa-nav__close"><img src="/assets/img/close.svg" role="img" alt="close"></button>
 <ul class="usa-nav__primary usa-accordion">
     <li class="usa-nav__primary-item">
-        <a class="usa-nav__link" href="javascript:void(0)"><span>Home</span></a>
+        <a class="usa-nav__link" href="/"><span>Home</span></a>
     </li>
     <li class="usa-nav__primary-item">
-        <a class="usa-nav__link" href="javascript:void(0)"><span>About</span></a>
+        <%= link_to 'About', about_path, class: "usa-nav__link" %>
+        <%# <a class="usa-nav__link" href="javascript:void(0)"><span>About</span></a> %>
     </li>
     </ul>
 </nav>
