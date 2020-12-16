@@ -1,25 +1,37 @@
-<div class="usa-form-group">
-  <label class="usa-label" id="starting-date-label" for="starting-date">Starting date</label>
-  <div class="usa-hint" id="starting-date-hint">mm/dd/yyyy</div>
-  <div class="usa-date-picker">
-    <input
-      class="usa-input"
-      id="starting-date"
-      name="starting-date"
-      type="text"
-      aria-describedby="starting-date-label starting-date-hint"
-    >
+<fieldset id="starting-date" class="usa-fieldset">
+  <legend class="usa-legend">Starting date</legend>
+  <span class="usa-hint" id="dobHint">For example: 4 28 1986</span>
+  <div class="usa-memorable-date">
+    <div class="usa-form-group usa-form-group--month">
+      <label class="usa-label" for="starting_date_1">Month</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="starting_date_1" name="starting_date_1" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
+    <div class="usa-form-group usa-form-group--day">
+      <label class="usa-label" for="starting_date_2">Day</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="starting_date_2" name="starting_date_2" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
+    <div class="usa-form-group usa-form-group--year">
+      <label class="usa-label" for="starting_date_3">Year</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="starting_date_3" name="starting_date_3" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
   </div>
+</fieldset>
 
-  <label class="usa-label" id="ending-date-label" for="ending-date">Ending date</label>
-  <div class="usa-hint" id="ending-date-hint">mm/dd/yyyy</div>
-  <div class="usa-date-picker">
-    <input
-      class="usa-input"
-      id="ending-date"
-      name="ending-date"
-      type="text"
-      aria-describedby="ending-date-label ending-date-hint"
-    >
+<fieldset id="ending-date" class="usa-fieldset">
+  <legend class="usa-legend">Ending date</legend>
+  <span class="usa-hint" id="dobHint">For example: 4 28 1986</span>
+  <div class="usa-memorable-date">
+    <div class="usa-form-group usa-form-group--month">
+      <label class="usa-label" for="ending_date_1">Month</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="ending_date_1" name="ending_date_1" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
+    <div class="usa-form-group usa-form-group--day">
+      <label class="usa-label" for="ending_date_2">Day</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="ending_date_2" name="ending_date_2" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
+    <div class="usa-form-group usa-form-group--year">
+      <label class="usa-label" for="ending_date_3">Year</label>
+      <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="ending_date_3" name="ending_date_3" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="">
+    </div>
   </div>
-</div>
+</fieldset>
