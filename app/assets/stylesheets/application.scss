@@ -16,10 +16,12 @@
  $base-color:   #1B1B1B;
 
  $blue-90:      #122D52;
+ $blue-80:      #112F4E;
  $blue-70:      #005599; //primary blue
  $blue-50:      #006DB6;
  $blue-20:      #CCD6E0;
  $blue-10:      #E0E6EB;
+ $blue-10V:     #CFE8FF;
 
  $gray-cool-50: #71767A;
  $gray-cool-10: #DCDEE0;
@@ -35,6 +37,10 @@
  $gold-5:       #EFEADF;
 
 
+ body {
+  background: #F7F9FA;
+ }
+
  // Header & Navigation
  .beta-banner {
   background-color: $blue-90;
@@ -48,27 +54,50 @@
   }
  }
 
-
- .usa-header--basic {
-   background-color: $blue-90;
- }
-
  .usa-logo a {
    color: white;
    font-size: font-size('heading', '2xl');
  }
 
- #search-header {
+ .home-intro {
    margin-top: 0;
-   background-color: $gray-5;
+   background-color: $blue-80;
+
+   color: #fff;
+
+   @media screen and (min-width: 800px) {
+    .site-intro {
+      background-image: image-url("home-intro.svg");
+      background-repeat: no-repeat;
+      background-position: right; 
+     }
+  }
+
+
+
+   .site-title {
+    margin-bottom: 0;
+    font-size: 44px;
+    line-height: 55px;
+  }
+
+  .sub-title {
+    line-height: 1.5;
+    color: #FBFCFD; 
+    font-size: 20px;
+
+    a {
+      text-decoration: none;
+      font-weight: 700;
+      color: $blue-10V;
+
+    }
+  }
+
  }
 
- #site-title {
-   margin-bottom: 0;
- }
-#sub-title {
-  line-height: 1.5;
-}
+
+
 
  // use with mixin utility when available
  #search-filters{
@@ -96,7 +125,8 @@
  }
 
  .usa-nav__primary > .usa-nav__primary-item > a {
-   color: white;
+   color: $blue-70;
+   font-weight: normal;
    &:hover {
      color: color('blue-30v');
    }
@@ -110,10 +140,16 @@
    background-color: color('blue-30v');
  }
 
- .sidebar .usa-accordion__button{
-  background-color: #FFFFFF;
-  border-top: 1px solid #C4C4C4;
- }
+ .sidebar {
+  background: #FFFFFF;
+
+  .usa-accordion__button {
+    background-color: #FFFFFF;
+    border-top: 1px solid #C4C4C4;
+   }
+ } 
+ 
+
 
 /* Need to override accordion margins to match design */
  .usa-accordion__heading:not(:first-child), .usa-prose .usa-accordion__heading:not(:first-child) {
@@ -219,7 +255,9 @@
   padding: 16px;
   min-height: 112px;
 
-  background: #F0F0F0;
+  background: $blue-80;
+  color: #FBFCFD;
+  ;
  }
 
  .system-number {
@@ -234,8 +272,6 @@
 
   text-transform: uppercase;
 
-  color: #000000;
-
   margin-bottom: 8px;
   display: block;
  }
@@ -248,8 +284,6 @@
   line-height: 28px;
   /* or 140% */
 
-
-  color: #0232AC;
  }
 
  .sorn-attribute-header {
