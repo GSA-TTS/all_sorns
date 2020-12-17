@@ -38,12 +38,12 @@ class SornsController < ApplicationController
 
     if params[:starting_date_year].present?
       starting_date = [ params[:starting_date_year], params[:starting_date_month], params[:starting_date_day]].join("-")
-      @sorns = @sorns.where('publication_date > ?', starting_date.to_date)
+      @sorns = @sorns.where('publication_date::DATE > ?', starting_date.to_date)
     end
 
     if params[:ending_date_year].present?
       ending_date = [ params[:ending_date_year], params[:ending_date_month], params[:ending_date_day]].join("-")
-      @sorns = @sorns.where('publication_date < ?', ending_date.to_date) if ending_date.present?
+      @sorns = @sorns.where('publication_date::DATE < ?', ending_date.to_date) if ending_date.present?
     end
 
     @sorns = @sorns.page(params[:page]) if request.format == :html
