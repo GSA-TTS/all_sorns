@@ -7,8 +7,8 @@ class FederalRegisterClient
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
     @fields = fields || ["action", "agencies", "agency_names", "citation",
-      "dates", "full_text_xml_url", "html_url", "pdf_url",
-      "publication_date", "raw_text_url", "title", "type"]
+                        "dates", "full_text_xml_url", "html_url", "pdf_url",
+                        "publication_date", "raw_text_url", "title", "type"]
 
     @page = 1
 
@@ -57,7 +57,7 @@ class FederalRegisterClient
       sorn = Sorn.create(params)
     end
 
-    update_agencies(result, sorn)
+    add_agencies(result, sorn)
 
     UpdateSornJob.perform_later(sorn.id)
   end
@@ -72,6 +72,7 @@ class FederalRegisterClient
 
   def sorn_params(result)
     {
+      agency_names: result.agency_names.join(' | '),
       action: result.action,
       dates: result.dates,
       xml_url: result.full_text_xml_url,
@@ -81,23 +82,35 @@ class FederalRegisterClient
       publication_date: result.publication_date,
       citation: result.citation,
       title: result.title,
-      agency_names: result.agency_names,
       data_source: :fedreg
     }
   end
 
-  def update_agencies(result, sorn)
-    # Create agencies
+  def add_agencies(result, sorn)
+    # add agency to sorn, without duplicates
+    # special case for DoD Office of the Secretary
     result.agencies.each do |api_agency|
-      if api_agency.raw_name == "Office of the Secretary"
-        # A popular component used by the DoD
-        # doesn't have the other metadata
-        agency = Agency.find_or_create_by(name: api_agency.raw_name, api_id: 9999, parent_api_id: 103)
-      else
-        agency = Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+      agency = build_agency(result, api_agency)
+      if agency.present? && sorn.agencies.exclude?(agency)
+        sorn.agencies << agency
       end
-
-      sorn.agencies << agency if sorn.agencies.exclude? agency
     end
+  end
+
+  private
+
+  def build_agency(result, api_agency)
+    if api_agency.name.present?
+      Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+    else dod_office_of_the_secretary?(result, api_agency)
+      Agency.find_or_create_by(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+    end
+  end
+
+  def dod_office_of_the_secretary?(result, api_agency)
+    # A popular component used by the DoD
+    # doesn't have the other metadata
+    dod_sorn = result.agencies.select(&:name).any?{|a| a.name == "Defense Department" }
+    api_agency.raw_name == "Office of the Secretary" && dod_sorn
   end
 end
