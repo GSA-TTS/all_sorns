@@ -16,7 +16,7 @@
  $base-color:   #1B1B1B;
 
  $blue-90:      #122D52;
- $blue-80:      #112F4E;
+ $blue-80V:      #112F4E;
  $blue-70:      #005599; //primary blue
  $blue-50:      #006DB6;
  $blue-20:      #CCD6E0;
@@ -54,14 +54,22 @@
   }
  }
 
+ @media (min-width: 64em) {
+  .usa-logo {
+    margin: 16px 0;
+  }
+ }
+
  .usa-logo a {
    color: white;
    font-size: font-size('heading', '2xl');
  }
 
+
+
  .home-intro {
    margin-top: 0;
-   background-color: $blue-80;
+   background-color: $blue-80V;
 
    color: #fff;
 
@@ -266,9 +274,8 @@
 
  .usa-card__header {
   padding: 16px;
-  min-height: 112px;
 
-  background: $blue-80;
+  background: $blue-80V;
   color: #FBFCFD;
   ;
  }
@@ -284,6 +291,7 @@
   /* identical to box height */
 
   text-transform: uppercase;
+  letter-spacing: .04em;
 
   margin-bottom: 8px;
   display: block;
@@ -291,8 +299,7 @@
 
  .system-name {
   font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
-  font-style: normal;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 20px;
   line-height: 28px;
   /* or 140% */
