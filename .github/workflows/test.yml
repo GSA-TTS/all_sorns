@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-gems-
       - name: Install linux dependencies
         run: |
-          sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
+          sudo apt-get -yqq install libpq-dev build-essential libssl-dev
       - name: install ruby dependencies
         run: |
           bundle install --jobs 4 --retry 3

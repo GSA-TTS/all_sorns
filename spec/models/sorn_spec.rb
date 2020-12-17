@@ -97,6 +97,11 @@ RSpec.describe Sorn, type: :model do
       expect(sorn.mentioned).to eq [child_sorn]
     end
 
+    it "does not include the non-SORN fr citations" do
+      no_mentions_of_non_sorn = sorn.mentioned.none?{|sorn| sorn.citation == "02 FR 9876"}
+      expect(no_mentions_of_non_sorn).to be_truthy
+    end
+
     it "also adds the parent id to the child mentions" do
       expect(child_sorn.mentioned).to eq [sorn]
     end

@@ -25,13 +25,15 @@ RSpec.describe FederalRegisterClient, type: :model do
           "parent_id": nil
         ),
         OpenStruct.new(
-          "raw_name": "Office of the Secretary"
+          "raw_name": "FAKE CHILD AGENCY",
+          "name": "Fake Child Agency",
+          "id": 2,
+          "parent_id": 1
         )
       ],
       agency_names: ["Fake Parent Agency", "Fake Child Agency"]
     )
-    mock_results = [mock_result]
-    result_set = double(FederalRegister::ResultSet, results: mock_results, total_pages: pages)
+    result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
     allow($stdout).to receive(:puts)
     allow(FederalRegister::Document).to receive(:search).and_return result_set
     allow(FederalRegister::Document).to receive(:find).and_return mock_result
@@ -52,8 +54,9 @@ RSpec.describe FederalRegisterClient, type: :model do
 
       it "Creates agencies for each result" do
         expect{ client.find_sorns }.to change{ Agency.count }.by 2
-        expect(Sorn.last.agencies.first.name).to eq "Fake Parent Agency"
-        expect(Sorn.last.agencies.second.name).to eq "Office of the Secretary"
+
+        expect(Sorn.last.agencies.second).to have_attributes(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
+        expect(Sorn.last.agencies.first).to have_attributes(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
       end
 
       context "with existing agencies" do
@@ -61,7 +64,7 @@ RSpec.describe FederalRegisterClient, type: :model do
 
         before do
           sorn.agencies << Agency.create(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-          sorn.agencies << Agency.create(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+          sorn.agencies << Agency.create(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
         end
 
         it "Doesn't duplicate agencies" do
@@ -74,6 +77,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         client.find_sorns
 
         sorn = Sorn.last
+        expect(sorn.agency_names).to eq 'Fake Parent Agency | Fake Child Agency'
         expect(sorn.action).to eq 'api action'
         expect(sorn.dates).to eq 'api dates'
         expect(sorn.citation).to eq 'citation'
@@ -82,6 +86,43 @@ RSpec.describe FederalRegisterClient, type: :model do
         expect(sorn.pdf_url).to eq 'pdf url'
         expect(sorn.data_source).to eq 'fedreg'
         expect(sorn.publication_date).to eq "2000-01-13"
+      end
+
+      context "DoD Office of the Secretary" do
+        before do
+          mock_result = OpenStruct.new(
+            title: title,
+            action: "api action",
+            dates: "api dates",
+            pdf_url: "pdf url",
+            full_text_xml_url: "expected url",
+            html_url: "html url",
+            citation: "citation",
+            type: type,
+            publication_date: "2000-01-13",
+            agencies: [
+              OpenStruct.new(
+                "raw_name": "DEFENSE DEPARTMENT",
+                "name": "Defense Department",
+                "id": 103,
+                "parent_id": nil
+              ),
+              OpenStruct.new(
+                "raw_name": "Office of the Secretary"
+              )
+            ],
+            agency_names: ["Defense Department", "Office of the Secretary"]
+          )
+          result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
+          allow(FederalRegister::Document).to receive(:search).and_return result_set
+        end
+
+        it "correctly saves the office of the secretary as a subcomponent of the DoD" do
+          expect{ client.find_sorns }.to change{ Agency.count }.by 2
+
+          expect(Sorn.last.agencies.first).to have_attributes(name: "Defense Department", api_id: 103, parent_api_id: nil)
+          expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+        end
       end
     end
 

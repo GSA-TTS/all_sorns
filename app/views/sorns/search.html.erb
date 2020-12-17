@@ -19,47 +19,24 @@
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar" id="sidebar">
           <div class="preview usa-prose site-prose" >
-            <fieldset id="fields" class="usa-fieldset margin-105">
-              <legend class="usa-legend">
-                <div id="search-filters">Search filters</div>
-                <div id="fields-to-search">Fields to search</div>
-              </legend>
 
-              <div id="sorn-fields" class="">
-                <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
-                <% checkboxes.each do |field, index| %>
-                  <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-                    <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
-                  </div>
-                <% end %>
-                <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
-                <%= javascript_pack_tag 'checkboxes' %>
-              </div>
-            </fieldset>
-            <div class="usa-accordion aria-multiselectable="true">
+            <%= render partial: "fields" %>
+
+            <div class="usa-accordion">
               <h2 class="usa-accordion__heading">
-                <button class="usa-accordion__button" aria-expanded="<%= params[:agency].present? %>" aria-controls="a1" type="button">Agencies</button>
+                <button id="agencies-button" class="usa-accordion__button" aria-controls="agency-accordion" type="button" >Agencies</button>
               </h2>
-              <div id="a1" class="usa-accordion__content usa-prose">
-                <label class="usa-label" for="agency">Select an agency</label>
-                <div class="usa-combo-box" data-default-value="<%= params[:agency] %>">
-                  <select class="usa-select" name="agency" id="agency-select">
-                    <option value>Select an agency</option>
-                    <% Agency.all.each do |agency| %>
-                      <option value="<%= agency.name %>"><%= agency.name %></option>
-                    <% end %>
-                  </select>
-                </div>
+              <div id="agency-accordion" class="usa-accordion__content usa-prose">
+                <%= render partial: "agencies" %>
               </div>
               <div class="usa-accordion__heading">
                 <button class="usa-accordion__button"
                   aria-expanded="false"
-                  aria-controls="a2" type="button">
+                  aria-controls="date-accoridon" type="button">
                   Publication date range
                 </button>
               </div>
-              <div id="a2" class="usa-accordion__content usa-prose">
+              <div id="date-accoridon" class="usa-accordion__content usa-prose">
                 <p>Date Selector</p>
               </div>
             </div>
@@ -113,7 +90,7 @@
                   <div class="grid-row">
                     <div class="grid-col-12">
                       <span class="sorn-attribute-header">Agency:</span>
-                      <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
+                      <span class="agency-names"><%= sorn.agency_names %></span>
                     </div>
                   </div>
                   <div class="grid-row">
@@ -167,7 +144,7 @@
                 <div class="usa-card__footer">
                   <div class="grid-row">
                     <div class="grid-col-6">
-                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>">Source Document</a>
+                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener">View full SORN</a>
                     </div>
                     <div class="grid-col-6 text-right">
                       <%# <button class="usa-button" href="/">View all details</button> %>

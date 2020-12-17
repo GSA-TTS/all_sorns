@@ -106,6 +106,15 @@
   font-weight:bold;
  }
 
+ #fields {
+   overflow: hidden;
+ }
+
+ .agency-button {
+   width: 100px;
+   display: inline;
+ }
+
  #fields-to-search{
   font-size: 16px;
   font-weight:bold;
@@ -113,11 +122,10 @@
 
  #sorn-fields input[type='checkbox']{
    border-radius: 0 !important;
-   position: relative !important;
  }
 
  .usa-checkbox {
-   height: 32px;
+   margin-top: 1em;
  }
 
  .usa-nav__secondary {
@@ -151,20 +159,14 @@
  
 
 
-/* Need to override accordion margins to match design */
- .usa-accordion__heading:not(:first-child), .usa-prose .usa-accordion__heading:not(:first-child) {
-  margin-top: 0rem;
-}
-
  #sorn-fields {
-   overflow-y: scroll;
-   height: 312px;
-   border-bottom: 1px solid #C4C4C4;
- }
-
- #a1 {
   overflow-y: scroll;
   height: 312px;
+  border-bottom: 1px solid #C4C4C4;
+ }
+
+ #agency-select-label {
+   margin-top: 0;
  }
 
  #csv-download {
