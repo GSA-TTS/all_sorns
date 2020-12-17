@@ -136,6 +136,10 @@
    margin-top: 1em;
  }
 
+ .usa-nav {
+   margin:auto;
+ }
+
  .usa-nav__secondary {
    color: white;
  }
@@ -143,6 +147,7 @@
  .usa-nav__primary > .usa-nav__primary-item > a {
    color: $blue-70;
    font-weight: normal;
+   font-size: 18px;
    &:hover {
      color: color('blue-30v');
    }
