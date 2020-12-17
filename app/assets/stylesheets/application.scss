@@ -81,8 +81,6 @@
      }
   }
 
-
-
    .site-title {
     margin-bottom: 0;
     font-size: 44px;
@@ -102,6 +100,19 @@
     }
   }
 
+ }
+
+ // 
+ .search-area {
+   margin-top: 32px;
+   margin-bottom: 32px;
+
+   h2 {
+     color: $blue-80V;
+     font-style: normal;
+     font-weight: normal;
+     font-size: 20px;
+   }
  }
 
 
@@ -200,13 +211,6 @@
   text-decoration: underline;
  }
 
-
- .search-area h2{
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
- }
-
  #search-form {
    width: 100%;
  }
@@ -219,6 +223,7 @@
 
  #count {
    padding-bottom: 8px;
+   color: $blue-80V;
  }
 
  // Pagination
