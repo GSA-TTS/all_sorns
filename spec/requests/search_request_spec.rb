@@ -55,7 +55,7 @@ RSpec.describe "Search", type: :request do
       before { sorn.agencies << child_agency }
 
       it "only returns a single SORN, even though it matches the two agencies" do
-        expect(response.body).to include "Displaying <b>1</b>  for FAKE"
+        expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
         expect(response.body).to include('FAKE SYSTEM NAME')
       end
     end

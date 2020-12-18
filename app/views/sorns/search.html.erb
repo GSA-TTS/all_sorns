@@ -1,15 +1,27 @@
-<header id="search-header" class="margin-top-2">
-  <div class="grid-container">
+<header id="search-header" class="margin-top-2 home-intro">
+  <div class="grid-container site-intro">
     <div class="grid-row grid-gap grid-col-9">
-      <h1 id="site-title">SORN Dashboard</h1>
-      <p id="sub-title">This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
+      <h1 class="site-title">SORN Dashboard</h1>
+      <p class="sub-title">This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
     </div>
   </div>
 </header>
 
+<%= form_tag '/search', method: "GET", id: "search-form" do %>
+<section class="grid-container">
+  <div class="grid-col-10 grid-offset-1 search-area">
+    <h2>Search for SORNs by entering a keyword</h2>
+    <fieldset class="usa-search usa-search--big">
+      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+      <button id="general-search-button" class="usa-button" type="submit">
+        <span class="usa-search__submit-text">Search</span>
+      </button>
+    </fieldset>
+  </div> 
+</section>
   <div class="grid-container margin-top-2">
-    <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
-
+    
+    <div class ="grid-row grid-gap">
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar" id="sidebar">
           <div class="preview usa-prose site-prose" >
@@ -48,17 +60,12 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-        <fieldset class="usa-search usa-search--big">
-          <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-          <button id="general-search-button" class="usa-button" type="submit">
-            <span class="usa-search__submit-text">Search</span>
-          </button>
-        </fieldset>
 
-        <div class="grid-row margin-top-3 margin-bottom-1">
+
+        <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
             <div id="count">
-              <%= page_entries_info @sorns, entry_name: '' %> <%= "for " + params[:search] if params[:search].present? %>
+              <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
           <div class="grid-col-6">
@@ -154,6 +161,8 @@
           </div>
         </ul>
       </main>
-    <% end %>
+
+    </div>
   </div>
+      <% end %>
 </div>

@@ -16,10 +16,12 @@
  $base-color:   #1B1B1B;
 
  $blue-90:      #122D52;
+ $blue-80V:      #112F4E;
  $blue-70:      #005599; //primary blue
  $blue-50:      #006DB6;
  $blue-20:      #CCD6E0;
  $blue-10:      #E0E6EB;
+ $blue-10V:     #CFE8FF;
 
  $gray-cool-50: #71767A;
  $gray-cool-10: #DCDEE0;
@@ -35,6 +37,10 @@
  $gold-5:       #EFEADF;
 
 
+ body {
+  background: #F7F9FA;
+ }
+
  // Header & Navigation
  .beta-banner {
   background-color: $blue-90;
@@ -48,9 +54,10 @@
   }
  }
 
-
- .usa-header--basic {
-   background-color: $blue-90;
+ @media (min-width: 64em) {
+  .usa-logo {
+    margin: 16px 0;
+  }
  }
 
  .usa-logo a {
@@ -58,17 +65,58 @@
    font-size: font-size('heading', '2xl');
  }
 
- #search-header {
+
+
+ .home-intro {
    margin-top: 0;
-   background-color: $gray-5;
+   background-color: $blue-80V;
+
+   color: #fff;
+
+   @media screen and (min-width: 800px) {
+    .site-intro {
+      background-image: image-url("home-intro.svg");
+      background-repeat: no-repeat;
+      background-position: right; 
+     }
+  }
+
+   .site-title {
+    margin-bottom: 0;
+    font-size: 44px;
+    line-height: 55px;
+  }
+
+  .sub-title {
+    line-height: 1.5;
+    color: #FBFCFD; 
+    font-size: 20px;
+
+    a {
+      text-decoration: none;
+      font-weight: 700;
+      color: $blue-10V;
+
+    }
+  }
+
  }
 
- #site-title {
-   margin-bottom: 0;
+ // 
+ .search-area {
+   margin-top: 32px;
+   margin-bottom: 32px;
+
+   h2 {
+     color: $blue-80V;
+     font-style: normal;
+     font-weight: normal;
+     font-size: 20px;
+   }
  }
-#sub-title {
-  line-height: 1.5;
-}
+
+
+
 
  // use with mixin utility when available
  #search-filters{
@@ -99,12 +147,18 @@
    margin-top: 1em;
  }
 
+ .usa-nav {
+   margin:auto;
+ }
+
  .usa-nav__secondary {
    color: white;
  }
 
  .usa-nav__primary > .usa-nav__primary-item > a {
-   color: white;
+   color: $blue-70;
+   font-weight: normal;
+   font-size: 18px;
    &:hover {
      color: color('blue-30v');
    }
@@ -118,10 +172,16 @@
    background-color: color('blue-30v');
  }
 
- .sidebar .usa-accordion__button{
-  background-color: #FFFFFF;
-  border-top: 1px solid #C4C4C4;
- }
+ .sidebar {
+  background: #FFFFFF;
+
+  .usa-accordion__button {
+    background-color: #FFFFFF;
+    border-top: 1px solid #C4C4C4;
+   }
+ } 
+ 
+
 
  #sorn-fields {
   overflow-y: scroll;
@@ -151,7 +211,6 @@
   text-decoration: underline;
  }
 
-
  #search-form {
    width: 100%;
  }
@@ -164,6 +223,7 @@
 
  #count {
    padding-bottom: 8px;
+   color: $blue-80V;
  }
 
  // Pagination
@@ -174,7 +234,7 @@
 
  .pagination .page, .prev {
    display: inline-block;
-   margin-right: 12px;
+   margin-right: 11px;
    line-height: 1.15; // Magic number
  }
 
@@ -188,6 +248,11 @@
    color: $blue-50;
    text-decoration: none;
  }
+
+
+
+
+ // Cards
 
  .usa-card {
    min-width: 100%;
@@ -219,9 +284,10 @@
 
  .usa-card__header {
   padding: 16px;
-  min-height: 112px;
 
-  background: #F0F0F0;
+  background: $blue-80V;
+  color: #FBFCFD;
+  ;
  }
 
  .system-number {
@@ -235,8 +301,7 @@
   /* identical to box height */
 
   text-transform: uppercase;
-
-  color: #000000;
+  letter-spacing: .04em;
 
   margin-bottom: 8px;
   display: block;
@@ -244,14 +309,11 @@
 
  .system-name {
   font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
-  font-style: normal;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 20px;
   line-height: 28px;
   /* or 140% */
 
-
-  color: #0232AC;
  }
 
  .sorn-attribute-header {
