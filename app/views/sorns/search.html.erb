@@ -65,7 +65,7 @@
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
             <div id="count">
-              <%= page_entries_info @sorns, entry_name: '' %> <%= "for \"" + params[:search] if params[:search].present? %>"
+              <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
           <div class="grid-col-6">
