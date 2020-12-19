@@ -1,12 +1,12 @@
 <fieldset id="publication-date-fields" class="usa-fieldset">
   <div class="usa-form-group">
-    <label class="usa-label" for="starting_date_year">Starting year</label>
+    <label class="usa-label margin-top-2" for="starting_year">Starting year</label>
     <span class="usa-hint" id="dobHint">For example: 1994</span>
     <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="starting_year" name="starting_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:starting_year] %>">
   </div>
 
   <div class="usa-form-group">
-    <label class="usa-label" for="ending_date_year">Ending year</label>
+    <label class="usa-label" for="ending_year">Ending year</label>
     <span class="usa-hint" id="dobHint">For example: 2020</span>
     <input class="usa-input usa-input--inline" aria-describedby="dobHint" id="ending_year" name="ending_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:ending_year] %>">
   </div>

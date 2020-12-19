@@ -1,0 +1,22 @@
+<div class="usa-overlay"></div>
+<header class="usa-header usa-header--basic">
+  <div class="usa-nav-container">
+    <div class="usa-navbar">
+  <div class="usa-logo" id="basic-logo">
+    <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home"><%= image_tag("logo.svg", alt: "Sorn Dash Logo")%></a></em>
+  </div>
+  <button class="usa-menu-btn">Menu</button>
+</div>
+<nav aria-label="Primary navigation" class="usa-nav">
+      <button class="usa-nav__close"><%= image_tag("uswds-2.9.0/close.svg", role: "img", alt: "close")%></button>
+<ul class="usa-nav__primary usa-accordion">
+    <li class="usa-nav__primary-item">
+        <a class="usa-nav__link" href="/"><span>Home</span></a>
+    </li>
+    <li class="usa-nav__primary-item">
+        <%= link_to 'About', about_path, class: "usa-nav__link" %>
+    </li>
+    </ul>
+</nav>
+  </div>
+</header>

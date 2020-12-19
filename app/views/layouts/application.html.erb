@@ -13,13 +13,16 @@
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ9W5STPKJ"></script>
-    
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'search' %>
+
  </head>
 
   <body>
     <%= render template: 'layouts/banner' %>
+    <%= render template: 'layouts/nav'%>
     <%= yield %>
   </body>
 </html>

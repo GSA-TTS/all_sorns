@@ -1,61 +1,45 @@
-<header id="search-header" class="margin-top-2">
-  <div class="grid-container">
+<header id="search-header" class="margin-top-2 home-intro">
+  <div class="grid-container site-intro">
     <div class="grid-row grid-gap grid-col-9">
-      <h1 id="site-title">SORN Dashboard</h1>
-      <p id="sub-title">This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
+      <h1 class="site-title">SORN Dashboard</h1>
+      <p class="sub-title">This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
     </div>
   </div>
 </header>
 
+<%= form_tag '/search', method: "GET", id: "search-form" do %>
+<section class="grid-container">
+  <div class="grid-col-10 grid-offset-1 search-area">
+    <h2>Search for SORNs by entering a keyword</h2>
+    <fieldset class="usa-search usa-search--big">
+      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+      <button id="general-search-button" class="usa-button" type="submit">
+        <span class="usa-search__submit-text">Search</span>
+      </button>
+    </fieldset>
+  </div>
+</section>
   <div class="grid-container margin-top-2">
-    <%= form_tag '/search', method: "GET", class: "grid-row grid-gap", id: "search-form" do %>
 
+    <div class ="grid-row grid-gap">
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar" id="sidebar">
           <div class="preview usa-prose site-prose" >
-            <fieldset id="fields" class="usa-fieldset margin-105">
-              <legend class="usa-legend">
-                <div id="search-filters">Search filters</div>
-                <div id="fields-to-search">Fields to search</div>
-              </legend>
 
-              <div id="sorn-fields" class="">
-                <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
-                <% checkboxes.each do |field, index| %>
-                  <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="search-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-                    <label class="usa-checkbox__label" for="search-<%= field %>"><%= field.to_s.humanize %></label>
-                  </div>
-                <% end %>
-                <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
-                <%= javascript_pack_tag 'checkboxes' %>
-              </div>
-            </fieldset>
-            <div class="usa-accordion aria-multiselectable="true">
+            <%= render partial: "fields" %>
+
+            <div class="usa-accordion">
               <h2 class="usa-accordion__heading">
-                <button class="usa-accordion__button" aria-expanded="<%= params[:agency].present? %>" aria-controls="a1" type="button">Agencies</button>
+                <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
               </h2>
-              <div id="a1" class="usa-accordion__content usa-prose">
-                <label class="usa-label" for="agency">Select an agency</label>
-                <div class="usa-combo-box" data-default-value="<%= params[:agency] %>">
-                  <select class="usa-select" name="agency" id="agency-select">
-                    <option value>Select an agency</option>
-                    <% Agency.all.each do |agency| %>
-                      <option value="<%= agency.name %>"><%= agency.name %></option>
-                    <% end %>
-                  </select>
-                </div>
+              <div id="agency-accordion" class="usa-accordion__content usa-prose">
+                <%= render partial: "agencies" %>
               </div>
               <div class="usa-accordion__heading">
-                <button id="publication-date-button"
-                  class="usa-accordion__button"
-                  aria-expanded="false"
-                  aria-controls="a2" type="button">
-                  Publication date range
-                </button>
+                <button class="usa-accordion__button" aria-controls="date-accoridon" type="button">Publication year</button>
               </div>
-              <div id="a2" class="usa-accordion__content usa-prose margin-top-0 margin-bottom-4">
-                <%= render 'publication_date' %>
+              <div id="date-accoridon" class="usa-accordion__content usa-prose  margin-top-0 margin-bottom-4">
+                <%= render partial: 'publication_date' %>
               </div>
             </div>
           </div>
@@ -72,17 +56,12 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-        <fieldset class="usa-search usa-search--big">
-          <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-          <button id="general-search-button" class="usa-button" type="submit">
-            <span class="usa-search__submit-text">Search</span>
-          </button>
-        </fieldset>
 
-        <div class="grid-row margin-top-3 margin-bottom-1">
+
+        <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
             <div id="count">
-              <%= page_entries_info @sorns, entry_name: '' %> <%= "for " + params[:search] if params[:search].present? %>
+              <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
           <div class="grid-col-6">
@@ -108,7 +87,7 @@
                   <div class="grid-row">
                     <div class="grid-col-12">
                       <span class="sorn-attribute-header">Agency:</span>
-                      <%= sorn.agencies.pluck(:name).join('<span class="agency-separator">|</span>').html_safe %>
+                      <span class="agency-names"><%= sorn.agency_names %></span>
                     </div>
                   </div>
                   <div class="grid-row">
@@ -178,6 +157,8 @@
           </div>
         </ul>
       </main>
-    <% end %>
+
+    </div>
   </div>
+      <% end %>
 </div>

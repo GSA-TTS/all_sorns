@@ -11,7 +11,7 @@ RSpec.describe "Search csv", type: :request do
     let(:agency) { nil }
 
     it "returns eveything with the default columns" do
-      expect(response.body).to eq "agency_names,action,system_name,summary,categories_of_individuals,categories_of_record,html_url,publication_date\n\"[\"\"FAKE AGENCY NAMES\"\"]\",FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,,,HTML URL,2000-01-13\n"
+      expect(response.body).to eq "agency_names,action,system_name,summary,categories_of_individuals,categories_of_record,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,,,HTML URL,2000-01-13\n"
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe "Search csv", type: :request do
     let(:agency) { nil }
 
     it "returns found results with default columns" do
-      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\n\"[\"\"FAKE AGENCY NAMES\"\"]\",FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
+      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
     end
   end
 
@@ -45,13 +45,13 @@ RSpec.describe "Search csv", type: :request do
     end
   end
 
-  xcontext "agency select doesn't work yet" do
+  context "with agency search" do
     let(:search) { nil }
-    let(:fields) { "fields%5B%5D=citation" }
-    let(:agency) { "FAKE AGENCIES" }
+    let(:fields) { "fields%5B%5D=agency_names&fields%5B%5D=action&fields%5B%5D=system_name&fields%5B%5D=summary&fields%5B%5D=html_url&fields%5B%5D=publication_date" }
+    let(:agency) { "agencies[]=Fake+Parent+Agency&agencies[]=Fake+Child+Agency" }
 
-    it "returns agency sorns, with only selected columns. What to use in the csv for the agencies names though?" do
+    it "returns sorns filtered by agency, no duplicates" do
+      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
     end
   end
-
 end
