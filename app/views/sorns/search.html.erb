@@ -8,22 +8,22 @@
 </header>
 
 <%= form_tag '/search', method: "GET", id: "search-form" do %>
-<section class="grid-container">
-  <div class="grid-col-10 grid-offset-1 search-area">
-    <h2>Search for SORNs by entering a keyword</h2>
-    <fieldset class="usa-search usa-search--big">
-      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-      <button id="general-search-button" class="usa-button" type="submit">
-        <span class="usa-search__submit-text">Search</span>
-      </button>
-    </fieldset>
-  </div>
-</section>
-  <div class="grid-container margin-top-2">
+  <section class="grid-container">
+    <div class="grid-col-10 grid-offset-1 search-area">
+      <h2>Search for SORNs by entering a keyword</h2>
+      <fieldset class="usa-search usa-search--big">
+        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+        <button id="general-search-button" class="usa-button" type="submit">
+          <span class="usa-search__submit-text">Search</span>
+        </button>
+      </fieldset>
+    </div>
+  </section>
 
-    <div class ="grid-row grid-gap">
+  <div class="grid-container margin-top-2">
+    <div class="grid-row grid-gap">
       <div class="usa-layout-docs__sidenav grid-col-4">
-        <div class="border border-gray-70 sidebar" id="sidebar">
+        <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >
 
             <%= render partial: "fields" %>
@@ -39,7 +39,7 @@
                 <button class="usa-accordion__button" aria-controls="date-accoridon" type="button">Publication year</button>
               </div>
               <div id="date-accoridon" class="usa-accordion__content usa-prose  margin-top-0 margin-bottom-4">
-                <%= render partial: 'publication_date' %>
+                <%= render partial: "publication_date" %>
               </div>
             </div>
           </div>
@@ -56,8 +56,6 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-
-
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
             <div id="count">
@@ -160,5 +158,4 @@
 
     </div>
   </div>
-      <% end %>
-</div>
+<% end %>
