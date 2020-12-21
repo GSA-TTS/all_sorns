@@ -17,10 +17,10 @@
         <span class="usa-search__submit-text">Search</span>
       </button>
     </fieldset>
-  </div> 
+  </div>
 </section>
   <div class="grid-container margin-top-2">
-    
+
     <div class ="grid-row grid-gap">
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar" id="sidebar">
@@ -136,7 +136,7 @@
                       <% sorn.section_snippets(@selected_fields, params[:search]).each do |section, snippet| %>
                         <div class="grid-row">
                           <div class='sorn-attribute-header'><%= section.humanize %></div>
-                          <div class='found-section-snippet'><%= snippet %></div>
+                          <div class='found-section-snippet'><%= snippet.html_safe %></div>
                         </div>
                       <% end %>
                     </div>

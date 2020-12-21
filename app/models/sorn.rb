@@ -68,7 +68,21 @@ class Sorn < ApplicationRecord
   pg_search_scope :dynamic_search, lambda { |field, query|
     {
       against: field,
-      query: query
+      query: query,
+      using: {
+        tsearch: {
+          highlight: {
+            StartSel: '<b>',
+            StopSel: '</b>',
+            MaxWords: 123,
+            MinWords: 456,
+            ShortWord: 4,
+            HighlightAll: true,
+            MaxFragments: 3,
+            FragmentDelimiter: '&hellip;'
+          }
+        }
+      }
     }
   }
 
@@ -113,8 +127,12 @@ class Sorn < ApplicationRecord
   def section_snippets(selected_fields, search_term)
     output = {}
     self.attributes.slice(*selected_fields).each do |key, value|
-      if value =~ /#{search_term}/i
-        output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
+      found = false
+      search_term.split(" ").each do |search_word|
+        found = true if value =~ /#{search_word}/i
+      end
+      if found == true
+        output[key] = highlight(value, search_term.split(" "))
       end
     end
     output

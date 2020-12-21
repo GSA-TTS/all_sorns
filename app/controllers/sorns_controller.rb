@@ -19,7 +19,7 @@ class SornsController < ApplicationController
       #  return matching sorns with just those fields
       @selected_fields = params[:fields]
       field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.dynamic_search(field_syms, params[:search])
+      explain @sorns = @sorns.dynamic_search(field_syms, params[:search])
 
     elsif search_blank_and_agency_present?
       # return agency sorns with just those fields
@@ -39,6 +39,23 @@ class SornsController < ApplicationController
     else
       raise "WUT"
     end
+
+    # binding.pry
+    # if params[:search].scan(/\w+/).size > 1
+    #   sorns_with_exact_matches = []
+    #   @sorns.each do |sorn|
+    #     @selected_fields.each do |field|
+    #       content = sorn.send(field)
+    #       if content =~ /#{params[:search]}/i
+    #         sorns_with_exact_matches << sorn
+    #       end
+    #     end
+    #   end
+
+    #   sorns_with_exact_matches.uniq!
+
+    #   @sorns = @sorns.reject{ |sorn| sorns_with_exact_matches.exclude? sorn }
+    # end
 
     @sorns = @sorns.page(params[:page]) if request.format == :html
 
