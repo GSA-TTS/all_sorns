@@ -1,4 +1,5 @@
-$( function () {
+// Needs to wait for turbolink to load, for the system specs to work
+$( document).on('turbolinks:load', function () {
   // Set checked fields from url
   checkboxesFromUrl("fields")
 
@@ -18,6 +19,10 @@ $( function () {
   $("#agency-deselect-all").on('click', function(){
     agencyCheckboxes.prop("checked", false)
   })
+
+  // Validate the publication date input
+  $("#starting_year").on("change", publicationDateValidation)
+  $("#sending_year").on("change", publicationDateValidation)
 });
 
 function checkboxesFromUrl(elementName) {
@@ -30,5 +35,13 @@ function checkboxesFromUrl(elementName) {
     dataFromurl.forEach(data => {
       $(`#${elementName}-${data}`).prop("checked", true)
     });
+  }
+}
+
+function publicationDateValidation(){
+  if ($("#starting_year").val() > $("#ending_year").val()) {
+    $("#starting_year")[0].setCustomValidity("Starting year should be lower than the ending year.");
+  } else {
+    $("#starting_year")[0].setCustomValidity('');
   }
 }
