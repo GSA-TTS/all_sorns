@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "/search", type: :system do
   before do
     driven_by(:selenium_chrome_headless)
-    create :sorn
+    11.times { create :sorn }
   end
 
   it "default checkboxes are as expected" do
@@ -18,7 +18,6 @@ RSpec.describe "/search", type: :system do
 
   it "selected agencies are still checked after a search" do
     visit "/search?agencies[]=Fake+Parent+Agency&fields[]=system_name"
-
     expect(find("#agencies-fake-parent-agency")).to be_checked
   end
 
@@ -26,5 +25,13 @@ RSpec.describe "/search", type: :system do
     visit "/search"
 
     expect(page).to have_css '.agency-separator'
+  end
+
+  scenario "paging doesn't break js" do
+    visit "/"
+    find_all("nav.pagination").first.find_all(".page")[1].click
+    sleep 1
+    # gov banner should remain closed
+    expect(find("#gov-banner").visible?).to be_falsey
   end
 end
