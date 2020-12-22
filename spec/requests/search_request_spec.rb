@@ -151,5 +151,12 @@ RSpec.describe "Search", type: :request do
       expect(response.body).not_to include "NEW SORN"
       expect(response.body).not_to include "2019-01-13" # Newer sorn date
     end
+
+    it "ending year is inclusive" do
+      get "/search?ending_year=2000"
+
+      expect(response.body).to include "2000-01-13" # Older sorn date
+      expect(response.body).not_to include "NEW SORN"
+    end
   end
 end

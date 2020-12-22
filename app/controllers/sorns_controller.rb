@@ -40,8 +40,17 @@ class SornsController < ApplicationController
       raise "WUT"
     end
 
-    @sorns = @sorns.where('publication_date > ?', params[:starting_year]) if params[:starting_year].present?
-    @sorns = @sorns.where('publication_date < ?', params[:ending_year]) if params[:ending_year].present?
+    if params[:starting_year].present?
+      # from beginning of start year
+      starting_date = params[:starting_year] + "-01-01"
+      @sorns = @sorns.where('publication_date::DATE > ?', starting_date)
+    end
+
+    if params[:ending_year].present?
+      # to end of ending year
+      ending_date = params[:ending_year] + "-12-31"
+      @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
+    end
 
     @sorns = @sorns.page(params[:page]) if request.format == :html
 
