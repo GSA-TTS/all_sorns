@@ -1,5 +1,4 @@
-// Needs to wait for turbolink to load, for the system specs to work
-$( document).on('turbolinks:load', function () {
+$( function () {
   // Set checked fields from url
   checkboxesFromUrl("fields")
 
