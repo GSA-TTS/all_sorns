@@ -5,7 +5,7 @@ FactoryBot.define do
     action { "FAKE ACTION" }
     summary { "FAKE SUMMARY" }
     system_name { "FAKE SYSTEM NAME" }
-    citation { 'citation' }
+    sequence(:citation) { |n| "FAKE CITATION #{n}" }
     publication_date { "2000-01-13"}
     html_url { "HTML URL" }
     xml_url { "xml_url" }

@@ -14,7 +14,7 @@ RSpec.describe FederalRegisterClient, type: :model do
       pdf_url: "pdf url",
       full_text_xml_url: "expected url",
       html_url: "html url",
-      citation: "citation",
+      citation: "FAKE CITATION 1",
       type: type,
       publication_date: "2000-01-13",
       agencies: [
@@ -80,7 +80,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         expect(sorn.agency_names).to eq 'Fake Parent Agency | Fake Child Agency'
         expect(sorn.action).to eq 'api action'
         expect(sorn.dates).to eq 'api dates'
-        expect(sorn.citation).to eq 'citation'
+        expect(sorn.citation).to eq 'FAKE CITATION 1'
         expect(sorn.xml_url).to eq 'expected url'
         expect(sorn.html_url).to eq 'html url'
         expect(sorn.pdf_url).to eq 'pdf url'
@@ -127,7 +127,7 @@ RSpec.describe FederalRegisterClient, type: :model do
     end
 
     context "with existing SORN" do
-      let!(:sorn) { create :sorn, xml_url: nil }
+      let!(:sorn) { create :sorn, citation: "FAKE CITATION 1", xml_url: nil }
 
       it "updates existing SORN" do
         expect{ client.find_sorns; sorn.reload }.to change{ sorn.xml_url }.from(nil).to('expected url')
