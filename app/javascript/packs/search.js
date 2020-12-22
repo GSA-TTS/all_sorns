@@ -42,7 +42,7 @@ function publicationDateValidation(){
   startYear = parseInt($("#starting_year").val())
   endYear = parseInt($("#ending_year").val())
   if (startYear > endYear) {
-    $("#starting_year")[0].setCustomValidity("Starting year should be lower than the ending year.");
+    $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
   } else {
     $("#starting_year")[0].setCustomValidity('');
   }

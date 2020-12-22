@@ -39,7 +39,7 @@ RSpec.describe "/search", type: :system do
     find("#general-search-button").click
 
     message = find("#starting_year").native.attribute("validationMessage")
-    expect(message).to eq "Starting year should be lower than the ending year."
+    expect(message).to eq "Starting year should be earlier than the ending year."
 
     # Fix the years and submit should work
     within "#publication-date-fields" do
