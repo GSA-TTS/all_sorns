@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Search csv", type: :request do
-  let!(:sorn) { create :sorn }
+  let!(:sorn) { create :sorn, citation: "citation" }
 
   before { get "/search.csv?search=#{search}&#{fields}&#{agency}" }
 

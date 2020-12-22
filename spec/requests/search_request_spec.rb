@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Search", type: :request do
-  let!(:sorn) { create :sorn }
+  let!(:sorn) { create :sorn, citation: "citation" }
   let(:search) { nil }
   let(:fields) { nil }
   let(:agency) { nil }
