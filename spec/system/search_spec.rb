@@ -49,5 +49,26 @@ RSpec.describe "/search", type: :system do
     find("#general-search-button").click
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
+
+    visit "/search"
+    find("#publication-year-button").click
+    # Just a starting year should work
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "2019"
+    end
+    find("#general-search-button").click
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq ""
+
+    visit "/search"
+    find("#publication-year-button").click
+    # Just an ending year should work
+    within "#publication-date-fields" do
+      fill_in "Ending year", with: "2019"
+    end
+    find("#general-search-button").click
+    # validation message is always on starting year
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq ""
   end
 end

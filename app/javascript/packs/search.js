@@ -22,7 +22,7 @@ $( document).on('turbolinks:load', function () {
 
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
-  $("#sending_year").on("change", publicationDateValidation)
+  $("#ending_year").on("change", publicationDateValidation)
 });
 
 function checkboxesFromUrl(elementName) {
@@ -39,7 +39,9 @@ function checkboxesFromUrl(elementName) {
 }
 
 function publicationDateValidation(){
-  if ($("#starting_year").val() > $("#ending_year").val()) {
+  startYear = parseInt($("#starting_year").val())
+  endYear = parseInt($("#ending_year").val())
+  if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be lower than the ending year.");
   } else {
     $("#starting_year")[0].setCustomValidity('');
