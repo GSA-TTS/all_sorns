@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "/search", type: :system do
   before do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome)#_headless)
     create :sorn
   end
 
@@ -26,5 +26,13 @@ RSpec.describe "/search", type: :system do
     visit "/search"
 
     expect(page).to have_css '.agency-separator'
+  end
+
+  scenario "paging doesn't break js" do
+    it "goes to second page and have js still work" do
+      visit root
+
+      binding.pry
+    end
   end
 end
