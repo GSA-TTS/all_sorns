@@ -134,7 +134,7 @@ RSpec.describe "Search", type: :request do
   end
 
   context "publication date search" do
-    before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation" }
+    before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
 
     it "only returns the newer sorn in date range" do
       get "/search?starting_year=2019"
@@ -157,6 +157,14 @@ RSpec.describe "Search", type: :request do
 
       expect(response.body).to include "2000-01-13" # Older sorn date
       expect(response.body).not_to include "NEW SORN"
+    end
+
+    it "search works with all params" do
+      get "/search?search=different&fields[]=citation&agencies[]=Fake+Parent+Agency&starting_year=2019&ending_year=2020"
+
+      expect(response.body).to include "NEW SORN" # Newer sorn date
+      expect(response.body).to include "2019-01-13" # Newer sorn date
+      expect(response.body).to include "<mark>different</mark>" # Newer citation
     end
   end
 end
