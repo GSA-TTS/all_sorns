@@ -19,13 +19,13 @@ RSpec.describe FederalRegisterClient, type: :model do
       publication_date: "2000-01-13",
       agencies: [
         OpenStruct.new(
-          "raw_name": "FAKE PARENT AGENCY",
+          "raw_name": "PARENT AGENCY",
           "name": "Fake Parent Agency",
           "id": 1,
           "parent_id": nil
         ),
         OpenStruct.new(
-          "raw_name": "FAKE CHILD AGENCY",
+          "raw_name": "CHILD AGENCY",
           "name": "Fake Child Agency",
           "id": 2,
           "parent_id": 1
@@ -55,16 +55,16 @@ RSpec.describe FederalRegisterClient, type: :model do
       it "Creates agencies for each result" do
         expect{ client.find_sorns }.to change{ Agency.count }.by 2
 
-        expect(Sorn.last.agencies.second).to have_attributes(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-        expect(Sorn.last.agencies.first).to have_attributes(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
+        expect(Sorn.last.agencies.second).to have_attributes(name: "Parent Agency", api_id: 1, parent_api_id: nil)
+        expect(Sorn.last.agencies.first).to have_attributes(name: "Child Agency", api_id: 2, parent_api_id: 1)
       end
 
       context "with existing agencies" do
         let(:sorn) { create :sorn, agencies: [] }
 
         before do
-          sorn.agencies << Agency.create(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-          sorn.agencies << Agency.create(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
+          sorn.agencies << Agency.create(name: "Parent Agency", api_id: 1, parent_api_id: nil)
+          sorn.agencies << Agency.create(name: "Child Agency", api_id: 2, parent_api_id: 1)
         end
 
         it "Doesn't duplicate agencies" do
@@ -102,7 +102,7 @@ RSpec.describe FederalRegisterClient, type: :model do
             publication_date: "2000-01-13",
             agencies: [
               OpenStruct.new(
-                "raw_name": "DEFENSE DEPARTMENT",
+                "raw_name": "DEPARTMENT OF DEFENSE",
                 "name": "Defense Department",
                 "id": 103,
                 "parent_id": nil
@@ -120,7 +120,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         it "correctly saves the office of the secretary as a subcomponent of the DoD" do
           expect{ client.find_sorns }.to change{ Agency.count }.by 2
 
-          expect(Sorn.last.agencies.first).to have_attributes(name: "Defense Department", api_id: 103, parent_api_id: nil)
+          expect(Sorn.last.agencies.first).to have_attributes(name: "Department Of Defense", api_id: 103, parent_api_id: nil)
           expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
         end
       end

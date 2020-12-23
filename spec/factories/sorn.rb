@@ -14,8 +14,8 @@ FactoryBot.define do
 
     agencies do
       [
-        Agency.find_or_create_by(name: "Fake Parent Agency"),
-        Agency.find_or_create_by(name: "Fake Child Agency")
+        Agency.find_or_create_by(name: "Parent Agency"),
+        Agency.find_or_create_by(name: "Child Agency")
       ]
     end
   end

@@ -101,7 +101,7 @@ class FederalRegisterClient
 
   def build_agency(result, api_agency)
     if api_agency.name.present?
-      Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+      Agency.find_or_create_by(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
     else dod_office_of_the_secretary?(result, api_agency)
       Agency.find_or_create_by(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
     end

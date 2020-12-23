@@ -31,14 +31,14 @@ RSpec.describe "Search", type: :request do
   context "search with agency select" do
     let(:search) { "FAKE" }
     let(:fields) { 'fields[]=action' }
-    let(:agency) { "agencies[]=Fake+Parent+Agency" }
+    let(:agency) { "agencies[]=Parent+Agency" }
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
 
     it "default agency set" do
-      expect(response.body).to include 'data-agencies="[&quot;fake-parent-agency&quot;]"'
+      expect(response.body).to include 'data-agencies="[&quot;parent-agency&quot;]"'
     end
 
     it "with search result summaries" do
@@ -49,8 +49,8 @@ RSpec.describe "Search", type: :request do
 
     context "agency search with overlapping SORNs" do
       let(:fields) { 'fields[]=system_name' }
-      let(:agency) { "agencies[]=Fake+Parent+Agency&agencies[]=Fake+Child+Agency" }
-      let(:child_agency) { create(:agency, name: "Fake Child Agency")}
+      let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
+      let(:child_agency) { create(:agency, name: "Child Agency")}
 
       before { sorn.agencies << child_agency }
 
