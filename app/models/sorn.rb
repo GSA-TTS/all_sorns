@@ -127,12 +127,8 @@ class Sorn < ApplicationRecord
   def section_snippets(selected_fields, search_term)
     output = {}
     self.attributes.slice(*selected_fields).each do |key, value|
-      found = false
-      search_term.split(" ").each do |search_word|
-        found = true if value =~ /#{search_word}/i
-      end
-      if found == true
-        output[key] = highlight(value, search_term.split(" "))
+      if value =~ /#{search_term}/i
+        output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
       end
     end
     output
@@ -169,6 +165,20 @@ class Sorn < ApplicationRecord
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
   end
 
+  def self.only_exact_matches(search_term, selected_fields)
+    all.filter_map do |sorn|
+      sorn if sorn.search_term_found_in_any_selected_fields(search_term, selected_fields)
+    end
+  end
+
+  def search_term_found_in_any_selected_fields(search_term, selected_fields)
+    selected_fields.any? do |field|
+      field_content = self.send(field)
+      field_content =~ /#{search_term}/i
+      # field_content.upcase.include? search_term.upcase if field_content
+    end
+  end
+
   private
 
   def mentioned_sorns_in_xml
@@ -179,4 +189,5 @@ class Sorn < ApplicationRecord
       Sorn.find_by(citation: citation)
     end
   end
+
 end

@@ -19,7 +19,7 @@ class SornsController < ApplicationController
       #  return matching sorns with just those fields
       @selected_fields = params[:fields]
       field_syms = @selected_fields.map { |field| field.to_sym }
-      explain @sorns = @sorns.dynamic_search(field_syms, params[:search])
+      @sorns = @sorns.dynamic_search(field_syms, params[:search])
 
     elsif search_blank_and_agency_present?
       # return agency sorns with just those fields
@@ -40,24 +40,9 @@ class SornsController < ApplicationController
       raise "WUT"
     end
 
-    # binding.pry
-    # if params[:search].scan(/\w+/).size > 1
-    #   sorns_with_exact_matches = []
-    #   @sorns.each do |sorn|
-    #     @selected_fields.each do |field|
-    #       content = sorn.send(field)
-    #       if content =~ /#{params[:search]}/i
-    #         sorns_with_exact_matches << sorn
-    #       end
-    #     end
-    #   end
+    @sorns = @sorns.only_exact_matches(params[:search], @selected_fields) if multiword_search?
 
-    #   sorns_with_exact_matches.uniq!
-
-    #   @sorns = @sorns.reject{ |sorn| sorns_with_exact_matches.exclude? sorn }
-    # end
-
-    @sorns = @sorns.page(params[:page]) if request.format == :html
+    @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
 
     respond_to do |format|
       format.html
@@ -67,6 +52,10 @@ class SornsController < ApplicationController
   end
 
   private
+
+  def multiword_search?
+    params[:search].scan(/\w+/).size > 1 if params[:search].present?
+  end
 
   def no_params_on_page_load?
     params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
