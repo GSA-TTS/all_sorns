@@ -77,7 +77,7 @@
     .site-intro {
       background-image: image-url("home-intro.svg");
       background-repeat: no-repeat;
-      background-position: right; 
+      background-position: right;
      }
   }
 
@@ -89,7 +89,7 @@
 
   .sub-title {
     line-height: 1.5;
-    color: #FBFCFD; 
+    color: #FBFCFD;
     font-size: 20px;
 
     a {
@@ -102,7 +102,7 @@
 
  }
 
- // 
+ //
  .search-area {
    margin-top: 32px;
    margin-bottom: 32px;
@@ -151,6 +151,19 @@
    margin:auto;
  }
 
+ #sidebar .usa-checkbox {
+   line-height: 1;
+   margin-top: .25em;
+ }
+
+ #sidebar .usa-checkbox__input {
+   position: relative;
+ }
+
+ #sidebar .usa-checkbox__label {
+   margin-top: 0;
+ }
+
  .usa-nav__secondary {
    color: white;
  }
@@ -179,8 +192,8 @@
     background-color: #FFFFFF;
     border-top: 1px solid #C4C4C4;
    }
- } 
- 
+ }
+
 
 
  #sorn-fields {
