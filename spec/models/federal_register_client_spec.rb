@@ -121,7 +121,7 @@ RSpec.describe FederalRegisterClient, type: :model do
           expect{ client.find_sorns }.to change{ Agency.count }.by 2
 
           expect(Sorn.last.agencies.first).to have_attributes(name: "Department Of Defense", api_id: 103, parent_api_id: nil)
-          expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+          expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary, DoD", api_id: 9999, parent_api_id: 103)
         end
       end
     end
