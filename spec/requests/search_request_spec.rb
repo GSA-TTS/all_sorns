@@ -137,4 +137,20 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
   end
+
+  context "multiword search" do
+    before do
+      create :sorn, categories_of_record: "health record"
+      create :sorn, categories_of_record: "health blah blah record"
+    end
+
+    let(:search) { "health+record" }
+
+    it "returns only exact matches" do
+
+      expect(response.body).to include "Found 1 SORN for \"health record\""
+      expect(response.body).to include "Found In Categories of Record health record"
+      expect(response.body).not_to include "health blah blah record"
+    end
+  end
 end
