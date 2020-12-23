@@ -42,6 +42,8 @@ function publicationDateValidation(){
   endYear = parseInt($("#ending_year").val())
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
+  } else if (startYear < "1994") {
+    $("#starting_year")[0].setCustomValidity("We have SORNs from 1994 til today.");
   } else {
     $("#starting_year")[0].setCustomValidity('');
   }

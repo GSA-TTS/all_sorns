@@ -7,7 +7,7 @@
 
   <div class="usa-form-group">
     <label class="usa-label" for="ending_year">Ending year</label>
-    <span class="usa-hint">For example: 2020</span>
+    <span class="usa-hint">For example: <%= Date.today.year %></span>
     <input class="usa-input usa-input--inline" aria-describedby="year-hint" id="ending_year" name="ending_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:ending_year] %>">
   </div>
 </fieldset>

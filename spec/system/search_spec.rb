@@ -69,6 +69,16 @@ RSpec.describe "/search", type: :system do
     # validation message is always on starting year
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
+
+    visit "/"
+    find("#publication-year-button").click
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "1993"
+    end
+    find("#general-search-button").click
+
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq "We have SORNs from 1994 til today."
   end
 
   scenario "paging doesn't break js" do
