@@ -100,11 +100,8 @@ class FederalRegisterClient
   private
 
   def build_agency(result, api_agency)
-    # return an agency
+    if api_agency.id.present? # skip the subcomponents without metadata
 
-    if api_agency.raw_name == "Office of the Secretary"
-      build_secretary_agency(result)
-    else
       # raw_name has a few typos and edge cases, so match on api_id, then add the name
       our_agency = Agency.find_by(api_id: api_agency.id, parent_api_id: api_agency.parent_id)
       if our_agency.present?
@@ -114,21 +111,5 @@ class FederalRegisterClient
         Agency.create(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
       end
     end
-  end
-
-  def build_secretary_agency(result)
-    if office_of_the_secretary?(result, "Defense Department")
-      Agency.find_or_create_by(name: "Office of the Secretary, DoD", api_id: 9999, parent_api_id: 103)
-    elsif office_of_the_secretary?(result, "Interior Department")
-      Agency.find_or_create_by(name: "Office of the Secretary, DoI", api_id: 8888, parent_api_id: 253)
-    elsif office_of_the_secretary?(result, "Labor Department")
-      Agency.find_or_create_by(name: "Office of the Secretary, DoL", api_id: 7777, parent_api_id: 271)
-    elsif office_of_the_secretary?(result, "Transportation Department")
-      Agency.find_or_create_by(name: "Office of the Secretary, DoT", api_id: 6666, parent_api_id: 492)
-    end
-  end
-
-  def office_of_the_secretary?(result, agency_name)
-    result.agencies.select(&:name).any?{|a| a.name == agency_name }
   end
 end

@@ -117,11 +117,10 @@ RSpec.describe FederalRegisterClient, type: :model do
           allow(FederalRegister::Document).to receive(:search).and_return result_set
         end
 
-        it "correctly saves the office of the secretary as a subcomponent of the DoD" do
-          expect{ client.find_sorns }.to change{ Agency.count }.by 2
+        it "don't save subcomponents without metadata" do
+          expect{ client.find_sorns }.to change{ Agency.count }.by 1
 
           expect(Sorn.last.agencies.first).to have_attributes(name: "Department Of Defense", api_id: 103, parent_api_id: nil)
-          expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary, DoD", api_id: 9999, parent_api_id: 103)
         end
       end
     end
