@@ -68,21 +68,7 @@ class Sorn < ApplicationRecord
   pg_search_scope :dynamic_search, lambda { |field, query|
     {
       against: field,
-      query: query,
-      using: {
-        tsearch: {
-          highlight: {
-            StartSel: '<b>',
-            StopSel: '</b>',
-            MaxWords: 123,
-            MinWords: 456,
-            ShortWord: 4,
-            HighlightAll: true,
-            MaxFragments: 3,
-            FragmentDelimiter: '&hellip;'
-          }
-        }
-      }
+      query: query
     }
   }
 
@@ -174,8 +160,7 @@ class Sorn < ApplicationRecord
   def search_term_found_in_any_selected_fields(search_term, selected_fields)
     selected_fields.any? do |field|
       field_content = self.send(field)
-      field_content =~ /#{search_term}/i
-      # field_content.upcase.include? search_term.upcase if field_content
+      field_content.to_s.downcase.include? search_term.downcase # case insensitive match?
     end
   end
 
@@ -189,5 +174,4 @@ class Sorn < ApplicationRecord
       Sorn.find_by(citation: citation)
     end
   end
-
 end
