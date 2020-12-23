@@ -94,15 +94,13 @@ RSpec.describe "Search", type: :request do
     it "returns found results with default columns" do
       # default fields
       expect(response.body).to include "FAKE SYSTEM NAME"
-      expect(response.body).to include 'Fake Parent Agency'
+      expect(response.body).to include 'Parent Agency | Child Agency'
       expect(response.body).to include "HTML URL"
       expect(response.body).to include "2000-01-13"
     end
 
     it "with search result summaries" do
       expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Agency names</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>Fake</mark> Parent Agency | <mark>Fake</mark> Child Agency</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
       expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"

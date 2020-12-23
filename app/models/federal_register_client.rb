@@ -6,7 +6,7 @@ class FederalRegisterClient
 
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
-    @fields = fields || ["action", "agencies", "agency_names", "citation",
+    @fields = fields || ["action", "agencies", "citation",
                         "dates", "full_text_xml_url", "html_url", "pdf_url",
                         "publication_date", "raw_text_url", "title", "type"]
 
@@ -72,7 +72,7 @@ class FederalRegisterClient
 
   def sorn_params(result)
     {
-      agency_names: result.agency_names.join(' | '),
+      agency_names: get_nice_agency_names(result),
       action: result.action,
       dates: result.dates,
       xml_url: result.full_text_xml_url,
@@ -98,6 +98,16 @@ class FederalRegisterClient
   end
 
   private
+
+  def get_nice_agency_names(result)
+    result.agencies.map do |api_agency|
+      if api_agency.name == "Office of the Secretary"
+        api_agency.name
+      else
+        api_agency.raw_name.titleize
+      end
+    end.join(" | ")
+  end
 
   def build_agency(result, api_agency)
     if api_agency.id.present? # skip the subcomponents without metadata

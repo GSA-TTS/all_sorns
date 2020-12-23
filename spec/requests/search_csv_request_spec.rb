@@ -11,7 +11,7 @@ RSpec.describe "Search csv", type: :request do
     let(:agency) { nil }
 
     it "returns eveything with the default columns" do
-      expect(response.body).to eq "agency_names,action,system_name,summary,categories_of_individuals,categories_of_record,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,,,HTML URL,2000-01-13\n"
+      expect(response.body).to eq "agency_names,action,system_name,summary,categories_of_individuals,categories_of_record,html_url,publication_date\nParent Agency | Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,,,HTML URL,2000-01-13\n"
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe "Search csv", type: :request do
     let(:agency) { nil }
 
     it "returns found results with default columns" do
-      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
+      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nParent Agency | Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
     end
   end
 
@@ -51,7 +51,7 @@ RSpec.describe "Search csv", type: :request do
     let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
 
     it "returns sorns filtered by agency, no duplicates" do
-      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nFake Parent Agency | Fake Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
+      expect(response.body).to eq "agency_names,action,system_name,summary,html_url,publication_date\nParent Agency | Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13\n"
     end
   end
 end

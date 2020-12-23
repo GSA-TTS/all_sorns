@@ -30,8 +30,7 @@ RSpec.describe FederalRegisterClient, type: :model do
           "id": 2,
           "parent_id": 1
         )
-      ],
-      agency_names: ["Fake Parent Agency", "Fake Child Agency"]
+      ]
     )
     result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
     allow($stdout).to receive(:puts)
@@ -77,7 +76,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         client.find_sorns
 
         sorn = Sorn.last
-        expect(sorn.agency_names).to eq 'Fake Parent Agency | Fake Child Agency'
+        expect(sorn.agency_names).to eq 'Parent Agency | Child Agency'
         expect(sorn.action).to eq 'api action'
         expect(sorn.dates).to eq 'api dates'
         expect(sorn.citation).to eq 'FAKE CITATION 1'
@@ -110,8 +109,7 @@ RSpec.describe FederalRegisterClient, type: :model do
               OpenStruct.new(
                 "raw_name": "Office of the Secretary"
               )
-            ],
-            agency_names: ["Defense Department", "Office of the Secretary"]
+            ]
           )
           result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
           allow(FederalRegister::Document).to receive(:search).and_return result_set
@@ -121,6 +119,12 @@ RSpec.describe FederalRegisterClient, type: :model do
           expect{ client.find_sorns }.to change{ Agency.count }.by 1
 
           expect(Sorn.last.agencies.first).to have_attributes(name: "Department Of Defense", api_id: 103, parent_api_id: nil)
+        end
+
+        it "does write subcomponents to agency_names though" do
+          client.find_sorns
+
+          expect(Sorn.last.agency_names).to eq "Department Of Defense | Office Of The Secretary"
         end
       end
     end

@@ -1,7 +1,7 @@
 # This will guess the User class
 FactoryBot.define do
   factory :sorn do
-    agency_names { 'Fake Parent Agency | Fake Child Agency' }
+    agency_names { 'Parent Agency | Child Agency' }
     action { "FAKE ACTION" }
     summary { "FAKE SUMMARY" }
     system_name { "FAKE SYSTEM NAME" }
