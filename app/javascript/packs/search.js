@@ -43,7 +43,7 @@ function publicationDateValidation(){
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
   } else if (startYear < "1994") {
-    $("#starting_year")[0].setCustomValidity("We have SORNs from 1994 til today.");
+    $("#starting_year")[0].setCustomValidity("Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year");
   } else {
     $("#starting_year")[0].setCustomValidity('');
   }

@@ -78,7 +78,7 @@ RSpec.describe "/search", type: :system do
     find("#general-search-button").click
 
     message = find("#starting_year").native.attribute("validationMessage")
-    expect(message).to eq "We have SORNs from 1994 til today."
+    expect(message).to eq "Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year"
   end
 
   scenario "paging doesn't break js" do
