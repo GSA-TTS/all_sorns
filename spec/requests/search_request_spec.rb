@@ -145,11 +145,14 @@ RSpec.describe "Search", type: :request do
     end
 
     let(:search) { "health+record" }
+    let(:fields) { "fields[]=categories_of_record" }
+    let(:agency) { nil }
 
     it "returns only exact matches" do
+      get "?search=#{search}&#{fields}"
 
-      expect(response.body).to include "Found 1 SORN for \"health record\""
-      expect(response.body).to include "Found In Categories of Record health record"
+      expect(response.body).to include "Displaying <b>1</b>  for &quot;health record&quot;"
+      expect(response.body).to include "<mark>health record</mark>"
       expect(response.body).not_to include "health blah blah record"
     end
   end
