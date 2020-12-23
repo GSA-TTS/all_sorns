@@ -17,8 +17,8 @@ RSpec.describe "/search", type: :system do
   end
 
   it "selected agencies are still checked after a search" do
-    visit "/search?agencies[]=Fake+Parent+Agency&fields[]=system_name"
-    expect(find("#agencies-fake-parent-agency")).to be_checked
+    visit "/search?agencies[]=Parent+Agency&fields[]=system_name"
+    expect(find("#agencies-parent-agency")).to be_checked
   end
 
   it "applies the wanted class to the agency pipe separator" do
