@@ -8,6 +8,7 @@
 </header>
 
 <%= form_tag '/search', method: "GET", id: "search-form" do %>
+
 <section class="grid-container">
   <div class="grid-col-10 grid-offset-1 search-area">
     <h2>Search for SORNs by entering a keyword</h2>
@@ -22,28 +23,25 @@
   <div class="grid-container margin-top-2">
 
     <div class ="grid-row grid-gap">
+
       <div class="usa-layout-docs__sidenav grid-col-4">
-        <div class="border border-gray-70 sidebar" id="sidebar">
+        <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >
 
             <%= render partial: "fields" %>
 
             <div class="usa-accordion">
               <h2 class="usa-accordion__heading">
-                <button id="agencies-button" class="usa-accordion__button" aria-controls="agency-accordion" type="button" >Agencies</button>
+                <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
               </h2>
               <div id="agency-accordion" class="usa-accordion__content usa-prose">
                 <%= render partial: "agencies" %>
               </div>
               <div class="usa-accordion__heading">
-                <button class="usa-accordion__button"
-                  aria-expanded="false"
-                  aria-controls="date-accoridon" type="button">
-                  Publication date range
-                </button>
+                <button id="publication-year-button" class="usa-accordion__button" aria-controls="date-accoridon" type="button">Publication year</button>
               </div>
-              <div id="date-accoridon" class="usa-accordion__content usa-prose">
-                <p>Date Selector</p>
+              <div id="date-accoridon" class="usa-accordion__content usa-prose  margin-top-0 margin-bottom-4">
+                <%= render partial: "publication_date" %>
               </div>
             </div>
           </div>
@@ -54,14 +52,9 @@
             <span class="csv-download-link-text">Download results as a CSV file</span>
           <% end %>
         </div>
-        <div id="about">
-          <p><%= link_to 'About this dashboard', about_path %></p>
-        </div>
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-
-
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
             <div id="count">
@@ -164,5 +157,4 @@
 
     </div>
   </div>
-      <% end %>
-</div>
+<% end %>

@@ -2,14 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "Search", type: :request do
   let!(:sorn) { create :sorn, citation: "citation" }
+  let(:search) { nil }
+  let(:fields) { nil }
+  let(:agency) { nil }
 
   before { get "/search?search=#{search}&#{fields}&#{agency}" }
 
   context "/search" do
-    let(:search) { nil }
-    let(:fields) { nil }
-    let(:agency) { nil }
-
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
@@ -66,7 +65,6 @@ RSpec.describe "Search", type: :request do
     let(:fields) { 'fields[]=action' }
     let(:agency) { nil }
 
-
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
@@ -85,7 +83,6 @@ RSpec.describe "Search", type: :request do
   context "search with default columns" do
     let(:search) { "FAKE" }
     let(:fields) { "fields%5B%5D=agency_names&fields%5B%5D=action&fields%5B%5D=summary&fields%5B%5D=system_name&fields%5B%5D=html_url&fields%5B%5D=publication_date" }
-    let(:agency) { nil }
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
@@ -113,7 +110,6 @@ RSpec.describe "Search", type: :request do
   context "search with different columns" do
     let(:search) { "citation" }
     let(:fields) { "fields%5B%5D=citation" }
-    let(:agency) { nil }
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
@@ -129,10 +125,44 @@ RSpec.describe "Search", type: :request do
   context "blank search, with different columns" do
     let(:search) { nil }
     let(:fields) { "fields%5B%5D=citation" }
-    let(:agency) { nil }
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
+    end
+  end
+
+  context "publication date search" do
+    before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
+
+    it "only returns the newer sorn in date range" do
+      get "/search?starting_year=2019"
+
+      expect(response.body).to include "NEW SORN" # Newer sorn date
+      expect(response.body).to include "2019-01-13" # Newer sorn date
+      expect(response.body).not_to include "2000-01-13" # Older sorn date
+    end
+
+    it "only returns the older sorn in date range" do
+      get "/search?ending_year=2001"
+
+      expect(response.body).to include "2000-01-13" # Older sorn date
+      expect(response.body).not_to include "NEW SORN"
+      expect(response.body).not_to include "2019-01-13" # Newer sorn date
+    end
+
+    it "ending year is inclusive" do
+      get "/search?ending_year=2000"
+
+      expect(response.body).to include "2000-01-13" # Older sorn date
+      expect(response.body).not_to include "NEW SORN"
+    end
+
+    it "search works with all params" do
+      get "/search?search=different&fields[]=citation&agencies[]=Fake+Parent+Agency&starting_year=2019&ending_year=2020"
+
+      expect(response.body).to include "NEW SORN" # Newer sorn date
+      expect(response.body).to include "2019-01-13" # Newer sorn date
+      expect(response.body).to include "<mark>different</mark>" # Newer citation
     end
   end
 end
