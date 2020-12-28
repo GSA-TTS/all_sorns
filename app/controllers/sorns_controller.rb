@@ -52,7 +52,9 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    @sorns = @sorns.page(params[:page]) if request.format == :html
+    @sorns = @sorns.only_exact_matches(params[:search], @selected_fields) if multiword_search?
+
+    @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
 
     respond_to do |format|
       format.html
@@ -62,6 +64,10 @@ class SornsController < ApplicationController
   end
 
   private
+
+  def multiword_search?
+    params[:search].scan(/\w+/).size > 1 if params[:search].present?
+  end
 
   def no_params_on_page_load?
     params[:search].blank? && params[:fields].blank? && params[:agencies].blank?

@@ -8,10 +8,9 @@
 </header>
 
 <%= form_tag '/search', method: "GET", id: "search-form" do %>
-
 <section class="grid-container">
   <div class="grid-col-10 grid-offset-1 search-area">
-    <h2>Search for SORNs by entering a keyword</h2>
+    <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
     <fieldset class="usa-search usa-search--big">
       <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
       <button id="general-search-button" class="usa-button" type="submit">
@@ -21,7 +20,6 @@
   </div>
 </section>
   <div class="grid-container margin-top-2">
-
     <div class ="grid-row grid-gap">
 
       <div class="usa-layout-docs__sidenav grid-col-4">
@@ -139,9 +137,6 @@
                   <div class="grid-row">
                     <div class="grid-col-6">
                       <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener">View full SORN</a>
-                    </div>
-                    <div class="grid-col-6 text-right">
-                      <%# <button class="usa-button" href="/">View all details</button> %>
                     </div>
                   </div>
                 </div>

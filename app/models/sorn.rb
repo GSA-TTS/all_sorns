@@ -151,6 +151,19 @@ class Sorn < ApplicationRecord
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
   end
 
+  def self.only_exact_matches(search_term, selected_fields)
+    all.filter_map do |sorn|
+      sorn if sorn.search_term_found_in_any_selected_fields(search_term, selected_fields)
+    end
+  end
+
+  def search_term_found_in_any_selected_fields(search_term, selected_fields)
+    selected_fields.any? do |field|
+      field_content = self.send(field)
+      field_content.to_s.downcase.include? search_term.downcase # case insensitive match?
+    end
+  end
+
   private
 
   def mentioned_sorns_in_xml

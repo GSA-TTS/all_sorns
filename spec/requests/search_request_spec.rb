@@ -131,6 +131,26 @@ RSpec.describe "Search", type: :request do
     end
   end
 
+
+  context "multiword search" do
+    before do
+      create :sorn, categories_of_record: "health record"
+      create :sorn, categories_of_record: "health blah blah record"
+    end
+
+    let(:search) { "health+record" }
+    let(:fields) { "fields[]=categories_of_record" }
+    let(:agency) { nil }
+
+    it "returns only exact matches" do
+      get "?search=#{search}&#{fields}"
+
+      expect(response.body).to include "Displaying <b>1</b>  for &quot;health record&quot;"
+      expect(response.body).to include "<mark>health record</mark>"
+      expect(response.body).not_to include "health blah blah record"
+    end
+  end
+
   context "publication date search" do
     before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
 
