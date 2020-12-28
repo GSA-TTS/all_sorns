@@ -158,7 +158,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "search works with all params" do
-      get "/search?search=different&fields[]=citation&agencies[]=Fake+Parent+Agency&starting_year=2019&ending_year=2020"
+      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
