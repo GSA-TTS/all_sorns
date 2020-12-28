@@ -40,6 +40,18 @@ class SornsController < ApplicationController
       raise "WUT"
     end
 
+    if params[:starting_year].present?
+      # from beginning of start year
+      starting_date = params[:starting_year] + "-01-01"
+      @sorns = @sorns.where('publication_date::DATE > ?', starting_date)
+    end
+
+    if params[:ending_year].present?
+      # to end of ending year
+      ending_date = params[:ending_year] + "-12-31"
+      @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
+    end
+
     @sorns = @sorns.only_exact_matches(params[:search], @selected_fields) if multiword_search?
 
     @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
