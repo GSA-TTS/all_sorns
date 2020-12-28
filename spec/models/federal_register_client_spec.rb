@@ -19,19 +19,18 @@ RSpec.describe FederalRegisterClient, type: :model do
       publication_date: "2000-01-13",
       agencies: [
         OpenStruct.new(
-          "raw_name": "FAKE PARENT AGENCY",
+          "raw_name": "PARENT AGENCY",
           "name": "Fake Parent Agency",
           "id": 1,
           "parent_id": nil
         ),
         OpenStruct.new(
-          "raw_name": "FAKE CHILD AGENCY",
+          "raw_name": "CHILD AGENCY",
           "name": "Fake Child Agency",
           "id": 2,
           "parent_id": 1
         )
-      ],
-      agency_names: ["Fake Parent Agency", "Fake Child Agency"]
+      ]
     )
     result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
     allow($stdout).to receive(:puts)
@@ -55,16 +54,16 @@ RSpec.describe FederalRegisterClient, type: :model do
       it "Creates agencies for each result" do
         expect{ client.find_sorns }.to change{ Agency.count }.by 2
 
-        expect(Sorn.last.agencies.second).to have_attributes(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-        expect(Sorn.last.agencies.first).to have_attributes(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
+        expect(Sorn.last.agencies.second).to have_attributes(name: "Parent Agency", api_id: 1, parent_api_id: nil)
+        expect(Sorn.last.agencies.first).to have_attributes(name: "Child Agency", api_id: 2, parent_api_id: 1)
       end
 
       context "with existing agencies" do
         let(:sorn) { create :sorn, agencies: [] }
 
         before do
-          sorn.agencies << Agency.create(name: "Fake Parent Agency", api_id: 1, parent_api_id: nil)
-          sorn.agencies << Agency.create(name: "Fake Child Agency", api_id: 2, parent_api_id: 1)
+          sorn.agencies << Agency.create(name: "Parent Agency", api_id: 1, parent_api_id: nil)
+          sorn.agencies << Agency.create(name: "Child Agency", api_id: 2, parent_api_id: 1)
         end
 
         it "Doesn't duplicate agencies" do
@@ -77,7 +76,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         client.find_sorns
 
         sorn = Sorn.last
-        expect(sorn.agency_names).to eq 'Fake Parent Agency | Fake Child Agency'
+        expect(sorn.agency_names).to eq 'Parent Agency | Child Agency'
         expect(sorn.action).to eq 'api action'
         expect(sorn.dates).to eq 'api dates'
         expect(sorn.citation).to eq 'FAKE CITATION 1'
@@ -102,7 +101,7 @@ RSpec.describe FederalRegisterClient, type: :model do
             publication_date: "2000-01-13",
             agencies: [
               OpenStruct.new(
-                "raw_name": "DEFENSE DEPARTMENT",
+                "raw_name": "DEPARTMENT OF DEFENSE",
                 "name": "Defense Department",
                 "id": 103,
                 "parent_id": nil
@@ -110,18 +109,22 @@ RSpec.describe FederalRegisterClient, type: :model do
               OpenStruct.new(
                 "raw_name": "Office of the Secretary"
               )
-            ],
-            agency_names: ["Defense Department", "Office of the Secretary"]
+            ]
           )
           result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
           allow(FederalRegister::Document).to receive(:search).and_return result_set
         end
 
-        it "correctly saves the office of the secretary as a subcomponent of the DoD" do
-          expect{ client.find_sorns }.to change{ Agency.count }.by 2
+        it "don't save subcomponents without metadata" do
+          expect{ client.find_sorns }.to change{ Agency.count }.by 1
 
-          expect(Sorn.last.agencies.first).to have_attributes(name: "Defense Department", api_id: 103, parent_api_id: nil)
-          expect(Sorn.last.agencies.second).to have_attributes(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
+          expect(Sorn.last.agencies.first).to have_attributes(name: "Department Of Defense", api_id: 103, parent_api_id: nil)
+        end
+
+        it "does write subcomponents to agency_names though" do
+          client.find_sorns
+
+          expect(Sorn.last.agency_names).to eq "Department Of Defense | Office Of The Secretary"
         end
       end
     end

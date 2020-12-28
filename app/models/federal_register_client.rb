@@ -6,7 +6,7 @@ class FederalRegisterClient
 
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
-    @fields = fields || ["action", "agencies", "agency_names", "citation",
+    @fields = fields || ["action", "agencies", "citation",
                         "dates", "full_text_xml_url", "html_url", "pdf_url",
                         "publication_date", "raw_text_url", "title", "type"]
 
@@ -72,7 +72,7 @@ class FederalRegisterClient
 
   def sorn_params(result)
     {
-      agency_names: result.agency_names.join(' | '),
+      agency_names: get_nice_agency_names(result),
       action: result.action,
       dates: result.dates,
       xml_url: result.full_text_xml_url,
@@ -99,18 +99,27 @@ class FederalRegisterClient
 
   private
 
-  def build_agency(result, api_agency)
-    if api_agency.name.present?
-      Agency.find_or_create_by(name: api_agency.name, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-    else dod_office_of_the_secretary?(result, api_agency)
-      Agency.find_or_create_by(name: "Office of the Secretary", api_id: 9999, parent_api_id: 103)
-    end
+  def get_nice_agency_names(result)
+    result.agencies.map do |api_agency|
+      if api_agency.name == "Office of the Secretary"
+        api_agency.name
+      else
+        api_agency.raw_name.titleize
+      end
+    end.join(" | ")
   end
 
-  def dod_office_of_the_secretary?(result, api_agency)
-    # A popular component used by the DoD
-    # doesn't have the other metadata
-    dod_sorn = result.agencies.select(&:name).any?{|a| a.name == "Defense Department" }
-    api_agency.raw_name == "Office of the Secretary" && dod_sorn
+  def build_agency(result, api_agency)
+    if api_agency.id.present? # skip the subcomponents without metadata
+
+      # raw_name has a few typos and edge cases, so match on api_id, then add the name
+      our_agency = Agency.find_by(api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+      if our_agency.present?
+        our_agency.update(name: api_agency.raw_name.titleize)
+        return our_agency
+      else
+        Agency.create(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+      end
+    end
   end
 end

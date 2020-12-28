@@ -8,20 +8,22 @@
 </header>
 
 <%= form_tag '/search', method: "GET", id: "search-form" do %>
-  <section class="grid-container">
-    <div class="grid-col-10 grid-offset-1 search-area">
-      <h2>Search for SORNs by entering a keyword</h2>
-      <fieldset class="usa-search usa-search--big">
-        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-        <button id="general-search-button" class="usa-button" type="submit">
-          <span class="usa-search__submit-text">Search</span>
-        </button>
-      </fieldset>
-    </div>
-  </section>
 
+<section class="grid-container">
+  <div class="grid-col-10 grid-offset-1 search-area">
+    <h2>Search for SORNs by entering a keyword</h2>
+    <fieldset class="usa-search usa-search--big">
+      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+      <button id="general-search-button" class="usa-button" type="submit">
+        <span class="usa-search__submit-text">Search</span>
+      </button>
+    </fieldset>
+  </div>
+</section>
   <div class="grid-container margin-top-2">
-    <div class="grid-row grid-gap">
+
+    <div class ="grid-row grid-gap">
+
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >

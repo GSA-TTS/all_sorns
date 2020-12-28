@@ -30,14 +30,14 @@ RSpec.describe "Search", type: :request do
   context "search with agency select" do
     let(:search) { "FAKE" }
     let(:fields) { 'fields[]=action' }
-    let(:agency) { "agencies[]=Fake+Parent+Agency" }
+    let(:agency) { "agencies[]=Parent+Agency" }
 
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
 
     it "default agency set" do
-      expect(response.body).to include 'data-agencies="[&quot;fake-parent-agency&quot;]"'
+      expect(response.body).to include 'data-agencies="[&quot;parent-agency&quot;]"'
     end
 
     it "with search result summaries" do
@@ -48,8 +48,8 @@ RSpec.describe "Search", type: :request do
 
     context "agency search with overlapping SORNs" do
       let(:fields) { 'fields[]=system_name' }
-      let(:agency) { "agencies[]=Fake+Parent+Agency&agencies[]=Fake+Child+Agency" }
-      let(:child_agency) { create(:agency, name: "Fake Child Agency")}
+      let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
+      let(:child_agency) { create(:agency, name: "Child Agency")}
 
       before { sorn.agencies << child_agency }
 
@@ -91,15 +91,13 @@ RSpec.describe "Search", type: :request do
     it "returns found results with default columns" do
       # default fields
       expect(response.body).to include "FAKE SYSTEM NAME"
-      expect(response.body).to include 'Fake Parent Agency'
+      expect(response.body).to include 'Parent Agency | Child Agency'
       expect(response.body).to include "HTML URL"
       expect(response.body).to include "2000-01-13"
     end
 
     it "with search result summaries" do
       expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Agency names</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>Fake</mark> Parent Agency | <mark>Fake</mark> Child Agency</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
       expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
       expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"
@@ -160,7 +158,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "search works with all params" do
-      get "/search?search=different&fields[]=citation&agencies[]=Fake+Parent+Agency&starting_year=2019&ending_year=2020"
+      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
