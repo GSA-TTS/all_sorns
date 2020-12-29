@@ -52,9 +52,12 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    @sorns = @sorns.only_exact_matches(params[:search], @selected_fields) if multiword_search?
-
-    @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
+    if multiword_search?
+      @sorns = @sorns.only_exact_matches(params[:search], @selected_fields)
+      @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
+    else
+      @sorns = @sorns.page(params[:page]) if request.format == :html
+    end
 
     respond_to do |format|
       format.html
