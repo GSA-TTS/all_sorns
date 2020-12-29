@@ -23,19 +23,27 @@ $( function () {
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
 
-  // Listener for agencies checkboxes
+  // Listener for fields checkboxes
   $("#fields input:checkbox").on('change', function(){
-    if(this.checked)
+    if(this.checked) {
       console.log(`${this.id} checked`)
-    else
+      html = `<div class="active-filter" id="${this.id}-on">${this.value}<a href>[X]</a></div>`
+      $("#active-fields").append(html)
+    }else{
       console.log(`${this.id} unchecked`)
+      $(`#${this.id}-on`).remove()
+    }
   });
   
   $("#agencies input:checkbox").on('change', function(){
-    if(this.checked)
+    if(this.checked) {
       console.log(`${this.id} checked`)
-    else
+      html = `<div class="active-filter" id="${this.id}-on">${this.value}<a href>[X]</a></div>`
+      $("#active-agencies").append(html)
+    }else{
       console.log(`${this.id} unchecked`)
+      $(`#${this.id}-on`).remove()
+    }
   });
 });
 
