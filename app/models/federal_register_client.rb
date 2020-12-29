@@ -88,7 +88,6 @@ class FederalRegisterClient
 
   def add_agencies(result, sorn)
     # add agency to sorn, without duplicates
-    # special case for DoD Office of the Secretary
     result.agencies.each do |api_agency|
       agency = build_agency(result, api_agency)
       if agency.present? && sorn.agencies.exclude?(agency)
