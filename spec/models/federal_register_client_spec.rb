@@ -32,10 +32,19 @@ RSpec.describe FederalRegisterClient, type: :model do
         )
       ]
     )
+    parent_agency_result = OpenStruct.new(
+      short_name: "Parent"
+    )
+    child_agency_result = OpenStruct.new(
+      short_name: "Child"
+    )
     result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
     allow($stdout).to receive(:puts)
     allow(FederalRegister::Document).to receive(:search).and_return result_set
     allow(FederalRegister::Document).to receive(:find).and_return mock_result
+    allow(FederalRegister::Agency).to receive(:find).with(1).and_return parent_agency_result
+    allow(FederalRegister::Agency).to receive(:find).with(2).and_return child_agency_result
+
     allow(UpdateSornJob).to receive(:perform_later)
   end
 
@@ -58,12 +67,20 @@ RSpec.describe FederalRegisterClient, type: :model do
         expect(Sorn.last.agencies.first).to have_attributes(name: "Child Agency", api_id: 2, parent_api_id: 1)
       end
 
+      it "makes another Federal Register API request for the agency short_name" do
+        client.find_sorns
+
+        expect(FederalRegister::Agency).to have_received(:find).twice
+        expect(Sorn.last.agencies.second.short_name).to eq "Parent"
+        expect(Sorn.last.agencies.first.short_name).to eq "Child"
+      end
+
       context "with existing agencies" do
         let(:sorn) { create :sorn, agencies: [] }
 
         before do
-          sorn.agencies << Agency.create(name: "Parent Agency", api_id: 1, parent_api_id: nil)
-          sorn.agencies << Agency.create(name: "Child Agency", api_id: 2, parent_api_id: 1)
+          sorn.agencies << Agency.create(name: "Parent Agency", api_id: 1, parent_api_id: nil, short_name: "Parent")
+          sorn.agencies << Agency.create(name: "Child Agency", api_id: 2, parent_api_id: 1, short_name: "Child")
         end
 
         it "Doesn't duplicate agencies" do
@@ -111,8 +128,12 @@ RSpec.describe FederalRegisterClient, type: :model do
               )
             ]
           )
+          dod_agency_result = OpenStruct.new(
+            short_name: "DOD"
+          )
           result_set = double(FederalRegister::ResultSet, results: [mock_result], total_pages: pages)
           allow(FederalRegister::Document).to receive(:search).and_return result_set
+          allow(FederalRegister::Agency).to receive(:find).with(103).and_return dod_agency_result
         end
 
         it "don't save subcomponents without metadata" do

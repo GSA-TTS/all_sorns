@@ -97,6 +97,10 @@ class FederalRegisterClient
     end
   end
 
+  def get_agency_short_name(agency_api_id)
+    FederalRegister::Agency.find(agency_api_id).short_name
+  end
+
   private
 
   def get_nice_agency_names(result)
@@ -113,13 +117,19 @@ class FederalRegisterClient
     if api_agency.id.present? # skip the subcomponents without metadata
 
       # raw_name has a few typos and edge cases, so match on api_id, then add the name
-      our_agency = Agency.find_by(api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-      if our_agency.present?
-        our_agency.update(name: api_agency.raw_name.titleize)
-        return our_agency
+      agency = Agency.find_by(api_id: api_agency.id)
+      if agency.present?
+        agency.update(name: api_agency.raw_name.titleize, parent_api_id: api_agency.parent_id)
       else
-        Agency.create(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+        agency = Agency.create(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
       end
+
+      if agency.short_name.nil?
+        short_name = get_agency_short_name(agency.api_id)
+        agency.update(short_name: short_name)
+      end
+
+      return agency
     end
   end
 end
