@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_13_200542) do
+ActiveRecord::Schema.define(version: 2020_12_28_232801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.integer "parent_api_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "short_name"
     t.index ["api_id"], name: "index_agencies_on_api_id"
     t.index ["parent_api_id"], name: "index_agencies_on_parent_api_id"
   end
@@ -33,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.index ["sorn_id"], name: "index_agencies_sorns_on_sorn_id"
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(version: 2020_11_13_200542) do
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (agency_names)::text)", name: "agency_names_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (authority)::text)", name: "authority_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (categories_of_individuals)::text)", name: "categories_of_individuals_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (categories_of_record)::text)", name: "categories_of_record_idx", using: :gist

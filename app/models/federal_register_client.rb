@@ -88,7 +88,6 @@ class FederalRegisterClient
 
   def add_agencies(result, sorn)
     # add agency to sorn, without duplicates
-    # special case for DoD Office of the Secretary
     result.agencies.each do |api_agency|
       agency = build_agency(result, api_agency)
       if agency.present? && sorn.agencies.exclude?(agency)
@@ -98,6 +97,10 @@ class FederalRegisterClient
   end
 
   private
+
+  def get_agency_short_name(agency_api_id)
+    FederalRegister::Agency.find(agency_api_id).short_name
+  end
 
   def get_nice_agency_names(result)
     result.agencies.map do |api_agency|
@@ -110,15 +113,18 @@ class FederalRegisterClient
   end
 
   def build_agency(result, api_agency)
-    if api_agency.id.present? # skip the subcomponents without metadata
-
-      # raw_name has a few typos and edge cases, so match on api_id, then add the name
-      our_agency = Agency.find_by(api_id: api_agency.id, parent_api_id: api_agency.parent_id)
-      if our_agency.present?
-        our_agency.update(name: api_agency.raw_name.titleize)
-        return our_agency
-      else
-        Agency.create(name: api_agency.raw_name.titleize, api_id: api_agency.id, parent_api_id: api_agency.parent_id)
+    if api_agency.id.present? # skip the subcomponents without metadata, "Office of the Secretary"
+      agency = Agency.find_by(api_id: api_agency.id)
+      if agency.nil?
+        Agency.create(
+          name: api_agency.raw_name.titleize,
+          api_id: api_agency.id,
+          parent_api_id: api_agency.parent_id,
+          short_name: get_agency_short_name(api_agency.id)
+        )
+      elsif agency.short_name.nil? # Can remove after everyone has short_name locally
+        agency.update(short_name: get_agency_short_name(api_agency.id))
+        return agency
       end
     end
   end
