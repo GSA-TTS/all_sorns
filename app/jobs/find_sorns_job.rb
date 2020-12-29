@@ -2,6 +2,10 @@ class FindSornsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    FederalRegisterClient.new.find_sorns
+    begin
+      FederalRegisterClient.new.find_sorns
+    rescue => e
+      p e.exception
+    end
   end
 end
