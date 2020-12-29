@@ -124,6 +124,7 @@ class FederalRegisterClient
         )
       elsif agency.short_name.nil? # Can remove after everyone has short_name locally
         agency.update(short_name: get_agency_short_name(api_agency.id))
+        return agency
       end
     end
   end
