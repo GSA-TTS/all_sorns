@@ -22,6 +22,21 @@ $( function () {
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
+
+  // Listener for agencies checkboxes
+  $("#fields input:checkbox").on('change', function(){
+    if(this.checked)
+      console.log(`${this.id} checked`)
+    else
+      console.log(`${this.id} unchecked`)
+  });
+  
+  $("#agencies input:checkbox").on('change', function(){
+    if(this.checked)
+      console.log(`${this.id} checked`)
+    else
+      console.log(`${this.id} unchecked`)
+  });
 });
 
 function checkboxesFromUrl(elementName) {
