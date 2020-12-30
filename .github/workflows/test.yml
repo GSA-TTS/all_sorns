@@ -58,7 +58,7 @@ jobs:
           sudo apt-get -yqq install libpq-dev build-essential libssl-dev
       - name: install ruby dependencies
         run: |
-          bundle install --jobs 4 --retry 3
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: install javascript dependencies
         run: yarn install
       - name: Setup test database
