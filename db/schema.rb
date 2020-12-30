@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_12_28_232801) do
     t.index ["sorn_id"], name: "index_agencies_sorns_on_sorn_id"
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -99,7 +99,6 @@ ActiveRecord::Schema.define(version: 2020_12_28_232801) do
     t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (agency_names)::text)", name: "agency_names_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (authority)::text)", name: "authority_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (categories_of_individuals)::text)", name: "categories_of_individuals_idx", using: :gist
     t.index "to_tsvector('english'::regconfig, (categories_of_record)::text)", name: "categories_of_record_idx", using: :gist
