@@ -27,13 +27,13 @@ $( function () {
   $("#filters input:checkbox").on('change', function(){
     if(this.checked) {
       html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
-      
-      console.log($(this).parent().parent()[0].id)
 
-      if ($(this).parent().parent()[0].id === "sorn-fields") {
+      parent_id = $(this).parent().parent()[0].id
+
+      if (parent_id === "sorn-fields") {
         $("#active-fields").append(html)
       }
-      if($(this).parent().parent()[0].id === "selected-agencies") {
+      else if(parent_id === "selected-agencies") {
         $("#active-agencies").append(html)
       }
       
