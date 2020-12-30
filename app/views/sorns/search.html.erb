@@ -24,7 +24,7 @@
 
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar">
-          <div class="preview usa-prose site-prose" >
+          <div id="filters" class="preview usa-prose site-prose" >
 
             <%= render partial: "fields" %>
 
@@ -53,31 +53,28 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+      <div id="active-filters">    
         <div class="grid-row">
-          <div class="">  
-            <div id="count" class="">
-              ACTIVE SECTION FILTERS
-            </div>
+          
+          <div id="count" class="">
+            ACTIVE SECTION FILTERS
           </div>
         </div>
         
         <div class="grid-row">
-          <div class="">
           <div id="active-fields"></div>
-          </div>
         </div>
         
         <div class="grid-row">
-          <div class="">  
-            <div id="count" class="">
-              ACTIVE AGENCY FILTERS
-            </div>
+          <div id="count" class="">
+            ACTIVE AGENCY FILTERS
           </div>
         </div>
         
         <div class="grid-row">
           <div id="active-agencies"></div>
         </div>
+      </div>
 
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">

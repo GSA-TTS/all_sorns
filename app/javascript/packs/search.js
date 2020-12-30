@@ -24,28 +24,24 @@ $( function () {
   $("#ending_year").on("change", publicationDateValidation)
 
   // Listener for fields checkboxes
-  $("#fields input:checkbox").on('change', function(){
+  $("#filters input:checkbox").on('change', function(){
     if(this.checked) {
       html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
-      $("#active-fields").append(html)
-    }else{
-      console.log(`${this.id} unchecked`)
-      $(`#active-fields #${this.id}`).remove()
+      
+      console.log($(this).parent().parent()[0].id)
 
+      if ($(this).parent().parent()[0].id === "sorn-fields") {
+        $("#active-fields").append(html)
+      }
+      if($(this).parent().parent()[0].id === "selected-agencies") {
+        $("#active-agencies").append(html)
+      }
+      
+    }else{
+      $(`#active-filters #${this.id}`).remove()
     }
   });
   
-  // Listener for agency checkboxes
-  $("#agencies input:checkbox").on('change', function(){
-    if(this.checked) {
-      html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
-      $("#active-agencies").append(html)
-    }else{
-      console.log(`${this.id} unchecked`)
-      $(`#active-agencies #${this.id}`).remove()
-    }
-  });
-
   // Remove badges and uncheck filters
   $(document).on('click', 'a.remove-badge', function (e) {
     e.preventDefault()
