@@ -65,12 +65,13 @@ class Sorn < ApplicationRecord
     'publication_date'
   ]
 
-  pg_search_scope :dynamic_search, lambda { |field, query|
+  pg_search_scope :dynamic_search, lambda { |fields, query|
     {
-      against: field,
+      against: fields.map{|f| f.to_sym},
       query: query
+      }
     }
-  }
+
 
   def get_xml
     if xml_url.present? and xml.blank?
