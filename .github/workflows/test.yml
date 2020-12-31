@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.7.x
+          bundler-cache: true
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
@@ -42,17 +43,6 @@ jobs:
             npm-${{ runner.os }}-build-${{ env.cache-name }}-
             npm-${{ runner.os }}-build-
             npm-${{ runner.os }}-
-      - name: Cache gems
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-gems
-        with:
-          path: vendor/bundle
-          key: gem-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            gem-${{ runner.os }}-build-${{ env.cache-name }}-
-            gem-${{ runner.os }}-build-
-            gem-${{ runner.os }}-
       - name: Install linux dependencies
         run: |
           sudo apt-get -yqq install libpq-dev build-essential libssl-dev
