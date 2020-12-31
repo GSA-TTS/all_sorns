@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.7.x
-          bundler-cache: true
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
@@ -46,10 +46,6 @@ jobs:
       - name: Install linux dependencies
         run: |
           sudo apt-get -yqq install libpq-dev build-essential libssl-dev
-      - name: install ruby dependencies
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
       - name: install javascript dependencies
         run: yarn install
       - name: Setup test database
