@@ -1,4 +1,6 @@
 $( function () {
+  hideEmptyFormFieldsFromUrl()
+
   // Set checked fields from url
   checkboxesFromUrl("fields")
 
@@ -47,4 +49,15 @@ function publicationDateValidation(){
   } else {
     $("#starting_year")[0].setCustomValidity('');
   }
+}
+
+function hideEmptyFormFieldsFromUrl(){
+  // Change 'form' to class or ID of your specific form
+  $("#search-form").on("submit", function() {
+    $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
+    return true; // ensure form still submits
+  });
+
+  // Un-disable form fields when page loads, in case they click back after submission
+  $( "#search-form" ).find( ":input" ).prop( "disabled", false );
 }

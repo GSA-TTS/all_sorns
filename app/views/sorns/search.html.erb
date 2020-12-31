@@ -7,7 +7,7 @@
   </div>
 </header>
 
-<%= form_tag '/search', method: "GET", id: "search-form" do %>
+<%= form_tag '/', method: "GET", id: "search-form" do %>
 <section class="grid-container">
   <div class="grid-col-10 grid-offset-1 search-area">
     <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
@@ -26,9 +26,13 @@
         <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >
 
-            <%= render partial: "fields" %>
-
             <div class="usa-accordion">
+              <h2 class="usa-accordion__heading">
+                <button class="usa-accordion__button" aria-controls="sorn-sections-accordion" type="button">SORN Sections</button>
+              </h2>
+              <div id="sorn-sections-accordion" class="usa-accordion__content usa-prose">
+                <%= render partial: "fields" %>
+              </div>
               <h2 class="usa-accordion__heading">
                 <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
               </h2>
