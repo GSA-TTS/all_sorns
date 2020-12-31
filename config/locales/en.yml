@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No results found"

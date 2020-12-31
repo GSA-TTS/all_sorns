@@ -91,18 +91,18 @@
                     </div>
                     <div class="grid-col-6">
                       <span class="sorn-attribute-header">Citation:</span>
-                      <%= sorn.citation %>
+                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener"><%= sorn.citation %></a>
                     </div>
                   </div>
 
                   <% if sorn.mentioned.present? %>
                     <div class="grid-row">
                       <div class="grid-col-12">
-                        <span class="sorn-attribute-header">Other SORNs referenced:</span>
+                        <span class="sorn-attribute-header">SORN History and/or other SORNS referenced:</span>
                         <ul>
                         <% sorn.mentioned.each do |metioned_sorn| %>
                           <li>
-                            <a href="/search?search=<%= metioned_sorn.citation %>&fields[]=citation" class="mention-citation"><%= metioned_sorn.citation %></a>:
+                            <a href="<%= metioned_sorn.html_url %>" class="mention-citation"><%= metioned_sorn.citation %></a>:
                             <%= metioned_sorn.action %>,
                             <%= metioned_sorn.publication_date %>
                           </li>
