@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_230531) do
+ActiveRecord::Schema.define(version: 2020_12_28_232801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -98,13 +98,5 @@ ActiveRecord::Schema.define(version: 2020_12_30_230531) do
     t.string "action_type"
     t.index ["citation"], name: "index_sorns_on_citation"
   end
-
-
-  create_view "sorn_searches", materialized: true, sql_definition: <<-SQL
-      SELECT sorns.id AS sorn_id,
-      ((((((((((((((((((((((((((to_tsvector('english'::regconfig, (COALESCE(sorns.agency_names, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(sorns.action, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.summary, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.dates, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.addresses, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.further_info, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.supplementary_info, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.system_name, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.system_number, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.security, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.location, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.manager, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.authority, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.purpose, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.categories_of_individuals, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.categories_of_record, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.source, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.routine_uses, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.storage, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.retrieval, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.retention, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.safeguards, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.access, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.contesting, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.notification, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.exemptions, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.history, ''::character varying))::text)) AS tsv_document
-     FROM sorns;
-  SQL
-  add_index "sorn_searches", ["tsv_document"], name: "index_sorn_searches_on_tsv_document", using: :gin
 
 end

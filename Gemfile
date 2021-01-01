@@ -10,9 +10,7 @@ gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
-gem 'pg_search'
 gem 'kaminari'
-gem 'scenic'
 
 # Use Puma as the app server
 gem 'puma', '~> 4.1'

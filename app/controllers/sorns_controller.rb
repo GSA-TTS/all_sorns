@@ -1,42 +1,27 @@
 class SornsController < ApplicationController
   def search
-    @sorns = Sorn.no_computer_matching.includes(:mentioned).preload(:agencies)
+    @sorns = Sorn.no_computer_matching.includes(:mentioned)
 
-    if no_params_on_page_load?
-      # return all sorns with default fields
-      @selected_fields = Sorn::DEFAULT_FIELDS
-
-    elsif params[:fields].blank?
-      # Return nothing, with no default fields
-      @selected_fields = nil
-      @sorns = Sorn.none
-
-    elsif search_and_agency_blank?
-      #  return all sorns with just those fields
+    if params[:fields].present?
       @selected_fields = params[:fields]
-
-    elsif search_present_and_agency_blank?
-      #  return matching sorns with just those fields
-      @selected_fields = params[:fields]
-      field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.dynamic_search(field_syms, params[:search])
-
-    elsif search_blank_and_agency_present?
-      # return agency sorns with just those fields
-      @selected_fields = params[:fields]
-      @selected_agencies = params[:agencies].map(&:parameterize)
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      @sorns = @sorns.get_distinct
-
-    elsif search_and_fields_and_agency_present?
-      # return matching, agency sorns with just those fields
-      @selected_fields = params[:fields]
-      @selected_agencies = params[:agencies].map(&:parameterize)
-      field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      @sorns = @sorns.where(id: SornSearch.search(params[:search]).select(:sorn_id))
     else
-      raise "WUT"
+      @selected_fields = Sorn::FIELDS.map &:to_s
+    end
+
+    if params[:search].present?
+      if params[:fields] == Sorn::FIELDS.map(&:to_s)
+        @sorns = @sorns.where('xml::TEXT ILIKE :search', search: "%#{params[:search]}%")
+      else
+        ilikes = @selected_fields.map do |field|
+          "#{field} ILIKE :search"
+        end
+        @sorns = @sorns.where(ilikes.join(" OR "), search: "%#{params[:search]}%")
+      end
+    end
+
+    if params[:agencies].present?
+      @selected_agencies = params[:agencies].map(&:parameterize)
+      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
     end
 
     if params[:starting_year].present?
@@ -51,12 +36,9 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    if multiword_search?
-      @sorns = @sorns.only_exact_matches(params[:search], @selected_fields)
-      @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
-    else
-      @sorns = @sorns.page(params[:page]) if request.format == :html
-    end
+    @sorns = @sorns.get_distinct
+
+    @sorns = @sorns.page(params[:page]) if request.format == :html
 
     respond_to do |format|
       format.html

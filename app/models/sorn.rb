@@ -5,12 +5,11 @@ class Sorn < ApplicationRecord
   has_and_belongs_to_many :mentioned, class_name: "Sorn", join_table: :mentions,
                           foreign_key: :sorn_id, association_foreign_key: :mentioned_sorn_id
 
-  include PgSearch::Model
   validates :citation, uniqueness: true
 
   scope :no_computer_matching, -> { where.not('"sorns"."action" ILIKE ?', '%matching%') }
   scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
-  scope :get_distinct_with_dynamic_search, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
+  # scope :get_distinct_with_dynamic_search, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
 
   default_scope { order(publication_date: :desc) }
 
@@ -64,13 +63,6 @@ class Sorn < ApplicationRecord
     'html_url',
     'publication_date'
   ]
-
-  pg_search_scope :dynamic_search, lambda { |field, query|
-    {
-      against: field,
-      query: query
-    }
-  }
 
   def get_xml
     if xml_url.present? and xml.blank?

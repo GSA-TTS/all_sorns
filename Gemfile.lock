@@ -145,9 +145,6 @@ GEM
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     pg (1.2.3)
-    pg_search (2.3.4)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -228,9 +225,6 @@ GEM
       sprockets-rails
       tilt
     saxerator (0.9.9)
-    scenic (1.5.4)
-      activerecord (>= 4.0.0)
-      railties (>= 4.0.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -289,7 +283,6 @@ DEPENDENCIES
   launchy
   listen (~> 3.2)
   pg
-  pg_search
   pry-byebug
   pry-rescue
   pry-stack_explorer
@@ -298,7 +291,6 @@ DEPENDENCIES
   rspec-rails (~> 4.0.1)
   sass-rails (>= 6)
   saxerator
-  scenic
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
