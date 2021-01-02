@@ -24,13 +24,13 @@
 
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar">
-          <div id="filters" class="preview usa-prose site-prose" >
+          <div class="preview usa-prose site-prose" >
 
             <%= render partial: "fields" %>
 
             <div class="usa-accordion">
               <h2 class="usa-accordion__heading">
-                <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
+                <button id="agency-expand-button" class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
               </h2>
               <div id="agency-accordion" class="usa-accordion__content usa-prose">
                 <%= render partial: "agencies" %>
@@ -56,7 +56,7 @@
       <div id="active-filters">    
         <div class="grid-row">
           
-          <div id="count" class="">
+          <div id="" class="labels">
             ACTIVE SECTION FILTERS
           </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
         
         <div class="grid-row">
-          <div id="count" class="">
+          <div id="" class="labels">
             ACTIVE AGENCY FILTERS
           </div>
         </div>
@@ -78,7 +78,7 @@
 
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
-            <div id="count">
+            <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>

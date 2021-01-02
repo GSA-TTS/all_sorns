@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe "/search", type: :system do
   before do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome)
     11.times { create :sorn }
+    create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
   end
 
   it "default checkboxes are as expected" do
@@ -88,4 +89,15 @@ RSpec.describe "/search", type: :system do
     # gov banner should remain closed
     expect(find("#gov-banner").visible?).to be_falsey
   end
+
+  scenario "active-filter sorting" do
+    visit "/"
+    find('#agency-expand-button').click
+    find('#agency-deselect-all').click
+      find('label', text:'Parent Agency').click
+      find('label', text:'Child Agency').click
+      find('label', text:'Cousin Agency').click
+      expect(page).to have_selector(".active-filter", count: 1)
+  end
+
 end

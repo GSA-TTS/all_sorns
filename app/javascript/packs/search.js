@@ -23,24 +23,28 @@ $( function () {
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
 
-  // Listener for fields checkboxes
-  $("#filters input:checkbox").on('change', function(){
+  // Listener for checkboxes
+  $(".sidebar input:checkbox").on('change', function(){
     if(this.checked) {
-      html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
-
-      parent_id = $(this).parent().parent()[0].id
+      var $html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
+      const parent_id = $(this).parent().parent()[0].id;
 
       if (parent_id === "sorn-fields") {
-        $("#active-fields").append(html)
+        $("#active-fields").append($html)
       }
       else if(parent_id === "selected-agencies") {
-        $("#active-agencies").append(html)
+        $("#active-agencies").append($html)
       }
       
     }else{
       $(`#active-filters #${this.id}`).remove()
     }
   });
+
+  // Sorting divs
+  // function(div_array, sort_attr, sort_type){
+
+  // });
   
   // Remove badges and uncheck filters
   $(document).on('click', 'a.remove-badge', function (e) {
