@@ -30,10 +30,12 @@ $( function () {
       const parent_id = $(this).parent().parent()[0].id;
 
       if (parent_id === "sorn-fields") {
-        $("#active-fields").append($html)
+        // $("#active-fields").append($html)
+        add_badge(this.id, this.value, "#active-fields")
       }
       else if(parent_id === "selected-agencies") {
-        $("#active-agencies").append($html)
+        // $("#active-agencies").append($html)
+        add_badge(this.id, this.value, "#active-agencies")
       }
       
     }else{
@@ -41,22 +43,38 @@ $( function () {
     }
   });
 
-  // Sorting divs
+  // Listener for remove badge link
+  $(document).on('click', 'a.remove-badge', function (e) {
+    e.preventDefault()
+    remove_badge($(this).parent())
+    uncheck_filter($(this).parent().attr('id'))
+  });
+
+  // Sort active filter divs
   // function(div_array, sort_attr, sort_type){
 
   // });
-  
-  // Remove badges and uncheck filters
-  $(document).on('click', 'a.remove-badge', function (e) {
-    e.preventDefault()
-    parent = $(this).parent()
-    parent.remove()
-    console.log(`${parent.attr('id')} removed`)
-    var n = $(`input:checkbox[id^="${parent.attr('id')}"]:checked`);
+
+
+
+  // remove filter badge
+  function remove_badge(div){
+    div.remove()
+  }
+
+  // uncheck filter
+  function uncheck_filter(id){
+    var n = $(`input:checkbox[id^="${id}"]:checked`)
     n.prop("checked", false)
-  });
+  }
 
 });
+
+// add filter badge
+function add_badge(id, value, section){
+  var $html = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
+  $(section).append($html)
+};
 
 function checkboxesFromUrl(elementName) {
   checkboxes = $(`#${elementName} input:checkbox`)
@@ -67,6 +85,7 @@ function checkboxesFromUrl(elementName) {
     // check those found in url
     dataFromurl.forEach(data => {
       $(`#${elementName}-${data}`).prop("checked", true)
+      add_badge(data,data,`#active-${elementName}`)
     });
   }
 }
