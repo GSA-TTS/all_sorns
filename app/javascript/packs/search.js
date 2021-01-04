@@ -17,6 +17,8 @@ $( function () {
   })
   $("#agency-deselect-all").on('click', function(){
     agencyCheckboxes.prop("checked", false)
+    clear_badges('agencies')
+    // TODO - trigger remove_badge for all
   })
 
   // Validate the publication date input
@@ -58,6 +60,10 @@ $( function () {
   // remove filter badge
   function remove_badge(div){
     div.remove()
+  }
+
+  function clear_badges(section){
+    $(`#active-${section}`).empty()
   }
 
   // uncheck filter
