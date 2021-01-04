@@ -45,11 +45,6 @@ $( function () {
     }
   });
 
-  // Sort active filter divs
-  // function(div_array, sort_attr, sort_type){
-
-  // });
-
   // Listener for remove badge link
   $(document).on('click', 'a.remove-badge', function (e) {
     e.preventDefault()
@@ -60,11 +55,11 @@ $( function () {
   // remove filter badge
   function remove_badge(div){
     div.remove()
-  }
+  };
 
   function clear_badges(section){
     $(`#active-${section}`).empty()
-  }
+  };
 
   // uncheck filter
   function uncheck_filter(id){
@@ -75,10 +70,41 @@ $( function () {
 
 });
 
+  // re-sort active filter divs
+  function sort_badges(div_array, sort_type){
+      return div_array.find('.active_filters').sort(function(a, b) {
+         return +a.textContent - +b.textContent;
+      });
+    };
+
 // add filter badge
 function add_badge(id, value, section){
-  var $html = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
-  $(`#active-${section}`).append($html)
+  var $container = $(`#active-${section}`)
+
+  var $new_badge = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
+  
+  //$container.append($new_badge)
+
+  var $filters = $container.find('.active-filter').clone().get()
+
+  // if no filters, add to container
+  if ($filters.length === 0) {
+    $container.append($new_badge)
+  }
+
+  $filters.push($new_badge)
+
+  var $sorted = $filters.sort(function(a, b) {
+    if (a.textContent < b.textContent) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
+  console.log($sorted)
+  
+  $(`#active-${section}`).html($sorted) 
 };
 
 function checkboxesFromUrl(elementName) {
@@ -90,7 +116,7 @@ function checkboxesFromUrl(elementName) {
     // check those found in url
     dataFromurl.forEach(data => {
       $(`#${elementName}-${data}`).prop("checked", true)
-      add_badge(`${elementName}-${data}`,data,elementName)
+      //add_badge(`${elementName}-${data}`,data,elementName)
     });
   }
 }
