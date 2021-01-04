@@ -14,7 +14,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "resolutions": {
-    "base": "^3.0.0",
+    "cache-base": "^4.0.0",
     "y18n": "^4.0.1"
   }
 }
