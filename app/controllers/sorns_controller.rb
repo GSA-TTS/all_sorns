@@ -42,28 +42,4 @@ class SornsController < ApplicationController
   def multiword_search?
     params[:search].scan(/\w+/).size > 1 if params[:search].present?
   end
-<<<<<<< HEAD
-
-  def no_params_on_page_load?
-    params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
-  end
-
-  def search_and_agency_blank?
-    params[:search].blank? && params[:agencies].blank?
-  end
-
-  def search_present_and_agency_blank?
-    params[:search].present? && params[:agencies].blank?
-  end
-
-  def search_blank_and_agency_present?
-    params[:search].blank? && params[:agencies].present?
-  end
-
-  def search_and_fields_and_agency_present?
-    params[:search].present? && params[:fields].present? && params[:agencies].present?
-  end
 end
-=======
-end
->>>>>>> c1cb7fb1f729c819a9a55eaf0bf105a33478e864
