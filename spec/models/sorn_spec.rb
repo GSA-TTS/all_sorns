@@ -89,7 +89,7 @@ RSpec.describe Sorn, type: :model do
 
   describe ".update_mentioned_sorns" do
     let(:sorn) { create :sorn, xml: file_fixture("sorn.xml").read }
-    let!(:child_sorn) { Sorn.create(citation: "01 FR 1234") }
+    let!(:child_sorn) { create :sorn, citation: "01 FR 1234" }
 
     before { sorn.update_mentioned_sorns }
 

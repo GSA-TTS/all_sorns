@@ -1,7 +1,9 @@
 module SornsHelper
-  def show_field?(field)
-    default_while_no_search = params[:fields].nil? && Sorn::DEFAULT_FIELDS.include?(field)
-    field_included = params[:fields].include?(field) if params[:fields]
-    default_while_no_search || field_included
+  def field_selected?(field)
+    params[:fields]&.include?(field)
+  end
+
+  def agency_selected?(agency_name)
+    params[:agencies]&.include?(agency_name)
   end
 end
