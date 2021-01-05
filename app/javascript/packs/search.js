@@ -71,13 +71,6 @@ $( function () {
 
 });
 
-  // re-sort active filter divs
-  function sort_badges(div_array, sort_type){
-      return div_array.find('.active_filters').sort(function(a, b) {
-         return +a.textContent - +b.textContent;
-      });
-    };
-
 // add filter badge and sort elements
 function add_badge(id, value, section){
   var $container = $(`#active-${section}`)

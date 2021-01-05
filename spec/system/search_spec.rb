@@ -90,21 +90,27 @@ RSpec.describe "/search", type: :system do
     expect(find("#gov-banner").visible?).to be_falsey
   end
 
+  # fields checkboxes shown by default
   scenario "active-filters" do
     visit "/"
-    find('#agency-expand-button').click
-    find('#agency-deselect-all').click
     find('#fields-deselect-all').click
-      find('label', text:'Parent Agency').click
-      find('label', text:'Child Agency').click
-      find('label', text:'Source').click
-      find('label', text:'Retrieval').click
-      expect(page).to have_selector(".active-filter", count: 4)
+    find('label', text:'Source').click
+    find('label', text:'Retrieval').click
+    find('#agency-expand-button').click
+    # find('#field-expand-button').click
+    find('#agency-deselect-all').click
+    # find('#fields-deselect-all').click
+    find('label', text:'Parent Agency').click
+    find('label', text:'Child Agency').click
+    
+    expect(page).to have_selector("#active-fields .active-filter", count: 2)
+    expect(page).to have_selector("#active-agencies .active-filter", count: 2)
   end
 
-  # adding to right section
+  # adding badges to correct section
   # clear all 
   # click badge to remove
+  
   # sorting
 
 end
