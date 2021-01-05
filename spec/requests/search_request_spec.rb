@@ -13,7 +13,7 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    it "returns eveything with the default columns" do
+    it "returns eveything expected on the card" do
       expect(response.body).to include sorn.system_name
       expect(response.body).to include sorn.agencies.first.name
       expect(response.body).to include sorn.action
@@ -25,7 +25,7 @@ RSpec.describe "Search", type: :request do
 
   context "search with agency select" do
     let(:search) { "FAKE" }
-    let(:fields) { 'fields[]=action' }
+    let(:fields) { nil }
     let(:agency) { "agencies[]=Parent+Agency" }
 
     it "succeeds" do
@@ -96,7 +96,7 @@ RSpec.describe "Search", type: :request do
 
       expect(response.body).to include "Displaying <b>1</b>  for &quot;health record&quot;"
       expect(response.body).to include "<mark>health record</mark>"
-      expect(response.body).not_to include "health blah blah record"
+      expect(response.body).not_to include "blah blah"
     end
   end
 
