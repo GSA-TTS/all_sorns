@@ -1,18 +1,14 @@
-<fieldset id="fields" class="usa-fieldset margin-105">
-  <legend class="usa-legend">
-    <div id="search-filters">Refine Your Search</div>
-    <div id="fields-to-search">Fields</div>
-    <a href="#" id='fields-deselect-all' class="clear-all">X Clear Fields Filters</a>
-  </legend>
+  <a href="#" id='fields-deselect-all' class="clear-all">X Clear Fields Filters</a>
 
-  <div id="sorn-fields">
-    <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
-    <% checkboxes.each do |field, index| %>
-      <div class="usa-checkbox">
-        <input class="usa-checkbox__input" id="fields-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
-        <label class="usa-checkbox__label" for="fields-<%= field %>"><%= field.to_s.humanize %></label>
-      </div>
-    <% end %>
-    <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
-  </div>
-</fieldset>
+  <fieldset id="fields" class="usa-fieldset">  
+    <div id="sorn-fields">
+      <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+      <% checkboxes.each do |field, index| %>
+        <div class="usa-checkbox">
+          <input class="usa-checkbox__input" id="fields-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
+          <label class="usa-checkbox__label" for="fields-<%= field %>"><%= field.to_s.humanize %></label>
+        </div>
+      <% end %>
+  </fieldset>
+  <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
+

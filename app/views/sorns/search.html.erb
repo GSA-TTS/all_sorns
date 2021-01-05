@@ -25,10 +25,14 @@
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >
-
-            <%= render partial: "fields" %>
-
+            <div id="search-filters">Refine Your Search</div>
             <div class="usa-accordion">
+              <h2 class="usa-accordion__heading">
+                <button id="field-expand-button" class="usa-accordion__button" aria-controls="field-accordion" aria-expanded="true" type="button">Fields</button>
+              </h2>
+              <div id="field-accordion" class="usa-accordion__content usa-prose">
+                <%= render partial: "fields" %>
+              </div>
               <h2 class="usa-accordion__heading">
                 <button id="agency-expand-button" class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
               </h2>
