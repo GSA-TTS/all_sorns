@@ -1,17 +1,17 @@
 class SornsController < ApplicationController
   def search
+    @fields_to_search = params[:fields] || Sorn::FIELDS
+    @sorns = Sorn.no_computer_matching.includes(:mentioned)# .preload(:agencies)
+
     if params[:search]
-      @sorns = @sorns.dynamic_search(@selected_fields, params[:search]).get_distinct_with_dynamic_search
+      @sorns = @sorns.dynamic_search(@fields_to_search, params[:search]).get_distinct_with_dynamic_search
     else
       @sorns = Sorn.none.page(params[:page]) and return # blank page on first visit
     end
 
-    @sorns = Sorn.no_computer_matching.includes(:mentioned)# .preload(:agencies)
-    @selected_fields = params[:fields] || Sorn::FIELDS
 
     if params[:agencies]
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      @selected_agencies = params[:agencies].map(&:parameterize)
     end
 
     if params[:starting_year].present?
@@ -26,9 +26,8 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-
     if multiword_search?
-      @sorns = @sorns.only_exact_matches(params[:search], @selected_fields) if request.format == :html
+      @sorns = @sorns.only_exact_matches(params[:search], @fields_to_search) if request.format == :html
       @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
     else
       @sorns = @sorns.page(params[:page]) if request.format == :html
@@ -36,7 +35,7 @@ class SornsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data @sorns.to_csv(@selected_fields.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv" }
+      format.csv { send_data @sorns.to_csv(@fields_to_search.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv" }
     end
   end
 

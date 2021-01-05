@@ -110,9 +110,9 @@ class Sorn < ApplicationRecord
     self.update(action_type: action_type)
   end
 
-  def section_snippets(selected_fields, search_term)
+  def section_snippets(fields_to_search, search_term)
     output = {}
-    self.attributes.slice(*selected_fields).each do |key, value|
+    self.attributes.slice(*fields_to_search).each do |key, value|
       if value =~ /#{search_term}/i
         output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
       end
@@ -151,14 +151,14 @@ class Sorn < ApplicationRecord
     Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
   end
 
-  def self.only_exact_matches(search_term, selected_fields)
+  def self.only_exact_matches(search_term, fields_to_search)
     all.filter_map do |sorn|
-      sorn if sorn.search_term_found_in_any_selected_fields(search_term, selected_fields)
+      sorn if sorn.search_term_found_in_any_selected_fields(search_term, fields_to_search)
     end
   end
 
-  def search_term_found_in_any_selected_fields(search_term, selected_fields)
-    selected_fields.any? do |field|
+  def search_term_found_in_any_selected_fields(search_term, fields_to_search)
+    fields_to_search.any? do |field|
       field_content = self.send(field)
       field_content.to_s.downcase.include? search_term.downcase # case insensitive match?
     end

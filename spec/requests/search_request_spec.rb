@@ -32,14 +32,14 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    it "default agency set" do
-      expect(response.body).to include 'data-agencies="[&quot;parent-agency&quot;]"'
-    end
-
     it "with search result summaries" do
       expect(response.body).to include 'FOUND IN'
       expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
       expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
+    end
+
+    it "agency checkbox is checked" do
+      expect(response.body).to include '<input class="usa-checkbox__input" id="agencies-parent-agency" type="checkbox" name="agencies[]" value="Parent Agency" checked>'
     end
 
     context "agency search with overlapping SORNs" do
@@ -53,10 +53,15 @@ RSpec.describe "Search", type: :request do
         expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
         expect(response.body).to include('FAKE SYSTEM NAME')
       end
+
+      it "both agency checkboxed are checked" do
+        expect(response.body).to include '<input class="usa-checkbox__input" id="agencies-parent-agency" type="checkbox" name="agencies[]" value="Parent Agency" checked>'
+        expect(response.body).to include '<input class="usa-checkbox__input" id="agencies-child-agency" type="checkbox" name="agencies[]" value="Child Agency" checked>'
+      end
     end
   end
 
-  context "search without agency select" do
+  context "search with fields selected" do
     let(:search) { "FAKE" }
     let(:fields) { 'fields[]=action' }
     let(:agency) { nil }
@@ -65,68 +70,16 @@ RSpec.describe "Search", type: :request do
       expect(response.successful?).to be_truthy
     end
 
-    it "no default agency selected" do
-      expect(response.body).to include 'data-agencies=""'
-    end
-
     it "with search result summaries" do
       expect(response.body).to include 'FOUND IN'
       expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
       expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
     end
-  end
 
-  context "search with default columns" do
-    let(:search) { "FAKE" }
-    let(:fields) { "fields%5B%5D=agency_names&fields%5B%5D=action&fields%5B%5D=summary&fields%5B%5D=system_name&fields%5B%5D=html_url&fields%5B%5D=publication_date" }
-
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-
-    it "returns found results with default columns" do
-      # default fields
-      expect(response.body).to include "FAKE SYSTEM NAME"
-      expect(response.body).to include 'Parent Agency | Child Agency'
-      expect(response.body).to include "HTML URL"
-      expect(response.body).to include "2000-01-13"
-    end
-
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
-      expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SUMMARY</div>"
-      expect(response.body).to include "<div class='sorn-attribute-header'>System name</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SYSTEM NAME</div>"
+    it "field checkbox is checked" do
+      expect(response.body).to include '<input class="usa-checkbox__input" id="fields-action" type="checkbox" name="fields[]" value="action" checked>'
     end
   end
-
-  context "search with different columns" do
-    let(:search) { "citation" }
-    let(:fields) { "fields%5B%5D=citation" }
-
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Citation</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>citation</mark></div>"
-    end
-  end
-
-  context "blank search, with different columns" do
-    let(:search) { nil }
-    let(:fields) { "fields%5B%5D=citation" }
-
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-  end
-
 
   context "multiword search" do
     before do
