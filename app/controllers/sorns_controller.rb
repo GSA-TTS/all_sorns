@@ -1,14 +1,8 @@
 class SornsController < ApplicationController
   def search
 
-
-    if no_params_on_page_load?
-
-
-      # return all sorns with default fields
-      puts 'a'
-
-    else
+    if !no_params_on_page_load?
+      # initialize on search first
       populate_parameters()
     end
   end
@@ -16,26 +10,21 @@ class SornsController < ApplicationController
   private
 
   def populate_parameters
-    @selected_fields = Sorn::DEFAULT_FIELDS
+    
     @sorns = Sorn.no_computer_matching.includes(:mentioned).preload(:agencies)
     
     if params[:fields].blank?
-      # Return nothing, with no default fields
-      @selected_fields = nil
-      @sorns = Sorn.none
-      puts 'b'
+      initial_broad_search()
 
     elsif search_and_agency_blank?
       #  return all sorns with just those fields
       @selected_fields = params[:fields]
-      puts 'c'
 
     elsif search_present_and_agency_blank?
       #  return matching sorns with just those fields
       @selected_fields = params[:fields]
       field_syms = @selected_fields.map { |field| field.to_sym }
       @sorns = @sorns.dynamic_search(field_syms, params[:search])
-      puts 'd'
 
     elsif search_blank_and_agency_present?
       # return agency sorns with just those fields
@@ -43,7 +32,6 @@ class SornsController < ApplicationController
       @selected_agencies = params[:agencies].map(&:parameterize)
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
       @sorns = @sorns.get_distinct
-      puts 'e'
 
     elsif search_and_fields_and_agency_present?
       # return matching, agency sorns with just those fields
@@ -53,24 +41,14 @@ class SornsController < ApplicationController
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
       @sorns = @sorns.dynamic_search(field_syms, params[:search])
       @sorns = @sorns.get_distinct_with_dynamic_search
-      puts 'f'
     else
       raise "WUT"
     end
 
-    if params[:starting_year].present?
-      # from beginning of start year
-      starting_date = params[:starting_year] + "-01-01"
-      @sorns = @sorns.where('publication_date::DATE > ?', starting_date)
-    end
-
-    if params[:ending_year].present?
-      # to end of ending year
-      ending_date = params[:ending_year] + "-12-31"
-      @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
-    end
+    date_filter()
 
     if multiword_search?
+      puts 'multi-world'
       @sorns = @sorns.only_exact_matches(params[:search], @selected_fields)
       @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
     else
@@ -81,6 +59,27 @@ class SornsController < ApplicationController
       format.html
       # format.json { render json: @sorns.to_json }
       format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
+    end
+  end
+
+  def initial_broad_search
+    # place where can optimize future initial searches
+    @selected_fields = Sorn::FIELDS
+    field_syms = @selected_fields.map { |field| field.to_sym }
+    @sorns = @sorns.dynamic_search(field_syms, params[:search])
+  end
+
+  def date_filter
+    if params[:starting_year].present?
+      # from beginning of start year
+      starting_date = params[:starting_year] + "-01-01"
+      @sorns = @sorns.where('publication_date::DATE > ?', starting_date)
+    end
+
+    if params[:ending_year].present?
+      # to end of ending year
+      ending_date = params[:ending_year] + "-12-31"
+      @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
   end
 
