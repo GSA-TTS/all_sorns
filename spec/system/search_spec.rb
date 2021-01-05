@@ -97,20 +97,20 @@ RSpec.describe "/search", type: :system do
     find('label', text:'Source').click
     find('label', text:'Retrieval').click
     find('#agency-expand-button').click
-    # find('#field-expand-button').click
     find('#agency-deselect-all').click
-    # find('#fields-deselect-all').click
     find('label', text:'Parent Agency').click
     find('label', text:'Child Agency').click
-    
+
     expect(page).to have_selector("#active-fields .active-filter", count: 2)
+    expect(page).to have_selector("#active-fields:first-child", text: "retrieval")
+    expect(page).to have_selector("#active-fields:last-child", text: "source")
+
     expect(page).to have_selector("#active-agencies .active-filter", count: 2)
+    expect(page).to have_selector("#active-agencies:first-child", text: "Child Agency")
+    expect(page).to have_selector("#active-agencies:last-child", text: "Parent Agency")
+
+    find(".active-filter", text: "retrieval").find(".remove-badge").click
+    # if retrieval is closed, then source is left
+    expect(page).to have_selector("#active-fields:first-child", text: "source")
   end
-
-  # adding badges to correct section
-  # clear all 
-  # click badge to remove
-  
-  # sorting
-
 end
