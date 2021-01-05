@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "Search", type: :request do
   let!(:sorn) { create :sorn, citation: "citation" }
-  let(:search) { nil }
+  let(:search) { "FAKE" }
   let(:fields) { nil }
   let(:agency) { nil }
 
-  before { get "/search?search=#{search}&#{fields}&#{agency}" }
+  before { get "/?search=#{search}&#{fields}&#{agency}" }
 
-  context "/search" do
+  context "search" do
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
@@ -20,10 +20,6 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include sorn.publication_date
       expect(response.body).to include sorn.citation
       expect(response.body).to include sorn.html_url
-    end
-
-    it "no search result summaries" do
-      expect(response.body).not_to include 'FOUND IN'
     end
   end
 
@@ -155,7 +151,7 @@ RSpec.describe "Search", type: :request do
     before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
 
     it "only returns the newer sorn in date range" do
-      get "/search?starting_year=2019"
+      get "/search?search=FAKE&starting_year=2019"
 
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
@@ -163,7 +159,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "only returns the older sorn in date range" do
-      get "/search?ending_year=2001"
+      get "/search?search=FAKE&ending_year=2001"
 
       expect(response.body).to include "2000-01-13" # Older sorn date
       expect(response.body).not_to include "NEW SORN"
@@ -171,7 +167,7 @@ RSpec.describe "Search", type: :request do
     end
 
     it "ending year is inclusive" do
-      get "/search?ending_year=2000"
+      get "/search?search=FAKE&ending_year=2000"
 
       expect(response.body).to include "2000-01-13" # Older sorn date
       expect(response.body).not_to include "NEW SORN"

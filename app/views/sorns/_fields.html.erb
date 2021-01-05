@@ -5,13 +5,13 @@
   </legend>
 
   <div id="sorn-fields">
-    <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
+    <% checkboxes = Sorn::FIELDS %>
     <% checkboxes.each do |field, index| %>
       <div class="usa-checkbox">
         <input class="usa-checkbox__input" id="fields-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>">
         <label class="usa-checkbox__label" for="fields-<%= field %>"><%= field.to_s.humanize %></label>
       </div>
     <% end %>
-    <div id="fields-for-js" hidden data-fields="<%= @selected_fields %>"></div>
+    <div id="fields-for-js" hidden data-fields="<%= @selected_fields.map(&:to_s) %>"></div>
   </div>
 </fieldset>

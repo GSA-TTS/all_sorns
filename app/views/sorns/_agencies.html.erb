@@ -5,7 +5,7 @@
   <div id="selected-agencies" class="list">
     <% Agency.all.each do |agency| %>
       <div class="usa-checkbox">
-        <input class="usa-checkbox__input" id="agencies-<%= agency.name&.parameterize %>" type="checkbox" name="agencies[]" value="<%= agency.name %>" checked>
+        <input class="usa-checkbox__input" id="agencies-<%= agency.name&.parameterize %>" type="checkbox" name="agencies[]" value="<%= agency.name %>">
         <label class="usa-checkbox__label agency-name" for="agencies-<%= agency.name&.parameterize %>"><%= agency.name %></label>
       </div>
     <% end %>
