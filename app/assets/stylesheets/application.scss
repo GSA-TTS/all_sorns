@@ -118,25 +118,26 @@
 
 
 
- // use with mixin utility when available
- #search-filters{
+//Sidebar
+.sidebar h3 {
+  font: sans-serif;
+  padding: 1.25rem 1rem 0rem 1.25rem;
+  font-family: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
   font-size: 20px;
-  margin-bottom: 19px;
+}
+
+ #section-filters{
+  font-size: 16px;
   font-weight:bold;
  }
 
- #fields {
+ #sections {
    overflow: hidden;
  }
 
  .agency-button {
    width: 100px;
    display: inline;
- }
-
- #fields-to-search{
-  font-size: 16px;
-  font-weight:bold;
  }
 
  #sorn-fields input[type='checkbox']{
