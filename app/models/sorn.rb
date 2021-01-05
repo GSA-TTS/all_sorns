@@ -9,9 +9,7 @@ class Sorn < ApplicationRecord
   validates :citation, uniqueness: true
 
   scope :no_computer_matching, -> { where.not('"sorns"."action" ILIKE ?', '%matching%') }
-  scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
-  scope :get_distinct_with_dynamic_search, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
-
+  scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
 
   FIELDS = [
@@ -147,14 +145,11 @@ class Sorn < ApplicationRecord
     end
   end
 
-  def linked
-    Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
-  end
-
   def self.only_exact_matches(search_term, fields_to_search)
-    all.filter_map do |sorn|
+    exact_matches = all.filter_map do |sorn|
       sorn if sorn.search_term_found_in_any_selected_fields(search_term, fields_to_search)
     end
+    Sorn.where(id: exact_matches.map(&:id))
   end
 
   def search_term_found_in_any_selected_fields(search_term, fields_to_search)

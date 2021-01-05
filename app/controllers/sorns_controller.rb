@@ -1,17 +1,14 @@
 class SornsController < ApplicationController
   def search
-    @fields_to_search = params[:fields] || Sorn::FIELDS
-    @sorns = Sorn.no_computer_matching.includes(:mentioned)# .preload(:agencies)
+    @sorns = Sorn.none.page(params[:page]) and return if params[:search].blank? # blank page on first visit
 
-    if params[:search]
-      @sorns = @sorns.dynamic_search(@fields_to_search, params[:search]).get_distinct_with_dynamic_search
-    else
-      @sorns = Sorn.none.page(params[:page]) and return # blank page on first visit
-    end
-
+    @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
+    @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
 
     if params[:agencies]
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
+      # Matching on agencies could return duplicates, so get distinct
+      @sorns = @sorns.get_distinct_with_dynamic_search_rank
     end
 
     if params[:starting_year].present?
@@ -26,11 +23,12 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    if multiword_search?
-      @sorns = @sorns.only_exact_matches(params[:search], @fields_to_search) if request.format == :html
-      @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
-    else
-      @sorns = @sorns.page(params[:page]) if request.format == :html
+    @sorns = @sorns.only_exact_matches(params[:search], @fields_to_search) if multiword_search?
+
+    if request.format == :html
+      # only need to load mentioned and pagination for html
+      @sorns = @sorns.includes(:mentioned)
+      @sorns = @sorns.page(params[:page])
     end
 
     respond_to do |format|
@@ -43,25 +41,5 @@ class SornsController < ApplicationController
 
   def multiword_search?
     params[:search].scan(/\w+/).size > 1 if params[:search].present?
-  end
-
-  def no_params_on_page_load?
-    params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
-  end
-
-  def search_and_agency_blank?
-    params[:search].blank? && params[:agencies].blank?
-  end
-
-  def search_present_and_agency_blank?
-    params[:search].present? && params[:agencies].blank?
-  end
-
-  def search_blank_and_agency_present?
-    params[:search].blank? && params[:agencies].present?
-  end
-
-  def search_and_fields_and_agency_present?
-    params[:search].present? && params[:fields].present? && params[:agencies].present?
   end
 end
