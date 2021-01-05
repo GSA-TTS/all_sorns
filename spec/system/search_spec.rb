@@ -2,13 +2,8 @@ require "rails_helper"
 
 RSpec.describe "/search", type: :system do
   before do
-    driven_by(:selenium_chrome)#_headless)
+    driven_by(:selenium_chrome_headless)
     11.times { create :sorn }
-  end
-
-  it "selected agencies are still checked after a search" do
-    visit "/search?search=FAKE&agencies[]=Parent+Agency&fields[]=system_name"
-    expect(find("#agencies-parent-agency")).to be_checked
   end
 
   it "applies the agency-separator class to the agency pipe separator" do

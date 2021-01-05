@@ -18,22 +18,12 @@ RSpec.describe "Search csv", type: :request do
     end
   end
 
-  context "search with different columns and agency select" do
-    let(:search) { "citation" }
-    let(:fields) { "fields%5B%5D=citation" }
-    let(:agency) { nil }
-
-    it "returns matching, with only selected columns" do
-      expect(response.body).to eq "citation\ncitation\n"
-    end
-  end
-
   context "search with different columns" do
     let(:search) { "citation" }
     let(:fields) { "fields%5B%5D=citation" }
     let(:agency) { nil }
 
-    it "returns everything, with only selected columns" do
+    it "returns matching, with only selected columns" do
       expect(response.body).to eq "citation\ncitation\n"
     end
   end
