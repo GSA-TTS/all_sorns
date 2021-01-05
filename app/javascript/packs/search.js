@@ -83,14 +83,9 @@ function add_badge(id, value, section){
 
   var $new_badge = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
 
+  $container.append($new_badge)
+
   var $filters = $container.find('.active-filter').clone().get()
-
-  // if no filters, add to container
-  if ($filters.length === 0) {
-    $container.append($new_badge)
-  }
-
-  $filters.push($new_badge)
 
   var $sorted = $filters.sort(function(a, b) {
     if (a.textContent < b.textContent) {
@@ -99,8 +94,6 @@ function add_badge(id, value, section){
       return 1;
     }
   });
-  
-  console.log($sorted)
 
   $(`#active-${section}`).html($sorted) 
 };
