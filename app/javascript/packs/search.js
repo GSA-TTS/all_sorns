@@ -81,9 +81,7 @@ $( function () {
 function add_badge(id, value, section){
   var $container = $(`#active-${section}`)
 
-  var $new_badge = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
-  
-  //$container.append($new_badge)
+  var $new_badge = `<div class="active-filter" id="${id}">${value}><a href="#" class="remove-badge">[X]</a></div>`
 
   var $filters = $container.find('.active-filter').clone().get()
 
@@ -101,9 +99,9 @@ function add_badge(id, value, section){
       return 1;
     }
   });
-
-  console.log($sorted)
   
+  console.log($sorted)
+
   $(`#active-${section}`).html($sorted) 
 };
 
@@ -116,7 +114,7 @@ function checkboxesFromUrl(elementName) {
     // check those found in url
     dataFromurl.forEach(data => {
       $(`#${elementName}-${data}`).prop("checked", true)
-      //add_badge(`${elementName}-${data}`,data,elementName)
+      add_badge(`${elementName}-${data}`,data,elementName)
     });
   }
 }
