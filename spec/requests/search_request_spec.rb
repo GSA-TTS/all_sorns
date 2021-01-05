@@ -1,188 +1,91 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Search", type: :request do
-  let!(:sorn) { create :sorn, citation: "citation" }
-  let(:search) { nil }
-  let(:fields) { nil }
-  let(:agency) { nil }
-
-  before { get "/search?search=#{search}&#{fields}&#{agency}" }
-
-  context "/search" do
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-
-    it "returns eveything with the default columns" do
-      expect(response.body).to include sorn.system_name
-      expect(response.body).to include sorn.agencies.first.name
-      expect(response.body).to include sorn.action
-      expect(response.body).to include sorn.publication_date
-      expect(response.body).to include sorn.citation
-      expect(response.body).to include sorn.html_url
-    end
-
-    it "no search result summaries" do
-      expect(response.body).not_to include 'FOUND IN'
-    end
+RSpec.describe "/search", type: :system do
+  before do
+    driven_by(:selenium_chrome_headless)
+    11.times { create :sorn }
   end
 
-  context "search with agency select" do
-    let(:search) { "FAKE" }
-    let(:fields) { 'fields[]=action' }
-    let(:agency) { "agencies[]=Parent+Agency" }
+  it "default checkboxes are as expected" do
+    visit "/search"
 
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
+    Sorn::DEFAULT_FIELDS.each do |default_field|
+      expect(find("#fields-#{default_field}")).to be_checked
     end
 
-    it "default agency set" do
-      expect(response.body).to include 'data-agencies="[&quot;parent-agency&quot;]"'
-    end
-
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
-    end
-
-    context "agency search with overlapping SORNs" do
-      let(:fields) { 'fields[]=system_name' }
-      let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
-      let(:child_agency) { create(:agency, name: "Child Agency")}
-
-      before { sorn.agencies << child_agency }
-
-      it "only returns a single SORN, even though it matches the two agencies" do
-        expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
-        expect(response.body).to include('FAKE SYSTEM NAME')
-      end
-    end
+    expect(find("#fields-routine_uses")).not_to be_checked
   end
 
-  context "search without agency select" do
-    let(:search) { "FAKE" }
-    let(:fields) { 'fields[]=action' }
-    let(:agency) { nil }
-
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-
-    it "no default agency selected" do
-      expect(response.body).to include 'data-agencies=""'
-    end
-
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
-    end
+  it "selected agencies are still checked after a search" do
+    visit "/search?agencies[]=Parent+Agency&fields[]=system_name"
+    expect(find("#agencies-parent-agency")).to be_checked
   end
 
-  context "search with default columns" do
-    let(:search) { "FAKE" }
-    let(:fields) { "fields%5B%5D=agency_names&fields%5B%5D=action&fields%5B%5D=summary&fields%5B%5D=system_name&fields%5B%5D=html_url&fields%5B%5D=publication_date" }
+  it "applies the agency-separator class to the agency pipe separator" do
+    visit "/search"
 
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-
-    it "returns found results with default columns" do
-      # default fields
-      expect(response.body).to include "FAKE SYSTEM NAME"
-      expect(response.body).to include 'Parent Agency | Child Agency'
-      expect(response.body).to include "HTML URL"
-      expect(response.body).to include "2000-01-13"
-    end
-
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Action</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> ACTION</div>"
-      expect(response.body).to include "<div class='sorn-attribute-header'>Summary</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SUMMARY</div>"
-      expect(response.body).to include "<div class='sorn-attribute-header'>System name</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>FAKE</mark> SYSTEM NAME</div>"
-    end
+    expect(page).to have_css '.agency-separator'
   end
 
-  context "search with different columns" do
-    let(:search) { "citation" }
-    let(:fields) { "fields%5B%5D=citation" }
+  scenario "publication date validation" do
+    visit "/search"
 
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
+    find("#publication-year-button").click
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "2020"
+      fill_in "Ending year", with: "2019"
     end
+    find("#general-search-button").click
 
-    it "with search result summaries" do
-      expect(response.body).to include 'FOUND IN'
-      expect(response.body).to include "<div class='sorn-attribute-header'>Citation</div>"
-      expect(response.body).to include "<div class='found-section-snippet'><mark>citation</mark></div>"
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq "Starting year should be earlier than the ending year."
+
+    # Fix the years and submit should work
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "2019"
+      fill_in "Ending year", with: "2020"
     end
+    find("#general-search-button").click
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq ""
+
+    visit "/search"
+    find("#publication-year-button").click
+    # Just a starting year should work
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "2019"
+    end
+    find("#general-search-button").click
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq ""
+
+    visit "/search"
+    find("#publication-year-button").click
+    # Just an ending year should work
+    within "#publication-date-fields" do
+      fill_in "Ending year", with: "2019"
+    end
+    find("#general-search-button").click
+    # validation message is always on starting year
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq ""
+
+    visit "/"
+    find("#publication-year-button").click
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "1993"
+    end
+    find("#general-search-button").click
+
+    message = find("#starting_year").native.attribute("validationMessage")
+    expect(message).to eq "Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year"
   end
 
-  context "blank search, with different columns" do
-    let(:search) { nil }
-    let(:fields) { "fields%5B%5D=citation" }
-
-    it "succeeds" do
-      expect(response.successful?).to be_truthy
-    end
-  end
-
-
-  context "multiword search" do
-    before do
-      create :sorn, categories_of_record: "health record"
-      create :sorn, categories_of_record: "health blah blah record"
-    end
-
-    let(:search) { "health+record" }
-    let(:fields) { "fields[]=categories_of_record" }
-    let(:agency) { nil }
-
-    it "returns only exact matches" do
-      get "?search=#{search}&#{fields}"
-
-      expect(response.body).to include "Displaying <b>1</b>  for &quot;health record&quot;"
-      expect(response.body).to include "<mark>health record</mark>"
-      expect(response.body).not_to include "health blah blah record"
-    end
-  end
-
-  context "publication date search" do
-    before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
-
-    it "only returns the newer sorn in date range" do
-      get "/search?starting_year=2019"
-
-      expect(response.body).to include "NEW SORN" # Newer sorn date
-      expect(response.body).to include "2019-01-13" # Newer sorn date
-      expect(response.body).not_to include "2000-01-13" # Older sorn date
-    end
-
-    it "only returns the older sorn in date range" do
-      get "/search?ending_year=2001"
-
-      expect(response.body).to include "2000-01-13" # Older sorn date
-      expect(response.body).not_to include "NEW SORN"
-      expect(response.body).not_to include "2019-01-13" # Newer sorn date
-    end
-
-    it "ending year is inclusive" do
-      get "/search?ending_year=2000"
-
-      expect(response.body).to include "2000-01-13" # Older sorn date
-      expect(response.body).not_to include "NEW SORN"
-    end
-
-    it "search works with all params" do
-      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
-
-      expect(response.body).to include "NEW SORN" # Newer sorn date
-      expect(response.body).to include "2019-01-13" # Newer sorn date
-      expect(response.body).to include "<mark>different</mark>" # Newer citation
-    end
+  scenario "paging doesn't break js" do
+    visit "/"
+    find_all("nav.pagination").first.find_all(".page")[1].click
+    sleep 1
+    # gov banner should remain closed
+    expect(find("#gov-banner").visible?).to be_falsey
   end
 end
