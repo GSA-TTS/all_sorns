@@ -12,13 +12,13 @@ $( function () {
 
   // Select all and deselect all buttons
   const agencyCheckboxes = $("#agencies input:checkbox")
+  const fieldCheckboxes = $("#fields input:checkbox")
   $("#agency-select-all").on('click', function(){
     agencyCheckboxes.prop("checked", true)
   })
   $("#agency-deselect-all").on('click', function(){
     agencyCheckboxes.prop("checked", false)
     clear_badges('agencies')
-    // TODO - trigger remove_badge for all
   })
 
   // Validate the publication date input
