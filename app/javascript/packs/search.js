@@ -81,7 +81,7 @@ $( function () {
 function add_badge(id, value, section){
   var $container = $(`#active-${section}`)
 
-  var $new_badge = `<div class="active-filter" id="${id}">${value}><a href="#" class="remove-badge">[X]</a></div>`
+  var $new_badge = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
 
   var $filters = $container.find('.active-filter').clone().get()
 
