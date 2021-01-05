@@ -7,7 +7,7 @@
   </div>
 </header>
 
-<%= form_tag '/search', method: "GET", id: "search-form" do %>
+<%= form_tag '/search', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
 <section class="grid-container">
   <div class="grid-col-10 grid-offset-1 search-area">
     <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>

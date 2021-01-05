@@ -39,6 +39,12 @@
 
  body {
   background: #F7F9FA;
+
+  &.pre-search {
+    background-image: image-url("PrvOps_SornDash_Landing_02.svg");
+    background-repeat: no-repeat;
+    background-position: left bottom;
+  }
  }
 
  // Header & Navigation
@@ -227,6 +233,10 @@
 
  #search-form {
    width: 100%;
+
+   &.pre-search {
+    margin-bottom: 350px;
+   }
  }
 
  .usa-search {
