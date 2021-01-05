@@ -36,11 +36,9 @@ $( function () {
       const parent_id = $(this).parent().parent()[0].id;
 
       if (parent_id === "sorn-fields") {
-        // $("#active-fields").append($html)
         add_badge(this.id, this.value, "fields")
       }
       else if(parent_id === "selected-agencies") {
-        // $("#active-agencies").append($html)
         add_badge(this.id, this.value, "agencies")
       }
       
@@ -67,7 +65,6 @@ $( function () {
 
   // uncheck filter
   function uncheck_filter(id){
-    console.log(id)
     var n = $(`input:checkbox[id^="${id}"]:checked`)
     n.prop("checked", false)
   }
@@ -81,7 +78,7 @@ $( function () {
       });
     };
 
-// add filter badge
+// add filter badge and sort elements
 function add_badge(id, value, section){
   var $container = $(`#active-${section}`)
 
