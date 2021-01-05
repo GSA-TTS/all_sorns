@@ -7,7 +7,7 @@ $( function () {
 
   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
-    return html.replace("|","<span class='agency-separator'>|</span>")
+    return html.replace("|","<span class='agency-separator'>|</span>");
   });
 
   // Select all and deselect all buttons

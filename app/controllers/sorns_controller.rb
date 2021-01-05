@@ -2,6 +2,9 @@ class SornsController < ApplicationController
   def search
 
     if !no_params_on_page_load?
+      if dates_blank?
+        puts 'holy cow'
+      end
       # initialize on search first
       populate_parameters()
     end
@@ -13,7 +16,7 @@ class SornsController < ApplicationController
     
     @sorns = Sorn.no_computer_matching.includes(:mentioned).preload(:agencies)
     
-    if params[:fields].blank?
+    if params[:fields].blank? && dates_blank?
       initial_broad_search()
 
     elsif search_and_agency_blank?
@@ -45,10 +48,7 @@ class SornsController < ApplicationController
       raise "WUT"
     end
 
-    date_filter()
-
     if multiword_search?
-      puts 'multi-world'
       @sorns = @sorns.only_exact_matches(params[:search], @selected_fields)
       @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
     else
@@ -88,7 +88,7 @@ class SornsController < ApplicationController
   end
 
   def no_params_on_page_load?
-    params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
+    params[:search].blank? && params[:fields].blank? && params[:agencies].blank? && dates_blank?
   end
 
   def search_and_agency_blank?
@@ -105,5 +105,9 @@ class SornsController < ApplicationController
 
   def search_and_fields_and_agency_present?
     params[:search].present? && params[:fields].present? && params[:agencies].present?
+  end
+
+  def dates_blank?
+    (params[:starting_date].blank? || params[:ending_year].blank)
   end
 end
