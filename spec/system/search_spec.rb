@@ -90,7 +90,7 @@ RSpec.describe "/search", type: :system do
     expect(find("#gov-banner").visible?).to be_falsey
   end
 
-  # fields checkboxes shown by default
+  # test for fields checkboxes and active filters
   scenario "active-filters" do
     visit "/"
     find('#fields-deselect-all').click
@@ -101,10 +101,10 @@ RSpec.describe "/search", type: :system do
     find('label', text:'Parent Agency').click
     find('label', text:'Child Agency').click
 
+    # active filter badges should be in alphabetical order
     expect(page).to have_selector("#active-fields .active-filter", count: 2)
     expect(page).to have_selector("#active-fields:first-child", text: "retrieval")
     expect(page).to have_selector("#active-fields:last-child", text: "source")
-
     expect(page).to have_selector("#active-agencies .active-filter", count: 2)
     expect(page).to have_selector("#active-agencies:first-child", text: "Child Agency")
     expect(page).to have_selector("#active-agencies:last-child", text: "Parent Agency")
@@ -112,5 +112,8 @@ RSpec.describe "/search", type: :system do
     find(".active-filter", text: "retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
     expect(page).to have_selector("#active-fields:first-child", text: "source")
+    
+    # retrieval is closed, it should also be unchecked
+    expect(find("#fields-retrieval")).not_to be_checked
   end
 end
