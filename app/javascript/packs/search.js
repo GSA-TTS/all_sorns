@@ -1,3 +1,4 @@
+
 $( function () {
   // Set checked fields from url
   checkboxesFromUrl("fields")
@@ -32,7 +33,6 @@ $( function () {
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
     if(this.checked) {
-      var $html = `<div class="active-filter" id="${this.id}">${this.value}<a href="#" class="remove-badge">[X]</a></div>`
       const parent_id = $(this).parent().parent()[0].id;
 
       if (parent_id === "sorn-fields") {
@@ -43,7 +43,8 @@ $( function () {
       }
       
     }else{
-      $(`#active-filters #${this.id}`).remove()
+      // add '-badge' to id to remove
+      $(`#active-filters #${this.id}-badge`).remove()
     }
   });
 
@@ -51,7 +52,9 @@ $( function () {
   $(document).on('click', 'a.remove-badge', function (e) {
     e.preventDefault()
     remove_badge($(this).parent())
-    uncheck_filter($(this).parent().attr('id'))
+    
+    // strip '-badge' from id before calling
+    uncheck_filter($(this).parent().attr('id').replace('-badge',''))
   });
 
   // remove filter badge
@@ -75,7 +78,8 @@ $( function () {
 function add_badge(id, value, section){
   var $container = $(`#active-${section}`)
 
-  var $new_badge = `<div class="active-filter" id="${id}">${value}<a href="#" class="remove-badge">[X]</a></div>`
+  // add '-badge' to ids for active filters
+  var $new_badge = `<div class="active-filter" id="${id}-badge">${value}<a href="#" class="remove-badge">[X]</a></div>`
 
   $container.append($new_badge)
 
