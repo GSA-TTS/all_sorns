@@ -25,14 +25,26 @@ $( function () {
 
       if (parent_id === "sorn-fields") {
         add_badge(this.id, this.value, "fields")
+        if ( $("#active-section-filters").is(":hidden") ){
+          $("#active-section-filters").show();
+        }
       }
       else if(parent_id === "selected-agencies") {
         add_badge(this.id, this.value, "agencies")
+        if ( $("#active-agency-filters").is(":hidden") ){
+          $("#active-agency-filters").show();
+        }
       }
 
     }else{
       // add '-badge' to id to remove
       $(`#active-filters #${this.id}-badge`).remove()
+      if ( $("#active-section-filters .active-filter").length == 0 ){
+        $("#active-section-filters").hide();
+      }
+      if ( $("#active-agency-filters .active-filter").length == 0 ){
+        $("#active-agency-filters").hide();
+      }
     }
   });
 
@@ -43,23 +55,14 @@ $( function () {
 
     // strip '-badge' from id before calling
     uncheck_filter($(this).parent().attr('id').replace('-badge',''))
+
+    if ( $("#active-section-filters .active-filter").length == 0 ){
+      $("#active-section-filters").hide();
+    }
+    if ( $("#active-agency-filters .active-filter").length == 0 ){
+      $("#active-agency-filters").hide();
+    }
   });
-
-  // remove filter badge
-  function remove_badge(div){
-    div.remove()
-  };
-
-  function clear_badges(section){
-    $(`#active-${section}`).empty()
-  };
-
-  // uncheck filter
-  function uncheck_filter(id){
-    var n = $(`input:checkbox[id^="${id}"]:checked`)
-    n.prop("checked", false)
-  }
-
 });
 
 // add filter badge and sort elements
@@ -83,6 +86,21 @@ function add_badge(id, value, section){
 
   $(`#active-${section}`).html($sorted)
 };
+
+// remove filter badge
+function remove_badge(div){
+  div.remove()
+};
+
+function clear_badges(section){
+  $(`#active-${section}`).empty()
+};
+
+// uncheck filter
+function uncheck_filter(id){
+  var n = $(`input:checkbox[id^="${id}"]:checked`)
+  n.prop("checked", false)
+}
 
 function publicationDateValidation(){
   startYear = parseInt($("#starting_year").val())
