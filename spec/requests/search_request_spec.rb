@@ -51,7 +51,7 @@ RSpec.describe "Search", type: :request do
 
       it "only returns a single SORN, even though it matches the two agencies" do
         expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
-        expect(response.body).to include('FAKE SYSTEM NAME')
+        expect(response.body).to include('FAKE SYSTEM NAME').once
       end
 
       it "both agency checkboxed are checked" do
@@ -86,9 +86,6 @@ RSpec.describe "Search", type: :request do
       create :sorn, categories_of_record: "health record"
       create :sorn, categories_of_record: "health blah blah record"
     end
-    find("#general-search-button").click
-    message = find("#starting_year").native.attribute("validationMessage")
-    expect(message).to eq ""
 
     let(:search) { "health+record" }
     let(:fields) { "fields[]=categories_of_record" }
@@ -101,10 +98,7 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "<mark>health record</mark>"
       expect(response.body).not_to include "blah blah"
     end
-    find("#general-search-button").click
-    # validation message is always on starting year
-    message = find("#starting_year").native.attribute("validationMessage")
-    expect(message).to eq ""
+  end
 
   context "publication date search" do
     before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
@@ -124,7 +118,6 @@ RSpec.describe "Search", type: :request do
       expect(response.body).not_to include "NEW SORN"
       expect(response.body).not_to include "2019-01-13" # Newer sorn date
     end
-    find("#general-search-button").click
 
     it "ending year is inclusive" do
       get "/search?search=FAKE&ending_year=2000"
@@ -136,11 +129,9 @@ RSpec.describe "Search", type: :request do
     it "search works with all params" do
       get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
-  scenario "paging doesn't break js" do
-    visit "/"
-    find_all("nav.pagination").first.find_all(".page")[1].click
-    sleep 1
-    # gov banner should remain closed
-    expect(find("#gov-banner").visible?).to be_falsey
+      expect(response.body).to include "NEW SORN" # Newer sorn date
+      expect(response.body).to include "2019-01-13" # Newer sorn date
+      expect(response.body).to include "<mark>different</mark>" # Newer citation
+    end
   end
 end
