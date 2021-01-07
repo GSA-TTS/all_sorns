@@ -7,6 +7,8 @@
       <div id="section-filters">Sections</div>
     </legend>
 
+    <a href="#" id='fields-deselect-all' class="clear-all">X Clear section filters</a>
+
     <div id="sorn-fields">
       <% checkboxes = Sorn::FIELDS + Sorn::METADATA %>
       <% checkboxes.each do |field, index| %>

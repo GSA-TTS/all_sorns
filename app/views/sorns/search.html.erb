@@ -44,9 +44,32 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+      <div id="active-filters">
+        <div class="grid-row">
+
+          <div id="" class="labels">
+            ACTIVE SECTION FILTERS
+          </div>
+        </div>
+
+        <div class="grid-row">
+          <div id="active-fields"></div>
+        </div>
+
+        <div class="grid-row">
+          <div id="" class="labels">
+            ACTIVE AGENCY FILTERS
+          </div>
+        </div>
+
+        <div class="grid-row">
+          <div id="active-agencies"></div>
+        </div>
+      </div>
+
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
-            <div id="count">
+            <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>

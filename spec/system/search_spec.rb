@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe "/search", type: :system do
   before do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome)
     11.times { create :sorn }
+    create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
   end
 
   it "applies the agency-separator class to the agency pipe separator" do
@@ -72,5 +73,34 @@ RSpec.describe "/search", type: :system do
     sleep 1
     # gov banner should remain closed
     expect(find("#gov-banner").visible?).to be_falsey
+  end
+
+  # test for fields checkboxes and active filters
+  scenario "active-filters" do
+    visit "/?search=FAKE"
+    click_on 'Sections'
+    find('#fields-deselect-all').click
+    find('label', text:'Source').click
+    find('label', text:'Retrieval').click
+
+    click_on 'Agencies'
+    find('#agency-deselect-all').click
+    find('label', text:'Parent Agency').click
+    find('label', text:'Child Agency').click
+
+    # active filter badges should be in alphabetical order
+    expect(page).to have_selector("#active-fields .active-filter", count: 2)
+    expect(page).to have_selector("#active-fields:first-child", text: "retrieval")
+    expect(page).to have_selector("#active-fields:last-child", text: "source")
+    expect(page).to have_selector("#active-agencies .active-filter", count: 2)
+    expect(page).to have_selector("#active-agencies:first-child", text: "Child Agency")
+    expect(page).to have_selector("#active-agencies:last-child", text: "Parent Agency")
+
+    find(".active-filter", text: "retrieval").find(".remove-badge").click
+    # if retrieval is closed, then source is left
+    expect(page).to have_selector("#active-fields:first-child", text: "source")
+
+    # retrieval is closed, it should also be unchecked
+    expect(find("#fields-retrieval")).not_to be_checked
   end
 end
