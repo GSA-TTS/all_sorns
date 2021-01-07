@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Search", type: :request do
   let!(:sorn) { create :sorn, citation: "citation" }
@@ -51,7 +51,7 @@ RSpec.describe "Search", type: :request do
 
       it "only returns a single SORN, even though it matches the two agencies" do
         expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
-        expect(response.body).to include('FAKE SYSTEM NAME')
+        expect(response.body).to include('FAKE SYSTEM NAME').once
       end
 
       it "both agency checkboxed are checked" do
