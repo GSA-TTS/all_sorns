@@ -8,133 +8,131 @@
 </header>
 
 <%= form_tag '/search', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
-<section class="grid-container">
-  <div class="grid-col-10 grid-offset-1 search-area">
-    <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
-    <fieldset class="usa-search usa-search--big">
-      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-      <button id="general-search-button" class="usa-button" type="submit">
-        <span class="usa-search__submit-text">Search</span>
-      </button>
-    </fieldset>
-  </div>
-</section>
+  <section class="grid-container">
+    <div class="grid-col-10 grid-offset-1 search-area">
+      <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
+      <fieldset class="usa-search usa-search--big">
+        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+        <button id="general-search-button" class="usa-button" type="submit">
+          <span class="usa-search__submit-text">Search</span>
+        </button>
+      </fieldset>
+    </div>
+  </section>
+
+  <% if params[:search].present? %>
   <div class="grid-container margin-top-2">
     <div class ="grid-row grid-gap">
 
-      <% if params[:search].present? %>
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-gray-70 sidebar">
           <div class="preview usa-prose site-prose" >
             <h3>Refine your search</h3>
-          
             <div class="usa-accordion">
-
               <%= render partial: "sections" %>
               <%= render partial: "agencies" %>
               <%= render partial: "publication_date" %>
             </div>
-
-          </div>
-          <div id="csv-download">
-            <%= link_to search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe do %>
-              <%= image_tag "Download_Icon.svg"%>
-              <span class="csv-download-link-text">Download results as a CSV file</span>
-            <% end %>
           </div>
         </div>
-        <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-          <div class="grid-row margin-bottom-1">
-            <div class="grid-col-6">
-              <div id="count">
-                <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
-              </div>
-            </div>
-            <div class="grid-col-6">
-                <%= paginate @sorns %>
+        <div id="csv-download">
+          <%= link_to search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe do %>
+            <%= image_tag "Download_Icon.svg"%>
+            <span class="csv-download-link-text">Download results as a CSV file</span>
+          <% end %>
+        </div>
+      </div>
+
+      <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+        <div class="grid-row margin-bottom-1">
+          <div class="grid-col-6">
+            <div id="count">
+              <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
+          <div class="grid-col-6">
+              <%= paginate @sorns %>
+          </div>
+        </div>
 
-          <ul id='cards' class="usa-card-group">
-            <% @sorns.each do |sorn| %>
-              <li class="usa-card">
-                <div class="usa-card__container">
-                  <header class="usa-card__header">
-                    <h2 class="system-name usa-card__heading"><%= raw(sorn.system_name) %></h2>
-                  </header>
-                  <div class="usa-card__body">
+        <ul id='cards' class="usa-card-group">
+          <% @sorns.each do |sorn| %>
+            <li class="usa-card">
+              <div class="usa-card__container">
+                <header class="usa-card__header">
+                  <h2 class="system-name usa-card__heading"><%= raw(sorn.system_name) %></h2>
+                </header>
+                <div class="usa-card__body">
+                  <div class="grid-row">
+                    <div class="grid-col-12">
+                      <span class="sorn-attribute-header">Agency:</span>
+                      <span class="agency-names"><%= sorn.agency_names %></span>
+                    </div>
+                  </div>
+                  <div class="grid-row">
+                    <div class="grid-col-12">
+                      <span class="sorn-attribute-header">Action:</span>
+                      <%= sorn.action %>
+                    </div>
+                  </div>
+                  <div class="grid-row">
+                    <div class="grid-col-6">
+                      <span class="sorn-attribute-header">Publication Date:</span>
+                      <%= sorn.publication_date %>
+                    </div>
+                    <div class="grid-col-6">
+                      <span class="sorn-attribute-header">Citation:</span>
+                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener"><%= sorn.citation %></a>
+                    </div>
+                  </div>
+
+                  <% if sorn.mentioned.present? %>
                     <div class="grid-row">
                       <div class="grid-col-12">
-                        <span class="sorn-attribute-header">Agency:</span>
-                        <span class="agency-names"><%= sorn.agency_names %></span>
-                      </div>
-                    </div>
-                    <div class="grid-row">
-                      <div class="grid-col-12">
-                        <span class="sorn-attribute-header">Action:</span>
-                        <%= sorn.action %>
-                      </div>
-                    </div>
-                    <div class="grid-row">
-                      <div class="grid-col-6">
-                        <span class="sorn-attribute-header">Publication Date:</span>
-                        <%= sorn.publication_date %>
-                      </div>
-                      <div class="grid-col-6">
-                        <span class="sorn-attribute-header">Citation:</span>
-                        <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener"><%= sorn.citation %></a>
-                      </div>
-                    </div>
-
-                    <% if sorn.mentioned.present? %>
-                      <div class="grid-row">
-                        <div class="grid-col-12">
-                          <span class="sorn-attribute-header">SORN History and/or other SORNS referenced:</span>
-                          <ul>
-                          <% sorn.mentioned.each do |metioned_sorn| %>
-                            <li>
-                              <a href="<%= metioned_sorn.html_url %>" class="mention-citation"><%= metioned_sorn.citation %></a>:
-                              <%= metioned_sorn.action %>,
-                              <%= metioned_sorn.publication_date %>
-                            </li>
-                          <% end %>
-                          </ul>
-                        </div>
-                      </div>
-                    <% end %>
-
-                    <% if params[:search].present? %>
-                      <hr />
-
-                      <div class="grid-row">
-                        <h4 class='found-in'>FOUND IN</h4>
-                        <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
-                          <div class="grid-row">
-                            <div class='sorn-attribute-header'><%= section.humanize %></div>
-                            <div class='found-section-snippet'><%= snippet %></div>
-                          </div>
+                        <span class="sorn-attribute-header">SORN History and/or other SORNS referenced:</span>
+                        <ul>
+                        <% sorn.mentioned.each do |metioned_sorn| %>
+                          <li>
+                            <a href="<%= metioned_sorn.html_url %>" class="mention-citation"><%= metioned_sorn.citation %></a>:
+                            <%= metioned_sorn.action %>,
+                            <%= metioned_sorn.publication_date %>
+                          </li>
                         <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+
+                  <hr />
+
+                  <div class="grid-row">
+                    <h4 class='found-in'>FOUND IN</h4>
+                    <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
+                      <div class="grid-row">
+                        <div class='sorn-attribute-header'><%= section.humanize %></div>
+                        <div class='found-section-snippet'><%= snippet %></div>
                       </div>
                     <% end %>
                   </div>
-                  <div class="usa-card__footer">
-                    <div class="grid-row">
-                      <div class="grid-col-6">
-                        <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener">View full SORN</a>
-                      </div>
+                </div>
+                <div class="usa-card__footer">
+                  <div class="grid-row">
+                    <div class="grid-col-6">
+                      <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener">View full SORN</a>
                     </div>
                   </div>
                 </div>
-              </li>
-            <% end %>
+              </div>
+            </li>
+          <% end %>
 
-            <div class="grid-offset-6 grid-col-6 margin-bottom-3">
-                <%= paginate @sorns %>
-            </div>
-          </ul>
-        </main>
-      <% end %>
+          <div class="grid-offset-6 grid-col-6 margin-bottom-3">
+            <%= paginate @sorns %>
+          </div>
+        </ul>
+      </main>
+    <% end %>
 
-      </div>
     </div>
-  <% end %>
+  </div>
+<% end %>
