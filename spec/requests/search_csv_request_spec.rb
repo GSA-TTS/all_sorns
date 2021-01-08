@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "Search csv", type: :request do
-  let!(:sorn) { create :sorn, citation: "citation" }
 
-  before { get "/search.csv?search=#{search}&#{fields}&#{agency}" }
+  before do
+    create :sorn
+    FullSornSearch.refresh # refresh the materialized view
+    get "/search.csv?search=#{search}&#{fields}&#{agency}"
+  end
 
   context "/search" do
     let(:search) { "FAKE" }
@@ -19,22 +22,22 @@ RSpec.describe "Search csv", type: :request do
   end
 
   context "search with different columns" do
-    let(:search) { "citation" }
-    let(:fields) { "fields%5B%5D=citation" }
+    let(:search) { "FAKE" }
+    let(:fields) { "fields[]=action" }
     let(:agency) { nil }
 
     it "returns matching, with only selected columns" do
-      expect(response.body).to eq "citation\ncitation\n"
+      expect(response.body).to eq "action\nFAKE ACTION\n"
     end
   end
 
   context "with agency search" do
     let(:search) { "FAKE" }
-    let(:fields) { "fields%5B%5D=agency_names&fields%5B%5D=action&fields%5B%5D=system_name&fields%5B%5D=summary&fields%5B%5D=html_url&fields%5B%5D=publication_date" }
+    let(:fields) { nil }
     let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
 
     it "returns sorns filtered by agency, no duplicates" do
-      expect(response.body).to include("Parent Agency | Child Agency,FAKE ACTION,FAKE SYSTEM NAME,FAKE SUMMARY,HTML URL,2000-01-13").once
+      expect(response.body).to include("Parent Agency | Child Agency,FAKE ACTION,FAKE SUMMARY,,,,,FAKE SYSTEM NAME,,,,,,,,,,,,,,,,,,,").once
     end
   end
 end

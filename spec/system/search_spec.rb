@@ -5,6 +5,7 @@ RSpec.describe "/search", type: :system do
     driven_by(:selenium_chrome_headless)
     11.times { create :sorn }
     create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
+    FullSornSearch.refresh # refresh the materialized view
   end
 
   it "applies the agency-separator class to the agency pipe separator" do

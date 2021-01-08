@@ -3,12 +3,20 @@ class SornsController < ApplicationController
     @sorns = Sorn.none.page(params[:page]) and return if params[:search].blank? # blank page on first visit
 
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
-    @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
+    if @fields_to_search == Sorn::FIELDS
+      @sorns = Sorn.no_computer_matching.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
+    else
+      @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
+    end
 
     if params[:agencies]
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
       # Matching on agencies could return duplicates, so get distinct
-      @sorns = @sorns.get_distinct_with_dynamic_search_rank
+      if @fields_to_search == Sorn::FIELDS
+        @sorns = @sorns.get_distinct
+      else
+        @sorns = @sorns.get_distinct_with_dynamic_search_rank
+      end
     end
 
     if params[:starting_year].present?
