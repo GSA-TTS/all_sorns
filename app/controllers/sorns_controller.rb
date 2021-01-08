@@ -3,13 +3,9 @@ class SornsController < ApplicationController
     @sorns = Sorn.none.page(params[:page]) and return if params[:search].blank? # blank page on first visit
 
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
-    @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
-
-    if params[:agencies]
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      # Matching on agencies could return duplicates, so get distinct
-      @sorns = @sorns.get_distinct_with_dynamic_search_rank
-    end
+    @sorns = Sorn.search(@fields_to_search, params[:search]).records # elasticsearch
+    @sorns = @sorns.no_computer_matching
+    @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]}) if params[:agencies]
 
     if params[:starting_year].present?
       # from beginning of start year
@@ -23,8 +19,6 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    @sorns = @sorns.only_exact_matches(params[:search], @fields_to_search) if multiword_search?
-
     if request.format == :html
       # only need to load mentioned and pagination for html
       @sorns = @sorns.includes(:mentioned)
@@ -35,11 +29,5 @@ class SornsController < ApplicationController
       format.html
       format.csv { send_data @sorns.to_csv(@fields_to_search.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv" }
     end
-  end
-
-  private
-
-  def multiword_search?
-    params[:search].scan(/\w+/).size > 1 if params[:search].present?
   end
 end

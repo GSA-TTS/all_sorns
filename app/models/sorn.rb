@@ -1,3 +1,4 @@
+require 'elasticsearch/model'
 include ActionView::Helpers::TextHelper
 
 class Sorn < ApplicationRecord
@@ -69,6 +70,28 @@ class Sorn < ApplicationRecord
       query: query
     }
   }
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+  def self.search(fields, query)
+    __elasticsearch__.search(
+      {
+        query: {
+          bool: {
+            must: {
+              multi_match: {
+                query: query,
+                fields: fields,
+                type: "phrase"
+              }
+            }
+          }
+        }
+      },
+      size: self.count,
+      _source: "id"
+    )
+  end
 
   def get_xml
     if xml_url.present? and xml.blank?
