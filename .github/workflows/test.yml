@@ -22,10 +22,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7.1
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: runs tests
         uses: ./.github/actions/tests.yml
