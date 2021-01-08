@@ -1,0 +1,21 @@
+name: "Install CF-cli"
+description: "Installs the cf-cli"
+
+# To avoid merge conflicts, use a strategy of first adopting all changes from
+# the upstream template, then reverting files and directories mangaged by the
+# the downstream guide.
+# Note: GitHub Actions do not execute with `workflows` permission; any workflow
+# updates that should be reflected in downstream guides must be manually merged.
+runs:
+  using: "composite"
+  steps:
+    - run: |
+          sudo apt-get update
+          sudo apt-get install wget gnupg2 apt-transport-https
+          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+          sudo apt-get update
+          sudo apt-get install cf-cli
+          cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
+          cf install-plugin blue-green-deploy -r CF-Community -f
+      shell: bash
