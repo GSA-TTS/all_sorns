@@ -7,7 +7,7 @@
   </div>
 </header>
 
-<%= form_tag '/search', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
+<%= form_tag '/', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
   <section class="grid-container">
     <div class="grid-col-10 grid-offset-1 search-area">
       <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
@@ -44,28 +44,28 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
-      <div id="active-filters">
-        <div id="active-section-filters" hidden>
-          <div class="grid-row">
-            <div class="labels">
-              ACTIVE SECTION FILTERS
+        <div id="active-filters">
+          <div id="active-section-filters" hidden>
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE SECTION FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-fields"></div>
             </div>
           </div>
-          <div class="grid-row">
-            <div id="active-fields"></div>
-          </div>
-        </div>
-        <div id="active-agency-filters" hidden>
-          <div class="grid-row">
-            <div class="labels">
-              ACTIVE AGENCY FILTERS
+          <div id="active-agency-filters" hidden>
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE AGENCY FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-agencies"></div>
             </div>
           </div>
-          <div class="grid-row">
-            <div id="active-agencies"></div>
-          </div>
         </div>
-      </div>
 
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">

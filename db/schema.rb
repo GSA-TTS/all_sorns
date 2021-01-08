@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_232801) do
+ActiveRecord::Schema.define(version: 2021_01_07_231530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -96,33 +96,61 @@ ActiveRecord::Schema.define(version: 2020_12_28_232801) do
     t.string "publication_date"
     t.string "title"
     t.string "action_type"
-    t.index "to_tsvector('english'::regconfig, (access)::text)", name: "access_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (action)::text)", name: "action_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (addresses)::text)", name: "addresses_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (authority)::text)", name: "authority_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (categories_of_individuals)::text)", name: "categories_of_individuals_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (categories_of_record)::text)", name: "categories_of_record_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (contesting)::text)", name: "contesting_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (dates)::text)", name: "dates_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (exemptions)::text)", name: "exemptions_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (further_info)::text)", name: "further_info_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (history)::text)", name: "history_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (location)::text)", name: "location_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (manager)::text)", name: "manager_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (notification)::text)", name: "notification_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (purpose)::text)", name: "purpose_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (retention)::text)", name: "retention_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (retrieval)::text)", name: "retrieval_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (routine_uses)::text)", name: "routine_uses_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (safeguards)::text)", name: "safeguards_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (security)::text)", name: "security_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (source)::text)", name: "source_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (storage)::text)", name: "storage_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (summary)::text)", name: "summary_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (supplementary_info)::text)", name: "supplementary_info_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (system_name)::text)", name: "system_name_idx", using: :gist
-    t.index "to_tsvector('english'::regconfig, (system_number)::text)", name: "system_number_idx", using: :gist
+    t.tsvector "agency_names_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(agency_names, ''::character varying))::text)" }
+    t.tsvector "action_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(action, ''::character varying))::text)" }
+    t.tsvector "summary_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(summary, ''::character varying))::text)" }
+    t.tsvector "dates_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(dates, ''::character varying))::text)" }
+    t.tsvector "addresses_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(addresses, ''::character varying))::text)" }
+    t.tsvector "further_info_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(further_info, ''::character varying))::text)" }
+    t.tsvector "supplementary_info_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(supplementary_info, ''::character varying))::text)" }
+    t.tsvector "system_name_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(system_name, ''::character varying))::text)" }
+    t.tsvector "system_number_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(system_number, ''::character varying))::text)" }
+    t.tsvector "security_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(security, ''::character varying))::text)" }
+    t.tsvector "location_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(location, ''::character varying))::text)" }
+    t.tsvector "manager_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(manager, ''::character varying))::text)" }
+    t.tsvector "authority_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(authority, ''::character varying))::text)" }
+    t.tsvector "purpose_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(purpose, ''::character varying))::text)" }
+    t.tsvector "categories_of_individuals_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(categories_of_individuals, ''::character varying))::text)" }
+    t.tsvector "categories_of_record_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(categories_of_record, ''::character varying))::text)" }
+    t.tsvector "source_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(source, ''::character varying))::text)" }
+    t.tsvector "routine_uses_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(routine_uses, ''::character varying))::text)" }
+    t.tsvector "storage_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(storage, ''::character varying))::text)" }
+    t.tsvector "retrieval_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(retrieval, ''::character varying))::text)" }
+    t.tsvector "retention_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(retention, ''::character varying))::text)" }
+    t.tsvector "safeguards_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(safeguards, ''::character varying))::text)" }
+    t.tsvector "access_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(access, ''::character varying))::text)" }
+    t.tsvector "contesting_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(contesting, ''::character varying))::text)" }
+    t.tsvector "notification_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(notification, ''::character varying))::text)" }
+    t.tsvector "exemptions_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(exemptions, ''::character varying))::text)" }
+    t.tsvector "history_tsvector", default: -> { "to_tsvector('english'::regconfig, (COALESCE(history, ''::character varying))::text)" }
+    t.index ["access_tsvector"], name: "index_sorns_on_access_tsvector", using: :gin
+    t.index ["action_tsvector"], name: "index_sorns_on_action_tsvector", using: :gin
+    t.index ["addresses_tsvector"], name: "index_sorns_on_addresses_tsvector", using: :gin
+    t.index ["agency_names_tsvector"], name: "index_sorns_on_agency_names_tsvector", using: :gin
+    t.index ["authority_tsvector"], name: "index_sorns_on_authority_tsvector", using: :gin
+    t.index ["categories_of_individuals_tsvector"], name: "index_sorns_on_categories_of_individuals_tsvector", using: :gin
+    t.index ["categories_of_record_tsvector"], name: "index_sorns_on_categories_of_record_tsvector", using: :gin
     t.index ["citation"], name: "index_sorns_on_citation"
+    t.index ["contesting_tsvector"], name: "index_sorns_on_contesting_tsvector", using: :gin
+    t.index ["dates_tsvector"], name: "index_sorns_on_dates_tsvector", using: :gin
+    t.index ["exemptions_tsvector"], name: "index_sorns_on_exemptions_tsvector", using: :gin
+    t.index ["further_info_tsvector"], name: "index_sorns_on_further_info_tsvector", using: :gin
+    t.index ["history_tsvector"], name: "index_sorns_on_history_tsvector", using: :gin
+    t.index ["location_tsvector"], name: "index_sorns_on_location_tsvector", using: :gin
+    t.index ["manager_tsvector"], name: "index_sorns_on_manager_tsvector", using: :gin
+    t.index ["notification_tsvector"], name: "index_sorns_on_notification_tsvector", using: :gin
+    t.index ["purpose_tsvector"], name: "index_sorns_on_purpose_tsvector", using: :gin
+    t.index ["retention_tsvector"], name: "index_sorns_on_retention_tsvector", using: :gin
+    t.index ["retrieval_tsvector"], name: "index_sorns_on_retrieval_tsvector", using: :gin
+    t.index ["routine_uses_tsvector"], name: "index_sorns_on_routine_uses_tsvector", using: :gin
+    t.index ["safeguards_tsvector"], name: "index_sorns_on_safeguards_tsvector", using: :gin
+    t.index ["security_tsvector"], name: "index_sorns_on_security_tsvector", using: :gin
+    t.index ["source_tsvector"], name: "index_sorns_on_source_tsvector", using: :gin
+    t.index ["storage_tsvector"], name: "index_sorns_on_storage_tsvector", using: :gin
+    t.index ["summary_tsvector"], name: "index_sorns_on_summary_tsvector", using: :gin
+    t.index ["supplementary_info_tsvector"], name: "index_sorns_on_supplementary_info_tsvector", using: :gin
+    t.index ["system_name_tsvector"], name: "index_sorns_on_system_name_tsvector", using: :gin
+    t.index ["system_number_tsvector"], name: "index_sorns_on_system_number_tsvector", using: :gin
   end
 
 end
