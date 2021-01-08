@@ -56,6 +56,8 @@ if [ "$1" = "rolling" ] ; then
 	# Do a zero downtime deploy.  This requires enough memory for
 	# two apps to exist in the org/space at one time.
 	cf push all_sorns --no-route -f .cloud-gov/manifest.yml --strategy rolling || exit 1
+elif [ "$1" = "update-sorn" ]
+	cf push all_sorns --no-route -f .cloud-gov/manifest-update.yml --strategy rolling || exit 1
 else
 	cf push all_sorns -f .cloud-gov/manifest.yml --no-route
 fi
