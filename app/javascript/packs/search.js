@@ -5,19 +5,20 @@ $( function () {
   });
 
   // Deselect all buttons
-  $("#fields-deselect-all").on('click', function(){
-    $("#sorn-fields input:checkbox").prop("checked", false)
-    $container = $("#active-section-filters")
-    clear_badges('fields', $container)
+  $(".clear-all").on('click', function(){
+    const parent_id = $(this).parent()[0].id
+    if (parent_id === "fields") {
+      $("#sorn-fields input:checkbox").prop("checked", false)
+      $section = 'fields'
+      $container = $("#active-section-filters")
+    } else if (parent_id === "agency-accordion") {
+      $("#agencies input:checkbox").prop("checked", false)
+      $section = 'agencies'
+      $container = $("#active-agency-filters")
+    }
+    clear_badges($section, $container)
   })
-  $("#agency-deselect-all").on('click', function(){
-    $("#agencies input:checkbox").prop("checked", false)
-    $container = $("#active-agency-filters")
-    clear_badges('agencies', $container)
-  })
-
-
-
+  
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
@@ -97,7 +98,6 @@ function remove_badge(div){
 function clear_badges(section, container){
   $(`#active-${section}`).empty()
   $container.hide()
-  
 };
 
 // uncheck filter
