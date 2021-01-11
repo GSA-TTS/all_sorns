@@ -102,5 +102,9 @@ RSpec.describe "/search", type: :system do
 
     # retrieval is closed, it should also be unchecked
     expect(find("#fields-retrieval")).not_to be_checked
+
+    # Ensure the deselect all buttons remove the badge headers
+    find('#agency-deselect-all').click
+    expect(page).to_not have_text("ACTIVE AGENCY FILTERS")
   end
 end
