@@ -23,13 +23,15 @@ $( function () {
     if(this.checked) {
       const parent_id = $(this).parent().parent()[0].id;
       if (parent_id === "sorn-fields") {
-        sectionDiv = $("#active-section-filters");
+        $section = $("#active-section-filters");
+        $container = $("#active-fields")
       } else if(parent_id === "selected-agencies") {
-        sectionDiv = $("#active-agency-filters");
+        $section = $("#active-agency-filters");
+        $container = $("#active-agencies")
       }
 
-      add_badge(this.id, this.value, sectionDiv)
- 
+      add_badge(this.id, this.value, $section, $container)
+
     }else{
       // add '-badge' to id to remove
       $(`#active-filters #${this.id}-badge`).remove()
@@ -60,12 +62,11 @@ $( function () {
 });
 
 // add filter badge and sort elements
-function add_badge(id, value, $section){
-
+function add_badge(id, value, $section, $container){
   // add '-badge' to ids for active filters
   var $new_badge = `<div class="active-filter" id="${id}-badge">${value}<a href="#" class="remove-badge">[X]</a></div>`
 
-  $section.append($new_badge)
+  $container.append($new_badge)
 
   var $filters = $section.find('.active-filter').clone().get()
 
@@ -77,8 +78,8 @@ function add_badge(id, value, $section){
     }
   });
 
-  $section.html($sorted)
-   
+  $container.html($sorted)
+
   if ( $section.is(":hidden") ){
     $section.show();
   }
