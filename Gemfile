@@ -14,6 +14,7 @@ gem 'pg_search'
 gem 'kaminari'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'faraday_middleware-aws-sigv4'
 
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
