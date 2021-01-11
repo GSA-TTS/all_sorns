@@ -7,14 +7,16 @@ $( function () {
   // Deselect all buttons
   $("#fields-deselect-all").on('click', function(){
     $("#sorn-fields input:checkbox").prop("checked", false)
-    clear_badges('fields')
-    $("#active-section-filters").hide();
+    $container = $("#active-section-filters")
+    clear_badges('fields', $container)
   })
   $("#agency-deselect-all").on('click', function(){
     $("#agencies input:checkbox").prop("checked", false)
-    clear_badges('agencies')
-    $("#active-agency-filters").hide();
+    $container = $("#active-agency-filters")
+    clear_badges('agencies', $container)
   })
+
+
 
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
@@ -92,8 +94,10 @@ function remove_badge(div){
   div.remove()
 };
 
-function clear_badges(section){
+function clear_badges(section, container){
   $(`#active-${section}`).empty()
+  $container.hide()
+  
 };
 
 // uncheck filter
