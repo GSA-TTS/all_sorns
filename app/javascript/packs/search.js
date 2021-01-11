@@ -6,19 +6,16 @@ $( function () {
 
   // Deselect all buttons
   $(".clear-all").on('click', function(){
-    const parent_id = $(this).parent()[0].id
-    if (parent_id === "fields") {
-      $("#sorn-fields input:checkbox").prop("checked", false)
-      $section = 'fields'
-      $container = $("#active-section-filters")
-    } else if (parent_id === "agency-accordion") {
+    const parentId = $(this).parent()[0].id
+
+      $(`#sorn-${parentId} input:checkbox`).prop("checked", false)
+      $container = $(`#active-${parentId}-filters`)
+
       $("#agencies input:checkbox").prop("checked", false)
-      $section = 'agencies'
-      $container = $("#active-agency-filters")
     }
     clear_badges($section, $container)
   })
-  
+
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)

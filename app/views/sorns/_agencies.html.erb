@@ -2,9 +2,8 @@
   <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
 </h2>
 <div id="agency-accordion" class="usa-accordion__content usa-prose">
-  <a href="#" id='agency-deselect-all' class="clear-all">X Clear agency filters</a>
-
   <fieldset id="agencies" class="usa-fieldset">
+    <a id='agency-deselect-all' class="clear-all">X Clear agency filters</a>
     <div id="selected-agencies" class="list">
       <% Agency.all.each do |agency| %>
         <div class="usa-checkbox">
