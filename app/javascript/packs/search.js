@@ -6,19 +6,10 @@ $( function () {
 
   // Deselect all buttons
   $(".clear-all").on('click', function(){
-    const parentId = $(this).parent()[0].id
-
-      $(`#sorn-${parentId} input:checkbox`).prop("checked", false)
-      $container = $(`#active-${parentId}-filters`)
-
-      $("#agencies input:checkbox").prop("checked", false)
-    }
-    clear_badges($section, $container)
+    const parentId = $(this).parent()[0].id; // "sections" or "agencies"
+    // uncheck the checkboxes, fire the change event
+    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change");
   })
-
-  // Validate the publication date input
-  $("#starting_year").on("change", publicationDateValidation)
-  $("#ending_year").on("change", publicationDateValidation)
 
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
@@ -45,6 +36,11 @@ $( function () {
       }
     }
   });
+
+  // Validate the publication date input
+  $("#starting_year").on("change", publicationDateValidation)
+  $("#ending_year").on("change", publicationDateValidation)
+
 
   // Listener for remove badge link
   $(document).on('click', 'a.remove-badge', function (e) {
