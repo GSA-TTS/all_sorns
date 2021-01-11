@@ -22,20 +22,14 @@ $( function () {
   $(".sidebar input:checkbox").on('change', function(){
     if(this.checked) {
       const parent_id = $(this).parent().parent()[0].id;
-
       if (parent_id === "sorn-fields") {
-        add_badge(this.id, this.value, "fields")
-        if ( $("#active-section-filters").is(":hidden") ){
-          $("#active-section-filters").show();
-        }
-      }
-      else if(parent_id === "selected-agencies") {
-        add_badge(this.id, this.value, "agencies")
-        if ( $("#active-agency-filters").is(":hidden") ){
-          $("#active-agency-filters").show();
-        }
+        sectionDiv = $("#active-section-filters");
+      } else if(parent_id === "selected-agencies") {
+        sectionDiv = $("#active-agency-filters");
       }
 
+      add_badge(this.id, this.value, sectionDiv)
+ 
     }else{
       // add '-badge' to id to remove
       $(`#active-filters #${this.id}-badge`).remove()
@@ -66,15 +60,14 @@ $( function () {
 });
 
 // add filter badge and sort elements
-function add_badge(id, value, section){
-  var $container = $(`#active-${section}`)
+function add_badge(id, value, $section){
 
   // add '-badge' to ids for active filters
   var $new_badge = `<div class="active-filter" id="${id}-badge">${value}<a href="#" class="remove-badge">[X]</a></div>`
 
-  $container.append($new_badge)
+  $section.append($new_badge)
 
-  var $filters = $container.find('.active-filter').clone().get()
+  var $filters = $section.find('.active-filter').clone().get()
 
   var $sorted = $filters.sort(function(a, b) {
     if (a.textContent < b.textContent) {
@@ -84,7 +77,11 @@ function add_badge(id, value, section){
     }
   });
 
-  $(`#active-${section}`).html($sorted)
+  $section.html($sorted)
+   
+  if ( $section.is(":hidden") ){
+    $section.show();
+  }
 };
 
 // remove filter badge
