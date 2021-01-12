@@ -13,27 +13,11 @@ $( function () {
 
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
+    const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
     if(this.checked) {
-      const parent_id = $(this).parent().parent()[0].id;
-      if (parent_id === "sorn-fields") {
-        $section = $("#active-section-filters");
-        $container = $("#active-fields")
-      } else if(parent_id === "selected-agencies") {
-        $section = $("#active-agency-filters");
-        $container = $("#active-agencies")
-      }
-
-      add_badge(this.id, this.value, $section, $container)
-
-    }else{
-      // add '-badge' to id to remove
-      $(`#active-filters #${this.id}-badge`).remove()
-      if ( $("#active-section-filters .active-filter").length == 0 ){
-        $("#active-section-filters").hide();
-      }
-      if ( $("#active-agency-filters .active-filter").length == 0 ){
-        $("#active-agency-filters").hide();
-      }
+      addBadge(this.id, parentId)
+    } else {
+      removeBadge(this.id, parentId)
     }
   });
 
@@ -41,62 +25,36 @@ $( function () {
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
 
-
   // Listener for remove badge link
-  $(document).on('click', 'a.remove-badge', function (e) {
-    e.preventDefault()
-    remove_badge($(this).parent())
-
-    // strip '-badge' from id before calling
-    uncheck_filter($(this).parent().attr('id').replace('-badge',''))
-
-    if ( $("#active-section-filters .active-filter").length == 0 ){
-      $("#active-section-filters").hide();
-    }
-    if ( $("#active-agency-filters .active-filter").length == 0 ){
-      $("#active-agency-filters").hide();
-    }
+  $(document).on('click', 'a.remove-badge', function () {
+    // uncheck the matching checkbox
+    checboxId = $(this).parent()[0].id.replace("-badge","");
+    $(`#${checboxId}`).prop("checked", false).trigger("change");
   });
 });
 
-// add filter badge and sort elements
-function add_badge(id, value, $section, $container){
-  // add '-badge' to ids for active filters
-  var $new_badge = `<div class="active-filter" id="${id}-badge">${value}<a href="#" class="remove-badge">[X]</a></div>`
+function addBadge(id, parentId){
+  $badge = $(`#${id}-badge`)
+  $filterSection = $(`#active-${parentId}-filters`)
 
-  $container.append($new_badge)
+  $badge.css("display", "inline");
 
-  var $filters = $section.find('.active-filter').clone().get()
-
-  var $sorted = $filters.sort(function(a, b) {
-    if (a.textContent < b.textContent) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
-
-  $container.html($sorted)
-
-  if ( $section.is(":hidden") ){
-    $section.show();
+  // show badges section if hidden
+  if ($filterSection.is(":hidden") ){
+    $filterSection.show();
   }
-};
+}
 
-// remove filter badge
-function remove_badge(div){
-  div.remove()
-};
+function removeBadge(id, parentId){
+  $badge = $(`#${id}-badge`)
+  $filterSection = $(`#active-${parentId}-filters`)
 
-function clear_badges(section, container){
-  $(`#active-${section}`).empty()
-  $container.hide()
-};
+  $badge.hide();
 
-// uncheck filter
-function uncheck_filter(id){
-  var n = $(`input:checkbox[id^="${id}"]:checked`)
-  n.prop("checked", false)
+  // hide badges section if empty
+  if ( $filterSection.find(".active-filter:visible").length == 0 ){
+    $filterSection.hide();
+  }
 }
 
 function publicationDateValidation(){

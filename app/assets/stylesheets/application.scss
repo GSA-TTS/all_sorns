@@ -261,6 +261,11 @@
   color: $blue-80V;
  }
 
+//  filter badges
+#active-sections-filters, #active-agencies-filters, .active-filter {
+  display: none;
+}
+
  // Pagination
 
  .pagination {
