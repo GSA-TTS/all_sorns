@@ -20,7 +20,7 @@
  $blue-70:      #005599; //primary blue
  $blue-50:      #006DB6;
  $blue-20:      #CCD6E0;
- $blue-10:      #E0E6EB;
+ $blue-10:      #D9E8F6;
  $blue-10V:     #CFE8FF;
 
  $gray-cool-50: #71767A;
@@ -49,8 +49,8 @@
 
  // Header & Navigation
  .beta-banner {
-  background-color: $blue-90;
-  color: $gray-2;
+  background-color: $gold-10v;
+  color: $blue-90;
   margin: auto 0;
   padding: 0.1rem 0;
 
@@ -202,12 +202,13 @@
    }
  }
 
- .usa-nav__link.pii-nav__link:hover::after {
-   background-color: color('blue-30v'); //need to fix
+ // js link styling
+ a {
+   text-decoration: underline;
  }
 
- .usa-current.pii-nav__link::after{
-   background-color: color('blue-30v');
+ a:hover {
+   cursor: pointer;
  }
 
  .sidebar {
@@ -259,6 +260,11 @@
   padding-bottom: 8px;
   color: $blue-80V;
  }
+
+//  filter badges
+#active-sections-filters, #active-agencies-filters, .active-filter {
+  display: none;
+}
 
  // Pagination
 

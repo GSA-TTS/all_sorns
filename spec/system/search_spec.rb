@@ -80,28 +80,32 @@ RSpec.describe "/search", type: :system do
   scenario "active-filters" do
     visit "/?search=FAKE"
     click_on 'Sections'
-    find('#fields-deselect-all').click
     find('label', text:'Source').click
     find('label', text:'Retrieval').click
 
     click_on 'Agencies'
-    find('#agency-deselect-all').click
     find('label', text:'Parent Agency').click
     find('label', text:'Child Agency').click
 
     # active filter badges should be in alphabetical order
-    expect(page).to have_selector("#active-fields .active-filter", count: 2)
-    expect(page).to have_selector("#active-fields:first-child", text: "retrieval")
-    expect(page).to have_selector("#active-fields:last-child", text: "source")
-    expect(page).to have_selector("#active-agencies .active-filter", count: 2)
-    expect(page).to have_selector("#active-agencies:first-child", text: "Child Agency")
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent Agency")
+    expect(page).to have_selector("#active-fields .active-filter", count: 2, visible: true)
+    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval")
+    expect(page).to have_selector("#active-fields:last-child", text: "Source")
+    expect(page).to have_selector("#active-agencies .active-filter", count: 2, visible: true)
+    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency")
+    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency")
 
-    find(".active-filter", text: "retrieval").find(".remove-badge").click
+    find(".active-filter", text: "Retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
-    expect(page).to have_selector("#active-fields:first-child", text: "source")
+    expect(page).to have_selector("#active-fields:first-child", text: "Source")
 
     # retrieval is closed, it should also be unchecked
+    click_on 'Sections'
     expect(find("#fields-retrieval")).not_to be_checked
+
+    # Ensure the deselect all buttons remove the badge headers
+    click_on 'Agencies'
+    find('#agency-deselect-all').click
+    expect(find("#active-agencies-filters").visible?).to be_falsey
   end
 end
