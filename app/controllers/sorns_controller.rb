@@ -1,43 +1,14 @@
 class SornsController < ApplicationController
   def search
-    @sorns = Sorn.no_computer_matching.includes(:mentioned).preload(:agencies)
+    @sorns = Sorn.none.page(params[:page]) and return if params[:search].blank? # blank page on first visit
 
-    if no_params_on_page_load?
-      # return all sorns with default fields
-      @selected_fields = Sorn::DEFAULT_FIELDS
+    @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
+    @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
 
-    elsif params[:fields].blank?
-      # Return nothing, with no default fields
-      @selected_fields = nil
-      @sorns = Sorn.none
-
-    elsif search_and_agency_blank?
-      #  return all sorns with just those fields
-      @selected_fields = params[:fields]
-
-    elsif search_present_and_agency_blank?
-      #  return matching sorns with just those fields
-      @selected_fields = params[:fields]
-      field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.dynamic_search(field_syms, params[:search])
-
-    elsif search_blank_and_agency_present?
-      # return agency sorns with just those fields
-      @selected_fields = params[:fields]
-      @selected_agencies = params[:agencies].map(&:parameterize)
+    if params[:agencies]
       @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      @sorns = @sorns.get_distinct
-
-    elsif search_and_fields_and_agency_present?
-      # return matching, agency sorns with just those fields
-      @selected_fields = params[:fields]
-      @selected_agencies = params[:agencies].map(&:parameterize)
-      field_syms = @selected_fields.map { |field| field.to_sym }
-      @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
-      @sorns = @sorns.dynamic_search(field_syms, params[:search])
-      @sorns = @sorns.get_distinct_with_dynamic_search
-    else
-      raise "WUT"
+      # Matching on agencies could return duplicates, so get distinct
+      @sorns = @sorns.get_distinct_with_dynamic_search_rank
     end
 
     if params[:starting_year].present?
@@ -52,17 +23,17 @@ class SornsController < ApplicationController
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
     end
 
-    if multiword_search?
-      @sorns = @sorns.only_exact_matches(params[:search], @selected_fields)
-      @sorns = Kaminari.paginate_array(@sorns).page(params[:page]) if request.format == :html
-    else
-      @sorns = @sorns.page(params[:page]) if request.format == :html
+    @sorns = @sorns.only_exact_matches(params[:search], @fields_to_search) if multiword_search?
+
+    if request.format == :html
+      # only need to load mentioned and pagination for html
+      @sorns = @sorns.includes(:mentioned)
+      @sorns = @sorns.page(params[:page])
     end
 
     respond_to do |format|
       format.html
-      # format.json { render json: @sorns.to_json }
-      format.csv { send_data @sorns.to_csv(@selected_fields), filename: "sorns-#{Date.today.to_s}.csv" }
+      format.csv { send_data @sorns.to_csv(@fields_to_search.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv" }
     end
   end
 
@@ -70,25 +41,5 @@ class SornsController < ApplicationController
 
   def multiword_search?
     params[:search].scan(/\w+/).size > 1 if params[:search].present?
-  end
-
-  def no_params_on_page_load?
-    params[:search].blank? && params[:fields].blank? && params[:agencies].blank?
-  end
-
-  def search_and_agency_blank?
-    params[:search].blank? && params[:agencies].blank?
-  end
-
-  def search_present_and_agency_blank?
-    params[:search].present? && params[:agencies].blank?
-  end
-
-  def search_blank_and_agency_present?
-    params[:search].blank? && params[:agencies].present?
-  end
-
-  def search_and_fields_and_agency_present?
-    params[:search].present? && params[:fields].present? && params[:agencies].present?
   end
 end

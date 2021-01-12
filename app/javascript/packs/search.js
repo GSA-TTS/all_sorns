@@ -1,39 +1,59 @@
 $( function () {
-  // Set checked fields from url
-  checkboxesFromUrl("fields")
-
-  // Set checked agencies from url
-  checkboxesFromUrl("agencies")
-
-  // Add .agency-separator to agency pipe separator
+   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
-    return html.replace("|","<span class='agency-separator'>|</span>")
+    return html.replace("|","<span class='agency-separator'>|</span>");
   });
 
-  // Select all and deselect all buttons
-  const agencyCheckboxes = $("#agencies input:checkbox")
-  $("#agency-select-all").on('click', function(){
-    agencyCheckboxes.prop("checked", true)
+  // Deselect all buttons
+  $(".clear-all").on('click', function(){
+    const parentId = $(this).parent()[0].id; // "sections" or "agencies"
+    // uncheck the checkboxes, fire the change event
+    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change");
   })
-  $("#agency-deselect-all").on('click', function(){
-    agencyCheckboxes.prop("checked", false)
-  })
+
+  // Listener for checkboxes
+  $(".sidebar input:checkbox").on('change', function(){
+    const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
+    if(this.checked) {
+      addBadge(this.id, parentId)
+    } else {
+      removeBadge(this.id, parentId)
+    }
+  });
 
   // Validate the publication date input
   $("#starting_year").on("change", publicationDateValidation)
   $("#ending_year").on("change", publicationDateValidation)
+
+  // Listener for remove badge link
+  $(document).on('click', 'a.remove-badge', function () {
+    // uncheck the matching checkbox
+    checboxId = $(this).parent()[0].id.replace("-badge","");
+    $(`#${checboxId}`).prop("checked", false).trigger("change");
+  });
 });
 
-function checkboxesFromUrl(elementName) {
-  checkboxes = $(`#${elementName} input:checkbox`)
-  dataFromurl = $(`#${elementName}-for-js`).data(elementName)
-  if (dataFromurl) {
-    // uncheck all
-    checkboxes.prop("checked", false)
-    // check those found in url
-    dataFromurl.forEach(data => {
-      $(`#${elementName}-${data}`).prop("checked", true)
-    });
+function addBadge(id, parentId){
+  $badge = $(`#${id}-badge`)
+  $filterSection = $(`#active-${parentId}-filters`)
+
+  $badge.css("display", "inline");
+
+  // show badges section if hidden
+  if ($filterSection.is(":hidden") ){
+    $filterSection.show();
+  }
+}
+
+function removeBadge(id, parentId){
+  $badge = $(`#${id}-badge`)
+  $filterSection = $(`#active-${parentId}-filters`)
+
+  $badge.hide();
+
+  // hide badges section if empty
+  if ( $filterSection.find(".active-filter:visible").length == 0 ){
+    $filterSection.hide();
   }
 }
 

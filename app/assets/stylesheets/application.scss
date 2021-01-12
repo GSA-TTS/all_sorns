@@ -39,6 +39,12 @@
 
  body {
   background: #F7F9FA;
+
+  &.pre-search {
+    background-image: image-url("PrvOps_SornDash_Landing_02.svg");
+    background-repeat: no-repeat;
+    background-position: left bottom;
+  }
  }
 
  // Header & Navigation
@@ -115,28 +121,47 @@
    }
  }
 
+.active-filter {
+  display: inline-block;
+  border-radius: 0;
+  padding: 5px;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-bottom: 17px;
+  background-color: white;
+  margin-right: 12px;
+  font-size: 14px;
+  border: 1px solid #A9AEB1;
+  color: #112F4E;
 
+  a {
+    margin-left:8px;
+  }
 
+}
 
- // use with mixin utility when available
- #search-filters{
+.clear-all {
+  color: #D64242 !important;
+  ;
+}
+
+//Sidebar
+.sidebar h3 {
+  font: sans-serif;
+  padding: 1.25rem 1rem 0rem 1.25rem;
+  font-family: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
   font-size: 20px;
-  margin-bottom: 19px;
-  font-weight:bold;
- }
+}
 
- #fields {
-   overflow: hidden;
+ #section-filters{
+  font-size: 16px;
+  margin: 24px;
+  font-weight:bold;
  }
 
  .agency-button {
    width: 100px;
    display: inline;
- }
-
- #fields-to-search{
-  font-size: 16px;
-  font-weight:bold;
  }
 
  #sorn-fields input[type='checkbox']{
@@ -177,12 +202,13 @@
    }
  }
 
- .usa-nav__link.pii-nav__link:hover::after {
-   background-color: color('blue-30v'); //need to fix
+ // js link styling
+ a {
+   text-decoration: underline;
  }
 
- .usa-current.pii-nav__link::after{
-   background-color: color('blue-30v');
+ a:hover {
+   cursor: pointer;
  }
 
  .sidebar {
@@ -192,14 +218,6 @@
     background-color: #FFFFFF;
     border-top: 1px solid #C4C4C4;
    }
- }
-
-
-
- #sorn-fields {
-  overflow-y: scroll;
-  height: 312px;
-  border-bottom: 1px solid #C4C4C4;
  }
 
  #agency-select-label {
@@ -226,6 +244,10 @@
 
  #search-form {
    width: 100%;
+
+   &.pre-search {
+    margin-bottom: 350px;
+   }
  }
 
  .usa-search {
@@ -234,10 +256,15 @@
    margin-bottom: 16px;
  }
 
- #count {
-   padding-bottom: 8px;
-   color: $blue-80V;
+ .labels {
+  padding-bottom: 8px;
+  color: $blue-80V;
  }
+
+//  filter badges
+#active-sections-filters, #active-agencies-filters, .active-filter {
+  display: none;
+}
 
  // Pagination
 
