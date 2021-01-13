@@ -37,7 +37,7 @@ function addBadge(id, parentId){
   $badge = $(`#${id}-badge`)
   $filterSection = $(`#active-${parentId}-filters`)
 
-  $badge.css("display", "inline");
+  $badge.css("display", "inline-block");
 
   // show badges section if hidden
   if ($filterSection.is(":hidden") ){
