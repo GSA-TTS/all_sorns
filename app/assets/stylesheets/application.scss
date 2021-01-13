@@ -365,6 +365,20 @@
    font-weight: bold;
  }
 
+ .sorn-history__list {
+   list-style-position: inside;
+   padding-left: 0;
+ }
+
+ .sorn-history__item:marker {
+   margin: 0 .5em 0 0;
+ }
+
+ .sorn-history__seperator {
+   margin: 0 0.5em;
+   font-weight: bold;
+ }
+
  .found-in {
   width: 100%;
  }
