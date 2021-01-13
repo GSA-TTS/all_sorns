@@ -29,7 +29,7 @@ class FederalRegisterClient
     result_set.results.each do |result|
       # type and title check happen here, instead of in handle_result
       # so that add_sorn_by_url can be used to add sorns without the expected types and titles
-      handle_result(result) if result.type == 'Notice' && a_sorn_title?(result.title)
+      handle_result(result) if sorn_result?(result)
     end
 
     # Keep making more requests until there are no more.
@@ -72,6 +72,10 @@ class FederalRegisterClient
     # If a title includes one of these three, then we consider it a SORN.
     patterns = ['privacy act', 'system[\ssof]*record', 'computer match']
     patterns.any? { |pattern| title.match?(/#{pattern}/i) }
+  end
+
+  def sorn_result?(result)
+    result.type == 'Notice' && a_sorn_title?(result.title)
   end
 
   def sorn_params(result)
