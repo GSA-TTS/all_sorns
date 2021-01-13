@@ -16,7 +16,7 @@
  $base-color:   #1B1B1B;
 
  $blue-90:      #122D52;
- $blue-80V:      #112F4E;
+ $blue-80V:     #112F4E;
  $blue-70:      #005599; //primary blue
  $blue-50:      #006DB6;
  $blue-20:      #CCD6E0;
@@ -240,6 +240,7 @@
 
  #csv-download .csv-download-link-text {
   text-decoration: underline;
+  color: $blue-50
  }
 
  #search-form {
@@ -314,7 +315,7 @@
   padding: 16px;
 
   .mention-citation {
-    color: #0232AC;
+    color: $blue-50;
   }
  }
 
@@ -427,7 +428,7 @@
 
  .usa-link--external {
    text-decoration: none;
-   color: #0232AC;
+   color: $blue-50;
  }
 
  .red {
@@ -542,10 +543,10 @@
  #general-search-button {
    background-color: $blue-50;
    &:hover {
-     background-color: $blue-50;
+     background-color: $blue-70;
    }
    &:active {
-     background-color: $blue-70
+     background-color: $blue-80V
    }
  }
 
