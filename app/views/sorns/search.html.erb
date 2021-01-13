@@ -129,11 +129,12 @@
                         <ul class="sorn-history__list">
                         <% sorn.mentioned.each do |metioned_sorn| %>
                           <li class="sorn-history__item">
+                            <span class="sorn-history__content">
                             <a href="<%= metioned_sorn.html_url %>" class="mention-citation"><%= metioned_sorn.citation %></a>:
                             <span class="sorn-history__date"><%= metioned_sorn.publication_date %></span>
                             <span class="sorn-history__seperator">|</span>
                             <span class="sorn-history__action"><%= metioned_sorn.action %></span>
-
+                            </span>
                           </li>
                         <% end %>
                         </ul>
