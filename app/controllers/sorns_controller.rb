@@ -7,15 +7,9 @@ class SornsController < ApplicationController
     @sorns = filter_on_publication_date if params[:starting_year].present? || params[:ending_year].present?
     @sorns = only_exact_matches if multiword_search?
 
-    if request.format == :html
-      # only need to load mentioned and pagination for html
-      @sorns = @sorns.includes(:mentioned)
-      @sorns = @sorns.page(params[:page])
-    end
-
     respond_to do |format|
-      format.html
-      format.csv { send_data @sorns.to_csv(@fields_to_search.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv" }
+      format.html { add_mentions_and_pagination }
+      format.csv { create_csv_from_current_search }
     end
   end
 
@@ -68,5 +62,15 @@ class SornsController < ApplicationController
   def is_a_year?(user_entered_date)
     # ignore user entered dates that aren't a year. Our html doesn't allow these submissions either.
     user_entered_date.present? && user_entered_date.match(/^\d{4}$/)
+  end
+
+  def add_mentions_and_pagination
+    # only need to load mentioned and pagination for html
+    @sorns = @sorns.includes(:mentioned)
+    @sorns = @sorns.page(params[:page])
+  end
+
+  def create_csv_from_current_search
+    send_data @sorns.to_csv(@fields_to_search.map(&:to_s)), filename: "sorns-#{Date.today.to_s}.csv"
   end
 end
