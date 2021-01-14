@@ -7,7 +7,6 @@ RSpec.describe "Search", type: :request do
   let(:agency) { nil }
 
   before do
-    FullSornSearch.refresh # refresh the materialized view
     get "/?search=#{search}&#{fields}&#{agency}"
   end
 
@@ -51,7 +50,6 @@ RSpec.describe "Search", type: :request do
 
       before do
         sorn.agencies << create(:agency, name: "Child Agency")
-        FullSornSearch.refresh # refresh the materialized view
       end
 
       it "only returns a single SORN, even though it matches the two agencies" do
@@ -108,7 +106,6 @@ RSpec.describe "Search", type: :request do
   context "publication date search" do
     before do
       create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)]
-      FullSornSearch.refresh # refresh the materialized view
     end
 
     it "only returns the newer sorn in date range" do
