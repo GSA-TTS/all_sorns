@@ -15,16 +15,19 @@
  */
  $base-color:   #1B1B1B;
 
- $blue-90:      #122D52;
+ $blue-90:      #122D52; // Theme primary
  $blue-80V:     #112F4E;
- $blue-70:      #005599; //primary blue
- $blue-50:      #006DB6;
+ $blue-70:      #005599;
+ $blue-50:      #006DB6; // Interactive
  $blue-20:      #CCD6E0;
  $blue-10:      #D9E8F6;
  $blue-10V:     #CFE8FF;
 
  $gray-cool-50: #71767A;
+ $gray-cool-30: #A9AEB1;
  $gray-cool-10: #DCDEE0;
+ $gray-cool-2:  #F7F9FA;
+
  $gray-5:       #F0F0F0;
  $gray-3:       #F6F6F6;
  $gray-2:       #F9F9F9;
@@ -38,7 +41,7 @@
 
 
  body {
-  background: #F7F9FA;
+  background: $gray-cool-2;
 
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
@@ -95,7 +98,7 @@
 
   .sub-title {
     line-height: 1.5;
-    color: #FBFCFD;
+    color: $gray-cool-2;
     font-size: 20px;
 
     a {
@@ -216,7 +219,7 @@
 
   .usa-accordion__button {
     background-color: #FFFFFF;
-    border-top: 1px solid #C4C4C4;
+    border-top: 1px solid $gray-cool-30;
    }
  }
 
@@ -301,7 +304,7 @@
 
 .usa-card__container {
     border-radius: 0rem;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    border: 1px solid $blue-90;
     font-size: size('public-sans', 16)
  }
 
@@ -317,6 +320,11 @@
   .mention-citation {
     color: $blue-50;
   }
+
+  hr {
+    border-top: 1px solid $gray-cool-30;
+  }
+
  }
 
  .usa-card__body .grid-row {
@@ -327,8 +335,7 @@
   padding: 16px;
 
   background: $blue-80V;
-  color: #FBFCFD;
-  ;
+  color: $gray-cool-2;
  }
 
  .system-number {
