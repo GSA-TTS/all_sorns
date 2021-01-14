@@ -31,6 +31,8 @@ $( function () {
     checboxId = $(this).parent()[0].id.replace("-badge","");
     $(`#${checboxId}`).prop("checked", false).trigger("change");
   });
+
+  agencyListing()
 });
 
 function addBadge(id, parentId){
@@ -55,6 +57,17 @@ function removeBadge(id, parentId){
   if ( $filterSection.find(".active-filter:visible").length == 0 ){
     $filterSection.hide();
   }
+}
+
+function agencyListing() {
+  var options = {
+    searchClass: 'agency-filter',
+    valueNames: [ 'agency-name', 'agency-short-name' ]
+  };
+
+  var hackerList = new List('agencies', options);
+
+  console.log(hackerList)
 }
 
 function publicationDateValidation(){
