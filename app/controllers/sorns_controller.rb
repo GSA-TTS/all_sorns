@@ -42,13 +42,13 @@ class SornsController < ApplicationController
   end
 
   def filter_on_publication_date
-    if params[:starting_year].present?
+    if is_a_year? params[:starting_year]
       # from beginning of start year
       starting_date = params[:starting_year] + "-01-01"
       @sorns = @sorns.where('publication_date::DATE > ?', starting_date)
     end
 
-    if params[:ending_year].present?
+    if is_a_year? params[:ending_year]
       # to end of ending year
       ending_date = params[:ending_year] + "-12-31"
       @sorns = @sorns.where('publication_date::DATE < ?', ending_date)
@@ -63,5 +63,10 @@ class SornsController < ApplicationController
 
   def only_exact_matches
     @sorns.only_exact_matches(params[:search], @fields_to_search)
+  end
+
+  def is_a_year?(user_entered_date)
+    # ignore user entered dates that aren't a year. Our html doesn't allow these submissions either.
+    user_entered_date.present? && user_entered_date.match(/^\d{4}$/)
   end
 end
