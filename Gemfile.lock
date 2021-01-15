@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/nurey/pg_search
-  revision: edcbce4a5b52fca0093187ca45b5eb9a422932ad
-  branch: followed-by
-  specs:
-    pg_search (2.3.0)
-      activerecord (>= 4.2)
-      activesupport (>= 4.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -156,6 +147,9 @@ GEM
     nokogiri (1.11.0-x86_64-darwin)
       racc (~> 1.4)
     pg (1.2.3)
+    pg_search (2.3.5)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -298,7 +292,7 @@ DEPENDENCIES
   launchy
   listen (~> 3.2)
   pg
-  pg_search!
+  pg_search
   pry-byebug
   pry-rescue
   pry-stack_explorer

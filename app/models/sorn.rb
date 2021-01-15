@@ -71,7 +71,7 @@ class Sorn < ApplicationRecord
       using: {
         tsearch: {
           dictionary: 'english',
-          followed_by: true,
+          phrase: true,
           tsvector_column: fields.map{|f| "#{f}_tsvector"}
         }
       }

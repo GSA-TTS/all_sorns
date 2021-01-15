@@ -8,7 +8,7 @@ class FullSornSearch < ApplicationRecord
     using: {
       tsearch: {
         dictionary: 'english',
-        followed_by: true,
+        phrase: true,
         tsvector_column: 'full_sorn_tsvector',
       },
     },
