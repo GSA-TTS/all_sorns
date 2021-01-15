@@ -5,7 +5,6 @@ class SornsController < ApplicationController
     @sorns = filter_on_search if params[:search].present?
     @sorns = filter_on_agencies if params[:agencies]
     @sorns = filter_on_publication_date if params[:starting_year].present? || params[:ending_year].present?
-    @sorns = only_exact_matches if multiword_search?
 
     respond_to do |format|
       format.html { add_mentions_and_pagination }
@@ -49,16 +48,6 @@ class SornsController < ApplicationController
     end
 
     return @sorns
-  end
-
-  def multiword_search?
-    params[:search].scan(/\w+/).size > 1 if params[:search].present?
-  end
-
-  def only_exact_matches
-    # postgres is giving us matches where any search word is returned. We want only exact matches.
-    ilikes_sql = @fields_to_search.map{ |field| "#{field} ILIKE :search"}.join(" OR ")
-    @sorns = @sorns.where(ilikes_sql, search: "%#{params[:search]}%")
   end
 
   def is_a_year?(user_entered_date)

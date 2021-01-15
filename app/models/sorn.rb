@@ -71,6 +71,7 @@ class Sorn < ApplicationRecord
       using: {
         tsearch: {
           dictionary: 'english',
+          followed_by: true,
           tsvector_column: fields.map{|f| "#{f}_tsvector"}
         }
       }
@@ -150,13 +151,6 @@ class Sorn < ApplicationRecord
         csv.add_row values
       end
     end
-  end
-
-  def self.only_exact_matches(search_term, fields_to_search)
-    exact_matches = all.filter_map do |sorn|
-      sorn if sorn.search_term_found_in_any_selected_fields(search_term, fields_to_search)
-    end
-    Sorn.where(id: exact_matches.map(&:id))
   end
 
   def search_term_found_in_any_selected_fields(search_term, fields_to_search)

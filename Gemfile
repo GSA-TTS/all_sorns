@@ -10,7 +10,7 @@ gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
-gem 'pg_search'
+gem 'pg_search', git: 'https://github.com/nurey/pg_search', branch: 'followed-by'
 gem 'kaminari', '>= 1.2.1'
 gem 'scenic'
 
