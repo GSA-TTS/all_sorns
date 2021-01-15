@@ -5,13 +5,11 @@ class Sorn < ApplicationRecord
   has_and_belongs_to_many :mentioned, class_name: "Sorn", join_table: :mentions,
                           foreign_key: :sorn_id, association_foreign_key: :mentioned_sorn_id
 
-  include PgSearch::Model
   validates :citation, uniqueness: true
 
   scope :no_computer_matching, -> { where.not('"sorns"."action" ILIKE ?', '%matching%') }
   scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
-  scope :get_distinct_with_dynamic_search, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
-
+  scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
 
   FIELDS = [
@@ -65,10 +63,17 @@ class Sorn < ApplicationRecord
     'publication_date'
   ]
 
-  pg_search_scope :dynamic_search, lambda { |field, query|
+  include PgSearch::Model
+  pg_search_scope :dynamic_search, lambda { |fields, query|
     {
-      against: field,
-      query: query
+      against: fields.map(&:to_sym),
+      query: query,
+      using: {
+        tsearch: {
+          dictionary: 'english',
+          tsvector_column: fields.map{|f| "#{f}_tsvector"}
+        }
+      }
     }
   }
 
@@ -110,9 +115,9 @@ class Sorn < ApplicationRecord
     self.update(action_type: action_type)
   end
 
-  def section_snippets(selected_fields, search_term)
+  def section_snippets(fields_to_search, search_term)
     output = {}
-    self.attributes.slice(*selected_fields).each do |key, value|
+    self.attributes.slice(*fields_to_search).each do |key, value|
       if value =~ /#{search_term}/i
         output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
       end
@@ -147,18 +152,15 @@ class Sorn < ApplicationRecord
     end
   end
 
-  def linked
-    Sorn.where(data_source: 'fedreg').where('history LIKE ?', '%' + self.citation + '%').first if self.citation
-  end
-
-  def self.only_exact_matches(search_term, selected_fields)
-    all.filter_map do |sorn|
-      sorn if sorn.search_term_found_in_any_selected_fields(search_term, selected_fields)
+  def self.only_exact_matches(search_term, fields_to_search)
+    exact_matches = all.filter_map do |sorn|
+      sorn if sorn.search_term_found_in_any_selected_fields(search_term, fields_to_search)
     end
+    Sorn.where(id: exact_matches.map(&:id))
   end
 
-  def search_term_found_in_any_selected_fields(search_term, selected_fields)
-    selected_fields.any? do |field|
+  def search_term_found_in_any_selected_fields(search_term, fields_to_search)
+    fields_to_search.any? do |field|
       field_content = self.send(field)
       field_content.to_s.downcase.include? search_term.downcase # case insensitive match?
     end

@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres
         env:
           POSTGRES_USER: all_sorns
           POSTGRES_DB: all_sorns_test

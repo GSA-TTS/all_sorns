@@ -1,0 +1,32 @@
+SELECT
+  sorns.id AS sorn_id,
+  (
+    to_tsvector('english', coalesce(sorns.agency_names, ''))
+    || to_tsvector('english', coalesce(sorns.action, ''))
+    || to_tsvector('english', coalesce(sorns.summary, ''))
+    || to_tsvector('english', coalesce(sorns.dates, ''))
+    || to_tsvector('english', coalesce(sorns.addresses, ''))
+    || to_tsvector('english', coalesce(sorns.further_info, ''))
+    || to_tsvector('english', coalesce(sorns.supplementary_info, ''))
+    || to_tsvector('english', coalesce(sorns.system_name, ''))
+    || to_tsvector('english', coalesce(sorns.system_number, ''))
+    || to_tsvector('english', coalesce(sorns.security, ''))
+    || to_tsvector('english', coalesce(sorns.location, ''))
+    || to_tsvector('english', coalesce(sorns.manager, ''))
+    || to_tsvector('english', coalesce(sorns.authority, ''))
+    || to_tsvector('english', coalesce(sorns.purpose, ''))
+    || to_tsvector('english', coalesce(sorns.categories_of_individuals, ''))
+    || to_tsvector('english', coalesce(sorns.categories_of_record, ''))
+    || to_tsvector('english', coalesce(sorns.source, ''))
+    || to_tsvector('english', coalesce(sorns.routine_uses, ''))
+    || to_tsvector('english', coalesce(sorns.storage, ''))
+    || to_tsvector('english', coalesce(sorns.retrieval, ''))
+    || to_tsvector('english', coalesce(sorns.retention, ''))
+    || to_tsvector('english', coalesce(sorns.safeguards, ''))
+    || to_tsvector('english', coalesce(sorns.access, ''))
+    || to_tsvector('english', coalesce(sorns.contesting, ''))
+    || to_tsvector('english', coalesce(sorns.notification, ''))
+    || to_tsvector('english', coalesce(sorns.exemptions, ''))
+    || to_tsvector('english', coalesce(sorns.history, ''))
+  ) AS full_sorn_tsvector
+FROM sorns;
