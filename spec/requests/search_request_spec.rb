@@ -1,12 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "Search", type: :request do
-  let!(:sorn) { create :sorn, citation: "citation" }
+  let!(:sorn) { create :sorn }
   let(:search) { "FAKE" }
   let(:fields) { nil }
   let(:agency) { nil }
 
-  before { get "/?search=#{search}&#{fields}&#{agency}" }
+  before do
+    get "/?search=#{search}&#{fields}&#{agency}"
+  end
 
   context "search" do
     it "succeeds" do
@@ -45,9 +47,10 @@ RSpec.describe "Search", type: :request do
     context "agency search with overlapping SORNs" do
       let(:fields) { 'fields[]=system_name' }
       let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
-      let(:child_agency) { create(:agency, name: "Child Agency")}
 
-      before { sorn.agencies << child_agency }
+      before do
+        sorn.agencies << create(:agency, name: "Child Agency")
+      end
 
       it "only returns a single SORN, even though it matches the two agencies" do
         expect(response.body).to include "Displaying <b>1</b>  for &quot;FAKE"
@@ -101,7 +104,9 @@ RSpec.describe "Search", type: :request do
   end
 
   context "publication date search" do
-    before { create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)] }
+    before do
+      create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)]
+    end
 
     it "only returns the newer sorn in date range" do
       get "/search?search=FAKE&starting_year=2019"
@@ -127,11 +132,11 @@ RSpec.describe "Search", type: :request do
     end
 
     it "search works with all params" do
-      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
+      get "/search?search=FAKE&fields[]=action&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
-      expect(response.body).to include "<mark>different</mark>" # Newer citation
+      expect(response.body).to include "<mark>FAKE</mark> ACTION" # Newer citation
     end
   end
 end
