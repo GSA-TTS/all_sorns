@@ -55,7 +55,7 @@
               <div id="active-fields">
               <% Sorn::FIELDS.each do |section| %>
                 <div class="active-filter" id="fields-<%= section.to_s %>-badge">
-                  <%= section.to_s.humanize %><a class="remove-badge">[X]</a>
+                  <%= section.to_s.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
                 </div>
               <% end %>
               </div>
@@ -72,7 +72,7 @@
               <div id="active-agencies">
                 <% Agency.all.each do |agency| %>
                   <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
-                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge">[X]</a>
+                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
                   </div>
                 <% end %>
               </div>

@@ -11,6 +11,16 @@ $( function () {
     $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change");
   })
 
+  // Get :checked on load and create badges
+  $(".sidebar :checked").each(function(){
+    if (this.name === "fields[]") {
+      addBadge(this.id, "sections")
+    } else if (this.name === "agencies[]") {
+      addBadge(this.id, "agencies")
+    } else {
+    }
+  })
+  
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
@@ -39,7 +49,7 @@ function addBadge(id, parentId){
   $badge = $(`#${id}-badge`)
   $filterSection = $(`#active-${parentId}-filters`)
 
-  $badge.css("display", "inline");
+  $badge.css("display", "inline-block");
 
   // show badges section if hidden
   if ($filterSection.is(":hidden") ){
