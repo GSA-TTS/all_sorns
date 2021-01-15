@@ -65,9 +65,29 @@ function agencyListing() {
     valueNames: [ 'agency-name', 'agency-short-name' ]
   };
 
-  var hackerList = new List('agencies', options);
+  agencyList = new List('agencies', options);
 
-  console.log(hackerList)
+  // Ensures they are always included in the search request
+  agencyList.on('searchComplete', function() {
+    agencyList.sort('agency-name');
+    if (agencyList.searched == true) {
+      includeChecked();
+    }
+  })
+}
+
+function includeChecked () {
+  agencyList.items.forEach(agency => {
+    // agency.elm is the container <div class="usa-checkbox">
+    checkbox = agency.elm.children[0]
+    if ( checkbox.checked ) {
+      if (agency.visible() == false) {
+        $(agency.elm).hide().appendTo("#selected-agencies");
+      } else {
+        $(agency.elm).show()
+      }
+    }
+  })
 }
 
 function publicationDateValidation(){
