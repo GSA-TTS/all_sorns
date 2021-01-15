@@ -1,4 +1,3 @@
-# This will guess the User class
 FactoryBot.define do
   factory :sorn do
     agency_names { 'Parent Agency | Child Agency' }
@@ -14,8 +13,8 @@ FactoryBot.define do
 
     agencies do
       [
-        Agency.find_or_create_by(name: "Parent Agency"),
-        Agency.find_or_create_by(name: "Child Agency")
+        Agency.find_or_create_by(name: "Parent Agency", short_name: "PA"),
+        Agency.find_or_create_by(name: "Child Agency", short_name: "CA")
       ]
     end
   end

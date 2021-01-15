@@ -72,7 +72,7 @@
               <div id="active-agencies">
                 <% Agency.all.each do |agency| %>
                   <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
-                    <%= agency.name&.humanize %><a class="remove-badge">[X]</a>
+                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge">[X]</a>
                   </div>
                 <% end %>
               </div>

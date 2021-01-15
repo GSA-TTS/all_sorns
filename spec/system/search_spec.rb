@@ -4,7 +4,6 @@ RSpec.describe "/search", type: :system do
   before do
     driven_by(:selenium_chrome_headless)
     11.times { create :sorn }
-    create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
     FullSornSearch.refresh # refresh the materialized view
   end
 
@@ -92,8 +91,8 @@ RSpec.describe "/search", type: :system do
     expect(page).to have_selector("#active-fields:first-child", text: "Retrieval")
     expect(page).to have_selector("#active-fields:last-child", text: "Source")
     expect(page).to have_selector("#active-agencies .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency")
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency")
+    expect(page).to have_selector("#active-agencies:first-child", text: "CA")
+    expect(page).to have_selector("#active-agencies:last-child", text: "PA")
 
     find(".active-filter", text: "Retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
