@@ -17,7 +17,6 @@ $( function () {
       addBadge(this.id, "sections")
     } else if (this.name === "agencies[]") {
       addBadge(this.id, "agencies")
-    } else {
     }
   })
   
