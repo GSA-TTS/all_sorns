@@ -7,40 +7,31 @@
   </div>
 </header>
 
-<%= form_tag '/search', method: "GET", id: "search-form" do %>
-<section class="grid-container">
-  <div class="grid-col-10 grid-offset-1 search-area">
-    <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
-    <fieldset class="usa-search usa-search--big">
-      <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
-      <button id="general-search-button" class="usa-button" type="submit">
-        <span class="usa-search__submit-text">Search</span>
-      </button>
-    </fieldset>
-  </div>
-</section>
+<%= form_tag '/', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
+  <section class="grid-container">
+    <div class="grid-col-10 grid-offset-1 search-area">
+      <h2>Search for SORNs by entering a keyword (will return exact matches)</h2>
+      <fieldset class="usa-search usa-search--big">
+        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+        <button id="general-search-button" class="usa-button" type="submit">
+          <span class="usa-search__submit-text">Search</span>
+        </button>
+      </fieldset>
+    </div>
+  </section>
+
+  <% if params[:search].present? %>
   <div class="grid-container margin-top-2">
     <div class ="grid-row grid-gap">
 
       <div class="usa-layout-docs__sidenav grid-col-4">
-        <div class="border border-gray-70 sidebar">
+        <div class="border border-base-dark sidebar">
           <div class="preview usa-prose site-prose" >
-
-            <%= render partial: "fields" %>
-
+            <h3>Refine your search</h3>
             <div class="usa-accordion">
-              <h2 class="usa-accordion__heading">
-                <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
-              </h2>
-              <div id="agency-accordion" class="usa-accordion__content usa-prose">
-                <%= render partial: "agencies" %>
-              </div>
-              <div class="usa-accordion__heading">
-                <button id="publication-year-button" class="usa-accordion__button" aria-controls="date-accoridon" type="button">Publication year</button>
-              </div>
-              <div id="date-accoridon" class="usa-accordion__content usa-prose  margin-top-0 margin-bottom-4">
-                <%= render partial: "publication_date" %>
-              </div>
+              <%= render partial: "sections" %>
+              <%= render partial: "agencies" %>
+              <%= render partial: "publication_date" %>
             </div>
           </div>
         </div>
@@ -53,9 +44,45 @@
       </div>
 
       <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+        <div id="active-filters">
+          <div id="active-sections-filters">
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE SECTION FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-fields">
+              <% Sorn::FIELDS.each do |section| %>
+                <div class="active-filter" id="fields-<%= section.to_s %>-badge">
+                  <%= section.to_s.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                </div>
+              <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div id="active-agencies-filters">
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE AGENCY FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-agencies">
+                <% Agency.all.each do |agency| %>
+                  <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
+                    <%= agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="grid-row margin-bottom-1">
           <div class="grid-col-6">
-            <div id="count">
+            <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
@@ -112,19 +139,17 @@
                     </div>
                   <% end %>
 
-                  <% if params[:search].present? %>
-                    <hr />
+                  <hr />
 
-                    <div class="grid-row">
-                      <h4 class='found-in'>FOUND IN</h4>
-                      <% sorn.section_snippets(@selected_fields, params[:search]).each do |section, snippet| %>
-                        <div class="grid-row">
-                          <div class='sorn-attribute-header'><%= section.humanize %></div>
-                          <div class='found-section-snippet'><%= snippet %></div>
-                        </div>
-                      <% end %>
-                    </div>
-                  <% end %>
+                  <div class="grid-row">
+                    <h4 class='found-in'>FOUND IN</h4>
+                    <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
+                      <div class="grid-row">
+                        <div class='sorn-attribute-header'><%= section.humanize %></div>
+                        <div class='found-section-snippet'><%= snippet %></div>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
                 <div class="usa-card__footer">
                   <div class="grid-row">
@@ -138,10 +163,11 @@
           <% end %>
 
           <div class="grid-offset-6 grid-col-6 margin-bottom-3">
-              <%= paginate @sorns %>
+            <%= paginate @sorns %>
           </div>
         </ul>
       </main>
+    <% end %>
 
     </div>
   </div>

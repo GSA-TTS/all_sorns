@@ -1,0 +1,16 @@
+<h2 class="usa-accordion__heading">
+  <button class="usa-accordion__button" aria-controls="section-accordion" type="button">Sections</button>
+</h2>
+<div id="section-accordion" class="usa-accordion__content usa-prose">
+  <fieldset id="sections" class="usa-fieldset">
+    <a id='fields-deselect-all' class="clear-all">X Clear section filters</a>
+    <div id="sorn-fields">
+      <% Sorn::FIELDS.each do |field, index| %>
+        <div class="usa-checkbox">
+          <input class="usa-checkbox__input" id="fields-<%= field %>" type="checkbox" name="fields[]" value="<%= field %>" <%= "checked" if field_selected?(field.to_s) %>>
+          <label class="usa-checkbox__label" for="fields-<%= field %>"><%= field.to_s.humanize %></label>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+</div>

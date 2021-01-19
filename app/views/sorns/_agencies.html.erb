@@ -1,15 +1,18 @@
-<button id='agency-select-all' class="usa-button usa-button--outline agency-button" type="button">Select All</button>
-<button id='agency-deselect-all'  class="usa-button usa-button--outline agency-button" type="button">Deselect All</button>
+<h2 class="usa-accordion__heading">
+  <button class="usa-accordion__button" aria-controls="agency-accordion" type="button">Agencies</button>
+</h2>
+<div id="agency-accordion" class="usa-accordion__content usa-prose">
+  <fieldset id="agencies" class="usa-fieldset">
+    <a id='agency-deselect-all' class="clear-all">X Clear agency filters</a>
+    <div id="selected-agencies" class="list">
+      <% Agency.all.each do |agency| %>
+        <div class="usa-checkbox">
+          <input class="usa-checkbox__input" id="agencies-<%= agency.name&.parameterize %>" type="checkbox" name="agencies[]" value="<%= agency.name %>" <%= "checked" if agency_selected?(agency.name) %>>
+          <label class="usa-checkbox__label agency-name" for="agencies-<%= agency.name&.parameterize %>"><%= agency.name %></label>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+</div>
 
-<fieldset id="agencies" class="usa-fieldset">
-  <div id="selected-agencies" class="list">
-    <% Agency.all.each do |agency| %>
-      <div class="usa-checkbox">
-        <input class="usa-checkbox__input" id="agencies-<%= agency.name&.parameterize %>" type="checkbox" name="agencies[]" value="<%= agency.name %>" checked>
-        <label class="usa-checkbox__label agency-name" for="agencies-<%= agency.name&.parameterize %>"><%= agency.name %></label>
-      </div>
-    <% end %>
-  </div>
-</fieldset>
-<div id="agencies-for-js" hidden data-agencies="<%= @selected_agencies %>"></div>
 
