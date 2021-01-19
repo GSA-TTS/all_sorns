@@ -56,7 +56,9 @@ class SornsController < ApplicationController
   end
 
   def only_exact_matches
-    @sorns.only_exact_matches(params[:search], @fields_to_search)
+    # postgres is giving us matches where any search word is returned. We want only exact matches.
+    ilikes_sql = @fields_to_search.map{ |field| "#{field} ILIKE :search"}.join(" OR ")
+    @sorns = @sorns.where(ilikes_sql, search: "%#{params[:search]}%")
   end
 
   def is_a_year?(user_entered_date)

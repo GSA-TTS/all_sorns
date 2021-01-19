@@ -25,6 +25,23 @@ RSpec.describe "Search", type: :request do
     end
   end
 
+  context "multiword search" do
+    let(:search) { "FAKE SYSTEM NAME" }
+
+    it "succeeds" do
+      expect(response.successful?).to be_truthy
+    end
+
+    it "returns eveything expected on the card" do
+      expect(response.body).to include sorn.system_name
+      expect(response.body).to include sorn.agencies.first.name
+      expect(response.body).to include sorn.action
+      expect(response.body).to include sorn.publication_date
+      expect(response.body).to include sorn.citation
+      expect(response.body).to include sorn.html_url
+    end
+  end
+
   context "search with agency select" do
     let(:search) { "FAKE" }
     let(:fields) { nil }
