@@ -46,7 +46,7 @@
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: left bottom;
+    background-position: -3em bottom;
   }
  }
 
@@ -386,6 +386,20 @@
 
  .agency-separator {
    padding: 0 0.5rem;
+   font-weight: bold;
+ }
+
+ .sorn-history__list {
+   list-style-position: inside;
+   padding-left: 0;
+ }
+
+ .sorn-history__content {
+   margin-left: -0.5em;
+ }
+
+ .sorn-history__seperator {
+   margin: 0 0.5em;
    font-weight: bold;
  }
 
