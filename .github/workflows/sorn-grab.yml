@@ -1,7 +1,7 @@
 name: "Find SORNs"
 on: 
   schedule:
-    - cron: "10 * * * 1-5"
+    - cron: "11 7 * * 1-5"  # 2:11am eastern, m-f
 
 jobs:
   find-sorns:
