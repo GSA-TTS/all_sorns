@@ -1,20 +1,17 @@
-name: Daily SORN pull
-on:
-  branches: [ main ]
-  schedule:
-    - cron: "11 7 * * *"  # Arbitrary time outside continental US office hours
-  workflow_dispatch:
+name: Daily SORN update
+on: workflow_dispatch
+  # schedule:
+  #   - cron: "11 7 * * *"  # Arbitrary time outside continental US office hours
+
 
 jobs:
-  deploy:
-    name: Deploy to cloud.gov
-    needs: build_and_test
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Install cf cli
         uses: ./.github/cf-cli
-      - name: Deploy to cloud.gov
+      - name: Login and update
         env:
           CF_USERNAME: ${{ secrets.CF_USERNAME }}
           CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
@@ -22,4 +19,7 @@ jobs:
           CF_SPACE: ${{ secrets.CF_SPACE }}
           CF_CGHOSTNAME: test
         run: |
-          ./.cloud-gov/deploy.sh update-sorn
+        cf api https://api.fr.cloud.gov
+        cf auth "$CF_USERNAME" "$CF_PASSWORD"
+        cf target -o "$CF_ORG" -s "$CF_SPACE"
+        cf run-task all_sorns "bundle exec rails federal_register:find_sorns" --name "Daily SORN update"
