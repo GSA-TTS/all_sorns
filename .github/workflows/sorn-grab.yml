@@ -7,7 +7,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install cf cli
-        uses: .github/cf-cli
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget gnupg2 apt-transport-https
+          wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+          sudo apt-get update
+          sudo apt-get install cf-cli
+          cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
+          cf install-plugin blue-green-deploy -r CF-Community -f
       - name: Login and update
         run: |
           cf api https://api.fr.cloud.gov
