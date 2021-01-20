@@ -25,7 +25,7 @@
  $gray-cool-2:  #F7F9FA;
  $gray-5:       #F0F0F0;
 
- $gold-10v:     #FFE396; 
+ $gold-10v:     #FFE396;
 
 
  body {
@@ -199,10 +199,6 @@
    background-color: $gray-5;
  }
 
- .usa-nav__secondary {
-   color: white;
- }
-
  .usa-nav__primary > .usa-nav__primary-item > a {
    color: $blue-70;
    font-weight: normal;
@@ -313,12 +309,6 @@
     border-radius: 0rem;
     border: 1px solid $blue-90;
     font-size: size('public-sans', 16)
- }
-
- .usa-card__container button {
-  background-color: #0232AC;
-  border-radius: 0;
-  font-weight: normal;
  }
 
  .usa-card__body {
