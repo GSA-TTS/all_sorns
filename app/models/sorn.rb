@@ -7,7 +7,6 @@ class Sorn < ApplicationRecord
 
   validates :citation, uniqueness: true
 
-  scope :no_computer_matching, -> { where.not('"sorns"."action" ILIKE ?', '%matching%') }
   scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
   scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
