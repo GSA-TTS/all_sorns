@@ -1,9 +1,0 @@
----
-  applications:
-  - name: all_sorns
-    buildpacks:
-      - ruby_buildpack
-    memory: 1G
-    services:
-      - all-sorns-db
-    command: ./.cloud-gov/start.sh update
