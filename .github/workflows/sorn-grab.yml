@@ -1,11 +1,10 @@
 name: Daily SORN update
-on: workflow_dispatch
-  # schedule:
-  #   - cron: "11 7 * * *"  # Arbitrary time outside continental US office hours
 
+on: workflow_dispatch
 
 jobs:
   update:
+    name: Update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
