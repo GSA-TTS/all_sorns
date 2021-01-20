@@ -1,17 +1,15 @@
-name: Daily SORN update
-
+name: "Daily SORN update"
 on: workflow_dispatch
 
 jobs:
   update:
-    name: Update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Install cf cli
         uses: ./.github/cf-cli
       - name: Login and update
-        run: |
+      - run: |
           cf api https://api.fr.cloud.gov
           cf auth ${{ secrets.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
           cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
