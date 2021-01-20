@@ -1,7 +1,8 @@
 name: "Find SORNs"
-on: 
+on:
   schedule:
     - cron: "11 7 * * 1-5"  # 2:11am eastern, m-f
+  workflow_dispatch:
 
 jobs:
   find-sorns:
