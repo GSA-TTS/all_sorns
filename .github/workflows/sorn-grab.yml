@@ -7,10 +7,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install cf cli
-        uses: ./.github/cf-cli
+        uses: .github/cf-cli
       - name: Login and update
         run: |
           cf api https://api.fr.cloud.gov
           cf auth ${{ secrets.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
           cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
-          cf run-task all_sorns "bundle exec rails federal_register:find_sorns" --name "Daily SORN update"
+          cf run-task all_sorns_dev "bundle exec rails federal_register:find_sorns" --name "Daily SORN update"
