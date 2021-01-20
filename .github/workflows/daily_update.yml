@@ -1,2 +1,0 @@
-name: "Daily SORN update"
-on: [workflow_dispatch]
