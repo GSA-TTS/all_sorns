@@ -12,7 +12,7 @@ gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
 gem 'pg_search'
 gem 'kaminari', '>= 1.2.1'
-gem 'scenic'
+gem 'scenic', '>= 1.5.4'
 
 # Use Puma as the app server
 gem 'puma', '~> 4.1'

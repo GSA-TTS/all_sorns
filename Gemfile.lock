@@ -301,7 +301,7 @@ DEPENDENCIES
   rspec-rails (~> 4.0.2)
   sass-rails (>= 6.0.0)
   saxerator
-  scenic
+  scenic (>= 1.5.4)
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
