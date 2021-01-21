@@ -76,7 +76,7 @@ RSpec.describe FederalRegisterClient, type: :model do
         expect(Sorn.last.agencies.first.short_name).to eq "Child"
       end
 
-      context "with existing agencies" do
+      context "sorn with existing agencies" do
         let(:sorn) { create :sorn, agencies: [] }
 
         before do
@@ -87,6 +87,22 @@ RSpec.describe FederalRegisterClient, type: :model do
         it "Doesn't duplicate agencies" do
           client.find_sorns
           expect(sorn.agencies.count).to eq 2
+        end
+      end
+
+      context "agencies already exist before the sorn" do
+        let(:sorn) { create :sorn, agencies: [] }
+
+        before do
+          Agency.create(name: "Parent Agency", api_id: 1, parent_api_id: nil, short_name: "Parent")
+          Agency.create(name: "Child Agency", api_id: 2, parent_api_id: 1, short_name: "Child")
+        end
+
+        it "still creates correct relationship" do
+          client.find_sorns
+
+          expect(Sorn.last.agencies.second).to have_attributes(name: "Parent Agency", api_id: 1, parent_api_id: nil)
+          expect(Sorn.last.agencies.first).to have_attributes(name: "Child Agency", api_id: 2, parent_api_id: 1)
         end
       end
 
