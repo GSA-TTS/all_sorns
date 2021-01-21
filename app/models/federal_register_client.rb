@@ -130,13 +130,14 @@ class FederalRegisterClient
     if api_agency.id.present? # skip the subcomponents without metadata, "Office of the Secretary"
       agency = Agency.find_by(api_id: api_agency.id)
       if agency.nil?
-        Agency.create(
+        agency = Agency.create(
           name: api_agency.raw_name.titleize,
           api_id: api_agency.id,
           parent_api_id: api_agency.parent_id,
           short_name: get_agency_short_name(api_agency.id)
         )
       end
+      return agency
     end
   end
 end
