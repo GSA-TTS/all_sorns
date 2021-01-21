@@ -159,9 +159,9 @@ RSpec.describe "Search", type: :request do
 
   context "csv link" do
     it "has the right params" do
-      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
+      get "/search?search=different&fields[]=categories_of_record&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
-      expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=citation&amp;search=different&amp;starting_year=2019">'
+      expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=categories_of_record&amp;search=different&amp;starting_year=2019">'
     end
   end
 end
