@@ -71,7 +71,7 @@ function removeBadge(id, parentId){
 function agencyFiltering() {
   var options = {
     searchClass: 'agency-filter',
-    valueNames: [ 'agency-name' ]
+    valueNames: [ 'agency-name', 'agency-short-name' ]
   };
 
   agencyList = new List('agencies', options);

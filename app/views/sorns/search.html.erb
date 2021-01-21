@@ -72,7 +72,7 @@
               <div id="active-agencies">
                 <% Agency.all.each do |agency| %>
                   <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
-                    <%= agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
                   </div>
                 <% end %>
               </div>

@@ -4,7 +4,7 @@ RSpec.describe "/search", type: :system do
   before do
     driven_by(:selenium_chrome_headless)
     11.times { create :sorn }
-    create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
+    create(:sorn, agencies: [create(:agency, name:"Cousin Agency", short_name: "CUZ")])
   end
 
   it "applies the agency-separator class to the agency pipe separator" do
@@ -91,11 +91,12 @@ RSpec.describe "/search", type: :system do
     expect(page).to have_selector("#active-fields:first-child", text: "Retrieval", visible: true)
     expect(page).to have_selector("#active-fields:last-child", text: "Source", visible: true)
     expect(page).to have_selector("#active-agencies .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency", visible: true)
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency", visible: true)
+    expect(page).to have_selector("#active-agencies:first-child", text: "CA", visible: true)
+    expect(page).to have_selector("#active-agencies:last-child", text: "PA", visible: true)
 
     find(".active-filter", text: "Retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
+    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval", visible: false)
     expect(page).to have_selector("#active-fields:first-child", text: "Source", visible: true)
 
     # retrieval is closed, it should also be unchecked
@@ -126,8 +127,16 @@ RSpec.describe "/search", type: :system do
 
     find("#general-search-button").click
 
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency", visible: true)
+    expect(page).to have_selector("#active-agencies:last-child", text: "PA", visible: true)
     click_on 'Agencies'
     expect(find("#agencies-parent-agency")).to be_checked
+  end
+
+  scenario "agency filtering works with short names" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "CA"
+    expect(page).to have_no_selector '#agencies-parent-agency'
+    expect(page).to have_selector '#agencies-child-agency'
   end
 end

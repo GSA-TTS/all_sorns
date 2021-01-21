@@ -66,7 +66,7 @@ RSpec.describe "Search", type: :request do
       let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
 
       before do
-        sorn.agencies << create(:agency, name: "Child Agency")
+        sorn.agencies << create(:agency, name: "Child Agency", short_name: "CA")
       end
 
       it "only returns a single SORN, even though it matches the two agencies" do
