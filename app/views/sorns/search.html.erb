@@ -81,12 +81,12 @@
         </div>
 
         <div class="grid-row margin-bottom-1">
-          <div class="grid-col-6">
+          <div class="grid-col-7">
             <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
-          <div class="grid-col-6">
+          <div class="grid-col-5">
               <%= paginate @sorns %>
           </div>
         </div>
