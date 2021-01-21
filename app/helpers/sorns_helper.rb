@@ -8,8 +8,7 @@ module SornsHelper
   end
 
   def csv_params
-    csv_params = {
-      search: params[:search],
+    { search: params[:search],
       fields: @fields_to_search,
       agencies: params[:agencies],
       starting_year: params[:starting_year],
