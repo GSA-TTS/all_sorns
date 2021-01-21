@@ -25,7 +25,7 @@
     <div class ="grid-row grid-gap">
 
       <div class="usa-layout-docs__sidenav grid-col-4">
-        <div class="border border-gray-70 sidebar">
+        <div class="border border-base-dark sidebar">
           <div class="preview usa-prose site-prose" >
             <h3>Refine your search</h3>
             <div class="usa-accordion">
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div id="csv-download">
-          <%= link_to search_path(search: params[:search], fields: params[:fields], agency: params[:agency], format: :csv).html_safe do %>
+          <%= link_to search_path(search: params[:search], fields: @fields_to_search, agencies: params[:agencies], starting_year: params[:starting_year], ending_year: params[:ending_year], format: :csv) do %>
             <%= image_tag "Download_Icon.svg"%>
             <span class="csv-download-link-text">Download results as a CSV file</span>
           <% end %>
@@ -81,12 +81,12 @@
         </div>
 
         <div class="grid-row margin-bottom-1">
-          <div class="grid-col-6">
+          <div class="grid-col-7">
             <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
-          <div class="grid-col-6">
+          <div class="grid-col-5">
               <%= paginate @sorns %>
           </div>
         </div>
@@ -125,13 +125,16 @@
                   <% if sorn.mentioned.present? %>
                     <div class="grid-row">
                       <div class="grid-col-12">
-                        <span class="sorn-attribute-header">SORN History and/or other SORNS referenced:</span>
-                        <ul>
+                        <span class="sorn-attribute-header">SORN versions and/or other SORNs referenced:</span>
+                        <ul class="sorn-history__list">
                         <% sorn.mentioned.each do |metioned_sorn| %>
-                          <li>
+                          <li class="sorn-history__item">
+                            <span class="sorn-history__content">
                             <a href="<%= metioned_sorn.html_url %>" class="mention-citation"><%= metioned_sorn.citation %></a>:
-                            <%= metioned_sorn.action %>,
-                            <%= metioned_sorn.publication_date %>
+                            <span class="sorn-history__date"><%= metioned_sorn.publication_date %></span>
+                            <span class="sorn-history__seperator">|</span>
+                            <span class="sorn-history__action"><%= metioned_sorn.action %></span>
+                            </span>
                           </li>
                         <% end %>
                         </ul>

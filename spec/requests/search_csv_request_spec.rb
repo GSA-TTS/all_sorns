@@ -4,7 +4,6 @@ RSpec.describe "Search csv", type: :request do
 
   before do
     create :sorn
-    FullSornSearch.refresh # refresh the materialized view
     get "/search.csv?search=#{search}&#{fields}&#{agency}"
   end
 

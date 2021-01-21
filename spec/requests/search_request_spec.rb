@@ -7,11 +7,27 @@ RSpec.describe "Search", type: :request do
   let(:agency) { nil }
 
   before do
-    FullSornSearch.refresh # refresh the materialized view
     get "/?search=#{search}&#{fields}&#{agency}"
   end
 
   context "search" do
+    it "succeeds" do
+      expect(response.successful?).to be_truthy
+    end
+
+    it "returns eveything expected on the card" do
+      expect(response.body).to include sorn.system_name
+      expect(response.body).to include sorn.agencies.first.name
+      expect(response.body).to include sorn.action
+      expect(response.body).to include sorn.publication_date
+      expect(response.body).to include sorn.citation
+      expect(response.body).to include sorn.html_url
+    end
+  end
+
+  context "multiword search" do
+    let(:search) { "FAKE SYSTEM NAME" }
+
     it "succeeds" do
       expect(response.successful?).to be_truthy
     end
@@ -51,7 +67,6 @@ RSpec.describe "Search", type: :request do
 
       before do
         sorn.agencies << create(:agency, name: "Child Agency")
-        FullSornSearch.refresh # refresh the materialized view
       end
 
       it "only returns a single SORN, even though it matches the two agencies" do
@@ -108,7 +123,6 @@ RSpec.describe "Search", type: :request do
   context "publication date search" do
     before do
       create :sorn, system_name: "NEW SORN", publication_date: "2019-01-13", citation: "different citation", agencies: [create(:agency)]
-      FullSornSearch.refresh # refresh the materialized view
     end
 
     it "only returns the newer sorn in date range" do
@@ -140,6 +154,14 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
       expect(response.body).to include "<mark>FAKE</mark> ACTION" # Newer citation
+    end
+  end
+
+  context "csv link" do
+    it "has the right params" do
+      get "/search?search=different&fields[]=citation&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
+
+      expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=citation&amp;search=different&amp;starting_year=2019">'
     end
   end
 end
