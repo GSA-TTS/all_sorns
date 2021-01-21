@@ -88,15 +88,15 @@ RSpec.describe "/search", type: :system do
 
     # active filter badges should be in alphabetical order
     expect(page).to have_selector("#active-fields .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval")
-    expect(page).to have_selector("#active-fields:last-child", text: "Source")
+    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval", visible: true)
+    expect(page).to have_selector("#active-fields:last-child", text: "Source", visible: true)
     expect(page).to have_selector("#active-agencies .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency")
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency")
+    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency", visible: true)
+    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency", visible: true)
 
     find(".active-filter", text: "Retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
-    expect(page).to have_selector("#active-fields:first-child", text: "Source")
+    expect(page).to have_selector("#active-fields:first-child", text: "Source", visible: true)
 
     # retrieval is closed, it should also be unchecked
     click_on 'Sections'
@@ -106,5 +106,28 @@ RSpec.describe "/search", type: :system do
     click_on 'Agencies'
     find('#agency-deselect-all').click
     expect(find("#active-agencies-filters").visible?).to be_falsey
+  end
+
+  scenario "agency search input filters agency list" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "Parent"
+    expect(page).to have_selector '#agencies-parent-agency'
+    expect(page).to have_no_selector '#agencies-child-agency'
+  end
+
+  scenario "checked, but not visible agencies are still included in the search" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "Parent"
+    find('label', text:'Parent Agency').click
+    fill_in "agency-search", with: "Child"
+    find('label', text:'Child Agency').click
+
+    find("#general-search-button").click
+
+    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency", visible: true)
+    click_on 'Agencies'
+    expect(find("#agencies-parent-agency")).to be_checked
   end
 end

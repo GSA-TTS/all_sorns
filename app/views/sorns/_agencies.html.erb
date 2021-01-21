@@ -4,6 +4,8 @@
 <div id="agency-accordion" class="usa-accordion__content usa-prose">
   <fieldset id="agencies" class="usa-fieldset">
     <a id='agency-deselect-all' class="clear-all">X Clear agency filters</a>
+    <input id="agency-search" class="agency-filter usa-input" />
+
     <div id="selected-agencies" class="list">
       <% Agency.all.each do |agency| %>
         <div class="usa-checkbox">

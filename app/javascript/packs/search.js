@@ -19,7 +19,7 @@ $( function () {
       addBadge(this.id, "agencies")
     }
   })
-  
+
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
@@ -40,6 +40,8 @@ $( function () {
     checboxId = $(this).parent()[0].id.replace("-badge","");
     $(`#${checboxId}`).prop("checked", false).trigger("change");
   });
+
+  agencyFiltering()
 });
 
 function addBadge(id, parentId){
@@ -64,6 +66,37 @@ function removeBadge(id, parentId){
   if ( $filterSection.find(".active-filter:visible").length == 0 ){
     $filterSection.hide();
   }
+}
+
+function agencyFiltering() {
+  var options = {
+    searchClass: 'agency-filter',
+    valueNames: [ 'agency-name' ]
+  };
+
+  agencyList = new List('agencies', options);
+
+  // Ensures they are always included in the search request
+  agencyList.on('searchComplete', function() {
+    agencyList.sort('agency-name');
+    if (agencyList.searched == true) {
+      includeFilteredCheckedAgenciesInSearch()
+    }
+  })
+}
+
+function includeFilteredCheckedAgenciesInSearch() {
+  agencyList.items.forEach(agency => {
+    // agency.elm is the container <div class="usa-checkbox">
+    checkbox = agency.elm.children[0]
+    if ( checkbox.checked ) {
+      if (agency.visible() == false) {
+        $(agency.elm).hide().appendTo("#selected-agencies");
+      } else {
+        $(agency.elm).show()
+      }
+    }
+  })
 }
 
 function publicationDateValidation(){
