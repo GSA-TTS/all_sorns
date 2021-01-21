@@ -209,10 +209,20 @@ RSpec.describe FederalRegisterClient, type: :model do
     end
 
     context "Computer matching" do
-      let(:action) { "Notice of a New Matching Program." }
+      context "in the title" do
+        let(:title) { "Privacy Act of 1974; Computer Matching Program" }
 
-      it "does not create a SORN" do
-        expect{ client.find_sorns }.not_to change{ Sorn.count }
+        it "does not create a SORN" do
+          expect{ client.find_sorns }.not_to change{ Sorn.count }
+        end
+      end
+
+      context "in the action" do
+        let(:action) { "Notice of a New Matching Program." }
+
+        it "does not create a SORN" do
+          expect{ client.find_sorns }.not_to change{ Sorn.count }
+        end
       end
     end
 

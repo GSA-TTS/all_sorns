@@ -87,7 +87,7 @@ class FederalRegisterClient
 
     # find the expected sorn titles
     # exclude any computer matching agreements
-    result.type == 'Notice' && a_sorn_title?(result.title) && not_a_cma?(result.action)
+    result.type == 'Notice' && a_sorn_title?(result.title) && not_a_cma?(result)
   end
 
   def a_sorn_title?(title)
@@ -95,9 +95,11 @@ class FederalRegisterClient
     title.match? /(privacy act|system[\ssof]*record)/i
   end
 
-  def not_a_cma?(action)
-    # no actions with the word match
-    action.downcase.exclude? 'match'
+  def not_a_cma?(result)
+    # no titles or actions with the word match
+    not_in_title = result.title.downcase.exclude?('match')
+    not_in_action = result.action.downcase.exclude?('match') if result.action.present?
+    not_in_title && not_in_action
   end
 
   def add_agencies(result, sorn)
