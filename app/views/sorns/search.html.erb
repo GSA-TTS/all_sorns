@@ -27,7 +27,7 @@
       <div class="usa-layout-docs__sidenav grid-col-4">
         <div class="border border-base-dark sidebar">
           <div class="preview usa-prose site-prose" >
-            <h3>Refine your search</h3>
+            <h2>Refine your search</h2>
             <div class="usa-accordion">
               <%= render partial: "sections" %>
               <%= render partial: "agencies" %>
@@ -145,7 +145,7 @@
                   <hr />
 
                   <div class="grid-row">
-                    <h4 class='found-in'>FOUND IN</h4>
+                    <h3 class='found-in'>FOUND IN</h4>
                     <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
                       <div class="grid-row">
                         <div class='sorn-attribute-header'><%= section.humanize %></div>
