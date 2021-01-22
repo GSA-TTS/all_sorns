@@ -107,6 +107,8 @@ class FederalRegisterClient
   private
 
   def get_agency_short_name(agency_api_id)
+    sleep 1 # dont overload their servers
+
     FederalRegister::Agency.find(agency_api_id).short_name
   end
 
