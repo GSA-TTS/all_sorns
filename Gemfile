@@ -60,5 +60,3 @@ group :test do
   gem 'webdrivers', '>= 4.4.2'
   gem 'launchy'
 end
-
-gem "whenever", "~> 1.0"

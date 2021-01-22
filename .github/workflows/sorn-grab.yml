@@ -1,0 +1,20 @@
+name: "Find SORNs"
+on:
+  schedule:
+    - cron: "11 7 * * 1-5"  # 2:11am eastern, m-f
+  workflow_dispatch:
+
+jobs:
+  find-sorns:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install cf cli
+        run: ./.cloud-gov/install-cf-cli.sh
+      - name: Login and update
+        run: |
+          cf api https://api.fr.cloud.gov
+          cf auth ${{ secrets.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
+          cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
+          cf run-task all_sorns "bundle exec rails federal_register:find_sorns" --name "Find SORNs"
+          echo "Daily update queued"
