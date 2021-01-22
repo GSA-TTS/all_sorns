@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe FederalRegisterClient, type: :model do
   let(:title) { "Privacy Act of 1974; System of Records" }
+  let(:action) { "api action" }
   let(:type) { "Notice" }
   let(:pages) { 1 }
   let(:client) { described_class.new }
@@ -9,7 +10,7 @@ RSpec.describe FederalRegisterClient, type: :model do
   before do
     mock_result = OpenStruct.new(
       title: title,
-      action: "api action",
+      action: action,
       dates: "api dates",
       pdf_url: "pdf url",
       full_text_xml_url: "expected url",
@@ -224,10 +225,20 @@ RSpec.describe FederalRegisterClient, type: :model do
     end
 
     context "Computer matching" do
-      let(:title) { "Computer Matching" }
+      context "in the title" do
+        let(:title) { "Privacy Act of 1974; Computer Matching Program" }
 
-      it "creates a sorn" do
-        expect{ client.find_sorns }.to change{ Sorn.count }.by 1
+        it "does not create a SORN" do
+          expect{ client.find_sorns }.not_to change{ Sorn.count }
+        end
+      end
+
+      context "in the action" do
+        let(:action) { "Notice of a New Matching Program." }
+
+        it "does not create a SORN" do
+          expect{ client.find_sorns }.not_to change{ Sorn.count }
+        end
       end
     end
 
