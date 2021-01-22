@@ -1,3 +1,5 @@
+import List from 'list.js';
+
 $( function () {
    // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
@@ -37,16 +39,16 @@ $( function () {
   // Listener for remove badge link
   $(document).on('click', 'a.remove-badge', function () {
     // uncheck the matching checkbox
-    checboxId = $(this).parent()[0].id.replace("-badge","");
-    $(`#${checboxId}`).prop("checked", false).trigger("change");
+    const checkboxId = $(this).parent()[0].id.replace("-badge","");
+    $(`#${checkboxId}`).prop("checked", false).trigger("change");
   });
 
   agencyFiltering()
 });
 
 function addBadge(id, parentId){
-  $badge = $(`#${id}-badge`)
-  $filterSection = $(`#active-${parentId}-filters`)
+  const $badge = $(`#${id}-badge`)
+  const $filterSection = $(`#active-${parentId}-filters`)
 
   $badge.css("display", "inline-block");
 
@@ -57,8 +59,8 @@ function addBadge(id, parentId){
 }
 
 function removeBadge(id, parentId){
-  $badge = $(`#${id}-badge`)
-  $filterSection = $(`#active-${parentId}-filters`)
+  const $badge = $(`#${id}-badge`)
+  const $filterSection = $(`#active-${parentId}-filters`)
 
   $badge.hide();
 
@@ -69,39 +71,43 @@ function removeBadge(id, parentId){
 }
 
 function agencyFiltering() {
-  var options = {
+  const options = {
     searchClass: 'agency-filter',
     valueNames: [ 'agency-name', 'agency-short-name' ]
   };
 
-  agencyList = new List('agencies', options);
+  const agencyList = new List('agencies', options)
 
-  // Ensures they are always included in the search request
+  // Ensures agencies that are checked, but currently filtered out
+  // are included in the search request
+  // during an agency name search
   agencyList.on('searchComplete', function() {
-    agencyList.sort('agency-name');
-    if (agencyList.searched == true) {
-      includeFilteredCheckedAgenciesInSearch()
-    }
-  })
+    includeFilteredCheckedAgenciesInSearch(agencyList)
+  });
 }
 
-function includeFilteredCheckedAgenciesInSearch() {
+function includeFilteredCheckedAgenciesInSearch(agencyList) {
+  // loop through all of the agencies
   agencyList.items.forEach(agency => {
+    // looking for checked boxes
     // agency.elm is the container <div class="usa-checkbox">
-    checkbox = agency.elm.children[0]
+    let checkbox = agency.elm.children[0]
     if ( checkbox.checked ) {
       if (agency.visible() == false) {
+        // if it is filtered out, add it to the list as a hidden checkbox
+        // so that it is included if the search button is clicked
         $(agency.elm).hide().appendTo("#selected-agencies");
       } else {
+        // show again if it is no longer filtered out
         $(agency.elm).show()
       }
     }
-  })
+  });
 }
 
 function publicationDateValidation(){
-  startYear = parseInt($("#starting_year").val())
-  endYear = parseInt($("#ending_year").val())
+  let startYear = parseInt($("#starting_year").val())
+  let endYear = parseInt($("#ending_year").val())
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
   } else if (startYear < "1994") {
