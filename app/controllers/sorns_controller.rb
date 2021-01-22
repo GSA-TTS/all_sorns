@@ -17,11 +17,11 @@ class SornsController < ApplicationController
 
   def filter_on_search
     if @fields_to_search == Sorn::FIELDS
-      # If we are seaching the whole SORN, use the materialized view
-      @sorns = Sorn.no_computer_matching.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
+      # If we are searching the whole SORN, use the materialized view
+      @sorns = Sorn.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
     else
       # or search a list tsvectors columns
-      @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
+      @sorns = Sorn.dynamic_search(@fields_to_search, params[:search])
     end
   end
 

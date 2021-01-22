@@ -135,22 +135,6 @@ RSpec.describe Sorn, type: :model do
   end
 
   describe ".get_action_type" do
-    context "Computer Matching Agreement" do
-      actions = ["Notice of a new matching program.",
-        "Notice of Computer Matching Program.",
-        "Notice of a Computer Matching Program Between HUD and DHS/FEMA.",
-        "Notice of a modified matching program."
-      ]
-
-      it "return expected action_type" do
-        actions.each do |action|
-          sorn.update(action: action)
-          sorn.get_action_type
-          expect(sorn.action_type).to eq "Computer Matching Agreement"
-        end
-      end
-    end
-
     context "New" do
       actions = ["new something", "Notice of system of records.",
         "Notice of Privacy Act system of records.", "Adding a system",
