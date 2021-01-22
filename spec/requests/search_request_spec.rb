@@ -164,4 +164,16 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=categories_of_record&amp;search=different&amp;starting_year=2019">'
     end
   end
+
+  context "including search.js pack" do
+    it "on landing page its not included" do
+      get "/"
+      expect(response.body).to_not include '/packs-test/js/search-'
+    end
+
+    it "when searching, it is included" do
+      get "?search=FAKE"
+      expect(response.body).to include '/packs-test/js/search-'
+    end
+  end
 end
