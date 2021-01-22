@@ -6,6 +6,7 @@
 require("@rails/ujs").start()
 // require("turbolinks").start()
 require("jquery")
+window.List = require("list.js")
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
