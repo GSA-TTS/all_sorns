@@ -75,5 +75,15 @@ function publicationDateValidation(){
     $("#starting_year")[0].setCustomValidity("Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year");
   } else {
     $("#starting_year")[0].setCustomValidity('');
+    $badge = $("#active-date-range")
+    $badge.prepend(`${startYear} - ${endYear}`)
+    $filterSection = $('#active-date-filter')
+    if ($filterSection.is(":hidden") ){
+      $filterSection.show();
+
+      $badge.css("display", "inline-block");
+    }
   }
-}
+
+  }
+
