@@ -104,11 +104,15 @@
    margin-top: 32px;
    margin-bottom: 32px;
 
-   h2 {
+   label {
      color: $blue-80V;
      font-style: normal;
      font-weight: normal;
      font-size: 20px;
+   }
+
+   .usa-search--big {
+     margin-top: 16px;
    }
  }
 
@@ -140,12 +144,12 @@
 }
 
 .clear-all {
-  color: #D64242 !important;
+  color: #d34141 !important;
   ;
 }
 
 //Sidebar
-.sidebar h3 {
+.sidebar h2 {
   font: sans-serif;
   padding: 1.25rem 1rem 0rem 1.25rem;
   font-family: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
