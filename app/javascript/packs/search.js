@@ -39,6 +39,16 @@ $( function () {
     // uncheck the matching checkbox
     checboxId = $(this).parent()[0].id.replace("-badge","");
     $(`#${checboxId}`).prop("checked", false).trigger("change");
+    // clear date filters
+    if($(this).parent()[0].id == "active-date-range"){
+      $("#starting_year").val('')
+      $("#ending_year").val('')
+      // hide badges section if empty
+      $badge = $('#active-date-range')
+      $filterSection = $(`#active-date-filter`)
+      $badge.hide()
+      $filterSection.hide()
+    }
   });
 });
 
