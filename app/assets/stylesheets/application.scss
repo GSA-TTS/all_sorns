@@ -453,3 +453,9 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 .about__h1, .about__h2, .about__h3 {
   color: $blue-90;
 }
+
+.about__h2 {
+  border-top: 2px solid $blue-90;
+  margin-top: 1.5em;
+  padding-top: .25em;
+}
