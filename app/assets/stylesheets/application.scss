@@ -21,6 +21,7 @@
  $blue-50:      #006DB6; // Interactive
  $blue-10V:     #CFE8FF;
 
+ $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
  $gray-5:       #F0F0F0;
@@ -390,6 +391,7 @@
  }
 
  .found-in {
+  color: $gray-cool-60;
   font-size: .9em;
   margin: 0 0 1em;
   width: 100%;
