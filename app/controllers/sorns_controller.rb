@@ -1,5 +1,6 @@
 class SornsController < ApplicationController
   def search
+    @title = search_title
     @sorns = Sorn.none if params[:search].blank? # blank page on first visit
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
@@ -15,13 +16,22 @@ class SornsController < ApplicationController
 
   private
 
+  def search_title
+    if params[:search].present?
+      "Search results for #{params[:search]} - "
+    else
+      ""
+    end
+
+  end
+
   def filter_on_search
     if @fields_to_search == Sorn::FIELDS
-      # If we are seaching the whole SORN, use the materialized view
-      @sorns = Sorn.no_computer_matching.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
+      # If we are searching the whole SORN, use the materialized view
+      @sorns = Sorn.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
     else
       # or search a list tsvectors columns
-      @sorns = Sorn.no_computer_matching.dynamic_search(@fields_to_search, params[:search])
+      @sorns = Sorn.dynamic_search(@fields_to_search, params[:search])
     end
   end
 
@@ -56,7 +66,9 @@ class SornsController < ApplicationController
   end
 
   def only_exact_matches
-    @sorns.only_exact_matches(params[:search], @fields_to_search)
+    # postgres is giving us matches where any search word is returned. We want only exact matches.
+    ilikes_sql = @fields_to_search.map{ |field| "#{field} ILIKE :search"}.join(" OR ")
+    @sorns = @sorns.where(ilikes_sql, search: "%#{params[:search]}%")
   end
 
   def is_a_year?(user_entered_date)

@@ -25,6 +25,23 @@ RSpec.describe "Search", type: :request do
     end
   end
 
+  context "multiword search" do
+    let(:search) { "FAKE SYSTEM NAME" }
+
+    it "succeeds" do
+      expect(response.successful?).to be_truthy
+    end
+
+    it "returns eveything expected on the card" do
+      expect(response.body).to include sorn.system_name
+      expect(response.body).to include sorn.agencies.first.name
+      expect(response.body).to include sorn.action
+      expect(response.body).to include sorn.publication_date
+      expect(response.body).to include sorn.citation
+      expect(response.body).to include sorn.html_url
+    end
+  end
+
   context "search with agency select" do
     let(:search) { "FAKE" }
     let(:fields) { nil }
@@ -137,6 +154,14 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "NEW SORN" # Newer sorn date
       expect(response.body).to include "2019-01-13" # Newer sorn date
       expect(response.body).to include "<mark>FAKE</mark> ACTION" # Newer citation
+    end
+  end
+
+  context "csv link" do
+    it "has the right params" do
+      get "/search?search=different&fields[]=categories_of_record&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
+
+      expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=categories_of_record&amp;search=different&amp;starting_year=2019">'
     end
   end
 end

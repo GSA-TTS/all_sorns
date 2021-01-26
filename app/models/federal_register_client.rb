@@ -2,7 +2,7 @@ class FederalRegisterClient
   def initialize(conditions: nil, fields: nil)
     # Makes queries to the Federal Register API to find SORNs.
     # Searching for 'Privacy Act of 1974; System of Records' of type 'Notice' is the best query we have found.
-    @conditions = conditions || { term: 'Privacy Act of 1974; System of Records' } #, agencies: ['general-services-administration']
+    @conditions = conditions || { term: 'Privacy Act of 1974; System of Records' }
 
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
@@ -16,7 +16,7 @@ class FederalRegisterClient
       conditions: @conditions,
       type: 'NOTICE', # doesn't seem to work
       fields: @fields,
-      order: 'newest', #oldest
+      order: 'newest',
       per_page: 200,
       page: @page
     }
@@ -52,7 +52,6 @@ class FederalRegisterClient
 
   def handle_result(result)
     sorn = Sorn.find_by(citation: result.citation)
-
     params = sorn_params(result)
 
     if sorn
@@ -64,18 +63,6 @@ class FederalRegisterClient
     add_agencies(result, sorn)
 
     UpdateSornJob.perform_later(sorn.id)
-  end
-
-  def a_sorn_title?(title)
-    # We researched all Federal Register search result titles
-    # https://docs.google.com/document/d/15gwih9P6ebazWCS2ekxQ5Id1rDWbktg1mFdXtHIPZ44/edit#
-    # If a title includes one of these three, then we consider it a SORN.
-    patterns = ['privacy act', 'system[\ssof]*record', 'computer match']
-    patterns.any? { |pattern| title.match?(/#{pattern}/i) }
-  end
-
-  def sorn_result?(result)
-    result.type == 'Notice' && a_sorn_title?(result.title)
   end
 
   def sorn_params(result)
@@ -94,6 +81,27 @@ class FederalRegisterClient
     }
   end
 
+  def sorn_result?(result)
+    # We researched all Federal Register search result titles
+    # https://docs.google.com/document/d/15gwih9P6ebazWCS2ekxQ5Id1rDWbktg1mFdXtHIPZ44/edit#
+
+    # find the expected sorn titles
+    # exclude any computer matching agreements
+    result.type == 'Notice' && a_sorn_title?(result.title) && not_a_cma?(result)
+  end
+
+  def a_sorn_title?(title)
+    # titles with either privacy act or system of record
+    title.match? /(privacy act|system[\ssof]*record)/i
+  end
+
+  def not_a_cma?(result)
+    # no titles or actions with the word match
+    not_in_title = result.title.downcase.exclude?('match')
+    not_in_action = result.action.downcase.exclude?('match') if result.action.present?
+    not_in_title && not_in_action
+  end
+
   def add_agencies(result, sorn)
     # add agency to sorn, without duplicates
     result.agencies.each do |api_agency|
@@ -103,8 +111,6 @@ class FederalRegisterClient
       end
     end
   end
-
-  private
 
   def get_agency_short_name(agency_api_id)
     FederalRegister::Agency.find(agency_api_id).short_name
@@ -130,9 +136,6 @@ class FederalRegisterClient
           parent_api_id: api_agency.parent_id,
           short_name: get_agency_short_name(api_agency.id)
         )
-      elsif agency.short_name.nil? # Can remove after everyone has short_name locally
-        agency.update(short_name: get_agency_short_name(api_agency.id))
-        return agency
       end
     end
   end

@@ -7,7 +7,6 @@ class Sorn < ApplicationRecord
 
   validates :citation, uniqueness: true
 
-  scope :no_computer_matching, -> { where.not('"sorns"."action" ILIKE ?', '%matching%') }
   scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
   scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
@@ -98,8 +97,6 @@ class Sorn < ApplicationRecord
     action_type = case self.action
     when /Recertif*/i, /renew*/i, /re-establish*/i, /republicat*/i
       "Renewal"
-    when /match*/i
-      "Computer Matching Agreement"
     when /modif*/i, /alter*/i, /new blanket routine use/i, /amend*/i, /revis*/i, /change/i, /updat*/i, /new routine use/i
       "Modification"
     when /rescind*/i, /delet*/i, /resciss*/i, /retir*/i, /withdraw*/i
@@ -150,13 +147,6 @@ class Sorn < ApplicationRecord
         csv.add_row values
       end
     end
-  end
-
-  def self.only_exact_matches(search_term, fields_to_search)
-    exact_matches = all.filter_map do |sorn|
-      sorn if sorn.search_term_found_in_any_selected_fields(search_term, fields_to_search)
-    end
-    Sorn.where(id: exact_matches.map(&:id))
   end
 
   def search_term_found_in_any_selected_fields(search_term, fields_to_search)
