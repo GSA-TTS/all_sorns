@@ -36,7 +36,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: -3em bottom;
+    background-position: -3em 80%;
   }
  }
 
@@ -106,11 +106,15 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    margin-top: 32px;
    margin-bottom: 32px;
 
-   h2 {
+   label {
      color: $blue-80V;
      font-style: normal;
      font-weight: normal;
      font-size: 20px;
+   }
+
+   .usa-search--big {
+     margin-top: 16px;
    }
  }
 
@@ -142,12 +146,12 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
 .clear-all {
-  color: #D64242 !important;
+  color: #d34141 !important;
   ;
 }
 
 //Sidebar
-.sidebar h3 {
+.sidebar h2 {
   padding: 1.25rem 1rem 0rem 1.25rem;
   font-family: $font-stack;
   font-size: 20px;
@@ -397,6 +401,15 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  .found-section-snippet {
   font-size: 16px;
   width: 100%;
+  margin-top: 0px;
+
+  p:first-child {
+    margin-top: 0px;
+  }
+
+  p:last-child {
+    margin-bottom: 0px;
+  }
 
  }
 
