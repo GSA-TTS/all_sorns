@@ -30,6 +30,20 @@ $( function () {
     }
   })
   
+  //Add badge for date filters if populated
+  if(parseInt($("#starting_year").val()) && parseInt($("#ending_year").val())) {
+    startYear = parseInt($("#starting_year").val())
+    endYear = parseInt($("#ending_year").val())
+    $filterSection = $('#active-date-filter')
+    $badge = $("#active-date-range")
+    $dates = $("#active-date-range span")
+    $dates.text(`${startYear} - ${endYear}`)
+    if ($filterSection.is(":hidden") ){
+      $filterSection.show();
+      $badge.css("display", "inline-block");
+    }
+  }
+
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
