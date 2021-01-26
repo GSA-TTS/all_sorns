@@ -400,6 +400,15 @@
  .found-section-snippet {
   font-size: 16px;
   width: 100%;
+  margin-top: 0px;
+
+  p:first-child {
+    margin-top: 0px;
+  }
+
+  p:last-child {
+    margin-bottom: 0px;
+  }
 
  }
 
