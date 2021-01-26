@@ -145,7 +145,7 @@
                   <hr />
 
                   <div class="grid-row">
-                    <h3 class='found-in'>FOUND IN</h4>
+                    <h3 class='found-in'>FOUND IN</h3>
                     <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
                       <div class="grid-row">
                         <div class='sorn-attribute-header'><%= section.humanize %></div>
