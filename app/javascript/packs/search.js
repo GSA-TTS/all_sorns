@@ -8,7 +8,17 @@ $( function () {
   $(".clear-all").on('click', function(){
     const parentId = $(this).parent()[0].id; // "sections" or "agencies"
     // uncheck the checkboxes, fire the change event
-    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change");
+    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change")
+    // for dates
+    if (parentId == 'publication-date-fields') {
+      $("#starting_year").val('')
+      $("#ending_year").val('')
+      // hide badges section
+      $badge = $('#active-date-range')
+      $filterSection = $(`#active-date-filter`)
+      $badge.hide()
+      $filterSection.hide()
+    }
   })
 
   // Get :checked on load and create badges
@@ -43,7 +53,7 @@ $( function () {
     if($(this).parent()[0].id == "active-date-range"){
       $("#starting_year").val('')
       $("#ending_year").val('')
-      // hide badges section if empty
+      // hide badges section
       $badge = $('#active-date-range')
       $filterSection = $(`#active-date-filter`)
       $badge.hide()
