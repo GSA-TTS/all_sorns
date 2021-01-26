@@ -28,6 +28,8 @@
  $gold-10v:     #FFE396;
 
 
+$font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+
  body {
   background: $gray-cool-2;
 
@@ -145,10 +147,9 @@
 }
 
 //Sidebar
-.sidebar h3 {
-  font: sans-serif;
+.sidebar h3 {;
   padding: 1.25rem 1rem 0rem 1.25rem;
-  font-family: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+  font-family: $font-stack;
   font-size: 20px;
 }
 
@@ -353,7 +354,7 @@
  }
 
  .system-name {
-  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+  font-family: $font-stack;
   font-weight: normal;
   font-size: 20px;
   line-height: 28px;
@@ -437,3 +438,15 @@
  .usa-list li {
    margin-bottom: .5em;
  }
+
+
+// About page
+.usa-intro {
+  font-family: $font-stack;
+  font-size: 1.35em;
+  line-height: 1.5;
+}
+
+.about__h1, .about__h2, .about__h3 {
+  color: $blue-90;
+}
