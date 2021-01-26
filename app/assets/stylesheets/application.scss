@@ -443,8 +443,11 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 // About page
 .usa-intro {
   font-family: $font-stack;
-  font-size: 1.35em;
+  color: $blue-90;
+  font-size: 1.25em;
   line-height: 1.5;
+  margin-top:0;
+  padding-left: .5em;
 }
 
 .about__h1, .about__h2, .about__h3 {

@@ -20,7 +20,7 @@
 
  </head>
 
-  <body <%if params[:search].blank?%>class="pre-search"<%end%>>
+  <body <%if params[:search].blank? && current_page?('/') %>class="pre-search"<%end%>>
     <%= render template: 'layouts/banner' %>
     <%= render template: 'layouts/nav'%>
     <%= yield %>

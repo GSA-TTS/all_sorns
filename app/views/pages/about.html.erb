@@ -5,8 +5,14 @@
                 <div class="grid-col-12">
 
                     <h1 class="about__h1">About</h1>
-
-                    <p class="usa-intro">We are building a website that saves privacy offices time by speeding up&nbsp;search and adding structure to System of Records Notices (SORNs) and&nbsp;helps the public understand what data the government collects about&nbsp;them.</p>
+                    <div class="usa-media-block">
+                      <div class="usa-media-block__img">
+                        <%= image_tag "PrvOps_SornDash_About_01.svg" , alt:"" %>
+                      </div>
+                      <div class="usa-media-block__body">
+                        <p class="usa-intro">We are building a website that saves privacy offices time by speeding up&nbsp;search and adding structure to System of Records Notices (SORNs) and&nbsp;helps the public understand what data the government collects about&nbsp;them.</p>
+                      </div>
+                    </div>
 
                     <p>
                     <a class="usa-link usa-link--external" href="https://18f.gsa.gov/">18F</a>, in collaboration with the <a class="usa-link usa-link--external" href="https://www.fpc.gov/">Federal Privacy Council</a> and with funding from <a  class="usa-link usa-link--external" href="https://10x.gsa.gov/">10x</a>, created this dashboard to provide a faster way to find and analyze Privacy Act notices in the <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">Federal Register</a>.
@@ -17,22 +23,23 @@
                     We hope that providing an easier and faster way to reference SORNs will give privacy office staff more time for their other important work protecting the public’s privacy.
                     </p>
 
-                    <h3 class="about__h3">Who is this for?</h3>
+                    <h2 class="about__h2">More information</h2>
+                    <h3 class="about__h3">Audience</h3>
                     <p>
                     We made this dashboard for government privacy analysts and privacy lawyers to make it easier for them to reference SORNs, either their own or from another agency. Its resource to help the public better understand government privacy practices and make Privacy Act requests for their personal data.
                     </p>
 
-                    <h3 class="about__h3">Where does the data come from?</h3>
+                    <h3 class="about__h3">Data source and limitations</h3>
                     <p>
                     Our dashboard regularly pulls newly published SORNs from the Federal Register via their impressive API. We add structure to them in our database, which allows for more fine-grained search of their content. We haven’t modified their content in any way. All results link back to the Federal Register.
                     </p>
 
-                    <h3 class="about__h3">How complete is it?</h3>
+
                     <p>
                     <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">federalregister.gov</a>. has SORNs going back to 1994, and most are available in machine-readable formats. A portion of SORNs prior to 2000 are only available in text. So far, We’ve processed the machine-readable SORNs available through the federalregister.gov API.
                     </p>
 
-                    <h3 class="about__h3">Why are some records missing fields?</h3>
+                    <h3 class="about__h3">Missing fields</h3>
                     <p>
                     SORNs that use the <a class="usa-link usa-link--external" href="https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A108/omb_circular_a-108.pdf">OMB A-108(r.2016) templates</a> are much easier to parse into structured records. As we continue developing this dashboard, we’ll add methods to parse documents that will capture the content from a larger share of the total number of documents. SORNs that are not parsed, or partially parsed, are still included in search results, but only if the search is of the full text of the SORN, not in a search of specific sections.
                     </p>
@@ -41,7 +48,7 @@
                     The dashboard will add and parse all new SORNs published using any of the five A-108 templates.
                     </p>
 
-                    <h3 class="about__h3">How do I download my results as a CSV file?</h3>
+                    <h3 class="about__h3">Saving results</h3>
                     <p>
                     Clicking <strong>Download results as a CSV file</strong> prepares a comma-separated variable file containing rows for the search results on screen, and columns for each SORN section that is selected in the sidebar. You can add or remove columns from the output file by selecting or deselecting items from the sidebar. The output file contains the full text for all selected columns. If you want to download the complete structured content of every SORN in our database, reload the page and check all SORN sections in the sidebar and then click the save as csv button (note: this file will be very large!)
                     </p>
