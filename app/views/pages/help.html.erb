@@ -1,0 +1,92 @@
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        <main class="usa-layout-docs__main desktop:grid-col-9 usa-prose usa-layout-docs" id="main-content">
+            <div class="grid-row margin-top-2 margin-right-0">
+                <div class="grid-col-12">
+
+                    <h1 class="about__h1">Help</h1>
+                    <div class="usa-media-block">
+                      <div class="usa-media-block__img">
+                        <%= image_tag "PrvOps_SornDash_About_01.svg" , alt:"" %>
+                      </div>
+                      <div class="usa-media-block__body">
+                        <p class="usa-intro">We are building a website that saves privacy offices time by speeding up&nbsp;search and adding structure to System of Records Notices (SORNs) and&nbsp;helps the public understand what data the government collects about&nbsp;them.</p>
+                      </div>
+                    </div>
+
+
+
+                    <h2 class="about__h2">Why you might use this dashboard</h2>
+
+
+                    The Privacy Act of 1974 requires all federal government agencies to notify the public about the personally-identifiable information (PII) they collect and maintain in their information systems (system of records).
+
+                    Agencies publish this information in System of Records Notices (SORNs) in the <a class="usa-link usa-link--external" href="https://www.federalregister.gov/"> Federal Register</a> .
+
+                    SORNs are documents that include important privacy information about agencies’ IT systems including the types of PII the system collects (the categories of record) and what groups of people this information is collected from (the categories of individuals).
+
+                    The Privacy Act gives individuals the right to view and make copies of records about themselves in any system of record by making a Privacy Act request for this information, or designate someone to request this information on your behalf.
+
+                    If you are making a Privacy Act request for yourself or on behalf of someone else, SORN Dash will help you search the SORNs of all government agencies to identify which systems may have records that you can request.
+
+                    Get more information about the <a class="usa-link usa-link--external" href="https://www.fpc.gov/privacy-act-1974/"> Privacy Act of 1974 </a>
+
+
+                    <a class="usa-link usa-link--external" href="https://www.fpc.gov/resources/glossary/"> Learn more about SORNs and their content <a>.
+
+                    <h2 class="about__h2">How to use this dashboard</h2>
+                    <p>
+                    We’ll explain how you can use SORN Dash to find SORNs by going through each part of the interface and how to use it to narrow down search results.
+                    </p>
+
+                    <h3 class="about__h3"> Search Bar </h3>
+                    <p>To begin your search, type in a keyword in the search bar on the landing page. For example, if you search for <strong>‘social security number’</strong>, you will see all results from all agencies that contain this exact term.</p>
+
+                    <p> You can modify or change your search term and run the search again.</p>
+
+                    <h3 class="about__h3"> Refine your search </h3>
+                    <p>This section contains filters that can be applied to narrow down your search.</p>
+
+                    <h4 class="info__h4">Sections</h4>
+                    <p>The fields in this list correspond to the sections of SORN documents. </p>
+                    <p> You can limit the sections searched by selecting or deselecting the checkbox next to each section name. The currently active filters will be shown under <strong>Active Section Filters</strong>. You will have to search again to apply the filter to your results.</p>
+
+                    <h4 class="info__h4">Agencies</h4>
+                    <p>This is a list of every federal government agency (and component) that has published SORNs.</p>
+                    <p> When no agencies are checked, the search will be run across all agencies.</p>
+                    <!-- <p> You can type the name of an agency into the dropdown menu to find it more quickly.</p> -->
+                    <p> Select which agencies SORNs to include in the search by clicking the checkbox next to each agency name; remove them by clicking the box to uncheck them. The currently active filters will be shown in the <strong>Active Agencies Section.</strong> You will have to search again to apply the filter to your results. </p>
+
+                    <h4 class="info__h4">Publication Year</h4>
+                    <p>You can limit your search to SORNs published within a range of years by entering a starting and ending year in this section. The search will include SORNs published from January 1st of the starting year to December 31st of the ending year, or the current date if the current year is entered as the ending year.
+                    </p>
+
+
+                    <h3 class="about__h3"> Results </h3>
+                    <p>
+                    Results are displayed as cards for each matching result with this layout:</p>
+                    <ul>
+                      <li> The <strong>header section</strong> includes the name of the system </li>
+                      <li> The <strong>citation section</strong> includes the agency that published it, the action, the publication date, the Federal Register (FR) citation number, and other SORNs referenced. </li>
+                      <li> The <strong>action</strong> is the reason the SORN was published, which is typically to announce a new system, modify an existing SORN, or rescind a SORN for a system that is no longer in use. </li>
+                      <li> <strong>SORN versions and/or other SORNs referenced</strong> is a list of FR citations of other SORNs referenced in this SORN. This section also contains links to other SORNs that reference this SORN. These references are useful for seeing the history of modifications that have been made to a SORN over time.</li>
+                      <li> The <strong>Found in section</strong> shows where the matches to the search terms were found. Matches are highlighted in an excerpt from the section where they were found, based on the sections selected in the search filters.</li>
+                      <li> If you’ve selected specific sections to search on the sidebar, only those sections will appear in the search results. The search term may also be found in other, unselected sections.</li>
+                    </ul>
+
+                    <h3 class="about__h3"> Exporting your search results </h3>
+
+
+                    <p>You can export your search results as a comma-separated variable (CSV) file to save them for later use or further analysis.
+                    </p>
+
+                    <p>Clicking on the <strong>Download results as a CSV</strong> file link creates a .csv file containing all the results of your search in a spreadsheet. The rows in the exported spreadsheet are the individual SORNs, and the columns are the sections selected under <strong>Search Filters</strong>.
+                    </p>
+
+                    <p> If you want to get all of the records for a particular agency, group of agencies, or all agencies, simply apply the agency filters, select the sections you want to export using the search filters, and click search without any text in the search bar. When the results have loaded, click the <strong>Download results as a CSV file</strong>.
+                    </p>
+
+        </div>
+        </div>
+    </div>
+</div>
