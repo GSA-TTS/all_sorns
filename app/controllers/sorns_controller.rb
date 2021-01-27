@@ -1,5 +1,6 @@
 class SornsController < ApplicationController
   def search
+    @title = search_title
     @sorns = Sorn.none if params[:search].blank? # blank page on first visit
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
@@ -14,6 +15,15 @@ class SornsController < ApplicationController
   end
 
   private
+
+  def search_title
+    if params[:search].present?
+      "Search results for #{params[:search]} - "
+    else
+      ""
+    end
+
+  end
 
   def filter_on_search
     if @fields_to_search == Sorn::FIELDS
