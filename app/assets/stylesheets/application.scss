@@ -21,6 +21,7 @@
  $blue-50:      #006DB6; // Interactive
  $blue-10V:     #CFE8FF;
 
+ $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
  $gray-5:       #F0F0F0;
@@ -366,6 +367,7 @@
  }
 
  .sorn-attribute-header {
+  color: $blue-90;
   font-weight: bold;
  }
 
@@ -389,6 +391,10 @@
  }
 
  .found-in {
+  color: $gray-cool-60;
+  font-size: .85em;
+  letter-spacing: .04em;
+  margin: 0 0 1em;
   width: 100%;
  }
 
@@ -412,8 +418,12 @@
 
  }
 
+.usa-card__body .grid-row:last-of-type {
+  padding-bottom: 0;
+}
+
  .usa-card__footer {
-  padding: 16px;
+  padding: 8px 16px 16px;
  }
 
  .usa-link--external {
