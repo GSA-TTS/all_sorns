@@ -473,12 +473,27 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   padding-left: .5em;
 }
 
-.about__h1, .about__h2, .about__h3 {
+.info__h1, .info__h2, .info__h3 {
   color: $blue-90;
 }
 
-.about__h2 {
+.info__h4 {
+  color: $gray-cool-60;
+  letter-spacing: .04em;
+  margin-bottom: 0;
+
+}
+
+.info__h2 {
   border-top: 2px solid $blue-90;
   margin-top: 1.5em;
   padding-top: .25em;
+}
+
+.info__h3 {
+  margin: 1em 0 0;
+}
+
+.info__body {
+  margin: .5em 0 1em;
 }
