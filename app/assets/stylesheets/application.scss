@@ -392,7 +392,8 @@
 
  .found-in {
   color: $gray-cool-60;
-  font-size: .9em;
+  font-size: .85em;
+  letter-spacing: .04em;
   margin: 0 0 1em;
   width: 100%;
  }
@@ -417,8 +418,12 @@
 
  }
 
+.usa-card__body .grid-row:last-of-type {
+  padding-bottom: 0;
+}
+
  .usa-card__footer {
-  padding: 16px;
+  padding: 8px 16px 16px;
  }
 
  .usa-link--external {
