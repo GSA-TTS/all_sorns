@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   get '/analytics', to: 'analytics#index'
 
   get '/about', to: 'pages#about'
+
+  get '/help', to: 'pages#help'
 end
