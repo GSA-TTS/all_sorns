@@ -192,5 +192,3 @@ security patches that need to be applied. Cloud.gov may request updates
 from time to time to the production environment. SORN DASH is a low
 impact system and can be taken offline if necessary to apply these
 updates.
-
-#  

@@ -2,9 +2,8 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/18F/all_sorns/badge.svg)](https://snyk.io/test/github/18F/all_sorns)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c24db1125b3c714fbf9d/maintainability)](https://codeclimate.com/github/18F/all_sorns/maintainability)
-## All of the SORNs 🎵
 
-# Introduction
+## Introduction
 
 We are building a website that saves privacy offices time by speeding up
 search and adding structure to System of Records Notices (SORNs) and
@@ -30,27 +29,11 @@ Council</span>](https://www.fpc.gov/) with funding from
 SORN DASH is hosted and maintained by the TTS Identity Program
 Management Office.
 
-### How search works
-We use postgres' built in [full text search](https://www.postgresql.org/docs/current/textsearch.html) ability. We do it by combining two approaches though, so we wanted to detail it here to explain the difference.
+## Developer Setup
 
-The default search searches against all of our SORN data at once. It uses a [materialized view](https://www.postgresql.org/docs/13/rules-materializedviews.html) to combine all of our data into one single column that is optimized for full text search. This view needs to be refreshed whenever the data changes, which is once a day in our case.
+### Running Locally
 
-If a user decides to search only a subset of columns, using the Section filters checkboxes, then we use a different approach. We've created [generated columns](https://www.postgresql.org/docs/13/ddl-generated-columns.html) for each of our existing data columns, each optimized for full text search. We then search against that subset of columns. These columns are always up to date. It's a little slower than the materialized view, but allows per column search to still be fast. This column type is new, just introduced in PostgreSQL 12.
-
-The materialized view is created and versioned by the great [Scenic gem](https://github.com/scenic-views/scenic). The view is searched against by the FullSornSearch model.
-
-Both approaches for full text search use the incredible [pg_search gem](https://github.com/Casecommons/pg_search).
-
-These two articles explaining these approaches were very helpful:
-- [Optimizing full-text search with Postgres materialized view in Rails](https://caspg.com/blog/optimizing-full-text-search-with-postgres-materialized-view-in-rails)
-- [Full Text Search in Milliseconds with Rails and PostgreSQL](https://pganalyze.com/blog/full-text-search-ruby-rails-postgres)
-
-
-# Developer Setup
-
-## Running Locally
-
-### 1\. Setup Environment
+#### 1\. Setup Environment
 
 SORN DASH has a simple technical stack - you need a computer with:
 
@@ -130,8 +113,15 @@ ruby packages. Run this with:
 
 **\>** bundle install
 
+* [How search works](/docs/search.md)
+* [About the data](/docs/data.md)
+* [Devops setup](/docs/devops.md)
+* [Product roadmap](/docs/product.md)
+* [Research and design](/docs/research-and-design.md)
+* [Compliance](/docs/compliance.md)
 
 ### Who
+
 - [ondrae](https://github.com/ondrae)
 - [peterrowland](https://github.com/peterrowland)
 - [igorkorenfeld](https://github.com/igorkorenfeld)
