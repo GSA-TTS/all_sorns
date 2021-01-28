@@ -2,68 +2,135 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/18F/all_sorns/badge.svg)](https://snyk.io/test/github/18F/all_sorns)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c24db1125b3c714fbf9d/maintainability)](https://codeclimate.com/github/18F/all_sorns/maintainability)
-## All of the SORNs 🎵
 
-### What
-[Prototype](https://all-sorns.app.cloud.gov)
+## Introduction
 
-This repository is for prototyping a service to make all of the federal government's [System Of Record Notices](https://www.gsa.gov/reference/gsa-privacy-program/systems-of-records-privacy-act) more usable for government privacy officer's and the public.
+We are building a website that saves privacy offices time by speeding up
+search and adding structure to System of Records Notices (SORNs) and
+helps the public understand what data the government collects about
+them.
 
-### Why
-We are building a dashboard for searching and exploring Privacy Act System of Records Notices (SORNs). This service will give privacy offices and their staff a better way to find SORNs using targeted search, and provides the public with an interface to explore and understand government privacy practices.
+SORN DASH is a public dashboard for finding information about the
+privacy impacts and protections of government IT systems. It is a
+ruby-on-rails application that processes System of Records Notices
+(SORNs) published in the [<span class="underline">Federal
+Register</span>](https://www.federalregister.gov/) and stores them as
+structured records in a database. It enables search and exploration of
+these important privacy documents that inform the public about the
+existence and current state of government IT systems that collect and
+store personally-identifiable information (PII).
 
-To read more about how we got here, see our [Phase 3 work](https://github.com/18F/privacy-tools/blob/master/README.md) and our [Privacy Dashboard built for GSA](https://cg-9341b8ea-025c-4fe2-aa6c-850edbebc499.app.cloud.gov/site/18f/privacy-dashboard/).
+SORN DASH was created by
+[<span class="underline">18F</span>](https://18f.gsa.gov/) in
+collaboration with the [<span class="underline">Federal Privacy
+Council</span>](https://www.fpc.gov/) with funding from
+[<span class="underline">10x</span>](https://10x.gsa.gov/).
 
-### How
-This is a Rails app, running on Cloud.gov. It gets SORNs from the Federal Register every night. It reads those SORNs and separates every section into their own database column. Users can search against everything, or limit their search by SORN section, agencies, and publiction date.
+SORN DASH is hosted and maintained by the TTS Identity Program
+Management Office.
 
-### How search works
-We use postgres' built in [full text search](https://www.postgresql.org/docs/current/textsearch.html) ability. We do it by combining two approaches though, so we wanted to detail it here to explain the difference.
+## Developer Setup
 
-The default search searches against all of our SORN data at once. It uses a [materialized view](https://www.postgresql.org/docs/13/rules-materializedviews.html) to combine all of our data into one single column that is optimized for full text search. This view needs to be refreshed whenever the data changes, which is once a day in our case.
+### Running Locally
 
-If a user decides to search only a subset of columns, using the Section filters checkboxes, then we use a different approach. We've created [generated columns](https://www.postgresql.org/docs/13/ddl-generated-columns.html) for each of our existing data columns, each optimized for full text search. We then search against that subset of columns. These columns are always up to date. It's a little slower than the materialized view, but allows per column search to still be fast. This column type is new, just introduced in PostgreSQL 12.
+#### 1\. Setup Environment
 
-The materialized view is created and versioned by the great [Scenic gem](https://github.com/scenic-views/scenic). The view is searched against by the FullSornSearch model.
+SORN DASH has a simple technical stack - you need a computer with:
 
-Both approaches for full text search use the incredible [pg_search gem](https://github.com/Casecommons/pg_search).
+  - > Ruby on Rails v.2.7.1
 
-These two articles explaining these approaches were very helpful:
-- [Optimizing full-text search with Postgres materialized view in Rails](https://caspg.com/blog/optimizing-full-text-search-with-postgres-materialized-view-in-rails)
-- [Full Text Search in Milliseconds with Rails and PostgreSQL](https://pganalyze.com/blog/full-text-search-ruby-rails-postgres)
+  - > Postgresql 12 or later
 
+  - > **Recommended:** Ruby version manager (RVM, chruby, or similar)
 
-## Local installation
+Make sure that **postgresql** is installed and running:
 
-Ensure that you have postgres running
-```
-brew install postgresql
-brew services start postgresql
-```
+> **\>** brew install postgresql
+> 
+> **\>** brew services start postgresql
 
-Use your ruby version manager to switch to the ruby version found in .ruby-version.
+Use a ruby version manager to set the local SORN DASH directory to the
+ruby version found in the **.ruby-version** file. Finally -- ensure that
+you have Ruby’s
+[<span class="underline">bundler</span>](https://bundler.io/) and
+[<span class="underline">yarn</span>](https://rubygems.org/gems/yarn/versions/0.1.1)
+installed and install the necessary project dependencies.
 
-Then install the dependencies (and check for bundler)
-```
-if ! type "$bundler" > /dev/null; then
-  gem install bundler
-fi
-bundle install
-yarn install --check-files
+> **\>** gem install bundler
+> 
+> **\>** gem install yarn
 
-bundle exec rails db:setup
-bundle exec rails server
-```
+Install the necessary project dependencies using:
 
-## Populate SORNS from the Federal register
-Run
-```
-bundle exec rails federal_register:find_sorns
-```
+> **\>** bundle install
+> 
+> **\>** yarn install --check-files
 
+### 2\. Create and populate local database
+
+Now that you have the environment set-up, create the database and
+webserver using:
+
+> **\>** bundle exec rails db:setup
+> 
+> **\>** bundle exec rails server
+
+Once this is complete, run the following command to fetch all the SORNs
+from the Federal Register API and populate your local database (this
+takes about an hour and a half the first time it is run, to download and
+populate the database):
+
+> **\>** bundle exec rails federal\_register:find\_sorns
+
+After the database has been populated, run these commands to update the
+links between SORNs that is displayed in the search results:
+
+**\>** bundle exec rails all\_sorns:update\_all\_mentioned\_sorns
+
+**\>** Bundle exec rails all\_sorns:refresh\_search
+
+You can now run SORN DASH locally using:
+
+**\>** bundle exec rails s
+
+SORN DASH is now running locally on your computer\!
+
+Open a browser and go to
+[<span class="underline">https://localhost:3000/</span>](https://localhost:3000/)
+
+## Keeping local version up to date
+
+Certain changes in the code will require you to run updates before being
+able to run SORN DASH locally again.
+
+Changes to the schema will require a database migration before SORN DASH
+can be run. Run this with:
+
+**\>** bundle exec rails db:migrate
+
+Adding or updating the included gems will require you to update your
+ruby packages. Run this with:
+
+**\>** bundle install
+
+* [How search works](/docs/search.md)
+* [About the data](/docs/data.md)
+* [Devops setup](/docs/devops.md)
+* [Product roadmap](/docs/product.md)
+* [Research and design](/docs/research-and-design.md)
+* [Compliance](/docs/compliance.md)
 
 ### Who
+
 - [ondrae](https://github.com/ondrae)
 - [peterrowland](https://github.com/peterrowland)
 - [igorkorenfeld](https://github.com/igorkorenfeld)
 - [lauraGgit](https://github.com/lauraGgit)
+
+## Public domain
+
+This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
+
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.

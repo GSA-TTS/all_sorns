@@ -1,9 +1,9 @@
-<h2 class="usa-accordion__heading">
+<div class="usa-accordion__heading">
   <button class="usa-accordion__button" aria-controls="section-accordion" type="button">Sections</button>
-</h2>
+</div>
 <div id="section-accordion" class="usa-accordion__content usa-prose">
   <fieldset id="sections" class="usa-fieldset">
-    <a id='fields-deselect-all' class="clear-all">X Clear section filters</a>
+    <button id='fields-deselect-all' class="clear-all usa-button  usa-button--unstyled">X Clear section filters</button>
     <div id="sorn-fields">
       <% Sorn::FIELDS.each do |field, index| %>
         <div class="usa-checkbox">

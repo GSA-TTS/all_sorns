@@ -21,6 +21,7 @@
  $blue-50:      #006DB6; // Interactive
  $blue-10V:     #CFE8FF;
 
+ $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
  $gray-5:       #F0F0F0;
@@ -28,13 +29,15 @@
  $gold-10v:     #FFE396;
 
 
+$font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+
  body {
   background: $gray-cool-2;
 
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: -3em bottom;
+    background-position: -3em 80%;
   }
  }
 
@@ -104,11 +107,15 @@
    margin-top: 32px;
    margin-bottom: 32px;
 
-   h2 {
+   label {
      color: $blue-80V;
      font-style: normal;
      font-weight: normal;
      font-size: 20px;
+   }
+
+   .usa-search--big {
+     margin-top: 16px;
    }
  }
 
@@ -140,15 +147,14 @@
 }
 
 .clear-all {
-  color: #D64242 !important;
+  color: #d34141 !important;
   ;
 }
 
 //Sidebar
-.sidebar h3 {
-  font: sans-serif;
+.sidebar h2 {
   padding: 1.25rem 1rem 0rem 1.25rem;
-  font-family: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+  font-family: $font-stack;
   font-size: 20px;
 }
 
@@ -353,7 +359,7 @@
  }
 
  .system-name {
-  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+  font-family: $font-stack;
   font-weight: normal;
   font-size: 20px;
   line-height: 28px;
@@ -362,6 +368,7 @@
  }
 
  .sorn-attribute-header {
+  color: $blue-90;
   font-weight: bold;
  }
 
@@ -385,6 +392,10 @@
  }
 
  .found-in {
+  color: $gray-cool-60;
+  font-size: .85em;
+  letter-spacing: .04em;
+  margin: 0 0 1em;
   width: 100%;
  }
 
@@ -396,14 +407,27 @@
  .found-section-snippet {
   font-size: 16px;
   width: 100%;
+  margin-top: 0px;
+
+  p:first-child {
+    margin-top: 0px;
+  }
+
+  p:last-child {
+    margin-bottom: 0px;
+  }
 
  }
+
+.usa-card__body .grid-row:last-of-type {
+  padding-bottom: 0;
+}
 
  .usa-card__footer {
-  padding: 16px;
+  padding: 8px 16px 16px;
  }
 
- .usa-link--external {
+ .usa-link, .usa-link--external {
    text-decoration: none;
    color: $blue-50;
  }
@@ -437,3 +461,24 @@
  .usa-list li {
    margin-bottom: .5em;
  }
+
+
+// About page
+.usa-intro {
+  font-family: $font-stack;
+  color: $blue-90;
+  font-size: 1.25em;
+  line-height: 1.5;
+  margin-top:0;
+  padding-left: .5em;
+}
+
+.about__h1, .about__h2, .about__h3 {
+  color: $blue-90;
+}
+
+.about__h2 {
+  border-top: 2px solid $blue-90;
+  margin-top: 1.5em;
+  padding-top: .25em;
+}

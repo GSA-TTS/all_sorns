@@ -8,6 +8,8 @@ class AnalyticsController < ApplicationController
     @data_stats = {}
     @data_stats.merge!('No xml url': Sorn.where(xml_url: nil).count)
     @data_stats.merge!('Sorns with list-able CORs': Sorn.where("categories_of_record ~* ?", '•', ).count)
+
+    @title = "Analytics -"
   
 
     end

@@ -17,4 +17,5 @@ jobs:
           cf auth ${{ secrets.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
           cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
           cf run-task all_sorns "bundle exec rails federal_register:find_sorns" --name "Find SORNs"
+          cf run-task all_sorns "bundle exec good_job start" --name "Start GoodJob"
           echo "Daily update queued"
