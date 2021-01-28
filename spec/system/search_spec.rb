@@ -34,8 +34,15 @@ RSpec.describe "/search", type: :system do
     find("#general-search-button").click
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
-    # TODO: expect badge to be shown
-    # TODO: expect remove badge link to hide badge and clear pub-date inputs
+    # active date badge should be visible
+    expect(page).to have_selector("#active-date-range", count: 1, visible: true)
+    
+    # remove dates badge should clear both publication date inputs  
+    find("#active-date-range").find(".remove-badge").click
+    starting_year = find("#starting_year").native.attribute("value") 
+    ending_year = find("#starting_year").native.attribute("value") 
+    expect(starting_year).to eq "" 
+    expect(ending_year).to eq "" 
 
     visit "/search?search=FAKE"
     find("#publication-year-button").click
@@ -57,8 +64,16 @@ RSpec.describe "/search", type: :system do
     # validation message is always on starting year
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
-    # TODO: expect badge to be shown
-    # TODO: expect clear all to remove badge and input
+    
+    # expect clear-all link to remove badge and clear inputs
+    find("#publication-year-button").click
+    find("#publication-date-fields").find(".clear-all").click
+    expect(find("#active-date-range").visible?).to be_falsey
+    starting_year = find("#starting_year").native.attribute("value") 
+    ending_year = find("#starting_year").native.attribute("value") 
+    expect(starting_year).to eq "" 
+    expect(ending_year).to eq "" 
+    
 
     visit "/?search=FAKE"
     find("#publication-year-button").click
