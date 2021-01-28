@@ -13,54 +13,55 @@
                         <p class="usa-intro">We are building a website that saves privacy offices time by speeding up&nbsp;search and adding structure to System of Records Notices (SORNs) and&nbsp;helps the public understand what data the government collects about&nbsp;them.</p>
                       </div>
                     </div>
+                    <div class="info__container">
+                      <p>
+                      <a class="usa-link usa-link--external" href="https://18f.gsa.gov/">18F</a>, in collaboration with the <a class="usa-link usa-link--external" href="https://www.fpc.gov/">Federal Privacy Council</a> and with funding from <a  class="usa-link usa-link--external" href="https://10x.gsa.gov/">10x</a>, created this dashboard to provide a faster way to find and analyze Privacy Act notices in the <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">Federal Register</a>.
+                      This dashboard enables targeted search of System of Records Notices (SORN), the documents that inform the public about the existence and current state of government IT systems that collect and store personally-identifiable information (PII).
+                      </p>
 
-                    <p class="info__body">
-                    <a class="usa-link usa-link--external" href="https://18f.gsa.gov/">18F</a>, in collaboration with the <a class="usa-link usa-link--external" href="https://www.fpc.gov/">Federal Privacy Council</a> and with funding from <a  class="usa-link usa-link--external" href="https://10x.gsa.gov/">10x</a>, created this dashboard to provide a faster way to find and analyze Privacy Act notices in the <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">Federal Register</a>.
-                    This dashboard enables targeted search of System of Records Notices (SORN), the documents that inform the public about the existence and current state of government IT systems that collect and store personally-identifiable information (PII).
-                    </p>
+                      <p>
+                      We hope that providing an easier and faster way to reference SORNs will give privacy office staff more time for their other important work protecting the public’s privacy.
+                      </p>
 
-                    <p class="info__body">
-                    We hope that providing an easier and faster way to reference SORNs will give privacy office staff more time for their other important work protecting the public’s privacy.
-                    </p>
+                      <h2>Additional information</h2>
+                      <h3>Audience</h3>
+                      <p>
+                      We made this dashboard for government privacy analysts and privacy lawyers to make it easier for them to reference SORNs, either their own or from another agency. Its resource to help the public better understand government privacy practices and make Privacy Act requests for their personal data.
+                      </p>
 
-                    <h2 class="info__h2">Additional information</h2>
-                    <h3 class="info__h3">Audience</h3>
-                    <p class="info__body">
-                    We made this dashboard for government privacy analysts and privacy lawyers to make it easier for them to reference SORNs, either their own or from another agency. Its resource to help the public better understand government privacy practices and make Privacy Act requests for their personal data.
-                    </p>
-
-                    <h3 class="info__h3">Data source and limitations</h3>
-                    <p class="info__body">
-                    Our dashboard regularly pulls newly published SORNs from the Federal Register via their impressive API. We add structure to them in our database, which allows for more fine-grained search of their content. We haven’t modified their content in any way. All results link back to the Federal Register.
-                    </p>
+                      <h3>Data source and limitations</h3>
+                      <p>
+                      Our dashboard regularly pulls newly published SORNs from the Federal Register via their impressive API. We add structure to them in our database, which allows for more fine-grained search of their content. We haven’t modified their content in any way. All results link back to the Federal Register.
+                      </p>
 
 
-                    <p class="info__body">
-                    <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">federalregister.gov</a>. has SORNs going back to 1994, and most are available in machine-readable formats. A portion of SORNs prior to 2000 are only available in text. So far, We’ve processed the machine-readable SORNs available through the federalregister.gov API.
-                    </p>
+                      <p>
+                      <a class="usa-link usa-link--external" href="https://www.federalregister.gov/">federalregister.gov</a>. has SORNs going back to 1994, and most are available in machine-readable formats. A portion of SORNs prior to 2000 are only available in text. So far, We’ve processed the machine-readable SORNs available through the federalregister.gov API.
+                      </p>
 
-                    <h3 class="info__h3">Missing fields</h3>
-                    <p class="info__body">
-                    SORNs that use the <a class="usa-link usa-link--external" href="https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A108/omb_circular_a-108.pdf">OMB A-108(r.2016) templates</a> are much easier to parse into structured records. As we continue developing this dashboard, we’ll add methods to parse documents that will capture the content from a larger share of the total number of documents. SORNs that are not parsed, or partially parsed, are still included in search results, but only if the search is of the full text of the SORN, not in a search of specific sections.
-                    </p>
+                      <h3>Missing fields</h3>
+                      <p>
+                      SORNs that use the <a class="usa-link usa-link--external" href="https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A108/omb_circular_a-108.pdf">OMB A-108(r.2016) templates</a> are much easier to parse into structured records. As we continue developing this dashboard, we’ll add methods to parse documents that will capture the content from a larger share of the total number of documents. SORNs that are not parsed, or partially parsed, are still included in search results, but only if the search is of the full text of the SORN, not in a search of specific sections.
+                      </p>
 
-                    <p class="info__body">
-                    The dashboard will add and parse all new SORNs published using any of the five A-108 templates.
-                    </p>
+                      <p>
+                      The dashboard will add and parse all new SORNs published using any of the five A-108 templates.
+                      </p>
 
-                    <h3 class="info__h3">Saving results</h3>
-                    <p class="info__body">
-                    Clicking <strong>Download results as a CSV file</strong> prepares a comma-separated variable file containing rows for the search results on screen, and columns for each SORN section that is selected in the sidebar. You can add or remove columns from the output file by selecting or deselecting items from the sidebar. The output file contains the full text for all selected columns. If you want to download the complete structured content of every SORN in our database, reload the page and check all SORN sections in the sidebar and then click the save as csv button (note: this file will be very large!)
-                    </p>
+                      <h3>Saving results</h3>
+                      <p>
+                      Clicking <strong>Download results as a CSV file</strong> prepares a comma-separated variable file containing rows for the search results on screen, and columns for each SORN section that is selected in the sidebar. You can add or remove columns from the output file by selecting or deselecting items from the sidebar. The output file contains the full text for all selected columns. If you want to download the complete structured content of every SORN in our database, reload the page and check all SORN sections in the sidebar and then click the save as csv button (note: this file will be very large!)
+                      </p>
 
-                    <h2 class="info__h2">Feedback</h2>
-                    <p class="info__body">
-                    We are still actively developing this prototype and we want to hear your ideas and feedback. If you are interested in participating in user research or want to get in contact with us for any other reason, please reach out to us at: <a class="usa-link usa-link--external" href="mailto:sorn-dash-support@gsa.gov">sorn-dash-support@gsa.gov</a>
-                    </p>
-                    <p class="info__body">
-                    You can also follow our work on our public <a class="usa-link usa-link--external" href="https://github.com/18f/all_sorns/">Github repository</a>
-                    </p>
+                      <h2>Feedback</h2>
+                      <p>
+                      We are still actively developing this prototype and we want to hear your ideas and feedback. If you are interested in participating in user research or want to get in contact with us for any other reason, please reach out to us at: <a class="usa-link usa-link--external" href="mailto:sorn-dash-support@gsa.gov">sorn-dash-support@gsa.gov</a>
+                      </p>
+                      <p>
+                      You can also follow our work on our public <a class="usa-link usa-link--external" href="https://github.com/18f/all_sorns/">Github repository</a>
+                      </p>
 
+                    </div>
         </div>
         </div>
     </div>
