@@ -34,6 +34,8 @@ RSpec.describe "/search", type: :system do
     find("#general-search-button").click
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
+    # TODO: expect badge to be shown
+    # TODO: expect remove badge link to hide badge and clear pub-date inputs
 
     visit "/search?search=FAKE"
     find("#publication-year-button").click
@@ -55,6 +57,8 @@ RSpec.describe "/search", type: :system do
     # validation message is always on starting year
     message = find("#starting_year").native.attribute("validationMessage")
     expect(message).to eq ""
+    # TODO: expect badge to be shown
+    # TODO: expect clear all to remove badge and input
 
     visit "/?search=FAKE"
     find("#publication-year-button").click
