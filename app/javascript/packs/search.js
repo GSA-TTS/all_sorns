@@ -27,16 +27,6 @@ $( function () {
  //Add badge for date filters if populated
  if(parseInt($("#starting_year").val()) || parseInt($("#ending_year").val())) {
       publicationDateValidation()
-  //  startYear = parseInt($("#starting_year").val())
-  //  endYear = parseInt($("#ending_year").val())
-  //  $filterSection = $('#active-date-filter')
-  //  $badge = $("#active-date-range")
-  //  $dates = $("#active-date-range span")
-  //  $dates.text(`${startYear} - ${endYear}`)
-  //  if ($filterSection.is(":hidden") ){
-  //    $filterSection.show();
-  //    $badge.css("display", "inline-block");
-  //  }
  }
 
  // Listener for checkboxes
@@ -99,21 +89,20 @@ function publicationDateValidation(){
  } else {
    $("#starting_year")[0].setCustomValidity('');
    // If dates are valid, create badge
-   if (isNaN(startYear)){
-     startYear = "1994"
-   } else if (isNaN(endYear)){
-    d = new Date();
-    endYear = d.getFullYear()
-   }
    createDatesFilter(startYear, endYear)
    }
  }
  
-
  function createDatesFilter(startYear, endYear){
   $filterSection = $('#active-date-filter')
   $badge = $("#active-date-range")
-  $dates = $("#active-date-range span")
+  $dates = $("#active-date-range span") 
+  if (isNaN(startYear)){
+    startYear = "1994"
+  } else if (isNaN(endYear)){
+   d = new Date();
+   endYear = d.getFullYear()
+  }
   $dates.text(`${startYear} - ${endYear}`)
   if ($filterSection.is(":hidden") ){
     $filterSection.show();
