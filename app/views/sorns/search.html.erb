@@ -167,8 +167,11 @@
 
 
         </ul>
-        <div class="grid-row grid-offset-9 padding-y-3 padding-left-4">
-          <%= paginate @sorns %>
+        <div class="grid-row">
+          <div class="grid-col-12">
+              <%= paginate @sorns %>
+          </div>
+
         </div>
       </main>
     <% end %>
