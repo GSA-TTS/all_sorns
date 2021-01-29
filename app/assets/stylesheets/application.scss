@@ -427,7 +427,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   padding: 8px 16px 16px;
  }
 
- .usa-link, .usa-link--external {
+ .usa-layout-docs__main .usa-link, .usa-layout-docs__main .usa-link--external {
    text-decoration: none;
    color: $blue-50;
  }
@@ -462,7 +462,6 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    margin-bottom: .5em;
  }
 
-
 // About page
 .usa-intro {
   font-family: $font-stack;
@@ -473,12 +472,32 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   padding-left: .5em;
 }
 
-.about__h1, .about__h2, .about__h3 {
+.info__container {
+  h1, h2 ,h3 {
   color: $blue-90;
-}
+  }
 
-.about__h2 {
-  border-top: 2px solid $blue-90;
-  margin-top: 1.5em;
-  padding-top: .25em;
+  h2 {
+    border-top: 2px solid $blue-90;
+    margin-top: 1.5em;
+    padding-top: .25em;
+  }
+
+  h3 {
+    margin: 1em 0 0;
+  }
+
+  h4 {
+    color: $gray-cool-60;
+    letter-spacing: .04em;
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: .5em 0 1em;
+  }
+
+  li {
+    margin-bottom: .5em;
+  }
 }
