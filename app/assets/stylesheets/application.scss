@@ -37,8 +37,15 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: -3em 80%;
+    background-position: -3em 65%;
+
+    @media screen and (min-width: 64em) {
+      background-position: -3em 80%;
+    }
+
   }
+
+
  }
 
  // Header & Navigation
@@ -276,7 +283,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 
  .labels {
   font-size: 1.2em;
-  padding-bottom: 8px;
+  padding-bottom: .5em;
   color: $blue-80V;
  }
 
