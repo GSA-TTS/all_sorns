@@ -7,8 +7,8 @@ class FederalRegisterClient
     # Find all available fields at
     # https://github.com/usnationalarchives/federal_register/blob/master/lib/federal_register/document.rb#L4
     @fields = fields || ["action", "agencies", "citation",
-                        "dates", "full_text_xml_url", "html_url", "pdf_url",
-                        "publication_date", "raw_text_url", "title", "type"]
+                        "dates", "full_text_xml_url", "html_url",
+                        "publication_date", "title", "type"]
 
     @page = 1
 
@@ -72,12 +72,9 @@ class FederalRegisterClient
       dates: result.dates,
       xml_url: result.full_text_xml_url,
       html_url: result.html_url,
-      pdf_url: result.pdf_url,
-      text_url: result.raw_text_url,
       publication_date: result.publication_date,
       citation: result.citation,
-      title: result.title,
-      data_source: :fedreg
+      title: result.title
     }
   end
 

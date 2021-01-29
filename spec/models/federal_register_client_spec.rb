@@ -12,7 +12,6 @@ RSpec.describe FederalRegisterClient, type: :model do
       title: title,
       action: action,
       dates: "api dates",
-      pdf_url: "pdf url",
       full_text_xml_url: "expected url",
       html_url: "html url",
       citation: "FAKE CITATION 1",
@@ -101,8 +100,6 @@ RSpec.describe FederalRegisterClient, type: :model do
         expect(sorn.citation).to eq 'FAKE CITATION 1'
         expect(sorn.xml_url).to eq 'expected url'
         expect(sorn.html_url).to eq 'html url'
-        expect(sorn.pdf_url).to eq 'pdf url'
-        expect(sorn.data_source).to eq 'fedreg'
         expect(sorn.publication_date).to eq "2000-01-13"
       end
 
@@ -112,7 +109,6 @@ RSpec.describe FederalRegisterClient, type: :model do
             title: title,
             action: "api action",
             dates: "api dates",
-            pdf_url: "pdf url",
             full_text_xml_url: "expected url",
             html_url: "html url",
             citation: "citation",

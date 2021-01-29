@@ -100,5 +100,3 @@ agencies.
 
 Mentions are the links between SORNs. We use a “has and belongs to many”
 relationship again.
-
-A few unused columns sorn.data\_source, sorn.pdf\_url, sorn.headers.

@@ -10,7 +10,6 @@ FactoryBot.define do
     html_url { "HTML URL" }
     xml_url { "xml_url" }
     xml { nil }
-    data_source { 'fedreg' }
 
     agencies do
       [
