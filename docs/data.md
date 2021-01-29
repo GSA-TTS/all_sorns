@@ -10,9 +10,7 @@ app’s database.
 
 System of Record Notices or SORNs are public records about the
 information systems government agencies handle and maintain personally
-identifiable information (PII). The [<span class="underline">Privacy Act
-of
-1974</span>](https://www.justice.gov/opcl/overview-privacy-act-1974-2015-edition)
+identifiable information (PII). The [Privacy Act of 1974](https://www.justice.gov/opcl/overview-privacy-act-1974-2015-edition)
 requires that all federal agencies publish notices for any system that
 contains records about individuals that can be retrieved by a unique
 identifier (ex. name or social security number).
