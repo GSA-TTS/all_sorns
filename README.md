@@ -37,66 +37,75 @@ Management Office.
 
 SORN DASH has a simple technical stack - you need a computer with:
 
-  - > Ruby on Rails v.2.7.1
-
-  - > Postgresql 12 or later
-
-  - > **Recommended:** Ruby version manager (RVM, chruby, or similar)
+* Ruby on Rails v.2.7.1
+* Postgresql 12 or later
+* **Recommended:** Ruby version manager (RVM, chruby, or similar)
 
 Make sure that **postgresql** is installed and running:
 
-> **\>** brew install postgresql
-> 
-> **\>** brew services start postgresql
+```bash
+brew install postgresql
+brew services start postgresql
+```
 
 Use a ruby version manager to set the local SORN DASH directory to the
 ruby version found in the **.ruby-version** file. Finally -- ensure that
 you have Ruby’s
-[<span class="underline">bundler</span>](https://bundler.io/) and
-[<span class="underline">yarn</span>](https://rubygems.org/gems/yarn/versions/0.1.1)
+[bundler](https://bundler.io/) and
+[yarn](https://rubygems.org/gems/yarn/versions/0.1.1)
 installed and install the necessary project dependencies.
 
-> **\>** gem install bundler
-> 
-> **\>** gem install yarn
+```bash
+gem install bundler
+gem install yarn
+```
 
 Install the necessary project dependencies using:
 
-> **\>** bundle install
-> 
-> **\>** yarn install --check-files
+```bash
+bundle install
+yarn install --check-files
+```
 
 ### 2\. Create and populate local database
 
 Now that you have the environment set-up, create the database and
 webserver using:
 
-> **\>** bundle exec rails db:setup
-> 
-> **\>** bundle exec rails server
+```bash
+bundle exec rails db:setup
+export RAILS_ENV=development
+bundle exec rails server -e $RAILS_ENV
+```
 
 Once this is complete, run the following command to fetch all the SORNs
 from the Federal Register API and populate your local database (this
 takes about an hour and a half the first time it is run, to download and
 populate the database):
 
-> **\>** bundle exec rails federal\_register:find\_sorns
+`bundle exec rails federal\_register:find\_sorns`
 
 After the database has been populated, run these commands to update the
 links between SORNs that is displayed in the search results:
 
-**\>** bundle exec rails all\_sorns:update\_all\_mentioned\_sorns
-
-**\>** Bundle exec rails all\_sorns:refresh\_search
+```bash
+bundle exec rails all\_sorns:update\_all\_mentioned\_sorns
+bundle exec rails all\_sorns:refresh\_search
+```
 
 You can now run SORN DASH locally using:
 
-**\>** bundle exec rails s
+```bash
+export RAILS_ENV=development
+bundle exec rails server -e $RAILS_ENV
+```
 
 SORN DASH is now running locally on your computer\!
 
 Open a browser and go to
-[<span class="underline">https://localhost:3000/</span>](https://localhost:3000/)
+[https://localhost:3000/](https://localhost:3000/)
+
+Note: that in Chrome you may have to go into incognito in order to get around the SSL requirements.
 
 ## Keeping local version up to date
 
