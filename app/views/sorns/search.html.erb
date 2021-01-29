@@ -9,7 +9,7 @@
 
 <%= form_tag '/', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
   <section class="grid-container">
-    <div class="grid-col-10 grid-offset-1 search-area">
+    <div class="desktop:grid-col-10 desktop:grid-offset-1 search-area">
       <label for="general-search">Search for SORNs by entering a keyword (will return exact matches)</label>
       <fieldset class="usa-search usa-search--big">
         <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
@@ -24,7 +24,7 @@
   <div class="grid-container margin-top-2">
     <div class ="grid-row grid-gap">
 
-      <div class="usa-layout-docs__sidenav grid-col-4">
+      <div class="usa-layout-docs__sidenav desktop:grid-col-4">
         <div class="border border-base-dark sidebar">
           <div class="preview usa-prose site-prose" >
             <h2>Refine your search</h2>
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <main class="usa-layout-docs__main usa-prose usa-layout-docs grid-col-8" id="main-content">
+      <main class="usa-layout-docs__main usa-prose usa-layout-docs desktop:grid-col-8" id="main-content">
         <div id="active-filters">
           <div id="active-sections-filters">
             <div class="grid-row">
@@ -81,12 +81,12 @@
         </div>
 
         <div class="grid-row margin-bottom-1">
-          <div class="grid-col-7">
+          <div class="grid-col-12">
             <div id="count" class="labels">
               <%= page_entries_info @sorns, entry_name: '' %> <%= 'for "' + params[:search] +'"' if params[:search].present? %>
             </div>
           </div>
-          <div class="grid-col-5">
+          <div class="grid-col-12">
               <%= paginate @sorns %>
           </div>
         </div>
@@ -111,12 +111,12 @@
                       <%= sorn.action %>
                     </div>
                   </div>
-                  <div class="grid-row">
-                    <div class="grid-col-6">
+                  <div class="grid-row pub-details">
+                    <div class="tablet:grid-col-6">
                       <span class="sorn-attribute-header">Publication Date:</span>
                       <%= sorn.publication_date %>
                     </div>
-                    <div class="grid-col-6">
+                    <div class="tablet:grid-col-6">
                       <span class="sorn-attribute-header">Citation:</span>
                       <a target="_blank" class="usa-link usa-link--external" href="<%= sorn.html_url %>" rel="noreferrer noopener"><%= sorn.citation %></a>
                     </div>
@@ -167,8 +167,11 @@
 
 
         </ul>
-        <div class="grid-row grid-offset-9 padding-y-3 padding-left-4">
-          <%= paginate @sorns %>
+        <div class="grid-row">
+          <div class="grid-col-12">
+              <%= paginate @sorns %>
+          </div>
+
         </div>
       </main>
     <% end %>

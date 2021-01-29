@@ -37,8 +37,15 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: -3em 80%;
+    background-position: -3em 65%;
+
+    @media screen and (min-width: 64em) {
+      background-position: -3em 80%;
+    }
+
   }
+
+
  }
 
  // Header & Navigation
@@ -152,6 +159,11 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
 //Sidebar
+.usa-layout-docs__sidenav {
+  order: 0;
+  padding: 0 .5rem 1.5rem;
+}
+
 .sidebar h2 {
   padding: 1.25rem 1rem 0rem 1.25rem;
   font-family: $font-stack;
@@ -270,7 +282,8 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  }
 
  .labels {
-  padding-bottom: 8px;
+  font-size: 1.2em;
+  padding-bottom: .5em;
   color: $blue-80V;
  }
 
@@ -376,6 +389,17 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    padding: 0 0.5rem;
    font-weight: bold;
  }
+
+ .pub-details {
+   div:first-of-type {
+    padding-bottom: 16px;
+
+    @media screen and (min-width: 640px) {
+      padding-bottom: 0;
+    }
+   }
+ }
+
 
  .sorn-history__list {
    list-style-position: inside;
