@@ -3,7 +3,7 @@
 ## Cloud.gov
 
 SORN DASH is deployed to
-[<span class="underline">cloud.gov</span>](https://cloud.gov/) on the
+[cloud.gov](https://cloud.gov/) on the
 Identity Project Management Office’s subscription. It runs in a
 FISMA-low environment.
 
@@ -13,7 +13,7 @@ auditing of our activity from automated processes like continuous
 deployment or nightly checks for newly published SORNs.
 
 For more on using service accounts with cloud.gov see:
-[<span class="underline">https://cloud.gov/docs/services/cloud-gov-service-account/</span>](https://cloud.gov/docs/services/cloud-gov-service-account/)
+[https://cloud.gov/docs/services/cloud-gov-service-account/](https://cloud.gov/docs/services/cloud-gov-service-account/)
 
 **/.cloud-gov/deploy.sh** is the shell script that allows a developer to
 rebuild the application’s environment on cloud.gov from scratch and also
@@ -36,8 +36,8 @@ The environment requires 1GB of memory and Postgres 12 or later.
 ### **Repo**
 
 All SORN DASH code is kept and managed in this public Github repository
--
-[<span class="underline">https://github.com/18F/all\_sorns</span>](https://github.com/18F/all_sorns)
+
+* [https://github.com/18F/all\_sorns](https://github.com/18F/all_sorns)
 
 All SORN Dash code is open source under a **CC0 license**.
 
@@ -45,13 +45,13 @@ All SORN Dash code is open source under a **CC0 license**.
 
 SORN DASH uses **Github Actions** for CI/CD automation tasks and
 scheduling. There are three workflows in
-[<span class="underline">.github/workflows</span>](https://github.com/18F/all_sorns/tree/main/.github/workflows):
+[.github/workflows](https://github.com/18F/all_sorns/tree/main/.github/workflows):
 
-> [**<span class="underline">test.yml</span>**](https://github.com/18F/all_sorns/blob/main/.github/workflows/test.yml)
+> [**test.yml**](https://github.com/18F/all_sorns/blob/main/.github/workflows/test.yml)
 > runs our suite of tests described in QA and is triggered on every
 > commit.
 > 
-> [**<span class="underline">deploy.yml</span>**](https://github.com/18F/all_sorns/blob/main/.github/workflows/deploy.yml)
+> [**deploy.yml**](https://github.com/18F/all_sorns/blob/main/.github/workflows/deploy.yml)
 > deploys new code on the main branch into the production environment
 > 
 > on cloud.gov using a service specific account. It is triggered when
@@ -66,13 +66,13 @@ scheduling. There are three workflows in
 
 ### **Security**
 
-We’ve set the [<span class="underline">protected
-branches</span>](https://docs.github.com/en/github/administering-a-repository/about-protected-branches)
+We’ve set the [protected
+branches](https://docs.github.com/en/github/administering-a-repository/about-protected-branches)
 policy recommended for the GSA ATO process. All pull-requests to the
 main branch must be approved by at least one other developer.
 
 We use
-[**<span class="underline">Snyk</span>**](https://github.com/snyk/snyk)
+[**Snyk**](https://github.com/snyk/snyk)
 to check our application dependencies in **package.json** and
 **gemfile** to see if any of our dependencies have known
 vulnerabilities.
@@ -87,12 +87,12 @@ be found in **/spec**. To run tests on your local machine run:
 **\>** rspec /spec/\<test to run\>
 
 **search\_spec.rb** is integration tests and is written in
-[<span class="underline">capybara</span>](https://github.com/teamcapybara/capybara).
+[capybara](https://github.com/teamcapybara/capybara).
 
 ### **Code Climate**
 
-We have the [<span class="underline">Code
-Climate</span>](https://codeclimate.com/github/18F/all_sorns)
+We have the [Code
+Climate](https://codeclimate.com/github/18F/all_sorns)
 integration enabled on our Github repository to monitor code quality
 standards. Code Climate scans every new pull-request to evaluate code
 quality and flag issues. We use default rules and address all
@@ -100,8 +100,8 @@ suggestions before merging. Trust Code Climate.
 
 ### **OWASP Zap**
 
-[<span class="underline">OWASP
-Zap</span>](https://owasp.org/www-project-zap/) is a tool we use to
+[OWASP
+Zap](https://owasp.org/www-project-zap/) is a tool we use to
 dynamically scan our application for security vulnerabilities. Zap is
 run against the live application to find common security
 vulnerabilities. We did Zap scanning manually, but it can be automated
@@ -116,11 +116,9 @@ pages:
 
 **About -** /app/views/pages/about.html.erb
 
-**Instructions - \<tktk\>**
+**Instructions** /app/views/pages/help.html.erb
 
-We draft and edit the content of these pages in google docs on the TTS
-shared drive
-[<span class="underline">here</span>](https://drive.google.com/drive/folders/1PeCRM5CKV1PSpPes5SSSbAk4hqAZ100-)
+
 
 ### **Creating Pages**
 
@@ -175,8 +173,8 @@ it in the navigation menu:
 
   - > Services: postgres db and service key
 
-  - > [<span class="underline">GH actions
-    > cron</span>](https://meet.google.com/linkredirect?authuser=0&dest=https%3A%2F%2Fdocs.github.com%2Fen%2Factions%2Freference%2Fevents-that-trigger-workflows%23scheduled-events)
+  - > [GH actions
+    > cron](https://meet.google.com/linkredirect?authuser=0&dest=https%3A%2F%2Fdocs.github.com%2Fen%2Factions%2Freference%2Fevents-that-trigger-workflows%23scheduled-events)
 
 ## Security and Maintenance
 
