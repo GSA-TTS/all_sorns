@@ -50,16 +50,16 @@ scheduling. There are three workflows in
 > [**test.yml**](https://github.com/18F/all_sorns/blob/main/.github/workflows/test.yml)
 > runs our suite of tests described in QA and is triggered on every
 > commit.
-> 
+>
 > [**deploy.yml**](https://github.com/18F/all_sorns/blob/main/.github/workflows/deploy.yml)
 > deploys new code on the main branch into the production environment
-> 
+>
 > on cloud.gov using a service specific account. It is triggered when
 > new commits are made to the main branch and if all tests (if tests
 > pass).
-> 
-> **\<*update-sorn job*\>** pings the service container on cloud.gov
-> every day at \<*time*\> to run \<*command*\> to find and download any
+>
+> [**sorn-grab.yml**](https://github.com/18F/all_sorns/blob/main/.github/workflows/sorn-grab.yml) pings the service container on cloud.gov
+> every day at 2:11am easteern to run the [**find_sorns job**](https://github.com/18F/all_sorns/blob/main/app/jobs/find_sorns_job.rb) to find and download any
 > new SORNs from the Federal Register. (**note:** We rely on Github for
 > this because cloud.gov does not allow root access that is required to
 > run a cron-job within the container.)
@@ -84,7 +84,7 @@ vulnerabilities.
 SORN DASH has a robust test suite to ensure code quality. All tests can
 be found in **/spec**. To run tests on your local machine run:
 
-**\>** rspec /spec/\<test to run\>
+**\>** rspec
 
 **search\_spec.rb** is integration tests and is written in
 [capybara](https://github.com/teamcapybara/capybara).
@@ -130,10 +130,10 @@ it in the navigation menu:
 
 > **/app/controllers/pages\_controller.rb** - add a definition for the
 > new page
-> 
+>
 > **/app/config/routes.rb** - add a new route for the page at
 > /\<pagename\>
-> 
+>
 > **/app/views/layouts/nav.html.erb** - add a link to the new page for
 > the menu bar
 
@@ -153,16 +153,16 @@ it in the navigation menu:
 
   - > UpdateSorns then downloads the xml and does the complicated
     > parsing.
-    
+
       - > **uses Good Job, FR gem**
-    
+
       - > **federal\_register\_client.rb - search logic**
-    
+
       - > **Saves data + metadata to database**
-    
+
       - > **schedules 'update-sorn' job to download new docs as XML with
         > get\_xml()**
-    
+
       - > **parses it - regex for section titles**
 
 <!-- end list -->
