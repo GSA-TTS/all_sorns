@@ -37,8 +37,15 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   &.pre-search {
     background-image: image-url("PrvOps_SornDash_Landing_02.svg");
     background-repeat: no-repeat;
-    background-position: -3em 80%;
+    background-position: -3em 65%;
+
+    @media screen and (min-width: 64em) {
+      background-position: -3em 80%;
+    }
+
   }
+
+
  }
 
  // Header & Navigation
@@ -152,6 +159,11 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
 //Sidebar
+.usa-layout-docs__sidenav {
+  order: 0;
+  padding: 0 .5rem 1.5rem;
+}
+
 .sidebar h2 {
   padding: 1.25rem 1rem 0rem 1.25rem;
   font-family: $font-stack;
@@ -270,7 +282,8 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  }
 
  .labels {
-  padding-bottom: 8px;
+  font-size: 1.2em;
+  padding-bottom: .5em;
   color: $blue-80V;
  }
 
@@ -377,6 +390,17 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    font-weight: bold;
  }
 
+ .pub-details {
+   div:first-of-type {
+    padding-bottom: 16px;
+
+    @media screen and (min-width: 640px) {
+      padding-bottom: 0;
+    }
+   }
+ }
+
+
  .sorn-history__list {
    list-style-position: inside;
    padding-left: 0;
@@ -427,7 +451,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   padding: 8px 16px 16px;
  }
 
- .usa-link, .usa-link--external {
+ .usa-layout-docs__main .usa-link, .usa-layout-docs__main .usa-link--external {
    text-decoration: none;
    color: $blue-50;
  }
@@ -462,7 +486,6 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    margin-bottom: .5em;
  }
 
-
 // About page
 .usa-intro {
   font-family: $font-stack;
@@ -473,12 +496,32 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
   padding-left: .5em;
 }
 
-.about__h1, .about__h2, .about__h3 {
+.info__container {
+  h1, h2 ,h3 {
   color: $blue-90;
-}
+  }
 
-.about__h2 {
-  border-top: 2px solid $blue-90;
-  margin-top: 1.5em;
-  padding-top: .25em;
+  h2 {
+    border-top: 2px solid $blue-90;
+    margin-top: 1.5em;
+    padding-top: .25em;
+  }
+
+  h3 {
+    margin: 1em 0 0;
+  }
+
+  h4 {
+    color: $gray-cool-60;
+    letter-spacing: .04em;
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: .5em 0 1em;
+  }
+
+  li {
+    margin-bottom: .5em;
+  }
 }

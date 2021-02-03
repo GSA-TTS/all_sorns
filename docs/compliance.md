@@ -11,8 +11,5 @@ We’ve initiated the process of getting a light-weight authority to
 operate (LATO). We’ve prepared the documentation required for the review
 process.
 
-  - [<span class="underline">ATO
-    Materials</span>](https://github.com/18F/tts-tech-portfolio/issues/920)
-
-  - [<span class="underline">Ticket with TTS-Tech
-    Portfolio</span>](https://github.com/18F/tts-tech-portfolio/issues/920)
+* [ATO Materials](https://github.com/18F/tts-tech-portfolio/issues/920)
+* [Ticket with TTS-Tech](https://github.com/18F/tts-tech-portfolio/issues/920)
