@@ -37,7 +37,7 @@ Management Office.
 
 SORN DASH has a simple technical stack - you need a computer with:
 
-* Ruby on Rails v.2.7.1
+* Ruby on Rails 6
 * Postgresql 12 or later
 * **Recommended:** Ruby version manager (RVM, chruby, or similar)
 
@@ -69,14 +69,9 @@ yarn install --check-files
 
 ### 2\. Create and populate local database
 
-Now that you have the environment set-up, create the database and
-webserver using:
+Now that you have the environment set-up, create the database:
 
-```bash
-bundle exec rails db:setup
-export RAILS_ENV=development
-bundle exec rails server -e $RAILS_ENV
-```
+`bundle exec rails db:setup`
 
 Once this is complete, run the following command to fetch all the SORNs
 from the Federal Register API and populate your local database (this
