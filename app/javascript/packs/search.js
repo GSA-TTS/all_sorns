@@ -82,8 +82,30 @@ function agencyFiltering() {
   // are included in the search request
   // during an agency name search
   agencyList.on('searchComplete', function() {
-    includeFilteredCheckedAgenciesInSearch(agencyList)
+    updateAgencyFilterHelpText(agencyList);
+    includeFilteredCheckedAgenciesInSearch(agencyList);
   });
+
+  // If a user hits enter in the agency filtering input
+  // this prevents the form from being submitted
+  $("#search-form").on("submit", function(e){
+    if ( $("#agency-search").is(":focus") ){
+      e.preventDefault();
+    }
+  })
+}
+
+function updateAgencyFilterHelpText(agencyList){
+  let agencyFilterText = $("#agency-search").val();
+  let count = agencyList.visibleItems.length;
+  let pluralOrSingular = count == 1 ? " agency" : " agencies"
+  // example -> general matches 2 agencies
+  $("#agency-filter-help-text").text(agencyFilterText + " matches " + count + pluralOrSingular);
+
+  // No help text if empty
+  if (agencyFilterText == "") {
+    $("#agency-filter-help-text").text("");
+  }
 }
 
 function includeFilteredCheckedAgenciesInSearch(agencyList) {

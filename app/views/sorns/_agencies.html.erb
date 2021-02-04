@@ -3,8 +3,11 @@
 </div>
 <div id="agency-accordion" class="usa-accordion__content usa-prose">
   <fieldset id="agencies" class="usa-fieldset">
-    <button id='agency-deselect-all' class="clear-all usa-button  usa-button--unstyled">X Clear agency filters</button>
-    <input id="agency-search" class="agency-filter usa-input" />
+    <button id='agency-deselect-all' class="clear-all usa-button usa-button--unstyled">X Clear agency filters</button>
+
+    <label for="agency-search">Filter by agency name</label>
+    <input id="agency-search" class="agency-filter usa-input" name="agency-search" type="text"></input>
+    <div id="agency-filter-help-text" class="usa-prose" aria-live="polite" aria-atomic="true"></div>
 
     <div id="selected-agencies" class="list">
       <% Agency.all.each do |agency| %>

@@ -115,6 +115,14 @@ RSpec.describe "/search", type: :system do
     fill_in "agency-search", with: "Parent"
     expect(page).to have_selector '#agencies-parent-agency'
     expect(page).to have_no_selector '#agencies-child-agency'
+    expect(page).to have_no_selector '#agencies-cousin-agency'
+    expect(page).to have_selector("#agency-filter-help-text", text: "Parent matches 1 agency")
+
+    fill_in "agency-search", with: "agency"
+    expect(page).to have_selector("#agency-filter-help-text", text: "agency matches 3 agencies")
+
+    fill_in "agency-search", with: nil
+    expect(page).to have_selector("#agency-filter-help-text", text: "")
   end
 
   scenario "checked, but not visible agencies are still included in the search" do
