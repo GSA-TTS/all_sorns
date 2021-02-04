@@ -91,10 +91,10 @@ whole document (though the whole document is saved as XML).
 
 ## Database Schema
 
-SORN can belong to multiple agencies. We use a “has and belongs to many”
+SORNs can belong to multiple agencies. We use a “has and belongs to many”
 relationship of SORNs to Agencies.
 
-Agencies in the database are only those that have published SORN in the
+Agencies in the database are only those that have published a SORN in the
 Federal Register, so it is not a complete list of all government
 agencies.
 
