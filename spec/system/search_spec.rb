@@ -4,7 +4,7 @@ RSpec.describe "/search", type: :system do
   before do
     driven_by(:selenium_chrome_headless)
     11.times { create :sorn }
-    create(:sorn,agencies:[create(:agency,name:"Cousin Agency")])
+    create(:sorn, agencies: [create(:agency, name:"Cousin Agency", short_name: "CUZ")])
   end
 
   it "applies the agency-separator class to the agency pipe separator" do
@@ -107,15 +107,16 @@ RSpec.describe "/search", type: :system do
 
     # active filter badges should be in alphabetical order
     expect(page).to have_selector("#active-fields .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval")
-    expect(page).to have_selector("#active-fields:last-child", text: "Source")
+    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval", visible: true)
+    expect(page).to have_selector("#active-fields:last-child", text: "Source", visible: true)
     expect(page).to have_selector("#active-agencies .active-filter", count: 2, visible: true)
-    expect(page).to have_selector("#active-agencies:first-child", text: "Child agency")
-    expect(page).to have_selector("#active-agencies:last-child", text: "Parent agency")
+    expect(page).to have_selector("#active-agencies:first-child", text: "CA", visible: true)
+    expect(page).to have_selector("#active-agencies:last-child", text: "PA", visible: true)
 
     find(".active-filter", text: "Retrieval").find(".remove-badge").click
     # if retrieval is closed, then source is left
-    expect(page).to have_selector("#active-fields:first-child", text: "Source")
+    expect(page).to have_selector("#active-fields:first-child", text: "Retrieval", visible: false)
+    expect(page).to have_selector("#active-fields:first-child", text: "Source", visible: true)
 
     # retrieval is closed, it should also be unchecked
     click_on 'Sections'
@@ -125,5 +126,44 @@ RSpec.describe "/search", type: :system do
     click_on 'Agencies'
     find('#agency-deselect-all').click
     expect(find("#active-agencies-filters").visible?).to be_falsey
+  end
+
+  scenario "agency search input filters agency list" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "Parent"
+    expect(page).to have_selector '#agencies-parent-agency'
+    expect(page).to have_no_selector '#agencies-child-agency'
+    expect(page).to have_no_selector '#agencies-cousin-agency'
+    expect(page).to have_selector("#agency-filter-help-text", text: "Parent matches 1 agency")
+
+    fill_in "agency-search", with: "agency"
+    expect(page).to have_selector("#agency-filter-help-text", text: "agency matches 3 agencies")
+
+    fill_in "agency-search", with: nil
+    expect(page).to have_selector("#agency-filter-help-text", text: "")
+  end
+
+  scenario "checked, but not visible agencies are still included in the search" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "Parent"
+    find('label', text:'Parent Agency').click
+    fill_in "agency-search", with: "Child"
+    find('label', text:'Child Agency').click
+
+    find("#general-search-button").click
+
+    expect(page).to have_selector("#active-agencies:last-child", text: "PA", visible: true)
+    click_on 'Agencies'
+    expect(find("#agencies-parent-agency")).to be_checked
+  end
+
+  scenario "agency filtering works with short names" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "CA"
+    expect(page).to have_no_selector '#agencies-parent-agency'
+    expect(page).to have_selector '#agencies-child-agency'
   end
 end

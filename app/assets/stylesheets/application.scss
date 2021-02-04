@@ -153,9 +153,17 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 
 }
 
+#agency-deselect-all {
+  display: block;
+  margin-bottom: 16px;
+}
+
+#agency-filter-help-text {
+  margin-top: 8px;
+}
+
 .clear-all {
   color: #d34141 !important;
-  ;
 }
 
 //Sidebar

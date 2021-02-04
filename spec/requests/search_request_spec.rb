@@ -66,7 +66,7 @@ RSpec.describe "Search", type: :request do
       let(:agency) { "agencies[]=Parent+Agency&agencies[]=Child+Agency" }
 
       before do
-        sorn.agencies << create(:agency, name: "Child Agency")
+        sorn.agencies << create(:agency, name: "Child Agency", short_name: "CA")
       end
 
       it "only returns a single SORN, even though it matches the two agencies" do
@@ -162,6 +162,18 @@ RSpec.describe "Search", type: :request do
       get "/search?search=different&fields[]=categories_of_record&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
 
       expect(response.body).to include '<a href="/search.csv?agencies%5B%5D=Parent+Agency&amp;ending_year=2020&amp;fields%5B%5D=categories_of_record&amp;search=different&amp;starting_year=2019">'
+    end
+  end
+
+  context "including search.js pack" do
+    it "on landing page its not included" do
+      get "/"
+      expect(response.body).to_not include '/packs-test/js/search-'
+    end
+
+    it "when searching, it is included" do
+      get "?search=FAKE"
+      expect(response.body).to include '/packs-test/js/search-'
     end
   end
 end
