@@ -44,7 +44,6 @@ class Sorn < ApplicationRecord
   METADATA = [
     :html_url,
     :xml_url,
-    :pdf_url,
     :citation,
     :title,
     :publication_date,
@@ -131,10 +130,6 @@ class Sorn < ApplicationRecord
 
   def self.update_all_mentioned_sorns
     Sorn.in_batches.each_record(&:update_mentioned_sorns)
-  end
-
-  def self.parse_all_xml_again
-    Sorn.in_batches.each_record(&:parse_xml)
   end
 
   # https://prsanjay.wordpress.com/2015/07/15/export-to-csv-in-rails-select-columns-names-dynamically/
