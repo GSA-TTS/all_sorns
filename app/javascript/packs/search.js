@@ -25,7 +25,7 @@ $( function () {
       addBadge(this.id, "agencies");
     }
   });
- 
+
   //Add badge for date filters if populated
   if (parseInt($("#starting_year").val()) || parseInt($("#ending_year").val())) {
     publicationDateValidation();
@@ -57,6 +57,8 @@ $( function () {
   });
 
   agencyFiltering();
+
+  hideEmptyFormFieldsFromUrl();
 });
 
 function addBadge(id, parentId){
@@ -156,7 +158,7 @@ function publicationDateValidation(){
 function createDatesFilter(startYear, endYear){
   const $filterSection = $('#active-date-filter')
   const $badge = $("#active-date-range")
-  const $dates = $("#active-date-range span") 
+  const $dates = $("#active-date-range span")
   if (isNaN(startYear)){
     startYear = "1994"
   } else if (isNaN(endYear)) {
@@ -177,4 +179,15 @@ function clearDatesFilter(){
   // hide badges section
   $('#active-date-range').hide();
   $(`#active-date-filter`).hide();
+}
+
+function hideEmptyFormFieldsFromUrl(){
+  // prevents &starting_year=&ending_year= from appearing in every request
+  $("#search-form").on("submit", function() {
+    $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
+    return true; // ensure form still submits
+  });
+
+  // Un-disable form fields when page loads, in case they click back after submission
+  $( "#search-form" ).find( ":input" ).prop( "disabled", false );
 }
