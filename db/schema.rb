@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_002822) do
+ActiveRecord::Schema.define(version: 2021_01_29_220248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -85,14 +85,10 @@ ActiveRecord::Schema.define(version: 2021_01_08_002822) do
     t.string "access"
     t.string "contesting"
     t.string "notification"
-    t.string "headers"
     t.string "system_number"
-    t.string "data_source"
     t.string "citation"
     t.string "agency_names"
     t.xml "xml"
-    t.string "pdf_url"
-    t.string "text_url"
     t.string "publication_date"
     t.string "title"
     t.string "action_type"

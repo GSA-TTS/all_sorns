@@ -29,8 +29,7 @@ class SornXmlParser
       contesting: find_section('CONTESTING'),
       notification: find_section('NOTIFICATION'),
       exemptions: find_section('EXEMPTIONS'),
-      history: find_section('HISTORY'),
-      headers: @sections.keys }
+      history: find_section('HISTORY') }
   end
 
   def get_system_name
