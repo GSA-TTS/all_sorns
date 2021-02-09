@@ -2,6 +2,7 @@ class SornsController < ApplicationController
   def search
     @title = search_title
     @sorns = Sorn.none if params[:search].blank? # blank page on first visit
+    @sorns = Sorn.all if params["all-sorns"].present? # show all SORNs
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
     @sorns = filter_on_agencies if params[:agencies]
@@ -22,7 +23,6 @@ class SornsController < ApplicationController
     else
       ""
     end
-
   end
 
   def filter_on_search

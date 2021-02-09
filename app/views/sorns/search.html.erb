@@ -7,7 +7,7 @@
   </div>
 </header>
 
-<%= form_tag '/', method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
+<%= form_tag root_url, method: "GET", id: "search-form", class: ((params[:search].present? or params["all-sorns"].present?) ? '' : 'pre-search') do %>
   <section class="grid-container">
     <div class="desktop:grid-col-10 desktop:grid-offset-1 search-area">
       <label for="general-search">Search for SORNs by entering a keyword (will return exact matches)</label>
@@ -17,10 +17,15 @@
           <span class="usa-search__submit-text">Search</span>
         </button>
       </fieldset>
+      <% if params["all-sorns"].nil? %>
+        <div class="clearfix">
+          <%= link_to browse_all_link_text, root_path(browse_mode_params), class: "float-right" %>
+        </div>
+      <% end %>
     </div>
   </section>
 
-  <% if params[:search].present? %>
+  <% if params[:search].present? or params["all-sorns"].present? %>
   <div class="grid-container margin-top-2">
     <div class ="grid-row grid-gap">
 
@@ -78,7 +83,7 @@
               </div>
             </div>
           </div>
-        
+
 
         <div id="active-date-filter">
           <div class="grid-row">
@@ -156,17 +161,19 @@
                     </div>
                   <% end %>
 
-                  <hr />
+                  <% if params[:search].present? %>
+                    <hr />
 
-                  <div class="grid-row">
-                    <h3 class='found-in'>FOUND IN</h3>
-                    <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
-                      <div class="grid-row">
-                        <div class='sorn-attribute-header'><%= section.humanize %></div>
-                        <div class='found-section-snippet'><%= snippet %></div>
-                      </div>
-                    <% end %>
-                  </div>
+                    <div class="grid-row">
+                      <h3 class='found-in'>FOUND IN</h3>
+                      <% sorn.section_snippets(@fields_to_search.map(&:to_s), params[:search]).each do |section, snippet| %>
+                        <div class="grid-row">
+                          <div class='sorn-attribute-header'><%= section.humanize %></div>
+                          <div class='found-section-snippet'><%= snippet %></div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
                 </div>
                 <div class="usa-card__footer">
                   <div class="grid-row">

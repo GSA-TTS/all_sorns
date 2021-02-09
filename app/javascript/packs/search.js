@@ -184,7 +184,7 @@ function clearDatesFilter(){
 function hideEmptyFormFieldsFromUrl(){
   // prevents &starting_year=&ending_year= from appearing in every request
   $("#search-form").on("submit", function() {
-    $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
+    $(this).find(":input").not("#general-search").filter(function(){ return !this.value; }).attr("disabled", "disabled");
     return true; // ensure form still submits
   });
 

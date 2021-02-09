@@ -17,14 +17,14 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
 
-    <% if params[:search].present? %>
+    <% if params[:search].present? or params["all-sorns"].present? %>
       <!-- Only load custom js if there is an active search -->
       <%= javascript_pack_tag 'search' %>
     <% end %>
 
  </head>
 
-  <body <%if params[:search].blank? && current_page?('/') %>class="pre-search"<%end%>>
+  <body <%if (params[:search].nil? and params["all-sorns"].nil?) && current_page?('/') %>class="pre-search"<%end%>>
     <%= render template: 'layouts/banner' %>
     <%= render template: 'layouts/nav'%>
     <%= yield %>

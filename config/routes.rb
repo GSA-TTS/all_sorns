@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/', to: 'sorns#search'
+  root to: 'sorns#search'
 
   get '/csv', to: 'sorns#csv'
 

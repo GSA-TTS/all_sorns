@@ -176,4 +176,24 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include '/packs-test/js/search-'
     end
   end
+
+  context "browse mode" do
+    it "includes a browse mode link when not in browse mode" do
+      get root_url
+
+      expect(response.body).to include 'Browse all SORNs'
+
+      get "?search=FAKE"
+      expect(response.body).to include 'Browse all SORNs'
+
+      get "?all-sorns=true"
+      expect(response.body).to_not include 'Browse all SORNs'
+    end
+
+    it "includes current filters, except search" do
+      get "?search=different&fields[]=categories_of_record&agencies[]=Parent+Agency&starting_year=2019&ending_year=2020"
+
+      expect(response.body).to include 'href="/?agencies%5B%5D=Parent+Agency&amp;all-sorns=true&amp;ending_year=2020&amp;fields%5B%5D=categories_of_record&amp;starting_year=2019'
+    end
+  end
 end

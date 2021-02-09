@@ -16,4 +16,32 @@ module SornsHelper
       format: :csv
     }
   end
+
+  def browse_all_link_text
+    if params[:agencies].present? || params[:starting_year].present? || params[:starting_year].present?
+      "Browse all SORNs with below filters >"
+    else
+      "Browse all SORNs >"
+    end
+  end
+
+  def browse_mode_params
+    browse = {
+      "all-sorns": true
+    }
+    # Add any other filters to the url
+    if @fields_to_search != Sorn::FIELDS
+      browse[:fields] =  @fields_to_search
+    end
+    if params[:agencies].present?
+      browse[:agencies] = params[:agencies]
+    end
+    if params[:starting_year].present?
+      browse[:starting_year] = params[:starting_year]
+    end
+    if params[:starting_year].present?
+      browse[:ending_year] = params[:ending_year]
+    end
+    browse
+  end
 end
