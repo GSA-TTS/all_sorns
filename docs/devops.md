@@ -101,64 +101,6 @@ vulnerabilities. We did Zap scanning manually, but it can be automated
 to run routinely. Zap scans should be run whenever substantive changes
 are made to the code base.
 
-## Content
-
-All SORN DASH text content can be found in the `/app/views` directory.
-In addition to the main search view, there are two static explanatory
-pages:
-
-**About**: `/app/views/pages/about.html.erb`
-
-**Instructions**: `/app/views/pages/help.html.erb`
-
-
-
-### **Creating Pages**
-
-To create a new page, create a file in the `/app/views/pages` directory like `<title>.html.erb`
-
-Then modify these files to add the page to the application and display
-it in the navigation menu:
-
-`/app/controllers/pages_controller.rb` - add a definition for the
-new page
-
-`/app/config/routes.rb` - add a new route for the page at \<pagename\>
-
-`/app/views/layouts/nav.html.erb` - add a link to the new page for
-the menu bar
-
-## Automated retrieval of new SORNs
-
-- Github Action scheduled task at 2:11 AM ET, M-F to run \`rails
-    > federal\_register:all\_sorns\` sorn-grab.yml
-
-- Installs Cloud Foundary CLI, queues find sorn task on production
-
-- `federal_register_client.rb` will ask the Federal Register for the newest SORNs.
-
-- It saves the metadata about them to the database
-
-- Schedules `UpdateSorn` jobs for each one.
-
-- `UpdateSorns` then downloads the xml and does the complicated parsing.
-
-    - uses **Good Job**, **FR** gem
-
-    - `federal_register_client.rb` — search logic
-
-    - Saves data and metadata to database
-
-    - Schedules `update-sorn` job to download new docs as XML with `get_xml()`
-
-    - parses it — regex for section titles
-
-- Cloud.gov worker runs on the same instance as the app, doesn't affect performance so doesn't need a dedicated instance. Consider in the future.
-
-- Services: postgres db and service key
-
-- [GH actions cron](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events)
-
 ## Security and Maintenance
 
 SORN Dash will require occasional updates to its gems and other
