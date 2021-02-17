@@ -67,10 +67,10 @@ section. Here is an
 
 The tags for specific document sections are:
 
-**Supplementary info** \<SUPPLINF\> - contains publication data about
+**Supplementary info** `<SUPPLINF>` — contains publication data about
 the SORN
 
-**Privacy act** \<PRIACT\> - contains the content of the SORN.
+**Privacy act** `<PRIACT>` — contains the content of the SORN.
 
 Within these tags, Each SORN section is labeled with header \<HD\> tags
 which we use as the keys to structure the content. We parse these
