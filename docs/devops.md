@@ -67,7 +67,7 @@ main branch must be approved by at least one other developer.
 We use
 [**Snyk**](https://github.com/snyk/snyk)
 to check our application dependencies in `package.json` and
-`gemfil` to see if any of our dependencies have known
+`Gemfile` to see if any of our dependencies have known
 vulnerabilities.
 
 ## QA
@@ -79,8 +79,7 @@ be found in `/spec`. To run tests on your local machine run:
 
  `rspec`
 
-`search\_spec.rb` is integration tests and is written in
-[capybara](https://github.com/teamcapybara/capybara).
+`search\_spec.rb` is integration tests and is written in [capybara](https://github.com/teamcapybara/capybara).
 
 ### **Code Climate**
 
