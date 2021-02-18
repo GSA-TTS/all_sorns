@@ -32,13 +32,33 @@ $( function () {
   }
 
   // Listener for checkboxes
+  let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
+    const applyBtn = $(".filters__apply");
+
+    if (filtersOnDeck.has(this.id)) {
+      filtersOnDeck.delete(this.id);
+    }
+    else {
+      filtersOnDeck.add(this.id);
+    }
+
     if (this.checked) {
       addBadge(this.id, parentId);
-    } else {
+      } else {
       removeBadge(this.id, parentId);
     }
+
+    if (filtersOnDeck.size > 0) {
+      if (applyBtn.is(":hidden")) {
+          applyBtn.show();
+      }
+    }
+    else {
+      applyBtn.hide();
+    }
+
   });
 
   // Validate the publication date input
