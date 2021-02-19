@@ -223,21 +223,25 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 /* Note, the next three declerations are currently inactive,
  if we limit the height of the filters again, we'll need to uncomment
 */
- // .sidebar .usa-checkbox {
- //   line-height: 1;
- //   margin-top: .25em;
- // }
- //
- // .sidebar .usa-checkbox__input {
- //   position: relative;
- // }
- //
- // .sidebar .usa-checkbox__label {
- //   margin-top: 0;
- // }
+ .sidebar .usa-checkbox {
+   line-height: 1;
+   margin-top: .25em;
+ }
+
+ .sidebar .usa-checkbox__input {
+   position: relative;
+ }
+
+ .sidebar .usa-checkbox__label {
+   margin-top: 0;
+ }
 
  .sidebar .usa-accordion__heading:not(:first-child) {
   margin-top: 0;
+}
+
+.sidebar fieldset {
+  max-height: 355px;
 }
 
  .sidebar .usa-accordion__button:hover {
