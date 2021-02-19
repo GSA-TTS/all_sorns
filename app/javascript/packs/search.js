@@ -51,19 +51,43 @@ $( function () {
     }
 
     if (filtersOnDeck.size > 0) {
-      if (applyBtn.is(":hidden")) {
-          applyBtn.show();
-      }
+      addApplyButton();
     }
     else {
-      applyBtn.hide();
+      removeApplyButton();
     }
 
   });
 
   // Validate the publication date input
-  $("#starting_year").on("change", publicationDateValidation);
-  $("#ending_year").on("change", publicationDateValidation);
+  $("#starting_year").on("change", ()=> {
+    if(publicationDateValidation()) {
+      addApplyButton();
+    }
+  });
+  $("#ending_year").on("change",()=> {
+    if(publicationDateValidation()) {
+
+      addApplyButton();
+    }
+  });
+
+  function addApplyButton() {
+    let applyBtn = $('.filters__apply');
+    if (applyBtn.length === 0) return;
+    if (applyBtn.is(":hidden")) {
+      applyBtn.show();
+    }
+  }
+
+  function removeApplyButton() {
+    let applyBtn = $('.filters__apply');
+    if (applyBtn.length === 0) return;
+    if (applyBtn.is(":visible")) {
+      applyBtn.hide();
+    }
+  }
+
 
   // Listener for remove badge link
   $(document).on('click', 'a.remove-badge', function () {
@@ -161,17 +185,22 @@ function includeFilteredCheckedAgenciesInSearch(agencyList) {
   });
 }
 
+// Valideates publication date range and creates badge.
+// returns True if successful, false otherswise
 function publicationDateValidation(){
   let startYear = parseInt($("#starting_year").val());
   let endYear = parseInt($("#ending_year").val());
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
+    return false;
   } else if (startYear < "1994") {
     $("#starting_year")[0].setCustomValidity("Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year");
+    return false;
   } else {
     $("#starting_year")[0].setCustomValidity('');
     // If dates are valid, create badge
     createDatesFilter(startYear, endYear);
+    return true;
   }
 }
 
