@@ -18,7 +18,13 @@ $( function () {
   });
 
   // Get :checked on load and create badges
-  $(".sidebar :checked").each(function(){
+  const checked = $(".sidebar :checked");
+  if (checked.length > 0) {
+    if($("#active-filters").is(":hidden")) {
+      $("#active-filters").show();
+    }
+  }
+  checked.each(function(){
     if (this.name === "fields[]") {
       addBadge(this.id, "sections");
     } else if (this.name === "agencies[]") {
@@ -35,7 +41,11 @@ $( function () {
   let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
-    const applyBtn = $(".apply-filters");
+    const activeFilters = $("#active-filters")
+    if (activeFilters.is(":hidden")) {
+      activeFilters.show();
+    }
+
 
     if (filtersOnDeck.has(this.id)) {
       filtersOnDeck.delete(this.id);
@@ -46,7 +56,8 @@ $( function () {
 
     if (this.checked) {
       addBadge(this.id, parentId);
-      } else {
+    }
+    else {
       removeBadge(this.id, parentId);
     }
 
@@ -56,7 +67,6 @@ $( function () {
     else {
       removeApplyButton();
     }
-
   });
 
   // Validate the publication date input
@@ -98,6 +108,7 @@ $( function () {
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
     }
+    addApplyButton();
   });
 
   agencyFiltering();
