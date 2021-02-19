@@ -7,10 +7,10 @@ SORN DASH is deployed to
 Identity Project Management Office’s subscription. It runs in a
 FISMA-low environment.
 
-On cloud.gov, there is a production space and a staging space. These spaces contain:
+On cloud.gov, there is a production space and a staging space. These spaces each contain:
 - 1 instance of the `all-sorns` application. By default it uses 1G of memory and 1G of disk space.
 - 1 Postgres database, at least v12.
-- 2G of memory in reserve for each space, to run the GoodJob job runner task, and the nightly [find_sorns_job}(https://github.com/18F/all_sorns/blob/main/app/jobs/find_sorns_job.rb) task.
+- 2G of memory in reserve for each space, to run the GoodJob job runner task, and the nightly [find_sorns_job](https://github.com/18F/all_sorns/blob/main/app/jobs/find_sorns_job.rb) task.
 
 In total this is at least 6G of memory needed for the org amount, for both environments to fully run.
 
