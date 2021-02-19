@@ -39,8 +39,8 @@ gem**](https://github.com/Casecommons/pg_search).
 
 These two articles explaining these approaches were very helpful:
 
-  - > [Optimizing full-text search with Postgres materialized view in
-    > Rails](https://caspg.com/blog/optimizing-full-text-search-with-postgres-materialized-view-in-rails)
+  - [Optimizing full-text search with Postgres materialized view in
+    Rails](https://caspg.com/blog/optimizing-full-text-search-with-postgres-materialized-view-in-rails)
 
-  - > [Full Text Search in Milliseconds with Rails and
-    > PostgreSQL](https://pganalyze.com/blog/full-text-search-ruby-rails-postgres)
+  - [Full Text Search in Milliseconds with Rails and
+    PostgreSQL](https://pganalyze.com/blog/full-text-search-ruby-rails-postgres)
