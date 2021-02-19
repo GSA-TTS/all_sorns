@@ -35,7 +35,7 @@ $( function () {
   let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
-    const applyBtn = $(".filters__apply");
+    const applyBtn = $(".apply-filters");
 
     if (filtersOnDeck.has(this.id)) {
       filtersOnDeck.delete(this.id);
@@ -73,7 +73,7 @@ $( function () {
   });
 
   function addApplyButton() {
-    let applyBtn = $('.filters__apply');
+    let applyBtn = $('.apply-filters');
     if (applyBtn.length === 0) return;
     if (applyBtn.is(":hidden")) {
       applyBtn.show();
@@ -81,7 +81,7 @@ $( function () {
   }
 
   function removeApplyButton() {
-    let applyBtn = $('.filters__apply');
+    let applyBtn = $('.apply-filters');
     if (applyBtn.length === 0) return;
     if (applyBtn.is(":visible")) {
       applyBtn.hide();
