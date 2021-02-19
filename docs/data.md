@@ -51,7 +51,7 @@ field. We then keep only results that have either **'privacy act'** or
 **'system of record'** in the title,
 
 The code for this request is in this file:
-[<span class="underline">https://github.com/18F/all\_sorns/blob/main/app/models/federal\_register\_client.rb</span>](https://github.com/18F/all_sorns/blob/main/app/models/federal_register_client.rb)
+[<span class="underline">https://github.com/18F/all_sorns/blob/main/app/models/federal_register_client.rb</span>](https://github.com/18F/all_sorns/blob/main/app/models/federal_register_client.rb)
 
 More about the Federal Register:
 [<span class="underline">https://www.govinfo.gov/help/fr</span>](https://www.govinfo.gov/help/fr)
@@ -72,11 +72,11 @@ the SORN
 
 **Privacy act** `<PRIACT>` — contains the content of the SORN.
 
-Within these tags, Each SORN section is labeled with header \<HD\> tags
+Within these tags, Each SORN section is labeled with header `<HD>` tags
 which we use as the keys to structure the content. We parse these
 section headings [<span class="underline">by name with
 Regex</span>](https://github.com/18F/all_sorns/blob/main/app/models/sorn_xml_parser.rb),
-and save all the paragraph \<P\> elements between the matched section
+and save all the paragraph `<P>` elements between the matched section
 and the next heading.
 
 A few SORNs have semantic tags for SORN subsections, and we use them

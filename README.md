@@ -33,7 +33,7 @@ Management Office.
 
 ### Running Locally
 
-#### 1\. Setup Environment
+#### 1. Setup Environment
 
 SORN DASH has a simple technical stack - you need a computer with:
 
@@ -67,7 +67,7 @@ bundle install
 yarn install --check-files
 ```
 
-### 2\. Create and populate local database
+### 2. Create and populate local database
 
 Now that you have the environment set-up, create the database:
 
@@ -78,14 +78,14 @@ from the Federal Register API and populate your local database (this
 takes about an hour and a half the first time it is run, to download and
 populate the database):
 
-`bundle exec rails federal\_register:find\_sorns`
+`bundle exec rails federal_register:find_sorns`
 
 After the database has been populated, run these commands to update the
 links between SORNs that is displayed in the search results:
 
 ```bash
-bundle exec rails all\_sorns:update\_all\_mentioned\_sorns
-bundle exec rails all\_sorns:refresh\_search
+bundle exec rails all_sorns:update_all_mentioned_sorns
+bundle exec rails all_sorns:refresh_search
 ```
 
 You can now run SORN DASH locally using:
@@ -95,7 +95,7 @@ export RAILS_ENV=development
 bundle exec rails server -e $RAILS_ENV
 ```
 
-SORN DASH is now running locally on your computer\!
+SORN DASH is now running locally on your computer!
 
 Open a browser and go to
 [https://localhost:3000/](https://localhost:3000/)
@@ -110,12 +110,12 @@ able to run SORN DASH locally again.
 Changes to the schema will require a database migration before SORN DASH
 can be run. Run this with:
 
-**\>** bundle exec rails db:migrate
+**>** bundle exec rails db:migrate
 
 Adding or updating the included gems will require you to update your
 ruby packages. Run this with:
 
-**\>** bundle install
+**>** bundle install
 
 * [How search works](/docs/search.md)
 * [About the data](/docs/data.md)

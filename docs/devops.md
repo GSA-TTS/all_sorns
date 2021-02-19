@@ -79,7 +79,7 @@ be found in `/spec`. To run tests on your local machine run:
 
  `rspec`
 
-`search\_spec.rb` is integration tests and is written in [capybara](https://github.com/teamcapybara/capybara).
+`search_spec.rb` is integration tests and is written using [capybara](https://github.com/teamcapybara/capybara).
 
 ### **Code Climate**
 
