@@ -58,10 +58,10 @@ $( function () {
     }
 
     if (filtersOnDeck.size > 0) {
-      addApplyButton();
+      toggleApplyButton("show");
     }
     else {
-      removeApplyButton();
+      toggleApplyButton("hide");
     }
   });
 
@@ -73,27 +73,20 @@ $( function () {
   });
   $("#ending_year").on("change",()=> {
     if(publicationDateValidation()) {
-
       addApplyButton();
     }
   });
 
-  function addApplyButton() {
+  function toggleApplyButton(visibility) {
     let applyBtn = $('.apply-filters');
     if (applyBtn.length === 0) return;
-    if (applyBtn.is(":hidden")) {
+    if (visibility === "show") {
       applyBtn.show();
     }
-  }
-
-  function removeApplyButton() {
-    let applyBtn = $('.apply-filters');
-    if (applyBtn.length === 0) return;
-    if (applyBtn.is(":visible")) {
+    else if (visibility === "hide") {
       applyBtn.hide();
     }
   }
-
 
   // Listener for remove badge link
   $(document).on('click', 'a.remove-badge', function () {
