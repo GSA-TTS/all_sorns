@@ -33,7 +33,9 @@ $( function () {
   });
 
   //Add badge for date filters if populated
-  if (parseInt($("#starting_year").val()) || parseInt($("#ending_year").val())) {
+  let intialStartDate = parseInt($("#starting_year").val());
+  let intialEndDate = parseInt($("#ending_year").val());
+  if (intialStartDate || intialEndDate) {
     publicationDateValidation();
   }
 
@@ -68,12 +70,22 @@ $( function () {
   // Validate the publication date input
   $("#starting_year").on("change", ()=> {
     if(publicationDateValidation()) {
-      addApplyButton();
+      if (parseInt($("#starting_year").val()) !== intialStartDate) {
+          toggleApplyButton("show");
+      }
+      else {
+        toggleApplyButton("hide");
+      }
     }
   });
   $("#ending_year").on("change",()=> {
     if(publicationDateValidation()) {
-      addApplyButton();
+      if (parseInt($("#ending_year").val()) !== intialEndDate) {
+          toggleApplyButton("show");
+      }
+      else {
+        toggleApplyButton("hide");
+      }
     }
   });
 
@@ -97,7 +109,10 @@ $( function () {
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
     }
-    addApplyButton();
+    toggleApplyButton("show");
+    if (isNaN(intialStartDate) && isNaN(intialEndDate)) {
+      toggleApplyButton("hide");
+    }
   });
 
   agencyFiltering();
