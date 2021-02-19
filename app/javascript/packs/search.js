@@ -41,11 +41,7 @@ $( function () {
   let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
-    const activeFilters = $("#active-filters")
-    if (activeFilters.is(":hidden")) {
-      activeFilters.show();
-    }
-
+    showActiveFilters();
 
     if (filtersOnDeck.has(this.id)) {
       filtersOnDeck.delete(this.id);
@@ -196,7 +192,7 @@ function includeFilteredCheckedAgenciesInSearch(agencyList) {
   });
 }
 
-// Valideates publication date range and creates badge.
+// Validates publication date range and creates badge.
 // returns True if successful, false otherswise
 function publicationDateValidation(){
   let startYear = parseInt($("#starting_year").val());
@@ -230,6 +226,7 @@ function createDatesFilter(startYear, endYear){
     $filterSection.show();
     $badge.css("display", "inline-block");
   }
+  showActiveFilters();
 }
 
 function clearDatesFilter(){
@@ -250,4 +247,11 @@ function hideEmptyFormFieldsFromUrl(){
 
   // Un-disable form fields when page loads, in case they click back after submission
   $( "#search-form" ).find( ":input" ).prop( "disabled", false );
+}
+
+function showActiveFilters() {
+  const activeFilters = $("#active-filters")
+  if (activeFilters.is(":hidden")) {
+    activeFilters.show();
+  }
 }
