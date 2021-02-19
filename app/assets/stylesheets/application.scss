@@ -24,7 +24,7 @@
  $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
- $gray-cool-5:       #EDEFF0;
+ $gray-cool-5:  #EDEFF0;
 
  $gold-10v:     #FFE396;
 
@@ -164,6 +164,10 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
     transform: translateY(5%);
     -webkit-transform: translateY(5%);
     -ms-transform: translateY(5%);
+  }
+
+  img:hover {
+    transform: scale(1.2);
   }
 
 }
