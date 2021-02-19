@@ -7,13 +7,16 @@ SORN DASH is deployed to
 Identity Project Management Office’s subscription. It runs in a
 FISMA-low environment.
 
-We have a service account which is used for automated deployment of
-updates from Github. We use service accounts to allow for better
-auditing of our activity from automated processes like continuous
-deployment or nightly checks for newly published SORNs.
+On cloud.gov, there is a production space and a staging space. These spaces contain:
+- 1 instance of the `all-sorns` application. By default it uses 1G of memory and 1G of disk space.
+- 1 Postgres database, at least v12.
+- 2G of memory in reserve for each space, to run the GoodJob job runner task, and the nightly [find_sorns_job}(https://github.com/18F/all_sorns/blob/main/app/jobs/find_sorns_job.rb) task.
 
-For more on using service accounts with cloud.gov see:
-[https://cloud.gov/docs/services/cloud-gov-service-account/](https://cloud.gov/docs/services/cloud-gov-service-account/)
+In total this is at least 6G of memory needed for the org amount, for both environments to fully run.
+
+### Deploying
+
+Our continuous deployment process, which is described in the Github section below, uses a cloud.gov [service account](https://cloud.gov/docs/services/cloud-gov-service-account/). We use service accounts to allow for better auditing of our activity from automated processes like continuous deployment or nightly checks for newly published SORNs.
 
 `.cloud-gov/deploy.sh` is the shell script that allows a developer to
 rebuild the application’s environment on cloud.gov from scratch and also
@@ -28,8 +31,6 @@ script does the following:
   - manifest file sets up actual instance
 
   - `start.sh` runs migration before every start
-
-The environment requires 1GB of memory and Postgres 12 or later.
 
 ## Github
 
