@@ -24,7 +24,7 @@
  $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
- $gray-5:       #F0F0F0;
+ $gray-cool-5:       #EDEFF0;
 
  $gold-10v:     #FFE396;
 
@@ -126,16 +126,31 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    }
  }
 
+ #active-filters {
+   background-color: $gray-cool-5;
+   margin-bottom: 1em;
+   padding: 1em;
+
+   .labels {
+     font-size: .85em;
+   }
+
+   .apply-filters {
+     margin-top: 0.5em;
+   }
+
+ }
+
 .active-filter {
   display: inline-block;
   border-radius: 0;
-  padding: 5px;
-  padding-right: 8px;
-  padding-left: 8px;
-  margin-bottom: 17px;
+  padding: 0.25em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  margin-bottom: 1em;
   background-color: white;
-  margin-right: 12px;
-  font-size: 14px;
+  margin-right: 0.5em;
+  font-size: .85em;
   border: 1px solid #A9AEB1;
   color: #112F4E;
 
@@ -222,7 +237,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
  .sidebar .usa-accordion__button:hover {
-   background-color: $gray-5;
+   background-color: $gray-cool-5;
  }
 
  .usa-nav__primary > .usa-nav__primary-item > a {
@@ -296,7 +311,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  }
 
 //  filter badges
-#active-sections-filters, #active-agencies-filters, #active-date-filter, .active-filter, .filters__apply {
+#active-sections-filters, #active-agencies-filters, #active-date-filter, .active-filter, .apply-filters {
   display: none;
 }
 
@@ -480,7 +495,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    max-width: 100%;
  }
 
- #general-search-button {
+ #general-search-buttoni, .apply-filters {
    background-color: $blue-50;
    &:hover {
      background-color: $blue-70;
