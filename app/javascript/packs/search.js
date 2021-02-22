@@ -33,9 +33,9 @@ $( function () {
   });
 
   //Add badge for date filters if populated
-  let intialStartDate = parseInt($("#starting_year").val());
-  let intialEndDate = parseInt($("#ending_year").val());
-  if (intialStartDate || intialEndDate) {
+  let initialStartDate = parseInt($("#starting_year").val());
+  let initialEndDate = parseInt($("#ending_year").val());
+  if (initialStartDate || initialEndDate) {
     publicationDateValidation();
   }
 
@@ -68,26 +68,24 @@ $( function () {
   });
 
   // Validate the publication date input
-  $("#starting_year").on("change", ()=> {
+  $("#starting_year").on("change", detectDateChange);
+  $("#ending_year").on("change", detectDateChange);
+
+  // Detects if the change to publication date range is different from load
+  // and displays the apply button if so
+  function detectDateChange() {
+    let currentStartDate = parseInt($("#starting_year").val());
+    let currentEndDate = parseInt($("#ending_year").val());
+
     if(publicationDateValidation()) {
-      if (parseInt($("#starting_year").val()) !== intialStartDate) {
+      if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate ) {
           toggleApplyButton("show");
       }
       else {
         toggleApplyButton("hide");
       }
     }
-  });
-  $("#ending_year").on("change",()=> {
-    if(publicationDateValidation()) {
-      if (parseInt($("#ending_year").val()) !== intialEndDate) {
-          toggleApplyButton("show");
-      }
-      else {
-        toggleApplyButton("hide");
-      }
-    }
-  });
+  }
 
   function toggleApplyButton(visibility) {
     let applyBtn = $('.apply-filters');
@@ -110,7 +108,7 @@ $( function () {
       clearDatesFilter();
     }
     toggleApplyButton("show");
-    if (isNaN(intialStartDate) && isNaN(intialEndDate)) {
+    if (isNaN(initialStartDate) && isNaN(initialEndDate)) {
       toggleApplyButton("hide");
     }
   });
