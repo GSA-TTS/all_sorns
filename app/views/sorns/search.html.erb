@@ -55,7 +55,7 @@
               <div id="active-fields">
               <% Sorn::FIELDS.each do |section| %>
                 <div class="active-filter" id="fields-<%= section.to_s %>-badge">
-                  <%= section.to_s.humanize %><button class="remove-badge usa-button usa-button--unstyled"> <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></button>
+                  <%= section.to_s.humanize %> <button class="remove-badge usa-button usa-button--unstyled"> <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove " + section.to_s.humanize + " filter")%></button>
                 </div>
               <% end %>
               </div>
@@ -72,7 +72,7 @@
               <div id="active-agencies">
                 <% Agency.all.each do |agency| %>
                   <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
-                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                    <%= agency.short_name || agency.name&.humanize %><button class="remove-badge usa-button usa-button--unstyled"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove " + agency.name + " agency filter")%></button>
                   </div>
                 <% end %>
               </div>
@@ -88,7 +88,7 @@
           </div>
           <div class="grid-row">
             <div id="active-dates">
-              <div class="active-filter" id="active-date-range"><span></span><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a></div>
+              <div class="active-filter" id="active-date-range"><span></span><button class="remove-badge usa-button usa-button--unstyled"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove date range filter")%></button></div>
             </div>
           </div>
         </div>
