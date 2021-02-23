@@ -55,7 +55,7 @@
               <div id="active-fields">
               <% Sorn::FIELDS.each do |section| %>
                 <div class="active-filter" id="fields-<%= section.to_s %>-badge">
-                  <%= section.to_s.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                  <%= section.to_s.humanize %><button class="remove-badge usa-button usa-button--unstyled"> <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></button>
                 </div>
               <% end %>
               </div>

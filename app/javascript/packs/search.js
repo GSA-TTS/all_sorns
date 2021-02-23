@@ -99,8 +99,9 @@ $( function () {
   }
 
   // Listener for remove badge link
-  $(document).on('click', 'a.remove-badge', function () {
+  $(document).on('click', '.remove-badge', function (e) {
     // uncheck the matching checkbox
+    e.preventDefault();
     const checkboxId = $(this).parent()[0].id.replace("-badge","");
     $(`#${checkboxId}`).prop("checked", false).trigger("change");
     // clear date filters
