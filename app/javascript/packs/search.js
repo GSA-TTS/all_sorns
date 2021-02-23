@@ -106,10 +106,12 @@ $( function () {
     // clear date filters
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
-    }
-    toggleApplyButton("show");
-    if (isNaN(initialStartDate) && isNaN(initialEndDate)) {
-      toggleApplyButton("hide");
+      if (isNaN(initialStartDate) && isNaN(initialEndDate)) {
+        toggleApplyButton("hide");
+      }
+      else {
+        toggleApplyButton("show");
+      }
     }
   });
 
