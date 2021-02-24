@@ -76,13 +76,15 @@ $( function () {
   function detectDateChange() {
     let currentStartDate = parseInt($("#starting_year").val());
     let currentEndDate = parseInt($("#ending_year").val());
-
     if(publicationDateValidation()) {
-      if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate ) {
-          toggleApplyButton("show");
+      if (isNaN(initialStartDate) && isNaN(currentStartDate) && isNaN(initialEndDate) && isNaN(currentEndDate)) {
+        toggleApplyButton("hide");
+      }
+      else if (currentStartDate === initialStartDate && currentEndDate === initialEndDate ) {
+        toggleApplyButton("hide");
       }
       else {
-        toggleApplyButton("hide");
+        toggleApplyButton("show");
       }
     }
   }
@@ -206,6 +208,10 @@ function includeFilteredCheckedAgenciesInSearch(agencyList) {
 function publicationDateValidation(){
   let startYear = parseInt($("#starting_year").val());
   let endYear = parseInt($("#ending_year").val());
+  if (isNaN(startYear) && isNaN(endYear)) {
+    clearDatesFilter();
+    return true;
+  }
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
     return false;
