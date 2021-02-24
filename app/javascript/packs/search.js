@@ -1,6 +1,8 @@
 import List from 'list.js';
 
 $( function () {
+  let checkboxChangeFlag = false;
+  let dateChangeFlag = false;
   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
     return html.replace("|","<span class='agency-separator'>|</span>");
@@ -60,11 +62,12 @@ $( function () {
     }
 
     if (filtersOnDeck.size > 0) {
-      toggleApplyButton("show");
+      checkboxChangeFlag = true;
     }
     else {
-      toggleApplyButton("hide");
+      checkboxChangeFlag = false;
     }
+    setApplyButton();
   });
 
   // Validate the publication date input
@@ -78,24 +81,23 @@ $( function () {
     let currentEndDate = parseInt($("#ending_year").val());
     if(publicationDateValidation()) {
       if (isNaN(initialStartDate) && isNaN(currentStartDate) && isNaN(initialEndDate) && isNaN(currentEndDate)) {
-        toggleApplyButton("hide");
+        dateChangeFlag = false;
       }
-      else if (currentStartDate === initialStartDate && currentEndDate === initialEndDate ) {
-        toggleApplyButton("hide");
-      }
-      else {
-        toggleApplyButton("show");
+      else if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate) {
+        dateChangeFlag = true;
       }
     }
+    setApplyButton();
   }
 
-  function toggleApplyButton(visibility) {
+  // Check filter change flags and display Apply Filters button as necessary
+  function setApplyButton() {
     let applyBtn = $('.apply-filters');
     if (applyBtn.length === 0) return;
-    if (visibility === "show") {
+    if (checkboxChangeFlag || dateChangeFlag) {
       applyBtn.show();
     }
-    else if (visibility === "hide") {
+    else {
       applyBtn.hide();
     }
   }
@@ -110,11 +112,12 @@ $( function () {
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
       if (isNaN(initialStartDate) && isNaN(initialEndDate)) {
-        toggleApplyButton("hide");
+        dateChangeFlag = false;
       }
       else {
-        toggleApplyButton("show");
+        dateChangeFlag = true;
       }
+      setApplyButton();
     }
   });
 
