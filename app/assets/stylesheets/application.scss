@@ -28,6 +28,7 @@
 
  $gold-10v:     #FFE396;
 
+ $red-50:       #D83933;
 
 $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
 
@@ -185,7 +186,12 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
 .clear-all {
-  color: #d34141 !important;
+  color: $red-50 !important;
+
+  img {
+    max-width: 0.7em;
+    margin-right: 0.5em;
+  }
 }
 
 //Sidebar

@@ -3,7 +3,7 @@
 </div>
 <div id="section-accordion" class="usa-accordion__content usa-prose">
   <fieldset id="sections" class="usa-fieldset">
-    <button id='fields-deselect-all' class="clear-all usa-button  usa-button--unstyled">X Clear section filters</button>
+    <button id='fields-deselect-all' class="clear-all usa-button  usa-button--unstyled"><%= image_tag("close-red-50.svg", role: "img", alt: "")%>Clear section filters</button>
     <div id="sorn-fields">
       <% Sorn::FIELDS.each do |field, index| %>
         <div class="usa-checkbox">
