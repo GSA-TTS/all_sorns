@@ -3,19 +3,27 @@ import List from 'list.js';
 $( function () {
   let checkboxChangeFlag = false;
   let dateChangeFlag = false;
+  let initialStartDate = parseInt($("#starting_year").val());
+  let initialEndDate = parseInt($("#ending_year").val());
+
   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
     return html.replace("|","<span class='agency-separator'>|</span>");
   });
 
   // Deselect all buttons
-  $(".clear-all").on('click', function(){
+  $(".clear-all").on('click', function(e){
+    e.preventDefault();
     const parentId = $(this).parent()[0].id; // "sections" or "agencies"
     // uncheck the checkboxes, fire the change event
-    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change")
+    let checked = $(`#${parentId} :checked`);
+    checked.each(function() {
+      $(this).prop("checked", false).trigger("change");
+    })
     // for dates
     if (parentId == 'publication-date-fields') {
       clearDatesFilter();
+      detectDateChange();
     }
   });
 
@@ -35,8 +43,6 @@ $( function () {
   });
 
   //Add badge for date filters if populated
-  let initialStartDate = parseInt($("#starting_year").val());
-  let initialEndDate = parseInt($("#ending_year").val());
   if (initialStartDate || initialEndDate) {
     publicationDateValidation();
   }
@@ -83,7 +89,10 @@ $( function () {
       if (isNaN(initialStartDate) && isNaN(currentStartDate) && isNaN(initialEndDate) && isNaN(currentEndDate)) {
         dateChangeFlag = false;
       }
-      else if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate) {
+      else if (currentStartDate === initialStartDate && currentEndDate === initialEndDate) {
+        dateChangeFlag = false;
+      }
+      else {
         dateChangeFlag = true;
       }
     }
@@ -111,13 +120,7 @@ $( function () {
     // clear date filters
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
-      if (isNaN(initialStartDate) && isNaN(initialEndDate)) {
-        dateChangeFlag = false;
-      }
-      else {
-        dateChangeFlag = true;
-      }
-      setApplyButton();
+      detectDateChange();
     }
   });
 
