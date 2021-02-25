@@ -85,14 +85,15 @@ $( function () {
   function detectDateChange() {
     let currentStartDate = parseInt($("#starting_year").val());
     let currentEndDate = parseInt($("#ending_year").val());
+    dateChangeFlag = false;
     if(publicationDateValidation()) {
-      if (isNaN(initialStartDate) && isNaN(currentStartDate) && isNaN(initialEndDate) && isNaN(currentEndDate)) {
-        dateChangeFlag = false;
+      if (isNaN(currentStartDate) && isNaN(currentEndDate)) {
+        if (initialStartDate || initialEndDate){
+          dateChangeFlag = true;
+        }
+        clearDatesFilter();
       }
-      else if (currentStartDate === initialStartDate && currentEndDate === initialEndDate) {
-        dateChangeFlag = false;
-      }
-      else {
+      else if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate){
         dateChangeFlag = true;
       }
     }
@@ -214,22 +215,20 @@ function includeFilteredCheckedAgenciesInSearch(agencyList) {
 function publicationDateValidation(){
   let startYear = parseInt($("#starting_year").val());
   let endYear = parseInt($("#ending_year").val());
-  if (isNaN(startYear) && isNaN(endYear)) {
-    clearDatesFilter();
-    return true;
-  }
+  let isValid = false;
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
-    return false;
-  } else if (startYear < "1994") {
+  }
+  else if (startYear < "1994") {
     $("#starting_year")[0].setCustomValidity("Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year");
-    return false;
-  } else {
+  }
+  else {
     $("#starting_year")[0].setCustomValidity('');
     // If dates are valid, create badge
     createDatesFilter(startYear, endYear);
-    return true;
+    isValid = true;
   }
+  return isValid;
 }
 
 function createDatesFilter(startYear, endYear){
