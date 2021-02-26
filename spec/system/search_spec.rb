@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "/search", type: :system do
   before do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome)#_headless)
     11.times { create :sorn }
     create(:sorn, agencies: [create(:agency, name:"Cousin Agency", short_name: "CUZ")])
   end
@@ -211,5 +211,14 @@ RSpec.describe "/search", type: :system do
     end
     find("#active-date-range").find(".remove-badge").click
     expect(find(".apply-filters").visible?).to be_falsey
+  end
+
+  scenario "when all filters are gone, filter is hidden" do
+    visit "/?search=FAKE"
+    click_on 'Sections'
+    find('label', text:'Source').click
+    find(".active-filter", text: "Source").find(".remove-badge").click
+
+    expect(find("#active-filters").visible?).to be_falsey
   end
 end
