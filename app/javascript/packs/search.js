@@ -29,9 +29,6 @@ $( function () {
 
   // Get :checked on load and create badges
   const checked = $(".sidebar :checked");
-  if (checked.length > 0) {
-    showActiveFilters();
-  }
   checked.each(function(){
     if (this.name === "fields[]") {
       addBadge(this.id, "sections");
@@ -45,11 +42,12 @@ $( function () {
     publicationDateValidation();
   }
 
+  setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+
   // Listener for checkboxes
   let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
-    showActiveFilters();
 
     if (filtersOnDeck.has(this.id)) {
       filtersOnDeck.delete(this.id);
@@ -71,6 +69,7 @@ $( function () {
     else {
       checkboxChangeFlag = false;
     }
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
     setApplyButton();
   });
 
@@ -95,6 +94,7 @@ $( function () {
         dateChangeFlag = true;
       }
     }
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
     setApplyButton();
   }
 
@@ -121,6 +121,9 @@ $( function () {
       clearDatesFilter();
       detectDateChange();
     }
+
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+
   });
 
   agencyFiltering();
@@ -244,7 +247,6 @@ function createDatesFilter(startYear, endYear){
     $filterSection.show();
     $badge.css("display", "inline-block");
   }
-  showActiveFilters();
 }
 
 function clearDatesFilter(){
@@ -267,9 +269,26 @@ function hideEmptyFormFieldsFromUrl(){
   $( "#search-form" ).find( ":input" ).prop( "disabled", false );
 }
 
-function showActiveFilters() {
-  const activeFilters = $("#active-filters")
-  if (activeFilters.is(":hidden")) {
+function setActiveFilters(checkboxChangeFlag, dateChangeFlag){
+  const activeFilters = $("#active-filters");
+  let filtersOn = false;
+
+  // Check for any active filters
+  if ($(".sidebar :checked").length > 0 ||
+    $("#starting_year").val() ||
+    $("#ending_year").val()
+  ) {
+    filtersOn = true;
+  }
+  // Check for any changes to the filters
+  else if (checkboxChangeFlag || dateChangeFlag) {
+    filtersOn = true;
+  }
+
+  if (filtersOn) {
     activeFilters.show();
+  }
+  else {
+    activeFilters.hide();
   }
 }
