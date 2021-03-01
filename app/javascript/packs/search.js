@@ -30,9 +30,7 @@ $( function () {
   // Get :checked on load and create badges
   const checked = $(".sidebar :checked");
   if (checked.length > 0) {
-    if($("#active-filters").is(":hidden")) {
-      $("#active-filters").show();
-    }
+    showActiveFilters();
   }
   checked.each(function(){
     if (this.name === "fields[]") {
