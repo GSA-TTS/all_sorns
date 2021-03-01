@@ -99,14 +99,6 @@ function agencyFiltering() {
     updateAgencyFilterHelpText(agencyList);
     includeFilteredCheckedAgenciesInSearch(agencyList);
   });
-
-  // If a user hits enter in the agency filtering input
-  // this prevents the form from being submitted
-  $("#search-form").on("submit", function(e){
-    if ( $("#agency-search").is(":focus") ){
-      e.preventDefault();
-    }
-  })
 }
 
 function updateAgencyFilterHelpText(agencyList){
