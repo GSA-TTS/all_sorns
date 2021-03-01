@@ -101,6 +101,8 @@ RSpec.describe "/search", type: :system do
     find('label', text:'Source').click
     find('label', text:'Retrieval').click
 
+    # Click on secitons first to make Agencies button visable above the fold
+    click_on 'Sections'
     click_on 'Agencies'
     find('label', text:'Parent Agency').click
     find('label', text:'Child Agency').click
@@ -123,6 +125,7 @@ RSpec.describe "/search", type: :system do
     expect(find("#fields-retrieval")).not_to be_checked
 
     # Ensure the deselect all buttons remove the badge headers
+    click_on 'Sections'
     click_on 'Agencies'
     find('#agency-deselect-all').click
     expect(find("#active-agencies-filters").visible?).to be_falsey
