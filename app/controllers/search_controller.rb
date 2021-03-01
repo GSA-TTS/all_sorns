@@ -1,7 +1,11 @@
-class SornsController < ApplicationController
-  def search
+class SearchController < ApplicationController
+  def index
     @title = search_title
-    @sorns = Sorn.none if params[:search].blank? # blank page on first visit
+    @sorns = Sorn.none.page(params[:page]) # blank page on first visit
+  end
+
+  def search
+    @sorns = Sorn.all
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
     @sorns = filter_on_agencies if params[:agencies]
@@ -9,7 +13,7 @@ class SornsController < ApplicationController
     @sorns = only_exact_matches if multiword_search?
 
     respond_to do |format|
-      format.html { add_mentions_and_pagination }
+      format.js { add_mentions_and_pagination }
       format.csv { create_csv_from_current_search }
     end
   end

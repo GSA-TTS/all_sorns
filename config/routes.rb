@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  get '/', to: 'sorns#search'
+  get '/', to: 'search#index'
 
-  get '/csv', to: 'sorns#csv'
+  post '/search', to: 'search#search'
+  get '/search', to: 'search#search' #pagination uses GET
 
-  get '/search', to: 'sorns#search'
+  get '/csv', to: 'search#csv'
 
   get '/analytics', to: 'analytics#index'
 

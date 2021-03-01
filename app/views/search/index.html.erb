@@ -1,0 +1,123 @@
+<header id="search-header" class="margin-top-2 home-intro">
+  <div class="grid-container site-intro">
+    <div class="grid-row grid-gap grid-col-9">
+      <h1 class="site-title">SORN Dashboard</h1>
+      <p class="sub-title">This dashboard enables targeted search of System of Records Notices (SORN). The dashboard regularly pulls newly published SORNs from the Federal Register, and includes document from 1994 to the present day. <%= link_to "Learn more about this tool", about_path %></p>
+    </div>
+  </div>
+</header>
+
+<section class="grid-container">
+  <%= form_with url: search_path, id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
+    <div class="desktop:grid-col-10 desktop:grid-offset-1 search-area">
+      <label for="general-search">Search for SORNs by entering a keyword (will return exact matches)</label>
+      <fieldset class="usa-search usa-search--big">
+        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+        <button id="general-search-button" class="usa-button" type="submit">
+          <span class="usa-search__submit-text">Search</span>
+        </button>
+      </fieldset>
+    </div>
+  <% end %>
+</section>
+
+<section id="after-search">
+  <div class="grid-container margin-top-2">
+    <div class ="grid-row grid-gap">
+      <div class="usa-layout-docs__sidenav desktop:grid-col-4">
+        <div class="border border-base-dark sidebar">
+          <div class="preview usa-prose site-prose" >
+            <h2>Refine your search</h2>
+            <div class="usa-accordion">
+              <%= render partial: "sections" %>
+              <%= render partial: "agencies" %>
+              <%= render partial: "publication_date" %>
+            </div>
+          </div>
+        </div>
+        <div id="csv-download">
+          <%= link_to search_path csv_params do %>
+            <%= image_tag("Download_Icon.svg", alt: "")%>
+            <span class="csv-download-link-text">Download results as a CSV file</span>
+          <% end %>
+        </div>
+      </div>
+
+      <main id="main-content" class="usa-layout-docs__main usa-prose usa-layout-docs desktop:grid-col-8">
+        <div id="active-filters">
+          <div id="active-sections-filters">
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE SECTION FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-fields">
+                <% Sorn::FIELDS.each do |section| %>
+                  <div class="active-filter" id="fields-<%= section.to_s %>-badge">
+                    <%= section.to_s.humanize %>
+                    <a class="remove-badge">
+                      <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%>
+                    </a>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div id="active-agencies-filters">
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE AGENCY FILTERS
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-agencies">
+                <% Agency.all.each do |agency| %>
+                  <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
+                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div id="active-date-filter">
+            <div class="grid-row">
+              <div class="labels">
+                ACTIVE DATE RANGE
+              </div>
+            </div>
+            <div class="grid-row">
+              <div id="active-dates">
+                <div class="active-filter" id="active-date-range"><span></span><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-row margin-bottom-1">
+          <div class="grid-col-12">
+            <div id="count" class="labels">
+              <%= render 'page_count' %>
+            </div>
+          </div>
+          <div class="grid-col-12 page-menu">
+            <%= render 'page_menu' %>
+          </div>
+        </div>
+
+        <ul id='cards' class="usa-card-group">
+          <%= render @sorns %>
+        </ul>
+
+        <div class="grid-row">
+          <div class="grid-col-12 page-menu">
+            <%= render 'page_menu' %>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+</section>

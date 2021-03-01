@@ -17,10 +17,7 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
 
-    <% if params[:search].present? %>
-      <!-- Only load custom js if there is an active search -->
-      <%= javascript_pack_tag 'search' %>
-    <% end %>
+    <%= javascript_pack_tag 'search' %>
 
  </head>
 

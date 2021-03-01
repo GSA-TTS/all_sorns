@@ -1,6 +1,12 @@
 import List from 'list.js';
 
 $( function () {
+  $("form").on("ajax:success", function(){
+    $("#after-search").show();
+    $("#search-form").removeClass("pre-search");
+    $("body").removeClass("pre-search");
+  })
+
   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
     return html.replace("|","<span class='agency-separator'>|</span>");
@@ -39,6 +45,7 @@ $( function () {
     } else {
       removeBadge(this.id, parentId);
     }
+    $("#general-search-button").trigger('click');
   });
 
   // Validate the publication date input
@@ -57,8 +64,6 @@ $( function () {
   });
 
   agencyFiltering();
-
-  hideEmptyFormFieldsFromUrl();
 });
 
 function addBadge(id, parentId){
@@ -152,6 +157,7 @@ function publicationDateValidation(){
     $("#starting_year")[0].setCustomValidity('');
     // If dates are valid, create badge
     createDatesFilter(startYear, endYear);
+    $("#general-search-button").trigger('click');
   }
 }
 
@@ -179,15 +185,6 @@ function clearDatesFilter(){
   // hide badges section
   $('#active-date-range').hide();
   $(`#active-date-filter`).hide();
-}
 
-function hideEmptyFormFieldsFromUrl(){
-  // prevents &starting_year=&ending_year= from appearing in every request
-  $("#search-form").on("submit", function() {
-    $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
-    return true; // ensure form still submits
-  });
-
-  // Un-disable form fields when page loads, in case they click back after submission
-  $( "#search-form" ).find( ":input" ).prop( "disabled", false );
+  $("#general-search-button").trigger('click');
 }

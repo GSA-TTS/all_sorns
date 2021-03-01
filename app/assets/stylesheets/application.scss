@@ -126,6 +126,10 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    }
  }
 
+ #after-search {
+   display: none;
+ }
+
 .active-filter {
   display: inline-block;
   border-radius: 0;
