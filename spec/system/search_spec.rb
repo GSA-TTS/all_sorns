@@ -225,3 +225,15 @@ RSpec.describe "/search", type: :system do
     expect(find("#active-filters").visible?).to be_falsey
   end
 end
+
+  scenario "hitting enter on the agency name filter doesn't disable the submit buttons and doesn't submit the form" do
+    visit "/?search=FAKE"
+    click_on 'Agencies'
+    fill_in "agency-search", with: "CA"
+    find('#agency-search').native.send_keys(:return)
+
+    expect(page).not_to have_css "#general-search-button[disabled]"
+    # If it doesn't submit, then the agency filter section will still be open.
+    expect(page).to have_selector "#agency-search", visible: true
+  end
+end
