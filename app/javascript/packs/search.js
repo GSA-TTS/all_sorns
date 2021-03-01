@@ -276,12 +276,10 @@ function setActiveFilters(checkboxChangeFlag, dateChangeFlag){
   // Check for any active filters
   if ($(".sidebar :checked").length > 0 ||
     $("#starting_year").val() ||
-    $("#ending_year").val()
+    $("#ending_year").val() ||
+    checkboxChangeFlag ||
+    dateChangeFlag
   ) {
-    filtersOn = true;
-  }
-  // Check for any changes to the filters
-  else if (checkboxChangeFlag || dateChangeFlag) {
     filtersOn = true;
   }
 
