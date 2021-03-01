@@ -224,7 +224,6 @@ RSpec.describe "/search", type: :system do
 
     expect(find("#active-filters").visible?).to be_falsey
   end
-end
 
   scenario "hitting enter on the agency name filter doesn't disable the submit buttons and doesn't submit the form" do
     visit "/?search=FAKE"
