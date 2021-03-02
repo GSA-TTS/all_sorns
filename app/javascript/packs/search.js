@@ -1,24 +1,35 @@
 import List from 'list.js';
 
 $( function () {
+  let checkboxChangeFlag = false;
+  let dateChangeFlag = false;
+  let initialStartDate = parseInt($("#starting_year").val());
+  let initialEndDate = parseInt($("#ending_year").val());
+
   // Add .agency-separator to agency pipe separator
   $(".agency-names").html(function(_, html){
     return html.replace("|","<span class='agency-separator'>|</span>");
   });
 
   // Deselect all buttons
-  $(".clear-all").on('click', function(){
+  $(".clear-all").on('click', function(e){
+    e.preventDefault();
     const parentId = $(this).parent()[0].id; // "sections" or "agencies"
     // uncheck the checkboxes, fire the change event
-    $(`#${parentId} input:checkbox`).prop("checked", false).trigger("change")
+    let checked = $(`#${parentId} :checked`);
+    checked.each(function() {
+      $(this).prop("checked", false).trigger("change");
+    })
     // for dates
     if (parentId == 'publication-date-fields') {
       clearDatesFilter();
+      detectDateChange();
     }
   });
 
   // Get :checked on load and create badges
-  $(".sidebar :checked").each(function(){
+  const checked = $(".sidebar :checked");
+  checked.each(function(){
     if (this.name === "fields[]") {
       addBadge(this.id, "sections");
     } else if (this.name === "agencies[]") {
@@ -27,33 +38,92 @@ $( function () {
   });
 
   //Add badge for date filters if populated
-  if (parseInt($("#starting_year").val()) || parseInt($("#ending_year").val())) {
+  if (initialStartDate || initialEndDate) {
     publicationDateValidation();
   }
 
+  setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+
   // Listener for checkboxes
+  let filtersOnDeck = new Set();
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
+
+    if (filtersOnDeck.has(this.id)) {
+      filtersOnDeck.delete(this.id);
+    }
+    else {
+      filtersOnDeck.add(this.id);
+    }
+
     if (this.checked) {
       addBadge(this.id, parentId);
-    } else {
+    }
+    else {
       removeBadge(this.id, parentId);
     }
+
+    if (filtersOnDeck.size > 0) {
+      checkboxChangeFlag = true;
+    }
+    else {
+      checkboxChangeFlag = false;
+    }
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+    setApplyButton();
   });
 
   // Validate the publication date input
-  $("#starting_year").on("change", publicationDateValidation);
-  $("#ending_year").on("change", publicationDateValidation);
+  $("#starting_year").on("change", detectDateChange);
+  $("#ending_year").on("change", detectDateChange);
+
+  // Detects if the change to publication date range is different from load
+  // and displays the apply button if so
+  function detectDateChange() {
+    let currentStartDate = parseInt($("#starting_year").val());
+    let currentEndDate = parseInt($("#ending_year").val());
+    dateChangeFlag = false;
+    if(publicationDateValidation()) {
+      if (isNaN(currentStartDate) && isNaN(currentEndDate)) {
+        if (initialStartDate || initialEndDate){
+          dateChangeFlag = true;
+        }
+        clearDatesFilter();
+      }
+      else if (currentStartDate !== initialStartDate || currentEndDate !== initialEndDate){
+        dateChangeFlag = true;
+      }
+    }
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+    setApplyButton();
+  }
+
+  // Check filter change flags and display Apply Filters button as necessary
+  function setApplyButton() {
+    let applyBtn = $('.apply-filters');
+    if (applyBtn.length === 0) return;
+    if (checkboxChangeFlag || dateChangeFlag) {
+      applyBtn.show();
+    }
+    else {
+      applyBtn.hide();
+    }
+  }
 
   // Listener for remove badge link
-  $(document).on('click', 'a.remove-badge', function () {
+  $(document).on('click', '.remove-badge', function (e) {
     // uncheck the matching checkbox
+    e.preventDefault();
     const checkboxId = $(this).parent()[0].id.replace("-badge","");
     $(`#${checkboxId}`).prop("checked", false).trigger("change");
     // clear date filters
     if ($(this).parent()[0].id == "active-date-range") {
       clearDatesFilter();
+      detectDateChange();
     }
+
+    setActiveFilters(checkboxChangeFlag, dateChangeFlag);
+
   });
 
   agencyFiltering();
@@ -133,18 +203,25 @@ function includeFilteredCheckedAgenciesInSearch(agencyList) {
   });
 }
 
+// Validates publication date range and creates badge.
+// returns True if successful, false otherswise
 function publicationDateValidation(){
   let startYear = parseInt($("#starting_year").val());
   let endYear = parseInt($("#ending_year").val());
+  let isValid = false;
   if (startYear > endYear) {
     $("#starting_year")[0].setCustomValidity("Starting year should be earlier than the ending year.");
-  } else if (startYear < "1994") {
+  }
+  else if (startYear < "1994") {
     $("#starting_year")[0].setCustomValidity("Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year");
-  } else {
+  }
+  else {
     $("#starting_year")[0].setCustomValidity('');
     // If dates are valid, create badge
     createDatesFilter(startYear, endYear);
+    isValid = true;
   }
+  return isValid;
 }
 
 function createDatesFilter(startYear, endYear){
@@ -182,4 +259,26 @@ function hideEmptyFormFieldsFromUrl(){
 
   // Un-disable form fields when page loads, in case they click back after submission
   $( "#search-form" ).find( ":input" ).prop( "disabled", false );
+}
+
+function setActiveFilters(checkboxChangeFlag, dateChangeFlag){
+  const activeFilters = $("#active-filters");
+  let filtersOn = false;
+
+  // Check for any active filters
+  if ($(".sidebar :checked").length > 0 ||
+    $("#starting_year").val() ||
+    $("#ending_year").val() ||
+    checkboxChangeFlag ||
+    dateChangeFlag
+  ) {
+    filtersOn = true;
+  }
+
+  if (filtersOn) {
+    activeFilters.show();
+  }
+  else {
+    activeFilters.hide();
+  }
 }
