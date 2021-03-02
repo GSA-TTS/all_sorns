@@ -43,39 +43,36 @@
         </div>
       </div>
 
-      <main id="main-content" class="usa-layout-docs__main usa-prose usa-layout-docs desktop:grid-col-8">
-        <div id="active-filters">
+      <main class="usa-layout-docs__main usa-prose usa-layout-docs desktop:grid-col-8" id="main-content">
+        <div id="active-filters" aria-live="polite" aria-relevant="additions removals">
           <div id="active-sections-filters">
             <div class="grid-row">
-              <div class="labels">
-                ACTIVE SECTION FILTERS
-              </div>
+              <h2 class="labels">
+                SECTION FILTERS
+              </h2>
             </div>
             <div class="grid-row">
               <div id="active-fields">
-                <% Sorn::FIELDS.each do |section| %>
-                  <div class="active-filter" id="fields-<%= section.to_s %>-badge">
-                    <%= section.to_s.humanize %>
-                    <a class="remove-badge">
-                      <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%>
-                    </a>
-                  </div>
-                <% end %>
+              <% Sorn::FIELDS.each do |section| %>
+                <div class="active-filter" id="fields-<%= section.to_s %>-badge">
+                  <%= section.to_s.humanize %> <button class="remove-badge usa-button usa-button--unstyled"> <%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove " + section.to_s.humanize + " filter")%></button>
+                </div>
+              <% end %>
               </div>
             </div>
           </div>
 
           <div id="active-agencies-filters">
             <div class="grid-row">
-              <div class="labels">
-                ACTIVE AGENCY FILTERS
-              </div>
+              <h2 class="labels">
+                AGENCY FILTERS
+              </h2>
             </div>
             <div class="grid-row">
               <div id="active-agencies">
                 <% Agency.all.each do |agency| %>
                   <div class="active-filter" id="agencies-<%= agency.name&.parameterize %>-badge">
-                    <%= agency.short_name || agency.name&.humanize %><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a>
+                    <%= agency.short_name || agency.name&.humanize %><button class="remove-badge usa-button usa-button--unstyled"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove " + agency.name + " agency filter")%></button>
                   </div>
                 <% end %>
               </div>
@@ -84,16 +81,17 @@
 
           <div id="active-date-filter">
             <div class="grid-row">
-              <div class="labels">
-                ACTIVE DATE RANGE
-              </div>
+              <h2 class="labels">
+                DATE RANGE
+              </h2>
             </div>
             <div class="grid-row">
               <div id="active-dates">
-                <div class="active-filter" id="active-date-range"><span></span><a class="remove-badge"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "close")%></a></div>
+                <div class="active-filter" id="active-date-range"><span></span><button class="remove-badge usa-button usa-button--unstyled"><%= image_tag("uswds-2.9.0/close-blue-60v-alt.svg", role: "img", alt: "remove date range filter")%></button></div>
               </div>
             </div>
           </div>
+          <button class="usa-button apply-filters" type="submit"> Apply filters </button>
         </div>
 
         <div class="grid-row margin-bottom-1">
@@ -113,7 +111,7 @@
 
         <div class="grid-row">
           <div class="grid-col-12 page-menu">
-            <%= render 'page_menu' %>
+            <%= paginate @sorns %>
           </div>
         </div>
       </main>

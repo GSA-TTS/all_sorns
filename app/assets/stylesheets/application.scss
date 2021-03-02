@@ -24,10 +24,11 @@
  $gray-cool-60: #565c65;
  $gray-cool-30: #A9AEB1;
  $gray-cool-2:  #F7F9FA;
- $gray-5:       #F0F0F0;
+ $gray-cool-5:  #EDEFF0;
 
  $gold-10v:     #FFE396;
 
+ $red-50:       #D83933;
 
 $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
 
@@ -125,37 +126,53 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
      margin-top: 16px;
    }
  }
+ #active-filters {
+   background-color: $gray-cool-5;
+   margin-bottom: 1em;
+   padding: 1em;
 
- #after-search {
-   display: none;
- }
+   .labels {
+     font-size: .85em;
+     font-weight: normal;
+     margin:0
 
-.active-filter {
-  display: inline-block;
-  border-radius: 0;
-  padding: 5px;
-  padding-right: 8px;
-  padding-left: 8px;
-  margin-bottom: 17px;
-  background-color: white;
-  margin-right: 12px;
-  font-size: 14px;
-  border: 1px solid #A9AEB1;
-  color: #112F4E;
+    }
 
-  a {
-    margin-left:8px;
+    .apply-filters {
+      margin-top: 0.5em;
+    }
+
   }
 
-  img {
-    width: 8px;
-    height: auto;
-    transform: translateY(5%);
-    -webkit-transform: translateY(5%);
-    -ms-transform: translateY(5%);
-  }
+  .active-filter {
+    display: inline-block;
+    border-radius: 0;
+    padding: 0.25em 0.5em;
+    margin-bottom: 1em;
+    background-color: white;
+    margin-right: 0.5em;
+    font-size: .85em;
+    border: 1px solid #A9AEB1;
+    color: #112F4E;
 
-}
+    button {
+      margin-left:8px;
+    }
+
+    img {
+      width: 8px;
+      height: auto;
+      transform: translateY(5%);
+      -webkit-transform: translateY(5%);
+
+      -ms-transform: translateY(5%);
+    }
+
+    img:hover {
+      transform: scale(1.2);
+    }
+
+  }
 
 #agency-deselect-all {
   display: block;
@@ -167,7 +184,12 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 }
 
 .clear-all {
-  color: #d34141 !important;
+  color: $red-50 !important;
+
+  img {
+    max-width: 0.7em;
+    margin-right: 0.5em;
+  }
 }
 
 //Sidebar
@@ -208,25 +230,29 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 /* Note, the next three declerations are currently inactive,
  if we limit the height of the filters again, we'll need to uncomment
 */
- // .sidebar .usa-checkbox {
- //   line-height: 1;
- //   margin-top: .25em;
- // }
- //
- // .sidebar .usa-checkbox__input {
- //   position: relative;
- // }
- //
- // .sidebar .usa-checkbox__label {
- //   margin-top: 0;
- // }
+ .sidebar .usa-checkbox {
+   line-height: 1;
+   margin-top: .25em;
+ }
+
+ .sidebar .usa-checkbox__input {
+   position: relative;
+ }
+
+ .sidebar .usa-checkbox__label {
+   margin-top: 0;
+ }
 
  .sidebar .usa-accordion__heading:not(:first-child) {
   margin-top: 0;
 }
 
+.sidebar fieldset {
+  max-height: 355px;
+}
+
  .sidebar .usa-accordion__button:hover {
-   background-color: $gray-5;
+   background-color: $gray-cool-5;
  }
 
  .usa-nav__primary > .usa-nav__primary-item > a {
@@ -300,9 +326,16 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  }
 
 //  filter badges
-#active-sections-filters, #active-agencies-filters, #active-date-filter, .active-filter {
+#active-sections-filters, #active-agencies-filters, #active-date-filter,
+#active-filters, .active-filter, .apply-filters {
   display: none;
 }
+
+// Search results
+#after-search {
+  display: none;
+}
+
 
  // Pagination
 
@@ -484,7 +517,7 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
    max-width: 100%;
  }
 
- #general-search-button {
+ #general-search-button, .apply-filters {
    background-color: $blue-50;
    &:hover {
      background-color: $blue-70;
