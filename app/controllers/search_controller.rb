@@ -9,7 +9,7 @@ class SearchController < ApplicationController
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
     @sorns = filter_on_agencies if params[:agencies]
-    @sorns = filter_on_publication_date if params[:starting_year].present? || params[:ending_year].present?
+    @sorns = filter_on_publication_date if publication_date_filter?
     @sorns = only_exact_matches if multiword_search?
 
     respond_to do |format|
@@ -47,6 +47,10 @@ class SearchController < ApplicationController
     else
       @sorns.get_distinct_with_dynamic_search_rank
     end
+  end
+
+  def publication_date_filter?
+    params[:starting_year].present? || params[:ending_year].present?
   end
 
   def filter_on_publication_date
