@@ -138,14 +138,10 @@ CREATE TABLE public.sorns (
     access character varying,
     contesting character varying,
     notification character varying,
-    headers character varying,
     system_number character varying,
-    data_source character varying,
     citation character varying,
     agency_names character varying,
     xml xml,
-    pdf_url character varying,
-    text_url character varying,
     publication_date character varying,
     title character varying,
     action_type character varying,
@@ -609,6 +605,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210107230007'),
 ('20210107231530'),
 ('20210108002822'),
+('20210129220248'),
 ('20210204202244');
 
 
