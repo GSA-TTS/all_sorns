@@ -1,4 +1,14 @@
+// Any js that needs to run after a successful ajax request should go in here.
 
 $("#count").html("<%= j(render partial: 'page_count', locals: {sorns: @sorns}) %>");
 $(".page-menu").html("<%= j(render partial: 'page_menu', locals: {sorns: @sorns}) %>")
 $("#cards").html("<%= j(render @sorns) %>");
+
+$("#after-search").show();
+$("#search-form").removeClass("pre-search");
+$("body").removeClass("pre-search");
+
+// Add .agency-separator to agency pipe separator
+$(".agency-names").html(function(_, html){
+  return html.replace("|","<span class='agency-separator'>|</span>");
+});

@@ -1,15 +1,6 @@
 import List from 'list.js';
 
 $( function () {
-  $("form").on("ajax:success", function(){
-    $("#after-search").show();
-    $("#search-form").removeClass("pre-search");
-    $("body").removeClass("pre-search");
-  })
-  // Add .agency-separator to agency pipe separator
-  $(".agency-names").html(function(_, html){
-    return html.replace("|","<span class='agency-separator'>|</span>");
-  });
   // Deselect all buttons
   $(".clear-all").on('click', function(){
     const parentId = $(this).parent()[0].id; // "sections" or "agencies"
