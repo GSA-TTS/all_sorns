@@ -29,20 +29,6 @@ $( function () {
   $("#starting_year").on("change", detectDateChange);
   $("#ending_year").on("change", detectDateChange);
 
-  // Detects if the change to publication date range is different from load
-  // and displays the apply button if so
-  function detectDateChange() {
-    let currentStartDate = parseInt($("#starting_year").val());
-    let currentEndDate = parseInt($("#ending_year").val());
-
-    if(publicationDateValidation()) {
-      if (isNaN(currentStartDate) && isNaN(currentEndDate)) {
-        clearDatesFilter();
-      }
-    }
-    setActiveFilters();
-  }
-
   // Listener for remove badge link
   $(document).on('click', '.remove-badge', function (e) {
     // uncheck the matching checkbox
@@ -154,6 +140,20 @@ function publicationDateValidation(){
   return isValid;
 }
 
+// Detects if the change to publication date range is different from load
+// and displays the apply button if so
+function detectDateChange() {
+  let currentStartDate = parseInt($("#starting_year").val());
+  let currentEndDate = parseInt($("#ending_year").val());
+
+  if(publicationDateValidation()) {
+    if (isNaN(currentStartDate) && isNaN(currentEndDate)) {
+      clearDatesFilter();
+    }
+  }
+  setActiveFilters();
+}
+
 function createDatesFilter(startYear, endYear){
   const $filterSection = $('#active-date-filter')
   const $badge = $("#active-date-range")
@@ -193,5 +193,6 @@ function setActiveFilters(){
   else {
     activeFilters.hide();
   }
+
   $("#general-search-button").trigger('click');
 }
