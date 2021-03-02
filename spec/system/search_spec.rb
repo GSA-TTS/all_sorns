@@ -2,21 +2,19 @@ require "rails_helper"
 
 RSpec.describe "/", type: :system do
   before do
-    driven_by(:selenium_chrome)#_headless)
-    11.times { create :sorn }
-    create(:sorn, agencies: [create(:agency, name:"Cousin Agency", short_name: "CUZ")])
+    driven_by(:selenium_chrome_headless)
+    create :sorn, system_name: "SEARCH FOR THIS"
 
     visit "/"
-    fill_in "general-search", with: "FAKE"
+    fill_in "general-search", with: "SEARCH FOR THIS"
     find("#general-search-button").click
   end
 
-  context "after a search" do
+  context "after search" do
     # logic contained in search.js.erb
-    scenario "shows the search results, with pagination" do
-      expect(page).to have_text 'Displaying 1 - 10 of 12 in total for "FAKE"'
-      expect(page).to have_css '.pagination', count: 2
-      expect(page).to have_css '.usa-card', count: 10
+    scenario "shows the matching SORN results" do
+      expect(page).to have_text 'Displaying 1 for "SEARCH FOR THIS"'
+      expect(page).to have_css '.usa-card', count: 1
     end
 
     scenario "removes the pre-search class" do
@@ -36,7 +34,7 @@ RSpec.describe "/", type: :system do
         fill_in "Starting year", with: "2020"
         fill_in "Ending year", with: "2019"
       end
-      page.find("body").click # to exit the focus of the cursor
+      find("#general-search-button").click # to exit the focus of the cursor
 
       message = find("#starting_year").native.attribute("validationMessage")
       expect(message).to eq "Starting year should be earlier than the ending year."
@@ -69,7 +67,7 @@ RSpec.describe "/", type: :system do
       within "#publication-date-fields" do
         fill_in "Starting year", with: "2019"
       end
-      page.find("body").click
+      find("#general-search-button").click
       message = find("#starting_year").native.attribute("validationMessage")
       expect(message).to eq ""
       expect(page).to have_selector("#active-date-range", count: 1, visible: true)
@@ -79,7 +77,7 @@ RSpec.describe "/", type: :system do
       within "#publication-date-fields" do
         fill_in "Ending year", with: "2019"
       end
-      page.find("body").click
+      find("#general-search-button").click
       message = find("#starting_year").native.attribute("validationMessage")
       expect(message).to eq ""
       expect(page).to have_selector("#active-date-range", count: 1, visible: true)
@@ -102,20 +100,50 @@ RSpec.describe "/", type: :system do
       within "#publication-date-fields" do
         fill_in "Starting year", with: "1993"
       end
-      page.find("body").click
+      find("#general-search-button").click
       message = find("#starting_year").native.attribute("validationMessage")
       expect(message).to eq "Sorry, this tool only contains SORNs starting from 1994. Please enter a later starting year"
+    end
+
+    context "search results" do
+      scenario "only date range matches get returned" do
+        create(:sorn, system_name: "SEARCH FOR THIS", publication_date: "2020-07-15")
+
+        within "#publication-date-fields" do
+          fill_in "Starting year", with: "2000"
+          fill_in "Ending year", with: "2000"
+        end
+        find("#general-search-button").click
+        expect(page).to have_text 'Displaying 1'
+
+        within "#publication-date-fields" do
+          fill_in "Starting year", with: "2000"
+          fill_in "Ending year", with: "2020"
+        end
+        find("#general-search-button").click
+        expect(page).to have_text 'Displaying all 2'
+
+        within "#publication-date-fields" do
+          fill_in "Starting year", with: "2020"
+          fill_in "Ending year", with: "2020"
+        end
+        find("#general-search-button").click
+        expect(page).to have_text 'Displaying 1'
+      end
     end
   end
 
   scenario "paging doesn't break js" do
+    10.times { create :sorn, system_name: "SEARCH FOR THIS" } # add 10 sorns so paging appears
+    find("#general-search-button").click
+
     find_all("nav.pagination").first.find_all(".page")[1].click
     sleep 1
     # gov banner should remain closed
     expect(find("#gov-banner").visible?).to be_falsey
   end
 
-  context "sections and agencies checkbox behviour" do
+  context "sections and agencies checkbox behavior" do
     scenario "sections and agencies filters create badges" do
       click_on 'Sections'
       find('label', text:'Source').click
@@ -172,11 +200,10 @@ RSpec.describe "/", type: :system do
       fill_in "agency-search", with: "Parent"
       expect(page).to have_selector '#agencies-parent-agency'
       expect(page).to have_no_selector '#agencies-child-agency'
-      expect(page).to have_no_selector '#agencies-cousin-agency'
       expect(page).to have_selector("#agency-filter-help-text", text: "Parent matches 1 agency")
 
       fill_in "agency-search", with: "agency"
-      expect(page).to have_selector("#agency-filter-help-text", text: "agency matches 3 agencies")
+      expect(page).to have_selector("#agency-filter-help-text", text: "agency matches 2 agencies")
 
       fill_in "agency-search", with: nil
       expect(page).to have_selector("#agency-filter-help-text", text: "")
@@ -233,7 +260,7 @@ RSpec.describe "/", type: :system do
 
     scenario "Sections filters are hidden" do
       find("#general-search-button").click
-      expect(page).to_not have_css '.usa-accordion__button', text: "Sections", visible: true
+      expect(page).to have_css '.usa-accordion__button', text: "Sections", visible: false
     end
   end
 end
