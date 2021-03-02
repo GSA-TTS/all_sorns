@@ -13,25 +13,6 @@ $( function () {
     }
   });
 
-  // Get :checked on load and create badges
-  const checked = $(".sidebar :checked");
-  checked.each(function(){
-    if (this.name === "fields[]") {
-      addBadge(this.id, "sections");
-    } else if (this.name === "agencies[]") {
-      addBadge(this.id, "agencies");
-    }
-  });
-
-  //Add badge for date filters if populated
-  let initialStartDate = parseInt($("#starting_year").val());
-  let initialEndDate = parseInt($("#ending_year").val());
-  if (initialStartDate || initialEndDate) {
-    publicationDateValidation();
-  }
-
-  setActiveFilters();
-
   // Listener for checkboxes
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
