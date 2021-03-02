@@ -220,16 +220,20 @@ RSpec.describe "/", type: :system do
   end
 
   context "browse mode" do
-    before { visit "/" }
+    before do
+      create :sorn, system_name: "A DIFFERENT NAME"
+      visit "/"
+    end
 
     scenario "an empty search lets you browse all SORNs" do
       expect(page).to_not have_css '.usa-card'
       find("#general-search-button").click
-      expect(page).to have_css '.usa-card', count: 10
+      expect(page).to have_css '.usa-card', count: 2
     end
 
-    xscenario "Sections filters are hidden" do
-      expect(page).to_not have_css '.usa-accordion__button', text: "Sections"
+    scenario "Sections filters are hidden" do
+      find("#general-search-button").click
+      expect(page).to_not have_css '.usa-accordion__button', text: "Sections", visible: true
     end
   end
 end

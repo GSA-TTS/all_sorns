@@ -12,3 +12,9 @@ $("body").removeClass("pre-search");
 $(".agency-names").html(function(_, html){
   return html.replace("|","<span class='agency-separator'>|</span>");
 });
+
+if ($("#general-search").val() == ""){
+  $("#sections").hide();
+} else {
+  $("#sections").show();
+}
