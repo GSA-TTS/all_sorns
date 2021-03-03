@@ -104,6 +104,43 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: good_jobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.good_jobs (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    queue_name text,
+    priority integer,
+    serialized_params jsonb,
+    scheduled_at timestamp without time zone,
+    performed_at timestamp without time zone,
+    finished_at timestamp without time zone,
+    error text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: mentions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mentions (
+    sorn_id integer,
+    mentioned_sorn_id integer
+);
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.schema_migrations (
+    version character varying NOT NULL
+);
+
+
+--
 -- Name: sorns; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -143,9 +180,9 @@ CREATE TABLE public.sorns (
     data_source character varying,
     citation character varying,
     agency_names character varying,
-    xml xml,
     pdf_url character varying,
     text_url character varying,
+    xml character varying,
     publication_date character varying,
     title character varying,
     action_type character varying,
@@ -175,55 +212,8 @@ CREATE TABLE public.sorns (
     contesting_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(contesting, ''::character varying))::text)) STORED,
     notification_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(notification, ''::character varying))::text)) STORED,
     exemptions_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(exemptions, ''::character varying))::text)) STORED,
-    history_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(history, ''::character varying))::text)) STORED
-);
-
-
---
--- Name: full_sorn_searches; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.full_sorn_searches AS
- SELECT sorns.id AS sorn_id,
-    ((((((((((((((((((((((((((to_tsvector('english'::regconfig, (COALESCE(sorns.agency_names, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(sorns.action, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.summary, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.dates, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.addresses, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.further_info, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.supplementary_info, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.system_name, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.system_number, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.security, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.location, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.manager, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.authority, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.purpose, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.categories_of_individuals, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.categories_of_record, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.source, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.routine_uses, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.storage, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.retrieval, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.retention, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.safeguards, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.access, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.contesting, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.notification, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.exemptions, ''::character varying))::text)) || to_tsvector('english'::regconfig, (COALESCE(sorns.history, ''::character varying))::text)) AS full_sorn_tsvector
-   FROM public.sorns
-  WITH NO DATA;
-
-
---
--- Name: good_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.good_jobs (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    queue_name text,
-    priority integer,
-    serialized_params jsonb,
-    scheduled_at timestamp without time zone,
-    performed_at timestamp without time zone,
-    finished_at timestamp without time zone,
-    error text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: mentions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mentions (
-    sorn_id integer,
-    mentioned_sorn_id integer
-);
-
-
---
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.schema_migrations (
-    version character varying NOT NULL
+    history_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(history, ''::character varying))::text)) STORED,
+    xml_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('english'::regconfig, (COALESCE(xml, ''::character varying))::text)) STORED
 );
 
 
@@ -341,13 +331,6 @@ CREATE INDEX index_agencies_sorns_on_agency_id ON public.agencies_sorns USING bt
 --
 
 CREATE INDEX index_agencies_sorns_on_sorn_id ON public.agencies_sorns USING btree (sorn_id);
-
-
---
--- Name: index_full_sorn_searches_on_full_sorn_tsvector; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_full_sorn_searches_on_full_sorn_tsvector ON public.full_sorn_searches USING gin (full_sorn_tsvector);
 
 
 --
@@ -575,6 +558,13 @@ CREATE INDEX index_sorns_on_system_number_tsvector ON public.sorns USING gin (sy
 
 
 --
+-- Name: index_sorns_on_xml_tsvector; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sorns_on_xml_tsvector ON public.sorns USING gin (xml_tsvector);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -609,6 +599,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210107230007'),
 ('20210107231530'),
 ('20210108002822'),
-('20210204202244');
+('20210129220248'),
+('20210204202244'),
+('20210303173553'),
+('20210303182701');
 
 

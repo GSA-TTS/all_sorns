@@ -27,8 +27,8 @@ class SornsController < ApplicationController
 
   def filter_on_search
     if @fields_to_search == Sorn::FIELDS
-      # If we are searching the whole SORN, use the materialized view
-      @sorns = Sorn.where(id: FullSornSearch.search(params[:search]).select(:sorn_id))
+      # If we are searching the whole SORN, just search the xml column
+      Sorn.dynamic_search([:xml], params[:search])
     else
       # or search a list tsvectors columns
       @sorns = Sorn.dynamic_search(@fields_to_search, params[:search])
@@ -38,11 +38,7 @@ class SornsController < ApplicationController
   def filter_on_agencies
     @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
     # Matching on agencies could return duplicates, so get distinct
-    if @fields_to_search == Sorn::FIELDS
-       @sorns.get_distinct
-    else
-      @sorns.get_distinct_with_dynamic_search_rank
-    end
+    @sorns.get_distinct_with_dynamic_search_rank
   end
 
   def filter_on_publication_date

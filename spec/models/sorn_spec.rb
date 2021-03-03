@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Sorn, type: :model do
-  let(:sorn) { create(:sorn) }
+  let(:sorn) { create(:sorn, xml: nil) }
   let(:parsed_response) { file_fixture("sorn.xml").read }
 
   before do

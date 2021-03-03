@@ -9,7 +9,8 @@ FactoryBot.define do
     publication_date { "2000-01-13"}
     html_url { "HTML URL" }
     xml_url { "xml_url" }
-    xml { nil }
+    # All the above strings can be searched in the xml
+    xml { [agency_names, action, summary, system_name, citation, publication_date].join(" ") }
 
     agencies do
       [
