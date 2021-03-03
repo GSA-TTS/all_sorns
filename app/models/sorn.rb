@@ -117,6 +117,10 @@ class Sorn < ApplicationRecord
         output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
       end
     end
+
+    if output.empty?
+      output["SORN"] = highlight(excerpt(xml, search_term, radius: 200), search_term)
+    end
     output
   end
 
