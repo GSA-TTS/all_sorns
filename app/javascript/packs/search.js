@@ -202,9 +202,4 @@ function setActiveFilters(){
   }
 
   $("#general-search-button").trigger('click');
-  buildCsvLink();
-}
-
-function buildCsvLink(){
-  $("#csv-link").attr("href", "search.csv?" + $("#search-form").serialize());
 }

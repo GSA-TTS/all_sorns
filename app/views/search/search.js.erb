@@ -3,6 +3,8 @@
 $("#count").html("<%= j(render partial: 'page_count', locals: {sorns: @sorns}) %>");
 $(".page-menu").html("<%= j(render partial: 'page_menu', locals: {sorns: @sorns}) %>")
 $("#cards").html("<%= j(render @sorns) %>");
+// Build csv link from form params
+$("#csv-link").attr("href", "search.csv?" + $("#search-form").serialize());
 
 $("#after-search").show();
 $("#search-form").removeClass("pre-search");

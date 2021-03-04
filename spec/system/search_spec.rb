@@ -263,4 +263,30 @@ RSpec.describe "/", type: :system do
       expect(page).to have_css '.usa-accordion__button', text: "Sections", visible: false
     end
   end
+
+  scenario "csv link building" do
+    #  browse mode is bare link
+    visit "/"
+    find("#general-search-button").click
+    expect(page).to have_link href: "/search.csv"
+    # search params
+    fill_in "general-search", with: "SEARCH FOR THIS"
+    find("#general-search-button").click
+    expect(page).to have_link href: "search.csv?search=SEARCH%20FOR%20THIS&starting_year=&ending_year="
+    # fields param
+    click_on 'Sections'
+    find('label', text:'System name').click
+    expect(page).to have_link href: "search.csv?search=SEARCH%20FOR%20THIS&fields%5B%5D=system_name&starting_year=&ending_year="
+    # agencies param
+    click_on 'Agencies'
+    find('label', text:'Parent Agency').click
+    expect(page).to have_link href: "search.csv?search=SEARCH%20FOR%20THIS&fields%5B%5D=system_name&agencies%5B%5D=Parent%20Agency&starting_year=&ending_year="
+    # publication date params
+    find("#publication-year-button").click
+    within "#publication-date-fields" do
+      fill_in "Starting year", with: "2000"
+      fill_in "Ending year", with: "2000"
+    end
+    expect(page).to have_link href: "search.csv?search=SEARCH%20FOR%20THIS&fields%5B%5D=system_name&agencies%5B%5D=Parent%20Agency&starting_year=2000&ending_year=2000"
+  end
 end

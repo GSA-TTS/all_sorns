@@ -36,7 +36,7 @@
           </div>
         </div>
         <div id="csv-download">
-          <%= link_to search_path csv_params do %>
+          <%= link_to search_path(:csv), id: "csv-link" do %>
             <%= image_tag("Download_Icon.svg", alt: "")%>
             <span class="csv-download-link-text">Download results as a CSV file</span>
           <% end %>
