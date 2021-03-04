@@ -1,7 +1,14 @@
 import List from 'list.js';
 
 $( function () {
-  // Deselect all buttons
+  deselectAllListeners();
+  checkboxListeners();
+  publicationDateListeners();
+  removeBadgeListeners();
+  agencyFiltering();
+});
+
+function deselectAllListeners(){
   $(".clear-all").on('click', function(){
     const parentId = $(this).parent()[0].id; // "sections" or "agencies"
     // uncheck the checkboxes, fire the change event
@@ -12,8 +19,9 @@ $( function () {
       detectDateChange();
     }
   });
+};
 
-  // Listener for checkboxes
+function checkboxListeners(){
   $(".sidebar input:checkbox").on('change', function(){
     const parentId = $(this).parent().parent().parent()[0].id; // "sections" or "agencies"
     if (this.checked) {
@@ -24,12 +32,14 @@ $( function () {
     }
     setActiveFilters();
   });
+}
 
-  // Validate the publication date input
+function publicationDateListeners(){
   $("#starting_year").on("change", detectDateChange);
   $("#ending_year").on("change", detectDateChange);
+}
 
-  // Listener for remove badge link
+function removeBadgeListeners(){
   $(document).on('click', '.remove-badge', function (e) {
     // uncheck the matching checkbox
     e.preventDefault();
@@ -40,12 +50,9 @@ $( function () {
       clearDatesFilter();
       detectDateChange();
     }
-
     setActiveFilters();
   });
-
-  agencyFiltering();
-});
+}
 
 function addBadge(id, parentId){
   const $badge = $(`#${id}-badge`)
@@ -195,4 +202,9 @@ function setActiveFilters(){
   }
 
   $("#general-search-button").trigger('click');
+  buildCsvLink();
+}
+
+function buildCsvLink(){
+  $("#csv-link").attr("href", "search.csv?" + $("#search-form").serialize());
 }
