@@ -256,6 +256,8 @@ RSpec.describe "/", type: :system do
       expect(page).to_not have_css '.usa-card'
       find("#general-search-button").click
       expect(page).to have_css '.usa-card', count: 2
+      expect(page).to have_css '.system-name', text: "SEARCH FOR THIS"
+      expect(page).to have_css '.system-name', text: "A DIFFERENT NAME"
     end
 
     scenario "Sections filters are hidden" do
