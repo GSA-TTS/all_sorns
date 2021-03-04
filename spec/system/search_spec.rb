@@ -289,6 +289,7 @@ RSpec.describe "/", type: :system do
       fill_in "Starting year", with: "2000"
       fill_in "Ending year", with: "2000"
     end
+    find("#general-search-button").click
     expect(page).to have_link href: "search.csv?search=SEARCH%20FOR%20THIS&fields%5B%5D=system_name&agencies%5B%5D=Parent%20Agency&starting_year=2000&ending_year=2000"
   end
 end
