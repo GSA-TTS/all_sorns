@@ -7,13 +7,13 @@
     <div class="usa-form-group">
       <label class="usa-label margin-top-2" for="starting_year">Starting year</label>
       <span class="usa-hint" id="year-hint">For example: 1994</span>
-      <input class="usa-input usa-input--inline" aria-describedby="year-hint" id="starting_year" name="starting_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:starting_year] %>">
+      <input class="usa-input usa-input--inline" aria-describedby="year-hint" id="starting_year" name="starting_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:starting_year] %>" form="search-form">
     </div>
 
     <div class="usa-form-group">
       <label class="usa-label" for="ending_year">Ending year</label>
       <span class="usa-hint">For example: <%= Date.today.year %></span>
-      <input class="usa-input usa-input--inline" aria-describedby="year-hint" id="ending_year" name="ending_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:ending_year] %>">
+      <input class="usa-input usa-input--inline" aria-describedby="year-hint" id="ending_year" name="ending_year" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= params[:ending_year] %>" form="search-form" >
     </div>
   </fieldset>
 </div>

@@ -126,7 +126,6 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
      margin-top: 16px;
    }
  }
-
  #active-filters {
    background-color: $gray-cool-5;
    margin-bottom: 1em;
@@ -137,42 +136,43 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
      font-weight: normal;
      margin:0
 
-   }
+    }
 
-   .apply-filters {
-     margin-top: 0.5em;
-   }
+    .apply-filters {
+      margin-top: 0.5em;
+    }
 
- }
-
-.active-filter {
-  display: inline-block;
-  border-radius: 0;
-  padding: 0.25em 0.5em;
-  margin-bottom: 1em;
-  background-color: white;
-  margin-right: 0.5em;
-  font-size: .85em;
-  border: 1px solid #A9AEB1;
-  color: #112F4E;
-
-  button {
-    margin-left:8px;
   }
 
-  img {
-    width: 8px;
-    height: auto;
-    transform: translateY(5%);
-    -webkit-transform: translateY(5%);
-    -ms-transform: translateY(5%);
-  }
+  .active-filter {
+    display: inline-block;
+    border-radius: 0;
+    padding: 0.25em 0.5em;
+    margin-bottom: 1em;
+    background-color: white;
+    margin-right: 0.5em;
+    font-size: .85em;
+    border: 1px solid #A9AEB1;
+    color: #112F4E;
 
-  img:hover {
-    transform: scale(1.2);
-  }
+    button {
+      margin-left:8px;
+    }
 
-}
+    img {
+      width: 8px;
+      height: auto;
+      transform: translateY(5%);
+      -webkit-transform: translateY(5%);
+
+      -ms-transform: translateY(5%);
+    }
+
+    img:hover {
+      transform: scale(1.2);
+    }
+
+  }
 
 #agency-deselect-all {
   display: block;
@@ -330,6 +330,12 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
 #active-filters, .active-filter, .apply-filters {
   display: none;
 }
+
+// Search results
+#after-search {
+  display: none;
+}
+
 
  // Pagination
 

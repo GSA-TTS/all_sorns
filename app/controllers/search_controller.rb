@@ -1,15 +1,19 @@
-class SornsController < ApplicationController
-  def search
+class SearchController < ApplicationController
+  def index
     @title = search_title
-    @sorns = Sorn.none if params[:search].blank? # blank page on first visit
+    @sorns = Sorn.none.page(params[:page]) # blank page on first visit
+  end
+
+  def search
+    @sorns = Sorn.all
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
     @sorns = filter_on_search if params[:search].present?
     @sorns = filter_on_agencies if params[:agencies]
-    @sorns = filter_on_publication_date if params[:starting_year].present? || params[:ending_year].present?
+    @sorns = filter_on_publication_date if publication_date_filter?
     @sorns = only_exact_matches if multiword_search?
 
     respond_to do |format|
-      format.html { add_mentions_and_pagination }
+      format.js { add_mentions_and_pagination }
       format.csv { create_csv_from_current_search }
     end
   end
@@ -39,6 +43,10 @@ class SornsController < ApplicationController
     @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
     # Matching on agencies could return duplicates, so get distinct
     @sorns.get_distinct_with_dynamic_search_rank
+  end
+
+  def publication_date_filter?
+    params[:starting_year].present? || params[:ending_year].present?
   end
 
   def filter_on_publication_date

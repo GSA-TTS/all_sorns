@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get '/', to: 'sorns#search'
+  get '/', to: 'search#index'
 
-  get '/csv', to: 'sorns#csv'
-
-  get '/search', to: 'sorns#search'
+  get '/search', to: 'search#search'
 
   get '/analytics', to: 'analytics#index'
 
