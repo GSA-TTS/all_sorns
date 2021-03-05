@@ -137,8 +137,8 @@ RSpec.describe "/", type: :system do
     10.times { create :sorn, system_name: "SEARCH FOR THIS" } # add 10 sorns so paging appears
     find("#general-search-button").click
 
-    find_all("nav.pagination").first.find_all(".page")[1].click
     sleep 1
+    find_all("nav.pagination").first.find_all(".page")[1].click
     # gov banner should remain closed
     expect(find("#gov-banner").visible?).to be_falsey
   end
