@@ -1,0 +1,22 @@
+// Any js that needs to run after a successful ajax request should go in here.
+
+$("#count").html("<%= j(render partial: 'page_count', locals: {sorns: @sorns}) %>");
+$(".page-menu").html("<%= j(render partial: 'page_menu', locals: {sorns: @sorns}) %>")
+$("#cards").html("<%= j(render @sorns) %>");
+// Build csv link from form params
+$("#csv-link").attr("href", "search.csv?" + $("#search-form").serialize());
+
+$("#after-search").show();
+$("#search-form").removeClass("pre-search");
+$("body").removeClass("pre-search");
+
+// Add .agency-separator to agency pipe separator
+$(".agency-names").html(function(_, html){
+  return html.replace("|","<span class='agency-separator'>|</span>");
+});
+
+if ($("#general-search").val() == ""){
+  $("#sections").hide();
+} else {
+  $("#sections").show();
+}
