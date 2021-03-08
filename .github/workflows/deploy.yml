@@ -80,7 +80,6 @@ jobs:
       - name: Install cf cli
         run: |
           brew install cloudfoundry/tap/cf-cli
-          cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
           cf install-plugin blue-green-deploy -r CF-Community -f
       - name: Deploy to cloud.gov
         env:
