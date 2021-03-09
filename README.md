@@ -110,12 +110,14 @@ able to run SORN DASH locally again.
 Changes to the schema will require a database migration before SORN DASH
 can be run. Run this with:
 
-**>** bundle exec rails db:migrate
+`bundle exec rails db:migrate`
 
 Adding or updating the included gems will require you to update your
 ruby packages. Run this with:
 
-**>** bundle install
+`bundle install`
+
+## Docs
 
 * [How search works](/docs/search.md)
 * [About the data](/docs/data.md)
