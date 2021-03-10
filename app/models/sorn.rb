@@ -7,7 +7,6 @@ class Sorn < ApplicationRecord
 
   validates :citation, uniqueness: true
 
-  scope :get_distinct, -> { select(:id, Sorn::FIELDS + Sorn::METADATA).distinct }
   scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
 
@@ -117,6 +116,10 @@ class Sorn < ApplicationRecord
       if value =~ /#{search_term}/i
         output[key] = highlight(excerpt(value.to_s, search_term, radius: 200), search_term)
       end
+    end
+
+    if output.empty?
+      output["SORN"] = highlight(excerpt(xml, search_term, radius: 200), search_term)
     end
     output
   end

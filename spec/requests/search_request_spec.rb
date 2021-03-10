@@ -94,8 +94,8 @@ RSpec.describe "Search", type: :request do
 
   context "multiword search" do
     before do
-      create :sorn, categories_of_record: "health record"
-      create :sorn, categories_of_record: "health blah blah record"
+      create :sorn, categories_of_record: "health record", xml: "health record"
+      create :sorn, categories_of_record: "health blah blah record", xml: "health blah blah record"
     end
 
     let(:search) { "health+record" }
