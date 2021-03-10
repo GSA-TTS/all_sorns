@@ -17,8 +17,7 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
 
-    <%= javascript_pack_tag 'beforeSearch' %>
-
+    <%= content_for :search %>
  </head>
 
   <body <%if params[:search].blank? && current_page?('/') %>class="pre-search"<%end%>>
