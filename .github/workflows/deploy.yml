@@ -1,13 +1,76 @@
----
 name: Deploy
 
 on:
-  workflow_run:
-    workflows: ["Test"]
-    branches: [main]
-    types: [completed]
+  push:
+    branches: [ main ]
 
 jobs:
+  build_and_test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: all_sorns
+          POSTGRES_DB: all_sorns_test
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.1
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.13.0
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: npm-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-build-${{ env.cache-name }}-
+            npm-${{ runner.os }}-build-
+            npm-${{ runner.os }}-
+      - name: Install linux dependencies
+        run: |
+          sudo apt-get -yqq install libpq-dev build-essential libssl-dev
+      - name: install javascript dependencies
+        run: yarn install
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          POSTGRES_DB: all_sorns_test
+          POSTGRES_USER: all_sorns
+          POSTGRES_PASSWORD: postgres
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec rake db:create db:migrate
+
+      - name: Run rails tests
+        env:
+          PGHOST: localhost
+          POSTGRES_DB: all_sorns_test
+          POSTGRES_USER: all_sorns
+          POSTGRES_PASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_ENV: test
+        run: bundle exec rspec
+
   deploy:
     name: Deploy to cloud.gov
     needs: build_and_test
