@@ -73,7 +73,6 @@ jobs:
 
   deploy:
     name: Deploy to cloud.gov
-    needs: build_and_test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
