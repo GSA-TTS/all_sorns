@@ -1,4 +1,6 @@
+---
 name: "Find SORNs"
+
 on:
   schedule:
     - cron: "11 7 * * 1-5"  # 2:11am eastern, m-f
