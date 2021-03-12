@@ -8,6 +8,7 @@ on:
 
 jobs:
   find-sorns:
+    if: github.repository_owner == '18F'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
