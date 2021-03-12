@@ -147,4 +147,16 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to include "<mark>FAKE<\\/mark> ACTION" # Newer citation
     end
   end
+
+  context "including beforeSearch.js pack" do
+    it "included on main search page" do
+      get "/"
+      expect(response.body).to include '/packs-test/js/beforeSearch-'
+    end
+
+    it "not on the about page" do
+      get "/about"
+      expect(response.body).to_not include '/packs-test/js/beforeSearch-'
+    end
+  end
 end
