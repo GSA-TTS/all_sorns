@@ -270,7 +270,7 @@ RSpec.describe "/", type: :system do
     #  browse mode is bare link
     visit "/"
     find("#general-search-button").click
-    expect(page).to have_link href: "/search.csv"
+    expect(page).to have_link href: "search.csv?search=&starting_year=&ending_year="
     # search params
     fill_in "general-search", with: "SEARCH FOR THIS"
     find("#general-search-button").click
