@@ -9,6 +9,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository_owner == '18F'
     name: Deploy to cloud.gov
     runs-on: ubuntu-latest
     steps:
