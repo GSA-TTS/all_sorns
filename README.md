@@ -80,13 +80,6 @@ populate the database):
 
 `bundle exec rails federal_register:find_sorns`
 
-After the database has been populated, run these commands to update the
-links between SORNs that is displayed in the search results:
-
-```bash
-bundle exec rails all_sorns:update_all_mentioned_sorns
-bundle exec rails all_sorns:refresh_search
-```
 
 You can now run SORN DASH locally using:
 
