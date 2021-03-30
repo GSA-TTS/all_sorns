@@ -1,9 +1,12 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Run our goodjob job's on the main web server machine.
+  config.good_job.execution_mode = :async
+
   #Tighten the cookies on prod but not in lower envs
   config.session_store :cookie_store, same_site: :strict
-  
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
