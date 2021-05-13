@@ -13,7 +13,7 @@ jobs:
     name: Deploy to cloud.gov
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: Install cf cli
         run: |
           brew install cloudfoundry/tap/cf-cli
