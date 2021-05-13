@@ -11,7 +11,7 @@ jobs:
     if: github.repository_owner == '18F'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Install cf cli
         run: brew install cloudfoundry/tap/cf-cli
       - name: Login and update
