@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 2.7.1'
+ruby '~> 2.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
-gem 'good_job', '>= 1.3.6'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.7'
+gem 'good_job', '>= 1.7.1'
 gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
@@ -19,7 +19,7 @@ gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6.0.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 5.2', '>= 5.2.0'
+gem 'webpacker', '~> 5.2', '>= 5.2.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 
