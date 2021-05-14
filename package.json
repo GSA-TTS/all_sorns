@@ -16,5 +16,8 @@
   "resolutions": {
     "cache-base": "^4.0.0",
     "y18n": "^4.0.1"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
