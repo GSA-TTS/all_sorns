@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install cf cli
         run: |
-          brew install cloudfoundry/tap/cf-cli
-          cf install-plugin blue-green-deploy -r CF-Community -f
+          curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=v7&source=github" | sudo tar -zx --directory=/usr/local/bin
+          cf --version
       - name: Deploy to cloud.gov
         env:
           CF_USERNAME: ${{ secrets.CF_USERNAME }}
