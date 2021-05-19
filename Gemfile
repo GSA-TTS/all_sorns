@@ -4,8 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 2.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.3'
-gem 'good_job', '>= 1.7.1'
+gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
+gem 'good_job', '>= 1.9.4'
 gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
@@ -34,7 +34,7 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
-  gem 'factory_bot_rails', '>= 6.1.0'
+  gem 'factory_bot_rails', '>= 6.2.0'
 end
 
 group :development do
@@ -48,9 +48,9 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 3.34.0'
+  gem 'capybara', '>= 3.35.3'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers', '>= 4.4.2'
+  gem 'webdrivers', '>= 4.6.0'
   gem 'launchy'
 end
