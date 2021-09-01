@@ -11,7 +11,7 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^4.0.0"
+    "webpack-dev-server": "^4.1.0"
   },
   "resolutions": {
     "cache-base": "^4.0.0",
