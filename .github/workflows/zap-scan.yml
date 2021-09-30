@@ -1,0 +1,25 @@
+---
+# This workflow will run the OWASP ZAP web application security scanner
+name: Zap-Scan
+
+on:
+  # Run every Sunday at 3AM
+  schedule:
+    - cron: '0 3 * * SUN'
+
+  # Run every time the "Deploy" action completes (see deploy.yml)
+  workflow_run:
+    workflows: ["Deploy"]
+    branches: [main]
+    types: [completed]
+
+jobs:
+  zap_scan:
+    if: github.repository_owner == '18F'
+    runs-on: ubuntu-latest
+    name: OWASP ZAP Full Scan
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          target: "https://all-sorns.app.cloud.gov"
