@@ -97,9 +97,8 @@ suggestions before merging. Trust Code Climate.
 Zap](https://owasp.org/www-project-zap/) is a tool we use to
 dynamically scan our application for security vulnerabilities. Zap is
 run against the live application to find common security
-vulnerabilities. We did Zap scanning manually, but it can be automated
-to run routinely. Zap scans should be run whenever substantive changes
-are made to the code base.
+vulnerabilities. A Github action (workflow)[https://github.com/18F/all_sorns/blob/main/.github/workflows/zap-scan.yml] runs an OWASP scan against the 
+live site weekly and every time a new commit is made to the site.
 
 ## Security and Maintenance
 
