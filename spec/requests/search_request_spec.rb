@@ -159,4 +159,22 @@ RSpec.describe "Search", type: :request do
       expect(response.body).to_not include '/packs-test/js/beforeSearch-'
     end
   end
+
+  context 'when sent invalid characters' do
+    context 'in string params' do
+      it 'raises bad request exception' do
+        expect do
+          get search_path, params: { search: "\u0000" }, xhr: true
+        end.to raise_error(ActionController::BadRequest)
+      end
+    end
+
+    context 'in array params' do
+      it 'raises bad request exception' do
+        expect do
+          get search_path, params: { agencies: ["\u0000", "abcdef"] }, xhr: true
+        end.to raise_error(ActionController::BadRequest)
+      end
+    end
+  end
 end
