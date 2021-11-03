@@ -7,7 +7,7 @@ RSpec.describe "Search", type: :request do
   let(:agency) { nil }
 
   before do
-    get search_path, params: {search: search, fields: fields, agency: agency}, xhr: true
+    get search_path, params: {search: search, fields: fields, agencies: agency}, xhr: true
   end
 
   context "search" do
@@ -43,8 +43,6 @@ RSpec.describe "Search", type: :request do
   end
 
   context "search with agency select" do
-    let(:search) { "FAKE" }
-    let(:fields) { nil }
     let(:agency) { "Parent Agency" }
 
     it "succeeds" do
@@ -64,10 +62,6 @@ RSpec.describe "Search", type: :request do
     context "agency search with overlapping SORNs" do
       let(:fields) { ['system_name'] }
       let(:agency) { ['Parent Agency', 'Child Agency'] }
-
-      before do
-        sorn.agencies << create(:agency, name: "Child Agency", short_name: "CA")
-      end
 
       it "only returns a single SORN, even though it matches the two agencies" do
         expect(response.body).to include "Displaying <b>1<\\/b>  for &quot;FAKE"

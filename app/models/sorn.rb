@@ -46,7 +46,8 @@ class Sorn < ApplicationRecord
     :citation,
     :title,
     :publication_date,
-    :action_type
+    :action_type,
+    :xml
   ]
 
   DEFAULT_FIELDS = [
