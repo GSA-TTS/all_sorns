@@ -7,7 +7,7 @@ class Sorn < ApplicationRecord
 
   validates :citation, uniqueness: true
 
-  scope :get_distinct_with_dynamic_search_rank, -> { select(:id, Sorn::FIELDS + Sorn::METADATA,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
+  scope :get_distinct_with_dynamic_search_rank, -> { select(Sorn.attribute_names,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
   default_scope { order(publication_date: :desc) }
 
   FIELDS = [
@@ -38,26 +38,6 @@ class Sorn < ApplicationRecord
     :notification,
     :exemptions,
     :history
-  ]
-
-  METADATA = [
-    :html_url,
-    :xml_url,
-    :citation,
-    :title,
-    :publication_date,
-    :action_type
-  ]
-
-  DEFAULT_FIELDS = [
-    'agency_names',
-    'action',
-    'system_name',
-    'summary',
-    'categories_of_individuals',
-    'categories_of_record',
-    'html_url',
-    'publication_date'
   ]
 
   include PgSearch::Model
