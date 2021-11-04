@@ -57,7 +57,8 @@ installed and install the necessary project dependencies.
 
 ```bash
 gem install bundler
-gem install yarn
+brew install node
+npm install --global yarn
 ```
 
 Install the necessary project dependencies using:
@@ -71,7 +72,7 @@ yarn install --check-files
 
 Now that you have the environment set-up, create the database:
 
-`bundle exec rails db:setup`
+`bundle exec rails db:create db:migrate`
 
 Once this is complete, run the following command to fetch all the SORNs
 from the Federal Register API and populate your local database (this
