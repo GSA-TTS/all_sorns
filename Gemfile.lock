@@ -111,10 +111,10 @@ GEM
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     interception (0.5)
-    jbuilder (2.11.2)
+    jbuilder (2.11.4)
       activesupport (>= 5.0.0)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
@@ -146,7 +146,7 @@ GEM
     mime-types-data (3.2021.0901)
     mini_mime (1.1.2)
     mini_portile2 (2.6.1)
-    minitest (5.14.4)
+    minitest (5.15.0)
     msgpack (1.4.2)
     multi_xml (0.6.0)
     nio4r (2.5.8)
@@ -282,7 +282,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
@@ -296,7 +296,7 @@ DEPENDENCIES
   federal_register (~> 0.7.6)
   good_job (>= 1.9.4)
   httparty
-  jbuilder (~> 2.7)
+  jbuilder (~> 2.11)
   kaminari (>= 1.2.1)
   launchy
   listen (~> 3.2)
