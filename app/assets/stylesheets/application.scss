@@ -50,18 +50,6 @@ $font-stack: Source Sans Pro Web,Helvetica Neue,Helvetica,Roboto,Arial,sans-seri
  }
 
  // Header & Navigation
- .beta-banner {
-  background-color: $gold-10v;
-  color: $blue-90;
-  margin: auto 0;
-  padding: 0.1rem 0;
-
-  p {
-    margin-left: auto;
-    margin-right: auto;
-  }
- }
-
  @media (min-width: 64em) {
   .usa-logo {
     margin: 16px 0;
