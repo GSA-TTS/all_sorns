@@ -60,6 +60,7 @@ else
 	cf push all_sorns -f .cloud-gov/manifest.yml --no-route
 fi
 cf map-route all_sorns app.cloud.gov --hostname "$CGHOSTNAME"
+cf map-route all_sorns sorndashboard.fpc.gov
 
 # tell people where to go
 echo
