@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   get '/search', to: 'search#search'
 
-  get '/analytics', to: 'analytics#index'
+  get '/analytics', to: 'analytics#index', format: false
 
-  get '/about', to: 'pages#about'
+  get '/about', to: 'pages#about', format: false
 
-  get '/help', to: 'pages#help'
+  get '/help', to: 'pages#help', format: false
 end
