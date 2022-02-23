@@ -94,7 +94,7 @@ GEM
       railties (>= 5.0.0)
     federal_register (0.7.7)
       httparty (>= 0.14.0)
-    ffi (1.15.3)
+    ffi (1.15.5)
     fugit (1.5.1)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
@@ -131,7 +131,7 @@ GEM
     kaminari-core (1.2.2)
     launchy (2.5.0)
       addressable (~> 2.7)
-    listen (3.7.0)
+    listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.13.0)
@@ -302,7 +302,7 @@ DEPENDENCIES
   jbuilder (~> 2.11)
   kaminari (>= 1.2.1)
   launchy
-  listen (~> 3.2)
+  listen (~> 3.7)
   pg
   pg_search
   pry-byebug
