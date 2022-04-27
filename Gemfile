@@ -4,15 +4,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 2.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
+gem 'rails', '~> 6.1.5', '>= 6.1.5.1'
 gem 'good_job', '>= 1.13.2'
 gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
 gem 'pg_search'
-gem 'kaminari', '>= 1.2.1'
-gem 'scenic', '>= 1.5.5'
+gem 'kaminari', '>= 1.2.2'
+gem 'scenic', '>= 1.6.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.6'
@@ -21,7 +21,7 @@ gem 'sass-rails', '>= 6.0.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.4', '>= 5.4.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11'
+gem 'jbuilder', '~> 2.11', '>= 2.11.5'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
