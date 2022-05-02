@@ -299,7 +299,7 @@ DEPENDENCIES
   federal_register (~> 0.7.6)
   good_job (>= 1.9.4)
   httparty
-  jbuilder (~> 2.11)
+  jbuilder (~> 2.11, >= 2.11.5)
   kaminari (>= 1.2.1)
   launchy
   listen (~> 3.2)
