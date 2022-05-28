@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 2.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
+gem 'rails', '~> 6.1.6'
 gem 'good_job', '>= 1.13.2'
 gem 'pg'
 gem 'httparty'
@@ -12,7 +12,7 @@ gem 'federal_register', '~> 0.7.6'
 gem 'saxerator'
 gem 'pg_search'
 gem 'kaminari', '>= 1.2.1'
-gem 'scenic', '>= 1.5.5'
+gem 'scenic', '>= 1.6.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.6'
@@ -48,7 +48,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 3.35.3'
+  gem 'capybara', '>= 3.36.0'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers', '>= 4.6.0'
