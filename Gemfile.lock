@@ -98,7 +98,7 @@ GEM
     fugit (1.5.3)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     good_job (1.13.2)
       activejob (>= 5.2.0)
@@ -111,7 +111,7 @@ GEM
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     interception (0.5)
     jbuilder (2.11.5)
@@ -147,7 +147,7 @@ GEM
     mime-types-data (3.2021.1115)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.15.0)
+    minitest (5.17.0)
     msgpack (1.5.4)
     multi_xml (0.6.0)
     nio4r (2.5.8)
@@ -285,7 +285,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
