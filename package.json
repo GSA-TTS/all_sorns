@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/ujs": "^7.0.3",
-    "@rails/webpacker": "5.4.3",
+    "@rails/webpacker": "5.4.4",
     "cache-base": "^4.0.2",
     "jquery": "^3.6.0",
     "list.js": "^2.3.1",
