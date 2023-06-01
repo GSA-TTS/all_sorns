@@ -15,7 +15,7 @@ gem 'kaminari', '>= 1.2.1'
 gem 'scenic', '>= 1.5.5'
 
 # Use Puma as the app server
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6.0.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
