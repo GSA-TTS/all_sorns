@@ -150,7 +150,7 @@ GEM
     minitest (5.15.0)
     msgpack (1.5.4)
     multi_xml (0.6.0)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -173,7 +173,7 @@ GEM
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
     public_suffix (4.0.7)
-    puma (5.6.4)
+    puma (6.3.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.0)
@@ -308,7 +308,7 @@ DEPENDENCIES
   pry-byebug
   pry-rescue
   pry-stack_explorer
-  puma (~> 5.6)
+  puma (~> 6.3)
   rails (~> 6.1.4, >= 6.1.4.6)
   rspec-rails (~> 5.1.2)
   sass-rails (>= 6.0.0)
