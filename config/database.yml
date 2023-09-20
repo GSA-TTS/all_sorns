@@ -7,7 +7,10 @@ test:
 
 development:
   <<: *default
-  database: all_sorns_development
+  host: db
+  username: postgres
+  password:
+  encoding: unicode
 
 production:
   <<: *default
