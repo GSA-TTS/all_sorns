@@ -33,14 +33,14 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.1
+          ruby-version: 2.7.8
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
 
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
