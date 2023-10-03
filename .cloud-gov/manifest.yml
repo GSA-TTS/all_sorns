@@ -3,6 +3,7 @@
   - name: all_sorns
     buildpacks:
       - ruby_buildpack
+    stack: cflinuxfs4
     memory: 1G
     services:
       - all-sorns-db
