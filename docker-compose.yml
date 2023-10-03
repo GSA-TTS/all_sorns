@@ -26,15 +26,20 @@ services:
       context: .
       dockerfile: "Dockerfile"
     depends_on:
+      webdriver_chrome:
+        condition: service_started
       db:
         condition: service_healthy
     environment:
       DATABASE_URL: postgres://postgres@db/postgres
       RAILS_ENV: test
+      SELENIUM_REMOTE_URL: http://webdriver_chrome:4444/wd/hub
     ports:
       - "3000:3000"
     volumes:
       - .:/home/app
+  webdriver_chrome:
+    image: selenium/standalone-chrome
 
 volumes:
   postgres-data:
