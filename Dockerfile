@@ -6,6 +6,7 @@ FROM ruby:2.7.1-alpine AS base
 # Install system dependencies required both at runtime and build time
 RUN apk add --update \
   postgresql-dev \
+  postgresql-client \
   tzdata \
   nodejs
 
@@ -15,7 +16,6 @@ FROM base AS dependencies
 # Install system dependencies required to build some Ruby gems (pg)
 RUN apk add --update build-base
 RUN apk add nodejs npm yarn
-
 COPY Gemfile Gemfile.lock ./
 
 # Install gems 
