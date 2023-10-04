@@ -1,6 +1,6 @@
 ---
   applications:
-  - name: all_sorns_dev
+  - name: all_sorns
     buildpacks:
       - https://github.com/cloudfoundry/apt-buildpack
       - nodejs_buildpack
@@ -9,4 +9,6 @@
     memory: 1G
     services:
       - all-sorns-db
-    command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails s -p $PORT -e $RAILS_ENV
+    env:
+      NODE_OPTIONS: "--openssl-legacy-provider"
+    command: ./.cloud-gov/start.sh
