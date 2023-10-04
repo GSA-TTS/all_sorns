@@ -326,6 +326,7 @@ DEPENDENCIES
   pry-stack_explorer
   puma (~> 5.6)
   rails (~> 6.1.4, >= 6.1.4.6)
+  rexml
   rspec-rails (~> 5.1.2)
   sass-rails (>= 6.0.0)
   saxerator
