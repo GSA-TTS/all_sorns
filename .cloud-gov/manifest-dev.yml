@@ -3,6 +3,7 @@
   - name: all_sorns_dev
     buildpacks:
       - https://github.com/cloudfoundry/apt-buildpack
+      - nodejs_buildpack
       - ruby_buildpack
     stack: cflinuxfs4
     memory: 1G
