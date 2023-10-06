@@ -987,10 +987,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@rails/ujs@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.0.3.tgz#3bb98db34460ad61ef3cd2684401a444a0347bbb"
-  integrity sha512-u/F5LOFD1255859xEmb+3dHEI9Gnh5zVsjp6Pc++GGoMUei8vfOEPE9pvWuK01PbarIFfZz5D658gFRhs3dVpw==
+"@rails/ujs@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.0.tgz#144ec54b1cc53aa24713cafc29bf8a8d52ac3d24"
+  integrity sha512-cO8+HREI8hhJDaFyzGCA4AL9/EotHYSTz1v7aQmfZmUdanx/ppXe+MPE4dly2/MtC6Ha6K2Dkzo7bkDGc46y6Q==
 
 "@rails/webpacker@5.4.3":
   version "5.4.3"
