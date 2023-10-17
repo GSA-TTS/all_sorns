@@ -24,5 +24,5 @@ jobs:
           CF_PASSWORD: ${{ secrets.CF_PASSWORD_TEST }}
           CF_ORG: ${{ secrets.CF_ORG }}
           CF_SPACE: ${{ secrets.CF_SPACE_TEST }}
-          CF_CGHOSTNAME: all-sorns-test
+          CGHOSTNAME: all-sorns-test
         run: ./.cloud-gov/deploy.sh rolling

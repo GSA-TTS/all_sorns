@@ -24,5 +24,4 @@ jobs:
           CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
           CF_ORG: ${{ secrets.CF_ORG }}
           CF_SPACE: ${{ secrets.CF_SPACE }}
-          CF_CGHOSTNAME: test
         run: ./.cloud-gov/deploy.sh rolling
