@@ -1,0 +1,28 @@
+---
+name: Deploy to test
+
+on:
+  workflow_run:
+    workflows: ["Test"]
+    branches: [main]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: github.repository_owner == '18F' && ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy to cloud.gov test space
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install cf cli
+        run: |
+          curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=v7&source=github" | sudo tar -zx --directory=/usr/local/bin
+          cf --version
+      - name: Deploy app
+        env:
+          CF_USERNAME: ${{ secrets.CF_USERNAME_TEST }}
+          CF_PASSWORD: ${{ secrets.CF_PASSWORD_TEST }}
+          CF_ORG: ${{ secrets.CF_ORG }}
+          CF_SPACE: ${{ secrets.CF_SPACE_TEST }}
+          CF_CGHOSTNAME: all-sorns-test
+        run: ./.cloud-gov/deploy.sh rolling
