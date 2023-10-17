@@ -1,16 +1,16 @@
 ---
-name: Deploy
+name: Deploy to prod
 
 on:
   workflow_run:
-    workflows: ["Test"]
+    workflows: ["Deploy to test"]
     branches: [main]
     types: [completed]
 
 jobs:
   deploy:
     if: github.repository_owner == '18F' && ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Deploy to cloud.gov
+    name: Deploy to cloud.gov prod space
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

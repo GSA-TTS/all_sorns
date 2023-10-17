@@ -4,11 +4,12 @@
 # and then launch everything.
 #
 
-# This is the hostname for the route set for the
+set -e 
+
+# This is the hostname for the route set for the app
 CGHOSTNAME="${CGHOSTNAME:-all-sorns}"
 
 echo "$CGHOSTNAME"
-
 
 cf api https://api.fr.cloud.gov
 cf auth "$CF_USERNAME" "$CF_PASSWORD"
@@ -47,7 +48,7 @@ if [ "$1" = "setup" ] ; then  echo
 		echo all_sorns app already set up
 	else
 		cf create-app all_sorns
-		cf apply-manifest -f .cloud-gov/manifest.yml
+		cf apply-manifest -f ".cloud-gov/manifest-${CF_SPACE}.yml"
 	fi
 fi
 
@@ -55,13 +56,16 @@ fi
 if [ "$1" = "rolling" ] ; then
 	# Do a zero downtime deploy.  This requires enough memory for
 	# two apps to exist in the org/space at one time.
-	cf push all_sorns --no-route -f .cloud-gov/manifest.yml --strategy rolling || exit 1
+	cf push all_sorns --no-route -f ".cloud-gov/manifest-${CF_SPACE}.yml" --strategy rolling || exit 1
 else
-	cf push all_sorns -f .cloud-gov/manifest.yml --no-route
+	cf push all_sorns -f ".cloud-gov/manifest-${CF_SPACE}.yml" --no-route
 fi
 cf map-route all_sorns app.cloud.gov --hostname "$CGHOSTNAME"
-cf map-route all_sorns sorndashboard.fpc.gov
 
+# Extra route-mapping, only for the production deployment
+if [ "${CF_ORG}" = "all-sorn-prod" ] ; then
+    cf map-route all_sorns sorndashboard.fpc.gov
+fi
 # tell people where to go
 echo
 echo
