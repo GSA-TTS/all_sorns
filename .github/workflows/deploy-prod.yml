@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    if: github.repository_owner == '18F' && ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Deploy to cloud.gov prod space
     runs-on: ubuntu-latest
 

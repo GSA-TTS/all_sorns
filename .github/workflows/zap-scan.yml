@@ -15,7 +15,6 @@ on:
 
 jobs:
   zap_scan:
-    if: github.repository_owner == '18F'
     runs-on: ubuntu-latest
     name: OWASP ZAP Full Scan
     steps:
