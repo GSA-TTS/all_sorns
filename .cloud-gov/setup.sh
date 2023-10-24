@@ -38,8 +38,6 @@ cf unbind-security-group public_networks_egress ${CF_ORG} ${CF_SPACE} --lifecycl
 # Add public egress to the corresponding -public space while running
 cf bind-security-group public_networks_egress ${CF_ORG} --space ${CF_SPACE}-public --lifecycle running 
 
-exit
-
 if service_exists "all-sorns-db" ; then
     echo all-sorns-db DB already created
 else
@@ -49,14 +47,4 @@ else
             sleep 60
             echo $i minutes...
         done
-fi
-
-
-
-# set up app
-if cf app all_sorns >/dev/null 2>&1 ; then
-    echo all_sorns app already set up
-else
-    cf create-app all_sorns
-    cf apply-manifest -f ".cloud-gov/manifest-${CF_SPACE}.yml"
 fi
