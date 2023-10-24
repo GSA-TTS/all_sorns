@@ -26,7 +26,7 @@ fi
 cf map-route all_sorns app.cloud.gov --hostname "$CGHOSTNAME"
 
 # Extra route-mapping, only for the production deployment
-if [ "${CF_ORG}" = "all-sorn-prod" ] ; then
+if [ "${CF_SPACE}" = "all-sorn-prod" ] ; then
     cf map-route all_sorns sorndashboard.fpc.gov
 fi
 # tell people where to go
