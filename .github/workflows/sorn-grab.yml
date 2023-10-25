@@ -8,6 +8,7 @@ on:
 
 jobs:
   find-sorns:
+    environment: prod
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,7 +17,7 @@ jobs:
       - name: Login and update
         run: |
           cf api https://api.fr.cloud.gov
-          cf auth ${{ secrets.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
-          cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
+          cf auth ${{ vars.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
+          cf target -o ${{ vars.CF_ORG }} -s ${{ vars.CF_SPACE }}
           cf run-task all_sorns --command "bundle exec rails federal_register:find_sorns" --name "Find SORNs"
           echo "Daily update queued"
