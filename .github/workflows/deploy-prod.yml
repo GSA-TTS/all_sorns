@@ -23,4 +23,4 @@ jobs:
           cf_password: ${{ secrets.CF_PASSWORD }}
           cf_org: ${{ vars.CF_ORG }}
           cf_space: ${{ vars.CF_SPACE }}
-          command: CF_SPACE=${{ secrets.CF_SPACE }} CGHOSTNAME=all-sorns .cloud-gov/deploy.sh rolling
+          command: CF_SPACE=${{ vars.CF_SPACE }} CGHOSTNAME=all-sorns .cloud-gov/deploy.sh rolling
