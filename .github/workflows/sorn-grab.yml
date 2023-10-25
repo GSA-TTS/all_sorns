@@ -12,12 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install cf cli
-        run: brew install cloudfoundry/tap/cf-cli
-      - name: Login and update
-        run: |
-          cf api https://api.fr.cloud.gov
-          cf auth ${{ vars.CF_USERNAME }} ${{ secrets.CF_PASSWORD }}
-          cf target -o ${{ vars.CF_ORG }} -s ${{ vars.CF_SPACE }}
-          cf run-task all_sorns --command "bundle exec rails federal_register:find_sorns" --name "Find SORNs"
-          echo "Daily update queued"
+      - name: Update SORNs
+        uses: cloud-gov/cg-cli-tools@main
+        with:
+          cf_username: ${{ vars.CF_USERNAME }}
+          cf_password: ${{ secrets.CF_PASSWORD }}
+          cf_org: ${{ vars.CF_ORG }}
+          cf_space: ${{ vars.CF_SPACE }}
+          cf_command: run-task all_sorns --command "bundle exec rails federal_register:find_sorns" --name "Find SORNs"
