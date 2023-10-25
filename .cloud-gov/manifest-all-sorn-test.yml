@@ -2,14 +2,16 @@
   applications:
   - name: all_sorns
     buildpacks:
-      - https://github.com/cloudfoundry/apt-buildpack
-      - nodejs_buildpack
-      - ruby_buildpack
+    - https://github.com/cloudfoundry/apt-buildpack
+    - nodejs_buildpack
+    - ruby_buildpack
     stack: cflinuxfs4
     memory: 1G
     services:
-      - all-sorns-db
-      - outbound-proxy
+    - all-sorns-db
+    - outbound-proxy
     env:
       NODE_OPTIONS: "--openssl-legacy-provider"
     command: ./.cloud-gov/start.sh
+    routes: 
+    - route: all-sorns-test.app.cloud.gov
