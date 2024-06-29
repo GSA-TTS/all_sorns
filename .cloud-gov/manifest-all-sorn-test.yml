@@ -9,7 +9,7 @@
     memory: 1G
     services:
     - all-sorns-db
-    - outbound-proxy
+#     - outbound-proxy
     env:
       NODE_OPTIONS: "--openssl-legacy-provider"
     command: ./.cloud-gov/start.sh
