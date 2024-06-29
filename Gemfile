@@ -18,6 +18,10 @@ gem 'saxerator'
 gem 'pg_search'
 gem 'kaminari', '~> 1.2'
 gem 'scenic', '~> 1.5'
+gem 'base64'
+gem 'bigdecimal'
+gem 'mutex_m'
+gem 'csv'
 
 # Use Puma as the app server
 gem 'puma', '~> 6.0'
