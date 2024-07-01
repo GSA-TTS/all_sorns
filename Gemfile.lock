@@ -138,7 +138,8 @@ GEM
       railties (>= 5.2.0)
       thor (>= 0.14.1)
       zeitwerk (>= 2.0)
-    httparty (0.21.0)
+    httparty (0.22.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     i18n (1.14.1)
@@ -174,12 +175,13 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-    method_source (1.0.0)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
     minitest (5.20.0)
     msgpack (1.7.2)
-    multi_xml (0.6.0)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     mutex_m (0.2.0)
     net-imap (0.4.3)
       date
@@ -206,7 +208,7 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
-    pry-rescue (1.5.2)
+    pry-rescue (1.6.0)
       interception (>= 0.5)
       pry (>= 0.12.0)
     pry-stack_explorer (0.6.1)
@@ -346,7 +348,7 @@ DEPENDENCIES
   scenic (~> 1.5)
   selenium-webdriver
   spring
-  spring-watcher-listen (~> 2.0)
+  spring-watcher-listen (~> 2.1.0)
   web-console (~> 4.2)
   webdrivers (~> 5.3)
   webpacker (~> 5.4, >= 5.4.3)
