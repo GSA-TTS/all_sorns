@@ -43,24 +43,43 @@ SORN DASH has a simple technical stack - you need a computer with:
 
 Make sure that **postgresql** is installed and running:
 
-```bash
-brew install postgresql
-brew services start postgresql
-```
+##### MAC OS
+>```bash
+>brew install postgresql
+>brew services start postgresql
+>```
+
+##### Ubuntu
+>```bash
+>sudo apt install postgresql
+>sudo service postgresql start
+>```
 
 Use a ruby version manager to set the local SORN DASH directory to the
-ruby version found in the **.ruby-version** file. Finally -- ensure that
-you have Ruby’s
-[bundler](https://bundler.io/) and
-[yarn](https://rubygems.org/gems/yarn/versions/0.1.1)
-installed and install the necessary project dependencies.
+ruby version found in the **.ruby-version** file. Finally -- install Ruby’s
+[bundler](https://bundler.io/)
 
 ```bash
 gem install bundler
-gem install yarn
 ```
 
-Install the necessary project dependencies using:
+and
+[yarn](https://github.com/yarnpkg/yarn/releases/tag/v1.22.17)
+
+##### MAC OS
+>```bash
+>brew install node
+>npm install --global yarn
+>```
+
+##### Ubuntu
+>```bash
+>curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+>sudo apt-get install -y nodejs
+>npm install --global yarn
+>```
+
+Now install the necessary project dependencies using:
 
 ```bash
 bundle install
@@ -71,7 +90,11 @@ yarn install --check-files
 
 Now that you have the environment set-up, create the database:
 
-`bundle exec rails db:setup`
+`bundle exec rails db:create`
+
+Once this is complete, run all the migrations:
+
+`bundle exec rails db:migrate`
 
 Once this is complete, run the following command to fetch all the SORNs
 from the Federal Register API and populate your local database (this
