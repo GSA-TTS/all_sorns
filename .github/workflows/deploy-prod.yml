@@ -1,0 +1,28 @@
+---
+name: Deploy to prod
+
+on:
+  workflow_run:
+    workflows: ["Deploy to test"]
+    branches: [main]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy to cloud.gov prod space
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy app
+        uses: cloud-gov/cg-cli-tools@main
+        with:
+          cf_username: ${{ vars.CF_USERNAME }}
+          cf_password: ${{ secrets.CF_PASSWORD }}
+          cf_org: ${{ vars.CF_ORG }}
+          cf_space: ${{ vars.CF_SPACE }}
+          cf_manifest: .cloud-gov/manifest-all-sorn-prod.yml
+      - name: Leave a pointer
+        run: echo "To log into the site, go to https://sorndashboard.fpc.gov"
