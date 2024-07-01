@@ -9,7 +9,7 @@ ruby '~> 3.2'
 # https://github.com/bensheldon/good_job/issues/1016#issuecomment-1644915406
 gem 'rails', github: "rails/rails", branch: '6-1-stable'
 # gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
-gem 'good_job', '~> 1.13'
+gem 'good_job', '~> 3.29'
 gem 'pg'
 gem 'httparty'
 gem 'federal_register', '~> 0.7'
