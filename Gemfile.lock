@@ -348,7 +348,7 @@ DEPENDENCIES
   scenic (~> 1.5)
   selenium-webdriver
   spring
-  spring-watcher-listen (~> 2.0)
+  spring-watcher-listen (~> 2.1.0)
   web-console (~> 4.2)
   webdrivers (~> 5.3)
   webpacker (~> 5.4, >= 5.4.3)
