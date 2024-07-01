@@ -1,9 +1,0 @@
----
-  applications:
-  - name: all_sorns_dev
-    buildpacks:
-      - ruby_buildpack
-    memory: 1G
-    services:
-      - all-sorns-db-dev
-    command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails s -p $PORT -e $RAILS_ENV
