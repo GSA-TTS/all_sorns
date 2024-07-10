@@ -117,10 +117,10 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.7)
       tzinfo
-    factory_bot (6.2.1)
+    factory_bot (6.4.6)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.2.0)
-      factory_bot (~> 6.2.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
       railties (>= 5.0.0)
     federal_register (0.7.7)
       httparty (>= 0.14.0)
@@ -326,7 +326,7 @@ DEPENDENCIES
   byebug
   capybara (~> 3.40)
   csv
-  factory_bot_rails (~> 6.2)
+  factory_bot_rails (~> 6.4)
   federal_register (~> 0.7)
   good_job (~> 1.13)
   httparty
