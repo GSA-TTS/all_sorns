@@ -1,56 +1,64 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 2.7'
+ruby '~> 3.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
-gem 'good_job', '>= 1.13.2'
+
+# We need to use rails 6-1.stable to get around a problem with good_job:
+# https://github.com/bensheldon/good_job/issues/1016#issuecomment-1644915406
+gem 'rails', '~> 6.1', '>= 6.1.7.8'
+gem 'good_job', '~> 1.13'
 gem 'pg'
 gem 'httparty'
-gem 'federal_register', '~> 0.7.6'
+gem 'federal_register', '~> 0.7'
+gem 'rexml'
 gem 'saxerator'
 gem 'pg_search'
-gem 'kaminari', '>= 1.2.1'
-gem 'scenic', '>= 1.5.5'
+gem 'kaminari', '~> 1.2'
+gem 'scenic', '~> 1.8'
+gem 'base64'
+gem 'bigdecimal'
+gem 'mutex_m'
+gem 'csv'
 
 # Use Puma as the app server
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.4'
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 6.0.0'
+gem 'sass-rails', '~> 6.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 5.4', '>= 5.4.3'
+gem 'webpacker', '~> 5.4', '>= 5.4.4'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11', '>= 2.11.5'
+gem 'jbuilder', '~> 2.12'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', '~> 1.18', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 5.1.2'
+  gem 'rspec-rails', '~> 6.1'
 
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
-  gem 'factory_bot_rails', '>= 6.2.0'
+  gem 'factory_bot_rails', '~> 6.4'
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.2.1'
-  gem 'listen', '~> 3.7'
+  gem 'listen', '~> 3.9'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.1.0'
 end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 3.35.3'
+  gem 'capybara', '~> 3.40'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers', '>= 4.6.0'
+  gem 'webdrivers', '~> 5.3'
   gem 'launchy'
 end
