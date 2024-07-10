@@ -268,7 +268,7 @@ GEM
       sprockets-rails
       tilt
     saxerator (0.9.9)
-    scenic (1.7.0)
+    scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
     selenium-webdriver (4.10.0)
@@ -346,7 +346,7 @@ DEPENDENCIES
   rspec-rails (~> 6.1)
   sass-rails (~> 6.0)
   saxerator
-  scenic (~> 1.5)
+  scenic (~> 1.8)
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.1.0)
