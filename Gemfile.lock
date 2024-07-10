@@ -346,7 +346,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.1.0)
-  web-console (~> 4.2)
+  web-console (>= 4.2.1)
   webdrivers (~> 5.3)
   webpacker (~> 5.4, >= 5.4.4)
 
