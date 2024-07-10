@@ -124,7 +124,8 @@ GEM
       railties (>= 5.0.0)
     federal_register (0.7.7)
       httparty (>= 0.14.0)
-    ffi (1.16.3)
+    ffi (1.17.0)
+    ffi (1.17.0-x86_64-darwin)
     fugit (1.9.0)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -162,7 +163,7 @@ GEM
     kaminari-core (1.2.2)
     launchy (2.5.2)
       addressable (~> 2.8)
-    listen (3.8.0)
+    listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.22.0)
@@ -233,7 +234,7 @@ GEM
       nokogiri (~> 1.14)
     rake (13.2.1)
     rb-fsevent (0.11.2)
-    rb-inotify (0.10.1)
+    rb-inotify (0.11.1)
       ffi (~> 1.0)
     regexp_parser (2.9.2)
     rexml (3.2.7)
@@ -332,7 +333,7 @@ DEPENDENCIES
   jbuilder (~> 2.12)
   kaminari (~> 1.2)
   launchy
-  listen (~> 3.7)
+  listen (~> 3.9)
   mutex_m
   pg
   pg_search
