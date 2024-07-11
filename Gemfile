@@ -3,12 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '~> 3.2'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-
-# We need to use rails 6-1.stable to get around a problem with good_job:
-# https://github.com/bensheldon/good_job/issues/1016#issuecomment-1644915406
-gem 'rails', github: "rails/rails", branch: '6-1-stable'
-# gem 'rails', '~> 6.1', '>= 6.1.7.8'
+gem 'rails', '~> 7.0.0'
 gem 'good_job', '~> 4.0'
 gem 'pg'
 gem 'httparty'
