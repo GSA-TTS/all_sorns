@@ -56,3 +56,5 @@ group :test do
   gem 'selenium-webdriver', '~> 4.22'
   gem 'launchy'
 end
+
+gem "importmap-rails", "~> 2.0"

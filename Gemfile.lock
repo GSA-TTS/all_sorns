@@ -127,6 +127,10 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
+    importmap-rails (2.0.1)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     interception (0.5)
     jbuilder (2.12.0)
       actionview (>= 5.0.0)
@@ -331,6 +335,7 @@ DEPENDENCIES
   federal_register (~> 0.7)
   good_job (~> 4.0)
   httparty
+  importmap-rails (~> 2.0)
   jbuilder (~> 2.12)
   kaminari (~> 1.2)
   launchy
