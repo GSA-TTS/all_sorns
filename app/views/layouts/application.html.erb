@@ -4,6 +4,9 @@
     <title><%= @title%>SORNS Dash</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track" => true %> 
+       
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/2.9.0/css/uswds.min.css" integrity="sha512-1JfROzJI5km8+inC3KrHAsJ4Ufjl2nD7/TbCBXoMUeXi0LIAZntfLQr2S6ifV0lCuO0mWOOlNJNTgKzkj7b7wA==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/2.9.0/js/uswds.min.js" integrity="sha512-DK4Dfv782z/2seHu61hJL5WvFg95vZ64fKsqzeV7vTNcx01Ajp1kq5+w0QUNQ6GSakYyj6Mw0LZ/ddL5rNVMYQ==" crossorigin="anonymous"></script>

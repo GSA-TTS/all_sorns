@@ -69,3 +69,4 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 all_sorns.code-workspace
+vendor/javascript
