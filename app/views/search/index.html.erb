@@ -12,7 +12,7 @@
 </header>
 
 <section class="grid-container">
-  <%= form_with local: false, url: search_path, method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
+  <%= form_with data: {turbo: false}, local: false, url: search_path, method: "GET", id: "search-form", class: (params[:search].present? ? '' : 'pre-search') do %>
     <div class="desktop:grid-col-10 desktop:grid-offset-1 search-area">
       <label for="general-search">Search for SORNs by entering a keyword (will return exact matches)</label>
       <fieldset class="usa-search usa-search--big">
