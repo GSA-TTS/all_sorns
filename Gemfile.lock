@@ -98,6 +98,7 @@ GEM
       railties (>= 5.0.0)
     federal_register (0.7.7)
       httparty (>= 0.14.0)
+    ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     fugit (1.9.0)
       et-orbi (~> 1, >= 1.2.7)
@@ -167,6 +168,8 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.0)
+    nokogiri (1.16.6-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     pg (1.5.6)
@@ -307,6 +310,7 @@ GEM
     zeitwerk (2.6.16)
 
 PLATFORMS
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
