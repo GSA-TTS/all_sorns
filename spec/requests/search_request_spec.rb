@@ -142,15 +142,15 @@ RSpec.describe "Search", type: :request do
     end
   end
 
-  context "including beforeSearch.js pack" do
+  context "including beforeSearch.js" do
     it "included on main search page" do
       get "/"
-      expect(response.body).to include '/packs-test/js/beforeSearch-'
+      expect(response.body).to include '/assets/beforeSearch-'
     end
 
     it "not on the about page" do
       get "/about"
-      expect(response.body).to_not include '/packs-test/js/beforeSearch-'
+      expect(response.body).to_not include '/assets/beforeSearch-'
     end
   end
 
