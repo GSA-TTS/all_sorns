@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title><%= @title%>SORNS Dash</title>
+    <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -21,7 +22,6 @@
     <%= javascript_include_tag 'application' %>
 
     <%= content_for :search %>
-    <%= javascript_importmap_tags %>
  </head>
 
   <body <%if params[:search].blank? && current_page?('/') %>class="pre-search"<%end%>>
