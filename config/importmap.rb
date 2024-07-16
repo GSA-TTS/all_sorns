@@ -7,3 +7,4 @@ pin "@hotwired/turbo", to: "@hotwired--turbo.js" # @7.3.0
 pin "@rails/actioncable/src", to: "@rails--actioncable--src.js" # @6.1.7
 pin "list.js" # @2.3.1
 pin "string-natural-compare" # @2.0.3
+pin "@rails/ujs", to: "@rails--ujs.js" # @7.1.3
