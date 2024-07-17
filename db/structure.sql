@@ -117,7 +117,11 @@ CREATE TABLE public.good_jobs (
     finished_at timestamp without time zone,
     error text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    active_job_id uuid,
+    concurrency_key text,
+    cron_key text,
+    retried_good_job_id uuid
 );
 
 
@@ -327,6 +331,27 @@ CREATE INDEX index_agencies_sorns_on_agency_id ON public.agencies_sorns USING bt
 --
 
 CREATE INDEX index_agencies_sorns_on_sorn_id ON public.agencies_sorns USING btree (sorn_id);
+
+
+--
+-- Name: index_good_jobs_on_active_job_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_active_job_id_and_created_at ON public.good_jobs USING btree (active_job_id, created_at);
+
+
+--
+-- Name: index_good_jobs_on_concurrency_key_when_unfinished; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_concurrency_key_when_unfinished ON public.good_jobs USING btree (concurrency_key) WHERE (finished_at IS NULL);
+
+
+--
+-- Name: index_good_jobs_on_cron_key_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_cron_key_and_created_at ON public.good_jobs USING btree (cron_key, created_at);
 
 
 --
@@ -598,6 +623,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210129220248'),
 ('20210204202244'),
 ('20210303173553'),
-('20210303182701');
+('20210303182701'),
+('20240717224231'),
+('20240717224232'),
+('20240717224233');
 
 
