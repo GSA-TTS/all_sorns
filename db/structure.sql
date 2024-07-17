@@ -104,6 +104,18 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: good_job_processes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.good_job_processes (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    state jsonb
+);
+
+
+--
 -- Name: good_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -121,7 +133,8 @@ CREATE TABLE public.good_jobs (
     active_job_id uuid,
     concurrency_key text,
     cron_key text,
-    retried_good_job_id uuid
+    retried_good_job_id uuid,
+    cron_at timestamp without time zone
 );
 
 
@@ -282,6 +295,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: good_job_processes good_job_processes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.good_job_processes
+    ADD CONSTRAINT good_job_processes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: good_jobs good_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -334,6 +355,20 @@ CREATE INDEX index_agencies_sorns_on_sorn_id ON public.agencies_sorns USING btre
 
 
 --
+-- Name: index_good_jobs_jobs_on_finished_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_jobs_on_finished_at ON public.good_jobs USING btree (finished_at) WHERE ((retried_good_job_id IS NULL) AND (finished_at IS NOT NULL));
+
+
+--
+-- Name: index_good_jobs_on_active_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_active_job_id ON public.good_jobs USING btree (active_job_id);
+
+
+--
 -- Name: index_good_jobs_on_active_job_id_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -352,6 +387,13 @@ CREATE INDEX index_good_jobs_on_concurrency_key_when_unfinished ON public.good_j
 --
 
 CREATE INDEX index_good_jobs_on_cron_key_and_created_at ON public.good_jobs USING btree (cron_key, created_at);
+
+
+--
+-- Name: index_good_jobs_on_cron_key_and_cron_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at ON public.good_jobs USING btree (cron_key, cron_at);
 
 
 --
@@ -626,6 +668,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210303182701'),
 ('20240717224231'),
 ('20240717224232'),
-('20240717224233');
+('20240717224233'),
+('20240717225931'),
+('20240717225932'),
+('20240717225933'),
+('20240717225934');
 
 
