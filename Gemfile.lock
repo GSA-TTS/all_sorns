@@ -89,7 +89,7 @@ GEM
     debug_inspector (1.1.0)
     diff-lcs (1.5.1)
     erubi (1.13.0)
-    et-orbi (1.2.7)
+    et-orbi (1.2.11)
       tzinfo
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -100,8 +100,8 @@ GEM
       httparty (>= 0.14.0)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
-    fugit (1.9.0)
-      et-orbi (~> 1, >= 1.2.7)
+    fugit (1.11.0)
+      et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -322,7 +322,7 @@ DEPENDENCIES
   csv
   factory_bot_rails (~> 6.4)
   federal_register (~> 0.7)
-  good_job (~> 1.13)
+  good_job (~> 1.99)
   httparty
   jbuilder (~> 2.12)
   kaminari (~> 1.2)
