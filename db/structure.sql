@@ -390,6 +390,13 @@ CREATE INDEX index_good_jobs_jobs_on_finished_at ON public.good_jobs USING btree
 
 
 --
+-- Name: index_good_jobs_jobs_on_priority_created_at_when_unfinished; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_jobs_on_priority_created_at_when_unfinished ON public.good_jobs USING btree (priority DESC NULLS LAST, created_at) WHERE (finished_at IS NULL);
+
+
+--
 -- Name: index_good_jobs_on_active_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -701,6 +708,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240717225932'),
 ('20240717225933'),
 ('20240717225934'),
-('20240718000130');
+('20240718000130'),
+('20240718000400');
 
 
