@@ -138,7 +138,8 @@ CREATE TABLE public.good_job_executions (
     serialized_params jsonb,
     scheduled_at timestamp without time zone,
     finished_at timestamp without time zone,
-    error text
+    error text,
+    error_event smallint
 );
 
 
@@ -191,7 +192,8 @@ CREATE TABLE public.good_jobs (
     batch_callback_id uuid,
     is_discrete boolean,
     executions_count integer,
-    job_class text
+    job_class text,
+    error_event smallint
 );
 
 
@@ -792,6 +794,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718000130'),
 ('20240718000400'),
 ('20240718000608'),
-('20240718000910');
+('20240718000910'),
+('20240718001115');
 
 
