@@ -116,6 +116,19 @@ CREATE TABLE public.good_job_processes (
 
 
 --
+-- Name: good_job_settings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.good_job_settings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    key text,
+    value jsonb
+);
+
+
+--
 -- Name: good_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -303,6 +316,14 @@ ALTER TABLE ONLY public.good_job_processes
 
 
 --
+-- Name: good_job_settings good_job_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.good_job_settings
+    ADD CONSTRAINT good_job_settings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: good_jobs good_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -352,6 +373,13 @@ CREATE INDEX index_agencies_sorns_on_agency_id ON public.agencies_sorns USING bt
 --
 
 CREATE INDEX index_agencies_sorns_on_sorn_id ON public.agencies_sorns USING btree (sorn_id);
+
+
+--
+-- Name: index_good_job_settings_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_good_job_settings_on_key ON public.good_job_settings USING btree (key);
 
 
 --
@@ -672,6 +700,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240717225931'),
 ('20240717225932'),
 ('20240717225933'),
-('20240717225934');
+('20240717225934'),
+('20240718000130');
 
 
