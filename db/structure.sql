@@ -501,17 +501,17 @@ CREATE INDEX index_good_jobs_on_concurrency_key_when_unfinished ON public.good_j
 
 
 --
--- Name: index_good_jobs_on_cron_key_and_created_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_good_jobs_on_cron_key_and_created_at_cond; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_good_jobs_on_cron_key_and_created_at ON public.good_jobs USING btree (cron_key, created_at);
+CREATE INDEX index_good_jobs_on_cron_key_and_created_at_cond ON public.good_jobs USING btree (cron_key, created_at) WHERE (cron_key IS NOT NULL);
 
 
 --
--- Name: index_good_jobs_on_cron_key_and_cron_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_good_jobs_on_cron_key_and_cron_at_cond; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at ON public.good_jobs USING btree (cron_key, cron_at);
+CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at_cond ON public.good_jobs USING btree (cron_key, cron_at) WHERE (cron_key IS NOT NULL);
 
 
 --
@@ -795,6 +795,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718000400'),
 ('20240718000608'),
 ('20240718000910'),
-('20240718001115');
+('20240718001115'),
+('20240718001330');
 
 
