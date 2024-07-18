@@ -7,7 +7,8 @@ ruby '~> 3.2'
 
 # We need to use rails 6-1.stable to get around a problem with good_job:
 # https://github.com/bensheldon/good_job/issues/1016#issuecomment-1644915406
-gem 'rails', '~> 6.1', '>= 6.1.7.8'
+gem 'rails', github: "rails/rails", branch: '6-1-stable'
+# gem 'rails', '~> 6.1', '>= 6.1.7.8'
 gem 'good_job', '~> 3.99.0'
 gem 'pg'
 gem 'httparty'
