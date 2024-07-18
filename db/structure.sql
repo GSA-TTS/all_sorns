@@ -141,7 +141,8 @@ CREATE TABLE public.good_job_executions (
     error text,
     error_event smallint,
     error_backtrace text[],
-    process_id uuid
+    process_id uuid,
+    duration interval
 );
 
 
@@ -837,6 +838,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718001505'),
 ('20240718001704'),
 ('20240718001746'),
-('20240718001747');
+('20240718001747'),
+('20240718001822');
 
 
