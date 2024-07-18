@@ -140,7 +140,8 @@ CREATE TABLE public.good_job_executions (
     finished_at timestamp without time zone,
     error text,
     error_event smallint,
-    error_backtrace text[]
+    error_backtrace text[],
+    process_id uuid
 );
 
 
@@ -152,7 +153,8 @@ CREATE TABLE public.good_job_processes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    state jsonb
+    state jsonb,
+    lock_type smallint
 );
 
 
@@ -195,7 +197,9 @@ CREATE TABLE public.good_jobs (
     executions_count integer,
     job_class text,
     error_event smallint,
-    labels text[]
+    labels text[],
+    locked_by_id uuid,
+    locked_at timestamp without time zone
 );
 
 
@@ -447,6 +451,13 @@ CREATE INDEX index_good_job_executions_on_active_job_id_and_created_at ON public
 
 
 --
+-- Name: index_good_job_executions_on_process_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_job_executions_on_process_id_and_created_at ON public.good_job_executions USING btree (process_id, created_at);
+
+
+--
 -- Name: index_good_job_jobs_for_candidate_lookup; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -521,6 +532,20 @@ CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at_cond ON public.good_
 --
 
 CREATE INDEX index_good_jobs_on_labels ON public.good_jobs USING gin (labels) WHERE (labels IS NOT NULL);
+
+
+--
+-- Name: index_good_jobs_on_locked_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_locked_by_id ON public.good_jobs USING btree (locked_by_id) WHERE (locked_by_id IS NOT NULL);
+
+
+--
+-- Name: index_good_jobs_on_priority_scheduled_at_unfinished_unlocked; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_priority_scheduled_at_unfinished_unlocked ON public.good_jobs USING btree (priority, scheduled_at) WHERE ((finished_at IS NULL) AND (locked_by_id IS NULL));
 
 
 --
@@ -810,6 +835,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718001415'),
 ('20240718001416'),
 ('20240718001505'),
-('20240718001704');
+('20240718001704'),
+('20240718001746'),
+('20240718001747');
 
 
