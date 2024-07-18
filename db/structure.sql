@@ -446,6 +446,13 @@ CREATE INDEX index_good_job_executions_on_active_job_id_and_created_at ON public
 
 
 --
+-- Name: index_good_job_jobs_for_candidate_lookup; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_job_jobs_for_candidate_lookup ON public.good_jobs USING btree (priority, created_at) WHERE (finished_at IS NULL);
+
+
+--
 -- Name: index_good_job_settings_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -800,6 +807,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718001330'),
 ('20240718001414'),
 ('20240718001415'),
-('20240718001416');
+('20240718001416'),
+('20240718001505');
 
 
