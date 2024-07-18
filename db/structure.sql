@@ -139,7 +139,8 @@ CREATE TABLE public.good_job_executions (
     scheduled_at timestamp without time zone,
     finished_at timestamp without time zone,
     error text,
-    error_event smallint
+    error_event smallint,
+    error_backtrace text[]
 );
 
 
@@ -808,6 +809,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718001414'),
 ('20240718001415'),
 ('20240718001416'),
-('20240718001505');
+('20240718001505'),
+('20240718001704');
 
 
