@@ -193,7 +193,8 @@ CREATE TABLE public.good_jobs (
     is_discrete boolean,
     executions_count integer,
     job_class text,
-    error_event smallint
+    error_event smallint,
+    labels text[]
 );
 
 
@@ -466,13 +467,6 @@ CREATE INDEX index_good_jobs_jobs_on_priority_created_at_when_unfinished ON publ
 
 
 --
--- Name: index_good_jobs_on_active_job_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_good_jobs_on_active_job_id ON public.good_jobs USING btree (active_job_id);
-
-
---
 -- Name: index_good_jobs_on_active_job_id_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -512,6 +506,13 @@ CREATE INDEX index_good_jobs_on_cron_key_and_created_at_cond ON public.good_jobs
 --
 
 CREATE UNIQUE INDEX index_good_jobs_on_cron_key_and_cron_at_cond ON public.good_jobs USING btree (cron_key, cron_at) WHERE (cron_key IS NOT NULL);
+
+
+--
+-- Name: index_good_jobs_on_labels; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_good_jobs_on_labels ON public.good_jobs USING gin (labels) WHERE (labels IS NOT NULL);
 
 
 --
@@ -796,6 +797,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240718000608'),
 ('20240718000910'),
 ('20240718001115'),
-('20240718001330');
+('20240718001330'),
+('20240718001414'),
+('20240718001415'),
+('20240718001416');
 
 
