@@ -15,7 +15,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ9W5STPKJ"></script>
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
+    <%= javascript_include_tag "application", type: "module" %>
 
     <%= content_for :search %>
  </head>
