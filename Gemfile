@@ -5,10 +5,7 @@ ruby '~> 3.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
-# We need to use rails 6-1.stable to get around a problem with good_job:
-# https://github.com/bensheldon/good_job/issues/1016#issuecomment-1644915406
-gem 'rails', github: "rails/rails", branch: '6-1-stable'
-# gem 'rails', '~> 6.1', '>= 6.1.7.8'
+gem 'rails', '~> 7.0.0'
 gem 'good_job', '~> 4.0'
 gem 'pg'
 gem 'httparty'
@@ -25,10 +22,9 @@ gem 'csv'
 
 # Use Puma as the app server
 gem 'puma', '~> 6.4'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 6.0'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 5.4', '>= 5.4.4'
+gem 'sass-rails'
+gem 'sprockets-rails'
+gem 'jsbundling-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.12'
 
@@ -46,19 +42,9 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.4'
 end
 
-group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 4.2.1'
-  gem 'listen', '~> 3.9'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.1.0'
-end
-
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40'
-  gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers', '~> 5.3'
   gem 'launchy'

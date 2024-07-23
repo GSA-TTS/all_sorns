@@ -1,5 +1,5 @@
 <% content_for :search do %>
-  <%= javascript_pack_tag 'beforeSearch' %>
+  <%= javascript_include_tag "beforeSearch", type: "module" %>
 <% end %>
 
 <header id="search-header" class="margin-top-2 home-intro">
@@ -16,7 +16,7 @@
     <div class="desktop:grid-col-10 desktop:grid-offset-1 search-area">
       <label for="general-search">Search for SORNs by entering a keyword (will return exact matches)</label>
       <fieldset class="usa-search usa-search--big">
-        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>"></input>
+        <input class="usa-input" id="general-search" type="search" name="search" value="<%= params[:search] %>">
         <button id="general-search-button" class="usa-button" type="submit">
           <span class="usa-search__submit-text">Search</span>
         </button>
