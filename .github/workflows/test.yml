@@ -81,4 +81,4 @@ jobs:
           POSTGRES_PASSWORD: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
-        run: bundle exec rspec
+        run: bundle exec rake spec
