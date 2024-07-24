@@ -5,9 +5,8 @@ class SearchController < ApplicationController
   end
 
   def search
-    @sorns = Sorn.all
     @fields_to_search = params[:fields] || Sorn::FIELDS # use either selected fields or all of them
-    @sorns = filter_on_search if params[:search].present?
+    @sorns = filter_on_search
     @sorns = filter_on_agencies if params[:agencies]
     @sorns = filter_on_publication_date if publication_date_filter?
     @sorns = only_exact_matches if multiword_search?
@@ -29,20 +28,30 @@ class SearchController < ApplicationController
 
   end
 
+  def run_dynamic_search?
+    params[:search].present?
+  end
+
   def filter_on_search
-    if @fields_to_search == Sorn::FIELDS
+    if !run_dynamic_search?
+      Sorn.all
+    elsif @fields_to_search == Sorn::FIELDS
       # If we are searching the whole SORN, just search the xml column
       Sorn.dynamic_search([:xml], params[:search])
     else
       # or search a list tsvectors columns
-      @sorns = Sorn.dynamic_search(@fields_to_search, params[:search])
+      Sorn.dynamic_search(@fields_to_search, params[:search])
     end
   end
 
   def filter_on_agencies
-    @sorns = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
+    filtered = @sorns.joins(:agencies).where(agencies: {name: params[:agencies]})
     # Matching on agencies could return duplicates, so get distinct
-    @sorns.get_distinct_with_dynamic_search_rank
+    if run_dynamic_search?
+      filtered.get_distinct_with_dynamic_search_rank
+    else
+      filtered.get_distinct_no_dynamic_search_rank
+    end
   end
 
   def publication_date_filter?

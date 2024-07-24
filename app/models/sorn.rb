@@ -8,6 +8,7 @@ class Sorn < ApplicationRecord
   validates :citation, uniqueness: true
 
   scope :get_distinct_with_dynamic_search_rank, -> { select(Sorn.attribute_names,"#{PgSearch::Configuration.alias('sorns')}.rank").distinct }
+  scope :get_distinct_no_dynamic_search_rank, -> { select(Sorn.attribute_names).distinct }
   default_scope { order(publication_date: :desc) }
 
   FIELDS = [
