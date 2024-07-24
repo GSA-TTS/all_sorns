@@ -6,6 +6,7 @@ on:
   # Run every Sunday at 3AM
   schedule:
     - cron: '0 3 * * SUN'
+  workflow_dispatch:
 
   # Run every time the "Deploy" action completes (see deploy.yml)
   workflow_run:
