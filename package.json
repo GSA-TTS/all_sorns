@@ -2,7 +2,7 @@
   "name": "all_sorns",
   "private": true,
   "dependencies": {
-    "@rails/ujs": "^7.1.3",
+    "@rails/ujs": "^7.1.400",
     "cache-base": "^4.0.2",
     "jquery": "^3.7.1",
     "list.js": "^2.3.1",
