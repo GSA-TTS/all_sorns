@@ -26,7 +26,7 @@ gem 'sass-rails'
 gem 'sprockets-rails'
 gem 'jsbundling-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.12'
+gem 'jbuilder', '~> 2.13'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.18', require: false
