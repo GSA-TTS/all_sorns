@@ -1,3 +1,7 @@
+# Inactive
+
+This tool was decommissioned September 31, 2024. This repository is now read-only and will not be updated.
+
 # 10x - Privacy Dashboard - Phase 4
 
 [![Known Vulnerabilities](https://snyk.io/test/github/18F/all_sorns/badge.svg)](https://snyk.io/test/github/18F/all_sorns)
