@@ -1,6 +1,6 @@
 # Inactive
 
-This tool was decommissioned September 31, 2024. This repository is now read-only and will not be updated.
+**NOTICE: This tool was decommissioned September 31, 2024. This repository is now read-only and will not be updated.**
 
 # 10x - Privacy Dashboard - Phase 4
 
